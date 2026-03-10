@@ -10,6 +10,14 @@
         body { font-family: 'Inter', sans-serif; }
         .mdf-shadow { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .product-card:hover { transform: translateY(-5px); }
+        
+        /* Animación para el logo */
+        .logo-glow { transition: all 0.4s ease; }
+        .logo-container:hover .logo-glow { 
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
+            opacity: 0.9;
+        }
+        .logo-container:hover rect { fill: #1a1a1a; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 overflow-x-hidden">
@@ -17,13 +25,16 @@
     <header class="py-16 px-6 text-center bg-white border-b border-gray-100">
         <div class="flex justify-center">
             
-            <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-6">
-                <rect width="100" height="100" rx="20" fill="black"/>
-                
-                <path d="M25 35L38 22H80V64L67 77H25V35Z" stroke="white" stroke-width="6" stroke-linejoin="round"/>
-                
-                <path d="M67 22V64M80 64H67" stroke="white" stroke-width="3" stroke-linecap="round"/>
-            </svg>
+            <a href="#" class="logo-container block mb-6 transition-transform hover:scale-105">
+                <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100" height="100" rx="20" fill="black" class="transition-colors duration-300"/>
+                    
+                    <g class="logo-glow">
+                        <path d="M25 35L38 22H80V64L67 77H25V35Z" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+                        <path d="M67 22V64M80 64H67" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                    </g>
+                </svg>
+            </a>
 
         </div>
         <h1 class="text-6xl font-extrabold tracking-tighter mb-4 text-black">fotoPanel</h1>
