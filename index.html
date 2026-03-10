@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuadre.me | Tus fotos en MDF Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bg-matte-black { background-color: #1a1a1a; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-900">
+
+    <header class="py-12 px-6 text-center bg-white border-b">
+        <h1 class="text-4xl font-bold tracking-tight mb-4">Inmortaliza tus momentos</h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">Impresiones premium en MDF de 9mm, laminado mate y listas para colgar. Pide directamente por WhatsApp.</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition">
+                <div class="aspect-square bg-gray-200 rounded-lg mb-4 flex items-center justify-center text-gray-400 italic">20 x 20 cm</div>
+                <h3 class="text-xl font-bold">Tamaño Personal</h3>
+                <p class="text-gray-500 mb-4">Ideal para galerías de pared o escritorios.</p>
+                <button onclick="orderWhatsApp('20x20')" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition flex items-center justify-center">
+                    Pedir 20x20 por WhatsApp
+                </button>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-green-200 scale-105 transition">
+                <div class="aspect-square bg-gray-200 rounded-lg mb-4 flex items-center justify-center text-gray-400 italic">30 x 30 cm</div>
+                <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded mb-2 inline-block">MÁS POPULAR</span>
+                <h3 class="text-xl font-bold">Tamaño Estándar</h3>
+                <p class="text-gray-500 mb-4">El equilibrio perfecto para tus mejores recuerdos.</p>
+                <button onclick="orderWhatsApp('30x30')" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition">
+                    Pedir 30x30 por WhatsApp
+                </button>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition">
+                <div class="aspect-square bg-gray-200 rounded-lg mb-4 flex items-center justify-center text-gray-400 italic">40 x 40 cm</div>
+                <h3 class="text-xl font-bold">Tamaño Galería</h3>
+                <p class="text-gray-500 mb-4">Haz que tus fotos sean el centro de atención.</p>
+                <button onclick="orderWhatsApp('40x40')" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition">
+                    Pedir 40x40 por WhatsApp
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function orderWhatsApp(size) {
+            const phone = "573000000000"; // REEMPLAZA CON TU NÚMERO
+            const message = encodeURIComponent(`¡Hola! Me interesa pedir un cuadro de tamaño ${size}. ¿Cómo te envío la foto?`);
+            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+        }
+    </script>
+</body>
+</html>
