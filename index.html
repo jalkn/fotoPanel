@@ -18,56 +18,111 @@
             opacity: 0.9;
         }
         .logo-container:hover rect { fill: #1a1a1a; }
+
+        /* Estilos del Slider */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            overflow: hidden;
+            border-radius: 2rem;
+        }
+        .slides {
+            display: flex;
+            width: 300%; /* 100% por cada slide */
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .slide-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding-bottom: 3rem;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 overflow-x-hidden">
 
-    <header class="py-16 px-6 text-center bg-white border-b border-gray-100">
+    <header class="py-12 px-6 text-center bg-white border-b border-gray-100">
         <div class="flex justify-center">
-            
             <a href="#" class="logo-container block mb-6 transition-transform hover:scale-105">
-                <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="100" height="100" rx="20" fill="black" class="transition-colors duration-300"/>
-                    
                     <g class="logo-glow">
                         <path d="M25 35L38 22H80V64L67 77H25V35Z" stroke="white" stroke-width="6" stroke-linejoin="round"/>
                         <path d="M67 22V64M80 64H67" stroke="white" stroke-width="3" stroke-linecap="round"/>
                     </g>
                 </svg>
             </a>
-
         </div>
-        <h1 class="text-6xl font-extrabold tracking-tighter mb-4 text-black">fotoPanel</h1>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto font-light leading-relaxed">
-            Convertimos tus fotos favoritas en <span class="font-semibold text-black">paneles de MDF premium</span>. Adhesivo laminado mate, respaldo en vinilo negro y perforación lista para colgar.
+        <h1 class="text-5xl font-extrabold tracking-tighter mb-4 text-black">fotoPanel</h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto font-light leading-relaxed">
+            Convertimos tus mejores momentos en <span class="font-semibold text-black">paneles de MDF de 9mm</span> con acabado mate profesional.
         </p>
-        <div class="mt-8 flex flex-wrap gap-4 justify-center text-sm text-gray-500 bg-gray-50 p-4 rounded-full border border-gray-100 inline-flex">
-            <span class="flex items-center gap-2">✨ Laminado Mate Anti-reflejo</span>
-            <span class="flex items-center gap-2">🧱 MDF Robustez 9mm</span>
-            <span class="flex items-center gap-2">⚫ Respaldo Vinilo Negro</span>
-            <span class="flex items-center gap-2">🔨 Listo para Colgar</span>
-        </div>
     </header>
 
     <main class="max-w-7xl mx-auto p-6 md:p-12">
+        
+        <section class="mb-16">
+            <div class="slider-container mdf-shadow border border-gray-100">
+                <div class="slides" id="slides">
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1513519245088-0e12902e35ca?auto=format&fit=crop&q=80&w=1200" alt="Promo fotoPanel">
+                        <div class="slide-overlay">
+                            <h2 class="text-4xl font-extrabold mb-2">Calidad de Galería en tu Hogar</h2>
+                            <p class="text-lg opacity-90">Laminado mate anti-reflejo y respaldo premium.</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?auto=format&fit=crop&q=80&w=1200" alt="Promo Medellín">
+                        <div class="slide-overlay">
+                            <h2 class="text-4xl font-extrabold mb-2">Hecho en Santa Elena</h2>
+                            <p class="text-lg opacity-90">Artesanía local con tecnología de precisión para Antioquia.</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1544457070-4cd773b4d71e?auto=format&fit=crop&q=80&w=1200" alt="Regalo ideal">
+                        <div class="slide-overlay">
+                            <h2 class="text-4xl font-extrabold mb-2 text-yellow-400">¡El Regalo Perfecto!</h2>
+                            <p class="text-lg opacity-90">Sorprende con un detalle duradero y elegante.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
             
             <div class="product-card group bg-white p-5 rounded-3xl border border-gray-100 mdf-shadow transition-all duration-300">
                 <div class="aspect-square bg-gray-100 rounded-2xl mb-6 overflow-hidden relative border border-gray-100">
-                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=400&auto=format&fit=crop" alt="fotoPanel 20x20 acabado mate" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
+                    <img src="https://i.ibb.co/XfXk5S9/20x20.jpg" alt="fotoPanel 20x20" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute top-4 left-4 bg-black/70 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm">20 x 20 cm</div>
                 </div>
                 <div class="px-2">
                     <h3 class="text-2xl font-bold text-black tracking-tight">Tamaño Personal</h3>
-                    <p class="text-gray-500 text-sm mb-6 font-light">Ideal para repisas, veladores o crear galerías pequeñas.</p>
-                    
+                    <p class="text-gray-500 text-sm mb-6 font-light">Ideal para repisas, veladores o galerías pequeñas.</p>
                     <div class="flex items-end justify-between mb-6">
                         <span class="text-4xl font-extrabold text-black">$19.900</span>
-                        <span class="text-sm text-gray-400">COP / und</span>
+                        <span class="text-sm text-gray-400">COP</span>
                     </div>
-
                     <button onclick="orderWhatsApp('20x20')" class="w-full bg-gray-900 hover:bg-black text-white font-semibold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" class="h-5 w-5 invert">
                         Pedir 20x20 por WhatsApp
                     </button>
                 </div>
@@ -76,19 +131,16 @@
             <div class="product-card group bg-white p-5 rounded-3xl border-2 border-black mdf-shadow transition-all duration-300 transform md:-translate-y-4 relative overflow-hidden">
                 <div class="absolute top-0 right-0 bg-black text-white text-[10px] font-bold px-5 py-1.5 rounded-bl-xl uppercase tracking-widest">El Más Popular</div>
                 <div class="aspect-square bg-gray-100 rounded-2xl mb-6 overflow-hidden border border-gray-100">
-                    <img src="https://images.unsplash.com/photo-1579783928621-7a13d66a6211?q=80&w=400&auto=format&fit=crop" alt="fotoPanel 30x30 equilibrio perfecto" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
+                    <img src="https://i.ibb.co/v3n5f3J/30x30.jpg" alt="fotoPanel 30x30" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
                 </div>
                 <div class="px-2">
                     <h3 class="text-2xl font-bold text-black tracking-tight">Tamaño Estándar</h3>
-                    <p class="text-gray-500 text-sm mb-6 font-light">El equilibrio perfecto. Diseñado para lucir en cualquier pared de tu hogar.</p>
-
+                    <p class="text-gray-500 text-sm mb-6 font-light">El equilibrio perfecto para cualquier pared del hogar.</p>
                     <div class="flex items-end justify-between mb-6">
                         <span class="text-4xl font-extrabold text-black">$29.900</span>
-                        <span class="text-sm text-gray-400">COP / und</span>
+                        <span class="text-sm text-gray-400">COP</span>
                     </div>
-
-                    <button onclick="orderWhatsApp('30x30')" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-green-100 transition-all flex items-center justify-center gap-2 text-lg">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" class="h-6 w-6">
+                    <button onclick="orderWhatsApp('30x30')" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-lg">
                         Ordenar 30x30
                     </button>
                 </div>
@@ -96,20 +148,17 @@
 
             <div class="product-card group bg-white p-5 rounded-3xl border border-gray-100 mdf-shadow transition-all duration-300">
                 <div class="aspect-square bg-gray-100 rounded-2xl mb-6 overflow-hidden relative border border-gray-100">
-                    <img src="https://images.unsplash.com/photo-1549887552-cb1071d3e5ca?q=80&w=400&auto=format&fit=crop" alt="fotoPanel 40x40 impacto visual" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
+                    <img src="https://i.ibb.co/9vFzX7T/40x40.jpg" alt="fotoPanel 40x40" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute top-4 left-4 bg-black/70 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm">40 x 40 cm</div>
                 </div>
                 <div class="px-2">
                     <h3 class="text-2xl font-bold text-black tracking-tight">Tamaño Galería</h3>
-                    <p class="text-gray-500 text-sm mb-6 font-light">Impacto visual máximo. Crea paneles impresionantes con tus mejores recuerdos.</p>
-                    
+                    <p class="text-gray-500 text-sm mb-6 font-light">Impacto visual máximo para tus mejores recuerdos.</p>
                     <div class="flex items-end justify-between mb-6">
                         <span class="text-4xl font-extrabold text-black">$39.900</span>
-                        <span class="text-sm text-gray-400">COP / und</span>
+                        <span class="text-sm text-gray-400">COP</span>
                     </div>
-
                     <button onclick="orderWhatsApp('40x40')" class="w-full bg-gray-900 hover:bg-black text-white font-semibold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" class="h-5 w-5 invert">
                         Pedir 40x40 por WhatsApp
                     </button>
                 </div>
@@ -117,47 +166,36 @@
 
         </div>
 
-        <section class="mt-24 bg-white p-10 rounded-3xl border border-gray-100 mdf-shadow">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="text-4xl font-extrabold mb-4 tracking-tighter text-black">Tu Pedido por WhatsApp es Simple</h2>
-                <p class="text-lg text-gray-600 mb-12 font-light">Sin formularios complejos. Atendemos tu pedido de forma personal.</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-                    <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 relative">
-                        <div class="text-5xl mb-6">📱</div>
-                        <h4 class="font-bold text-xl mb-2 text-black">1. Elige tu Tamaño</h4>
-                        <p class="text-sm text-gray-600 font-light">Toca el botón del tamaño que quieras arriba. Se abrirá tu WhatsApp.</p>
-                        <div class="absolute -top-3 -left-3 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">1</div>
-                    </div>
-                    <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 relative">
-                        <div class="text-5xl mb-6">📸</div>
-                        <h4 class="font-bold text-xl mb-2 text-black">2. Envía tu Foto</h4>
-                        <p class="text-sm text-gray-600 font-light">Por el chat nos envías la imagen. Confirmamos calidad y datos de pago.</p>
-                        <div class="absolute -top-3 -left-3 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">2</div>
-                    </div>
-                    <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 relative">
-                        <div class="text-5xl mb-6">📦</div>
-                        <h4 class="font-bold text-xl mb-2 text-black">3. Recibe en Casa</h4>
-                        <p class="text-sm text-gray-600 font-light">Fabricamos tu fotoPanel en Santa Elena y lo enviamos a tu dirección.</p>
-                        <div class="absolute -top-3 -left-3 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">3</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <div class="mt-20 flex flex-wrap gap-4 justify-center text-sm text-gray-500 bg-white p-6 rounded-3xl border border-gray-100 mdf-shadow inline-flex w-full">
+            <span class="flex items-center gap-2">✨ Laminado Mate Anti-reflejo</span>
+            <span class="flex items-center gap-2">🧱 MDF Robustez 9mm</span>
+            <span class="flex items-center gap-2">⚫ Respaldo Vinilo Negro</span>
+            <span class="flex items-center gap-2">🔨 Listo para Colgar</span>
+        </div>
 
     </main>
 
     <footer class="py-16 text-center text-gray-500 text-sm border-t mt-16 bg-white px-6">
         <p class="font-bold text-black mb-2 text-base">fotoPanel™</p>
         <p>Taller en Santa Elena, Antioquia. Envíos a todo Colombia.</p>
-        <p class="mt-6 text-xs text-gray-400">Copyright © 2026. Todos los derechos reservados.</p>
+        <p class="mt-6 text-xs text-gray-400">Copyright © 2026. Alejandro Monsalve - fotoPanel.</p>
     </footer>
 
     <script>
+        // Lógica del Slider
+        let currentSlide = 0;
+        const slides = document.getElementById('slides');
+        const totalSlides = 3;
+
+        function moveSlider() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+        setInterval(moveSlider, 5000); // Cambio cada 5 segundos
+
+        // Lógica de WhatsApp
         function orderWhatsApp(size) {
-            // --- CONFIGURACIÓN ---
-            const phone = "573128707083"; // *** REEMPLAZA CON TU NÚMERO REAL ***
-            
+            const phone = "573128707083"; 
             const message = encodeURIComponent(
 `¡Hola fotoPanel! 👋
 
@@ -170,7 +208,6 @@ Me interesa ordenar un cuadro premium.
 
 ¿Me podrían indicar cómo enviarles mi foto y los medios de pago? ¡Gracias!`
             );
-            
             window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
         }
     </script>
