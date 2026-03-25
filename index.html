@@ -19,13 +19,15 @@
         }
         .logo-container:hover rect { fill: #1a1a1a; }
 
-        /* Estilos del Slider */
+        /* Estilos del Slider - CORREGIDO PARA IMAGEN FULL */
         .slider-container {
             position: relative;
             width: 100%;
-            height: 450px;
+            height: auto; /* Altura automática */
+            aspect-ratio: 16 / 9; /* PROPORCIÓN FIJA (PANORÁMICA) */
             overflow: hidden;
             border-radius: 2rem;
+            border: 1px solid rgba(229, 231, 235, 1); /* border-gray-100 */
         }
         .slides {
             display: flex;
@@ -42,19 +44,23 @@
         .slide img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: fill; /* Imagen completa, puede deformarse levemente si no es 16:9 */
+            /* Opcional: object-fit: contain; Muestra imagen completa sin deformar, pero deja franjas negras/vacías si no es 16:9 */
         }
+        
+        /* Capa oscura sutil para texto - AJUSTADO */
         .slide-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            /* Gradiente más suave que empieza a media altura */
+            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
             color: white;
             text-align: center;
-            padding-bottom: 3rem;
+            padding-bottom: 4rem; /* Texto un poco más arriba */
         }
     </style>
 </head>
@@ -81,7 +87,7 @@
     <main class="max-w-7xl mx-auto p-6 md:p-12">
         
         <section class="mb-16">
-            <div class="slider-container mdf-shadow border border-gray-100">
+            <div class="slider-container mdf-shadow">
                 <div class="slides" id="slides">
                     <div class="slide">
                         <img src="img/banner_calidad.jpg" alt="Promo Calidad fotoPanel">
@@ -191,7 +197,7 @@
             currentSlide = (currentSlide + 1) % totalSlides;
             slides.style.transform = `translateX(-${currentSlide * 100}%)`;
         }
-        setInterval(moveSlider, 5000); 
+        setInterval(moveSlider, 5000); // Cambio cada 5 segundos
 
         // Lógica de WhatsApp
         function orderWhatsApp(size) {
