@@ -18,50 +18,6 @@
             opacity: 0.9;
         }
         .logo-container:hover rect { fill: #1a1a1a; }
-
-        /* Estilos del Slider - CORREGIDO PARA IMAGEN FULL */
-        .slider-container {
-            position: relative;
-            width: 100%;
-            height: auto; /* Altura automática */
-            aspect-ratio: 16 / 9; /* PROPORCIÓN FIJA (PANORÁMICA) */
-            overflow: hidden;
-            border-radius: 2rem;
-            border: 1px solid rgba(229, 231, 235, 1); /* border-gray-100 */
-        }
-        .slides {
-            display: flex;
-            width: 300%; 
-            height: 100%;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .slide {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            flex-shrink: 0;
-        }
-        .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: fill; /* Imagen completa, puede deformarse levemente si no es 16:9 */
-            /* Opcional: object-fit: contain; Muestra imagen completa sin deformar, pero deja franjas negras/vacías si no es 16:9 */
-        }
-        
-        /* Capa oscura sutil para texto - AJUSTADO */
-        .slide-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            /* Gradiente más suave que empieza a media altura */
-            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            color: white;
-            text-align: center;
-            padding-bottom: 4rem; /* Texto un poco más arriba */
-        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 overflow-x-hidden">
@@ -86,39 +42,11 @@
 
     <main class="max-w-7xl mx-auto p-6 md:p-12">
         
-        <section class="mb-16">
-            <div class="slider-container mdf-shadow">
-                <div class="slides" id="slides">
-                    <div class="slide">
-                        <img src="img/banner_calidad.jpg" alt="Promo Calidad fotoPanel">
-                        <div class="slide-overlay">
-                            <h2 class="text-4xl font-extrabold mb-2">Calidad de Galería en tu Hogar</h2>
-                            <p class="text-lg opacity-90">Laminado mate anti-reflejo y respaldo premium.</p>
-                        </div>
-                    </div>
-                    <div class="slide">
-                        <img src="img/banner_medellin.jpg" alt="Hecho en Santa Elena">
-                        <div class="slide-overlay">
-                            <h2 class="text-4xl font-extrabold mb-2">Hecho en Santa Elena</h2>
-                            <p class="text-lg opacity-90">Artesanía local con tecnología de precisión para Antioquia.</p>
-                        </div>
-                    </div>
-                    <div class="slide">
-                        <img src="img/banner_regalo.jpg" alt="Regalo ideal">
-                        <div class="slide-overlay">
-                            <h2 class="text-4xl font-extrabold mb-2 text-yellow-400">¡El Regalo Perfecto!</h2>
-                            <p class="text-lg opacity-90">Sorprende con un detalle duradero y elegante.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
             
             <div class="product-card group bg-white p-5 rounded-3xl border border-gray-100 mdf-shadow transition-all duration-300">
                 <div class="aspect-square bg-gray-100 rounded-2xl mb-6 overflow-hidden relative border border-gray-100">
-                    <img src="img/panel20x20.jpg" alt="fotoPanel 20x20" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
+                    <img src="img/panel_20x20.jpg" alt="fotoPanel 20x20" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute top-4 left-4 bg-black/70 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm">20 x 20 cm</div>
                 </div>
                 <div class="px-2">
@@ -188,17 +116,6 @@
     </footer>
 
     <script>
-        // Lógica del Slider
-        let currentSlide = 0;
-        const slides = document.getElementById('slides');
-        const totalSlides = 3;
-
-        function moveSlider() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
-        }
-        setInterval(moveSlider, 5000); // Cambio cada 5 segundos
-
         // Lógica de WhatsApp
         function orderWhatsApp(size) {
             const phone = "573128707083"; 
