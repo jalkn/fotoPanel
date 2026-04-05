@@ -11,13 +11,11 @@
         .mdf-shadow { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .product-card:hover { transform: translateY(-5px); }
         
-        /* Animación para el logo */
-        .logo-glow { transition: all 0.4s ease; }
-        .logo-container:hover .logo-glow { 
-            filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
-            opacity: 0.9;
-        }
-        .logo-container:hover rect { fill: #1a1a1a; }
+        /* Animación para el nuevo isotipo abstracto */
+        .logo-container:hover .bar-1 { transform: scaleY(1.1); fill-opacity: 1; }
+        .logo-container:hover .bar-2 { transform: scaleY(1.15); fill-opacity: 0.9; }
+        .logo-container:hover .bar-3 { transform: scaleY(1.2); fill-opacity: 0.8; }
+        .bar { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: bottom; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 overflow-x-hidden">
@@ -25,12 +23,11 @@
     <header class="py-12 px-6 text-center bg-white border-b border-gray-100">
         <div class="flex justify-center">
             <a href="#" class="logo-container block mb-6 transition-transform hover:scale-105">
-                <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="100" height="100" rx="20" fill="black" class="transition-colors duration-300"/>
-                    <g class="logo-glow">
-                        <path d="M25 35L38 22H80V64L67 77H25V35Z" stroke="white" stroke-width="6" stroke-linejoin="round"/>
-                        <path d="M67 22V64M80 64H67" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                    </g>
+                <svg width="70" height="70" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100" height="100" rx="24" fill="black"/>
+                    <rect class="bar bar-1" x="25" y="50" width="12" height="25" rx="3" fill="white" fill-opacity="1"/>
+                    <rect class="bar bar-2" x="44" y="35" width="12" height="40" rx="3" fill="white" fill-opacity="0.7"/>
+                    <rect class="bar bar-3" x="63" y="20" width="12" height="55" rx="3" fill="white" fill-opacity="0.4"/>
                 </svg>
             </a>
         </div>
@@ -116,9 +113,8 @@
     </footer>
 
     <script>
-        // Lógica de WhatsApp
         function orderWhatsApp(size) {
-            const phone = "573128707083"; 
+            const phone = "573128707083";
             const message = encodeURIComponent(
 `¡Hola fotoPanel! 👋
 
