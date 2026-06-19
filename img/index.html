@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link class="icon" type="image/png" href="img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FOTOPANEL</title>
+    <title>BIORUSH</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script>
@@ -23,17 +23,17 @@
         }
     </script>
  <style>
-        body { font-family: 'Orbitron', sans-serif; background-color: #878b9c; color: #f8fafc; } 
+        body { font-family: 'Orbitron', sans-serif; background-color: #020617; color: #f8fafc; } 
         #page-bg-overlay {
             position: fixed; inset: 0; z-index: -1;
-            background: radial-gradient(circle at 50% 50%, #4a3f35 0%, #222029 50%, #1a1614 100%);
+            background: radial-gradient(circle at 50% 50%, #1e3a8a 0%, #0f172a 50%, #020617 100%);
         }
         .tele-label { color: #64748b; }
         .tele-value { color: #38bdf8; }
         .border-custom { border-color: rgba(56, 189, 248, 0.2); }
         .border-custom:hover { border-color: rgba(56, 189, 248, 0.6); }
         .img-glow-transition { transition: opacity 0.6s ease-in-out; }
-</style>
+    </style>
 </head>
 <body class="antialiased selection:bg-white selection:text-black overflow-x-hidden text-white">
 
@@ -43,8 +43,8 @@
     <main id="main-vault" class="w-screen h-screen flex flex-col relative overflow-hidden">
 <header class="h-[80px] shrink-0 bg-gradient-to-b from-black/90 via-black/40 to-transparent backdrop-blur-md z-50 flex flex-col items-center justify-center px-6">
     <div class="flex items-center justify-center gap-3 w-full"> 
-        <img src="img/surge.png" alt="Back" class="h-4 w-auto object-contain" />
-        <span class="text-[11px] tracking-[0.25em] font-black text-white uppercase">FOTOPANEL</span>
+        <img src="img/lift.png" alt="Back" class="h-6 w-auto object-contain" />
+        <span class="text-[11px] tracking-[0.25em] font-black text-white uppercase">BIORUSH</span>
     </div>
     
 
@@ -69,11 +69,11 @@
 
         <div class="flex-1 w-full flex flex-col items-center justify-center py-4 px-4 gap-y-4">
             
-            <div id="fotopanel-pack-container" class="relative w-full max-w-[180px] xs:max-w-[200px] sm:max-w-[240px] md:max-w-[280px] aspect-[13/15] shrink-0 drop-shadow-[0_40px_60px_rgba(0,0,0,0.9)]">
+            <div id="biorush-pack-container" class="relative w-full max-w-[180px] xs:max-w-[200px] sm:max-w-[240px] md:max-w-[280px] aspect-[13/15] shrink-0 drop-shadow-[0_40px_60px_rgba(0,0,0,0.9)]">
                 <div class="w-full h-full relative overflow-hidden bg-transparent">
-                    <img id="fotopanel-pack-img-back" src="img/45mane.png" alt="fotopanel Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-contain opacity-0 pointer-events-none z-0" />
-                    <img id="fotopanel-pack-img" src="img/45caps.png" alt="fotopanel Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-contain pointer-events-auto z-10" />
-                    <img id="fotopanel-pack-img-raw" src="" alt="Raw Content" class="img-glow-transition absolute inset-0 w-full h-full object-contain opacity-0 pointer-events-none z-[5]" />
+                    <img id="biorush-pack-img-back" src="img/45mane.png" alt="BioRush Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-contain opacity-0 pointer-events-none z-0" />
+                    <img id="biorush-pack-img" src="img/45caps.png" alt="BioRush Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-contain pointer-events-auto z-10" />
+                    <img id="biorush-pack-img-raw" src="" alt="Raw Content" class="img-glow-transition absolute inset-0 w-full h-full object-contain opacity-0 pointer-events-none z-[5]" />
                     
                     <div class="absolute inset-0 flex items-center justify-center p-2 z-20 pointer-events-none">
 
@@ -84,7 +84,7 @@
                                     <path id="textPath-bottom" d="M 65,200 A 135,135 0 0,0 335,200" />
                                 </defs>
                                 
-                                <text class="fill-white font-black text-[10px] sm:text-[10px] tracking-[0.25em] sm:tracking-[0.3em] uppercase transition-all duration-500">
+                                <text class="fill-white font-black text-[12px] sm:text-[10px] tracking-[0.25em] sm:tracking-[0.3em] uppercase transition-all duration-500">
                                     <textPath id="laser-variant-title" href="#textPath-top" startOffset="50%" text-anchor="middle">
                                         PULSOR FOCUS
                                     </textPath>
@@ -100,8 +100,8 @@
                                     <text x="200" y="245" text-anchor="middle" class="fill-white/30 text-[6px] tracking-[0.4em] font-mono"></text>
                                 </g>
                                 
-                                <text  class="fill-white/60 font-black text-[10px] sm:text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
-                                    <textPath id="fotopanel-description" href="#textPath-bottom" startOffset="50%" text-anchor="middle">
+                                <text  class="fill-white/60 font-black text-[12px] sm:text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
+                                    <textPath id="biorush-description" href="#textPath-bottom" startOffset="50%" text-anchor="middle">
                                         Enfoque y claridad cognitiva
                                     </textPath>
 
@@ -119,16 +119,16 @@
     <div class="grid grid-cols-4 gap-y-1 gap-x-2 w-full px-4 text-center">
 
         <!-- Valores: Fila 2 -->
-        <span id="tele-tec" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
-        <span id="tele-gsr" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
-        <span id="tele-lam" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
-        <span id="tele-type" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+        <span id="tele-col" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+        <span id="tele-fru" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+        <span id="tele-sec" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+        <span id="tele-mol" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
 
         <!-- Etiquetas: Fila 2 (Debajo de los valores) -->
-        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Técnica</span>
-        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Grosor</span>
-        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Laminado</span>
-        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Superficie</span>
+        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Temp</span>
+        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Fruto</span>
+        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Secado</span>
+        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Pureza</span>
 
     </div>
 </section>
@@ -144,7 +144,7 @@
             PROTOCOLO BIOCINÉTICO P.U.L.S.<span class="opacity-30">O.R.</span>
         </span>
     </div>
-    
+
     <div class="grid grid-cols-[50px_1fr_50px] items-center gap-2 w-full">
         <button id="btn-reveal-raw" class="h-[50px] flex items-center justify-center rounded-sm border border-white/10 bg-white/5 hover:border-sky-500/50 hover:bg-sky-500/10 transition-all duration-300">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white/60">
@@ -164,15 +164,15 @@
         </button>
     </div>
 
-    <div id="fotopanel-variants-container" class="w-full">
+    <div id="biorush-variants-container" class="w-full">
     </div>
 
 
 
     <div class="flex items-center justify-center gap-3 text-white/50 text-[8px] tracking-[0.3em] font-mono select-none w-full uppercase">
-        <span id="fotopanel-spec">LION’S MANE</span>
+        <span id="biorush-spec">LION’S MANE</span>
         <span class="opacity-30">|</span>
-        <span id="fotopanel-price" class="text-white-400/80">$68.000</span>
+        <span id="biorush-price" class="text-white-400/80">$68.000</span>
     </div>
 
 
@@ -182,7 +182,7 @@
         <footer class="h-[72px] shrink-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent backdrop-blur-md z-50 flex items-center justify-center">
             <div class="p-6 flex justify-center items-center w-full min-h-[72px]">
                         <span class="text-[6px] tracking-[0.6em] font-bold text-white/40 uppercase">
-                            FOTOPANEL © 2026
+                            BIORUSH © 2026
                         </span>
                 </a>
             </div>
@@ -194,44 +194,44 @@
     // =========================================================================
     // 1. CONFIGURACIÓN DE CATÁLOGOS COMERCIALES
     // =========================================================================
-    const FOTOPANEL_CATALOG = {
+    const BIORUSH_CATALOG = {
         'PULSOR': {
-            defaultVariant: 'RITMO',
+            defaultVariant: 'FOCUS',
             variants: {
-                'PULSO': { 
-                    label: 'PANEL PULSO', desc: 'Expone, recuerda, regala, sueña', 
-                    spec: 'FOTOPANEL 20X20CMS', cant: '20X20 CM', price: '$20.000', id: 'FP-PULSO',
-                    img: 'img/20x20.png', imgBack: 'img/20x20-back.png', imgRaw: 'img/20x20-raw.png',
-                    telemetry: { TEC: 'INKJET', GSR: '9MM', LAM: 'MATE', TYPE: 'MDF' },
-                    benefits: ['FÍSICO > DIGITAL', 'EXPRESIÓN ARTÍSTICA', 'REALIDAD TANGIBLE', 'PERSONALIZACIÓN ESPACIAL']
+                'FOCUS': { 
+                    label: 'PULSOR FOCUS', desc: 'Enfoque y claridad cognitiva', 
+                    spec: 'LION’S MANE', cant:  '45X500MGRS', price: '$70.000', id: 'PULS45F',
+                    img: 'img/45caps.png', imgBack: 'img/45mane.png', imgRaw: 'img/maneRaw.png',
+                    telemetry: { COL: '24°', FRU: '18°', SEC: '40°', MOL: '98.2%' },
+                    benefits: ['NEUROGÉNESIS', 'CLARIDAD COGNITIVA', 'MEMORIA FLUIDA', 'NIEBLA  (-)', 'OPTIMIZACIÓN SINÁPTICA', 'ENFOQUE PROFUNDO', 'AGUDEZA ', 'REPARACIÓN NEURONAL', 'ENFOQUE', 'PRODUCTIVIDAD SOSTENIDA']
                 },
-                'RITMO': { 
-                    label: 'PANEL RITMO', desc: 'Expone, recuerda, regala, sueña', 
-                    spec: 'FOTOPANEL 30X30CMS', cant: '30X30 CM', price: '$30.000', id: 'FP-RITMO',
-                    img: 'img/30x30.png', imgBack: 'img/30x30-back.png', imgRaw: 'img/30x30-raw.png',
-                    telemetry: { TEC: 'INKJET', GSR: '9MM', LAM: 'MATE', TYPE: 'MDF' },
-                    benefits: ['FÍSICO > DIGITAL', 'EXPRESIÓN ARTÍSTICA', 'REALIDAD TANGIBLE', 'PERSONALIZACIÓN ESPACIAL']
+                'ZEN': { 
+                    label: 'PULSOR ZEN', desc: 'Silencio mental óptimo', 
+                    spec: 'REISHI', cant:  '45X500MGRS', price: '$70.000', id: 'PULS45Z',
+                    img: 'img/45caps.png', imgBack: 'img/45reishi.png', imgRaw: 'img/reishiRaw.png',
+                    telemetry: { COL: '22°', FRU: '16°', SEC: '38°', MOL: '97.5' },
+                    benefits: ['REDUCCIÓN CORTISOL', 'CALMA PROFUNDA', 'REGULACIÓN NERVIOSA', 'DESCANSO REPARADOR', 'EQUILIBRIO ', 'ADAPTACIÓN AL ESTRÉS', 'PAZ COGNITIVA', 'SUEÑO LÚCIDO', 'RELAJACIÓN MUSCULAR', 'CLARIDAD INTERNA']
                 },
-                'FLUJO': { 
-                    label: 'PANEL FLUJO', desc: 'Expone, recuerda, regala, sueña', 
-                    spec: 'FOTOPANEL 40X40CMS', cant: '40X40 CM', price: '$40.000', id: 'FP-FLUJO',
-                    img: 'img/40x40.png', imgBack: 'img/40x40-back.png', imgRaw: 'img/40x40-raw.png',
-                    telemetry: { TEC: 'INKJET', GSR: '9MM', LAM: 'MATE', TYPE: 'MDF' },
-                    benefits: ['FÍSICO > DIGITAL', 'EXPRESIÓN ARTÍSTICA', 'REALIDAD TANGIBLE', 'PERSONALIZACIÓN ESPACIAL']
+                'STAMINA': { 
+                    label: 'PULSOR STAMINA', desc: 'Potencia celular óptima', 
+                    spec: 'CORDYCEPS', cant:  '45X500MGRS', price: '$70.000', id: 'PULS45S',
+                    img: 'img/45caps.png', imgBack: 'img/45cordy.png', imgRaw: 'img/cordyRaw.png',
+                    telemetry: { COL: '20°', FRU: '15°', SEC: '42°', MOL: '99.0' },
+                    benefits: ['POTENCIA AERÓBICA', 'ENERGÍA CELULAR (ATP)', 'RESISTENCIA FÍSICA', 'OXIGENACIÓN SANGUÍNEA', 'RECUPERACIÓN RÁPIDA', 'VITALIDAD GENERAL', 'RENDIMIENTO ATLÉTICO', 'FUNCIÓN RESPIRATORIA', 'METABOLISMO ACTIVO', 'FATIGA (-)']
                 },
-                'CICLO': { 
-                    label: 'PANEL CICLO', desc: 'Expone, recuerda, regala, sueña', 
-                    spec: 'MURALPANEL 1X1MTS', cant: 'MULTI-PANEL', price: '$60.000+', id: 'FP-CICLO',
-                    img: 'img/mural.png', imgBack: 'img/mural-back.png', imgRaw: 'img/mural-raw.png',
-                    telemetry: { TEC: 'INKJET', GSR: '9MM', LAM: 'MATE', TYPE: 'MDF' },
-                    benefits: ['FÍSICO > DIGITAL', 'EXPRESIÓN ARTÍSTICA', 'REALIDAD TANGIBLE', 'PERSONALIZACIÓN ESPACIAL']
+                'CORE': { 
+                    label: 'PULSOR CORE', desc: 'Respuesta inmune óptima', 
+                    spec: 'TURKEY TAIL', cant:  '45X500MGRS', price: '$70.000', id: 'PULS45C',
+                    img: 'img/45caps.png', imgBack: 'img/45turkey.png', imgRaw: 'img/turkeyRaw.png',
+                    telemetry: { COL: '23°', FRU: '19°', SEC: '40°', MOL: '98.5' },
+                    benefits: ['RESPUESTA INMUNE', 'BIOMA INTESTINAL', 'DEFENSA CELULAR', 'ANTIOXIDANTE', 'SALUD DIGESTIVA', 'PROTECCIÓN SISTÉMICA', 'REDUCCIÓN INFLAMACIÓN', 'ESTABILIDAD INTERNA', 'SÍNTESIS NUTRITIVA', 'FORTALEZA INTEGRAL']
                 }
             }
         }
     };
 
     let currentBioItem = 'PULSOR';
-    let currentBioVariant = 'PULSO';
+    let currentBioVariant = 'FOCUS';
     const numeroCelular = "573025333130";
 
     // ==========================================
@@ -256,9 +256,9 @@
     // 3. MOTOR DE ESTADO VISUAL (Centralizado)
     // ==========================================
     function aplicarModoVisual(modo) {
-        const front = getCachedEl('fotopanel-pack-img');
-        const back = getCachedEl('fotopanel-pack-img-back');
-        const raw = getCachedEl('fotopanel-pack-img-raw');
+        const front = getCachedEl('biorush-pack-img');
+        const back = getCachedEl('biorush-pack-img-back');
+        const raw = getCachedEl('biorush-pack-img-raw');
         const svg = getCachedEl('laser-vector-target');
 
         // Reset general
@@ -306,10 +306,10 @@
     // ==========================================
     // 4. CONTROLADORES DE INTERFAZ DE USUARIO
     // ==========================================
-    function inicializarFotopanel() {
-        const menuContainer = getCachedEl('fotopanel-items-menu');
+    function inicializarBioRush() {
+        const menuContainer = getCachedEl('biorush-items-menu');
         if (menuContainer) {
-            menuContainer.innerHTML = Object.keys(FOTOPANEL_CATALOG).map(item => `
+            menuContainer.innerHTML = Object.keys(BIORUSH_CATALOG).map(item => `
                 <span id="menu-bio-${item}" onclick="cambiarBioItem('${item}')" class="cursor-pointer tracking-[0.15em] transition-all duration-300 h-5 leading-none font-bold">
                     ${item}
                 </span>
@@ -322,7 +322,7 @@
 
     function cambiarBioItem(itemKey) {
         currentBioItem = itemKey;
-        currentBioVariant = FOTOPANEL_CATALOG[itemKey].defaultVariant;
+        currentBioVariant = BIORUSH_CATALOG[itemKey].defaultVariant;
         actualizarBioUI();
         triggerHaptic(15);
     }
@@ -334,13 +334,13 @@
     }
 
     function actualizarBioUI() {
-        const itemConfig = FOTOPANEL_CATALOG[currentBioItem];
+        const itemConfig = BIORUSH_CATALOG[currentBioItem];
         const variantConfig = itemConfig.variants[currentBioVariant];
-        const vContainer = getCachedEl('fotopanel-variants-container');
+        const vContainer = getCachedEl('biorush-variants-container');
         
-        const descEl = getCachedEl('fotopanel-description');
-        const packImg = getCachedEl('fotopanel-pack-img');
-        const packImgBack = getCachedEl('fotopanel-pack-img-back');
+        const descEl = getCachedEl('biorush-description');
+        const packImg = getCachedEl('biorush-pack-img');
+        const packImgBack = getCachedEl('biorush-pack-img-back');
         
         if (descEl && packImg && packImgBack) {
             descEl.classList.add('opacity-0');
@@ -349,19 +349,19 @@
                 descEl.textContent = variantConfig.desc;
                 packImg.src = variantConfig.img;
                 packImgBack.src = variantConfig.imgBack;
-                getCachedEl('fotopanel-pack-img-raw').src = variantConfig.imgRaw;
+                getCachedEl('biorush-pack-img-raw').src = variantConfig.imgRaw;
                 
                 const labelTitle = getCachedEl('laser-variant-title');
                 if (labelTitle) labelTitle.textContent = variantConfig.label;
-                getCachedEl('fotopanel-spec').textContent = variantConfig.spec;
-                getCachedEl('fotopanel-price').textContent = variantConfig.price;
+                getCachedEl('biorush-spec').textContent = variantConfig.spec;
+                getCachedEl('biorush-price').textContent = variantConfig.price;
                 
                 descEl.classList.remove('opacity-0');
             }, 120);
         }
 
         // Actualizar estados visuales de menú
-        Object.keys(FOTOPANEL_CATALOG).forEach(item => {
+        Object.keys(BIORUSH_CATALOG).forEach(item => {
             const el = getCachedEl(`menu-bio-${item}`);
             if (el) el.className = (item === currentBioItem) ? "cursor-pointer tracking-[0.15em] transition-all duration-300 h-5 leading-none font-bold text-white scale-105 border-b border-sky-400 pb-0.5" : "cursor-pointer tracking-[0.15em] transition-all duration-300 h-5 leading-none text-white/80 hover:text-white/80";
         });
@@ -370,10 +370,10 @@
 
         // Actualizar variantes
         const tele = variantConfig.telemetry;
-        getCachedEl('tele-tec').textContent = tele.TEC;
-        getCachedEl('tele-gsr').textContent = tele.GSR;
-        getCachedEl('tele-lam').textContent = tele.LAM;
-        getCachedEl('tele-type').textContent = tele.TYPE;
+        getCachedEl('tele-col').textContent = tele.COL;
+        getCachedEl('tele-fru').textContent = tele.FRU;
+        getCachedEl('tele-sec').textContent = tele.SEC;
+        getCachedEl('tele-mol').textContent = tele.MOL;
 
         if (vContainer) {
         vContainer.innerHTML = `
@@ -470,10 +470,10 @@
         'telemetry-active-node': "Nivel de saturación técnica",
         'sub-sets-solar': "Frecuencia de resonancia",
         'sub-reps-tension': "Índice de cohesión molecular",
-        'tele-tec': "Impresión inkjet adh sobre MDF",
-        'tele-gsr': "Grosor estructural",
-        'tele-lam': "Laminado de protección",
-        'tele-type': "Sustrato industrial"
+        'tele-col': "Temperatura de Colonizacion",
+        'tele-fru': "Parámetros de maduración",
+        'tele-sec': "Ciclo de deshidratación",
+        'tele-mol': "Índice de pureza molecular"
         
     };
 
@@ -520,19 +520,19 @@
     // 6. CAPTURA DE TELEMETRÍA DE COMPRA (GENERACIÓN DE PAYLOAD)
     // =========================================================================
     function adquirirNodo() {
-        const variantConfig = FOTOPANEL_CATALOG[currentBioItem].variants[currentBioVariant];
+        const variantConfig = BIORUSH_CATALOG[currentBioItem].variants[currentBioVariant];
         const currentCoord = getCachedEl('z-dial')?.textContent || "N/A";
         const currentSphere = getCachedEl('telemetry-sphere-idx')?.textContent || "N/A";
         const currentNode = getCachedEl('telemetry-active-node')?.textContent || "N/A";
         
         // Captura de valores calculados en el DOM
-        const freqValue = getCachedEl('sub-sets-solar')?.textContent || "0.00";
-        const tensionValue = getCachedEl('sub-reps-tension')?.textContent || "0.0";
+        const freqValue = getCachedEl('sub-sets-solar')?.textContent || "0.00 Hz";
+        const tensionValue = getCachedEl('sub-reps-tension')?.textContent || "0.0 N";
         
         // Traducción técnica bajo Sinergia Molecular Óptima
         const dialInterpretation = currentCoord.replace(/(\d+)([A-Z]+)(\d+)/, "$1 FASES, $3 NODOS - ESTADO $2");
         
-        const mensaje = `⚡ *ORDEN - FOTOPANEL* ⚡\n\n` +
+        const mensaje = `⚡ *ORDEN - BIORUSH* ⚡\n\n` +
                         `• *Vector:* ${currentBioItem} ${currentBioVariant}\n` +
                         `• *Carga:* ${variantConfig.spec}\n` +
                         `• *ID:* \`${variantConfig.id}\`\n` +
@@ -552,7 +552,7 @@
 
     // Inicialización coordinada del Ciclo de Vida del DOM
     document.addEventListener('DOMContentLoaded', () => {
-        inicializarFotopanel();
+        inicializarBioRush();
         updateZ(); 
         setInterval(updateZ, 1000);
         habilitarReveladoTelemetria();

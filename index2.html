@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tus fotos en Cuadros Premium de MDF</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .mdf-shadow { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .product-card:hover { transform: translateY(-5px); }
+        
+        /* Animación Simétrica */
+        .logo-container:hover .inner-square { transform: rotate(90deg); fill-opacity: 0.9; }
+        .logo-container:hover .guide-lines { opacity: 0.5; stroke-dashoffset: 0; }
+        .inner-square { transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; }
+        .guide-lines { transition: all 0.6s ease; stroke-dasharray: 100; stroke-dashoffset: 100; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 overflow-x-hidden">
+
+    <header class="py-12 px-6 text-center bg-white border-b border-gray-100">
+        <div class="flex justify-center">
+            <a href="#" class="logo-container block mb-6 transition-transform hover:scale-105">
+                <svg width="70" height="70" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100" height="100" rx="24" fill="black"/>
+                    <path d="M20 50H80M50 20V80" stroke="white" stroke-width="1" stroke-opacity="0.2" class="guide-lines"/>
+                    <rect class="inner-square" x="30" y="30" width="40" height="40" rx="4" fill="white" fill-opacity="1"/>
+                    <rect x="25" y="25" width="50" height="50" rx="6" stroke="white" stroke-width="2" stroke-opacity="0.4"/>
+                </svg>
+            </a>
+        </div>
+        <h1 class="text-5xl font-extrabold tracking-tighter mb-4 text-black">fotoPanel</h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto font-light leading-relaxed">
+            Convertimos tus mejores momentos en <span class="font-semibold text-black">paneles de MDF de 9mm</span> con acabado mate profesional.
+        </p>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-6 md:p-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+            
+            <div class="product-card group bg-white p-5 rounded-3xl border border-gray-100 mdf-shadow transition-all duration-300">
+                <div class="aspect-[16/10] bg-gray-100 rounded-2xl mb-6 overflow-hidden relative border border-gray-100">
+                    <img src="img/20x20.jpg" alt="fotoPanel 20x20" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute bottom-4 left-4 bg-black/75 text-white text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur-sm">20 x 20 cm</div>
+                </div>
+                <div class="px-2">
+                    <h3 class="text-2xl font-bold text-black tracking-tight">Tamaño Personal</h3>
+                    <p class="text-gray-500 text-sm mb-6 font-light">Ideal para escritorios, repisas y veladores.</p>
+                    <div class="flex items-end justify-between mb-6">
+                        <span class="text-4xl font-extrabold text-black">$20.000</span>
+                        <span class="text-sm text-gray-400">COP</span>
+                    </div>
+                    <button onclick="orderWhatsApp('20x20')" class="w-full bg-gray-900 hover:bg-black text-white font-semibold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                        Pedir 20x20 por WhatsApp
+                    </button>
+                </div>
+            </div>
+
+            <div class="product-card group bg-white p-5 rounded-3xl border-2 border-black mdf-shadow transition-all duration-300 relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-black text-white text-[10px] font-bold px-5 py-1.5 rounded-bl-xl uppercase tracking-widest">El Más Popular</div>
+                <div class="aspect-[16/10] bg-gray-100 rounded-2xl mb-6 overflow-hidden relative border border-gray-100">
+                    <img src="img/30x30.jpg" alt="fotoPanel 30x30" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute bottom-4 left-4 bg-black/75 text-white text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur-sm">30 x 30 cm</div>
+                </div>
+                <div class="px-2">
+                    <h3 class="text-2xl font-bold text-black tracking-tight">Tamaño Estándar</h3>
+                    <p class="text-gray-500 text-sm mb-6 font-light">El tamaño perfecto para cualquier pared del hogar.</p>
+                    <div class="flex items-end justify-between mb-6">
+                        <span class="text-4xl font-extrabold text-black">$30.000</span>
+                        <span class="text-sm text-gray-400">COP</span>
+                    </div>
+                    <button onclick="orderWhatsApp('30x30')" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-lg">
+                        Ordenar 30x30
+                    </button>
+                </div>
+            </div>
+
+            <div class="product-card group bg-white p-5 rounded-3xl border border-gray-100 mdf-shadow transition-all duration-300">
+                <div class="aspect-[16/10] bg-gray-100 rounded-2xl mb-6 overflow-hidden relative border border-gray-100">
+                    <img src="img/40x40.jpg" alt="fotoPanel 40x40" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute bottom-4 left-4 bg-black/75 text-white text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur-sm">40 x 40 cm</div>
+                </div>
+                <div class="px-2">
+                    <h3 class="text-2xl font-bold text-black tracking-tight">Tamaño Galería</h3>
+                    <p class="text-gray-500 text-sm mb-6 font-light">Máximo impacto visual para tus mejores recuerdos.</p>
+                    <div class="flex items-end justify-between mb-6">
+                        <span class="text-4xl font-extrabold text-black">$40.000</span>
+                        <span class="text-sm text-gray-400">COP</span>
+                    </div>
+                    <button onclick="orderWhatsApp('40x40')" class="w-full bg-gray-900 hover:bg-black text-white font-semibold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                        Pedir 40x40 por WhatsApp
+                    </button>
+                </div>
+            </div>
+
+            <div class="product-card group bg-white p-5 rounded-3xl border border-dashed border-gray-300 mdf-shadow transition-all duration-300">
+                <div class="aspect-[16/10] bg-gray-100 rounded-2xl mb-6 overflow-hidden relative border border-gray-100">
+                    <img src="img/mural.jpg" alt="Fotomural fotoPanel" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute bottom-4 left-4 bg-black/75 text-white text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur-sm">Multi-panel</div>
+                </div>
+                <div class="px-2">
+                    <h3 class="text-2xl font-bold text-black tracking-tight">Fotomurales</h3>
+                    <p class="text-gray-500 text-sm mb-6 font-light">Composiciones modulares y galerías personalizadas.</p>
+                    <div class="flex items-end justify-between mb-6">
+                        <div class="flex flex-col">
+                            <span class="text-xs text-gray-400 font-light uppercase tracking-wider">Desde</span>
+                            <span class="text-4xl font-extrabold text-black">$60.000</span>
+                        </div>
+                        <span class="text-sm text-gray-400">COP</span>
+                    </div>
+                    <button onclick="orderWhatsApp('Mural')" class="w-full bg-gray-900 hover:bg-black text-white font-semibold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                        Cotizar Mural por WhatsApp
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-20 flex flex-wrap gap-4 justify-center text-sm text-gray-500 bg-white p-6 rounded-3xl border border-gray-100 mdf-shadow inline-flex w-full">
+            <span class="flex items-center gap-2">✨ Laminado Mate Anti-reflejo</span>
+            <span class="flex items-center gap-2">🧱 MDF 9mm de espesor</span>
+            <span class="flex items-center gap-2">⚫ Respaldo Vinilo Negro</span>
+            <span class="flex items-center gap-2">🔨 Listo para Colgar</span>
+        </div>
+
+    </main>
+
+    <footer class="py-16 text-center text-gray-500 text-sm border-t mt-16 bg-white px-6">
+        <p class="font-bold text-black mb-2 text-base">fotoPanel™</p>
+        <p>Taller en Santa Elena, Antioquia. Envíos a todo Colombia.</p>
+        <p class="mt-6 text-xs text-gray-400">Copyright © 2026. Alejandro Monsalve - fotoPanel.</p>
+    </footer>
+
+    <script>
+        function orderWhatsApp(size) {
+            const phone = "573128707083";
+            
+            // Mensaje adaptativo según el botón seleccionado
+            let customText = `Tamaño deseado: ${size}`;
+            if(size === 'Mural') {
+                customText = `Producto: Composición de Fotomural (Multi-panel)`;
+            }
+
+            const message = encodeURIComponent(
+`¡Hola fotoPanel! 👋
+
+Me interesa ordenar un cuadro premium.
+
+🛠️ **Detalles preliminares:**
+- ${customText}
+- Acabado: Laminado Mate / Respaldo Negro
+
+¿Me podrían indicar cómo enviarles mi foto y los medios de pago? ¡Gracias!`
+            );
+            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+        }
+    </script>
+</body>
+</html>
