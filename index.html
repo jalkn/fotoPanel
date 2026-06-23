@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link class="icon" type="image/png" href="img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FOTOPANEL</title>
+    <title>ARTEPANEL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script>
@@ -12,7 +12,10 @@
             theme: { 
                 extend: { 
                     screens: { 'xs': '400px' },
-                    colors: { 'jako-black': '#0a0705' },
+                    colors: { 
+                        'jako-black': '#0a0705',
+                        'jako-darkblue': '#020617'
+                    },
                     fontFamily: { 
                         'sans': ['Orbitron', 'sans-serif'],
                         'mono': ['Orbitron', 'monospace'],
@@ -22,17 +25,51 @@
             }
         }
     </script>
- <style>
-        body { font-family: 'Orbitron', sans-serif; background-color: #020617; color: #f8fafc; } 
+
+    <!-- ESTILOS HUD INTEGRADOS -->
+    <style>
+        body { 
+            font-family: 'Orbitron', sans-serif; 
+            scroll-behavior: smooth; 
+            letter-spacing: 0.05em; 
+            background-color: #020617; /* Fondo azul medianoche de jako.world */
+            color: #f8fafc;
+        } 
+
         #page-bg-overlay {
-            position: fixed; inset: 0; z-index: -1;
+            position: fixed;
+            inset: 0;
             background: radial-gradient(circle at 50% 50%, #1e3a8a 0%, #0f172a 50%, #020617 100%);
+            z-index: -1;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.6s ease;
         }
+
         .tele-label { color: #64748b; }
         .tele-value { color: #38bdf8; }
         .border-custom { border-color: rgba(56, 189, 248, 0.2); }
         .border-custom:hover { border-color: rgba(56, 189, 248, 0.6); }
-        .img-glow-transition { transition: opacity 0.6s ease-in-out; }
+
+        .glass { 
+            background: rgba(2, 6, 23, 0.85); 
+            border-left: 1px solid rgba(56, 189, 248, 0.2); 
+            backdrop-filter: blur(40px); 
+            -webkit-backdrop-filter: blur(40px);
+            box-shadow: -20px 0 60px rgba(0, 0, 0, 0.95);
+        }
+
+        .img-glow-transition {
+            transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: filter, transform;
+        }
+
+        /* Ocultar barra de scroll para mantener la pureza HUD */
+        .custom-hud-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .custom-hud-scroll {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-white selection:text-black overflow-x-hidden text-white">
@@ -41,150 +78,195 @@
     <div class="fixed inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/40 z-0 pointer-events-none"></div>
 
     <main id="main-vault" class="w-screen h-screen flex flex-col relative overflow-hidden">
-<header class="h-[80px] shrink-0 bg-gradient-to-b from-black/90 via-black/40 to-transparent backdrop-blur-md z-50 flex flex-col items-center justify-center px-6">
-    <div class="flex items-center justify-center gap-3 w-full"> 
-        <img src="img/surge.png" alt="Back" class="h-4 w-auto object-contain" />
-        <span class="text-[11px] tracking-[0.25em] font-black text-white uppercase">ARTEPANEL</span>
-    </div>
-</header>
-
-<section class="w-full max-w-sm mx-auto pt-3 pb-3 flex flex-col border-t border-white/5 items-center">
-    <div class="grid grid-cols-4 gap-y-1 gap-x-2 w-full px-4 text-center">
-        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Hz</span>
-        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Ciclo</span>
-        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Nodo</span>
-        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Tensión</span>
         
-        <span id="sub-sets-solar" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0.00</span>
-        <span id="telemetry-sphere-idx" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0000</span>
-        <span id="telemetry-active-node" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0000</span>
-        <span id="sub-reps-tension" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0.0</span>
-    </div>
-</section>
-
-        <div class="flex-1 w-full flex flex-col items-center justify-center py-4 px-4 gap-y-4">
-            
-            <div id="fotopanel-pack-container" class="relative w-full max-w-[180px] xs:max-w-[200px] sm:max-w-[240px] md:max-w-[280px] aspect-[13/15] shrink-0 drop-shadow-[0_40px_60px_rgba(0,0,0,0.9)]">
-                <div class="w-full h-full relative overflow-hidden bg-transparent">
-                    <img id="fotopanel-pack-img-back" src="img/40x40W.png" alt="fotopanel Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-contain opacity-0 pointer-events-none z-0" />
-                    <img id="fotopanel-pack-img" src="img/40x40B.png" alt="fotopanel Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-contain pointer-events-auto z-10" />
-                    <img id="fotopanel-pack-img-raw" src="img/20x20B.png" alt="Raw Content" class="img-glow-transition absolute inset-0 w-full h-full object-contain opacity-0 pointer-events-none z-[5]" />
+        <!-- HEADER GENERAL STICKY HUD (Incluye barra principal con enlaces + telemetría justificada debajo) -->
+        <header class="fixed top-0 w-full z-50 bg-gradient-to-b from-black/90 via-black/75 to-black/0 backdrop-blur-md border-b border-white/5">
+            <div class="max-w-7xl mx-auto w-full flex flex-col">
+                
+                <!-- FILA PRINCIPAL: Navegación e Identidad (3 Columnas estrictas) -->
+                <div class="p-4 sm:p-6 grid grid-cols-3 items-center uppercase tracking-widest font-mono text-[9px] text-white/40 min-h-[63px] sm:min-h-[69px] select-none">
                     
-                    <div class="absolute inset-0 flex items-center justify-center p-2 z-20 pointer-events-none">
+                    <!-- Izquierda: Control de Retorno a jako.world -->
+                    <div class="justify-self-start flex items-center">
+                        <a href="https://jako.world" class="group w-9 h-9 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
+                            <img src="img/back.png" alt="Back to jako.world" class="w-4 h-4 object-contain opacity-60 group-hover:opacity-100 transition-all duration-500" />
+                        </a>
+                    </div>
+                    
+                    <!-- Centro: Identidad de Marca -->
+                    <div class="justify-self-center text-center tracking-[0.25em] font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] text-white text-[11px] sm:text-[13px]">
+                        <span>ARTEPANEL</span>
+                    </div>
+                    
+                    <!-- Derecha: Control de Enlace a biorush.shop -->
+                    <div class="justify-self-end flex items-center">
+                        <a href="https://biorush.shop" class="group w-9 h-9 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
+                            <img src="img/pace.png" alt="To biorush.shop" class="w-4 h-4 object-contain opacity-60 group-hover:opacity-100 transition-all duration-500" />
+                        </a>
+                    </div>
+                </div>
 
-                            <svg id="laser-vector-target" viewBox="0 0 400 400" 
-                                class="w-full h-full fill-none stroke-white/40 stroke-[1.5] transition-all duration-500 origin-center transform scale-[1.3] sm:scale-[1.2]">
+                <!-- FILA SECUNDARIA: Telemetría Técnica Justificada Justo Debajo -->
+                <section class="w-full max-w-sm mx-auto pb-4 flex flex-col items-center select-none">
+                    <div class="grid grid-cols-4 gap-y-1 gap-x-2 w-full px-4 text-center">
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Hz</span>
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Ciclo</span>
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Nodo</span>
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Tensión</span>
+                        
+                        <span id="sub-sets-solar" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0.00</span>
+                        <span id="telemetry-sphere-idx" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0000</span>
+                        <span id="telemetry-active-node" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0000</span>
+                        <span id="sub-reps-tension" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0.0</span>
+                    </div>
+                </section>
+
+                    <!-- Telemetría Dinámica P.U.L.S. -->
+                    <div class="flex flex-col items-center justify-center w-full select-none">
+                        <span id="panel-telemetry-data" class="text-[8px] text-center tracking-[0.5em] text-sky-400 uppercase transition-colors duration-300">
+                            PROTOCOLO BIOCINÉTICO P.U.L.S.<span class="opacity-30">O.R.</span>
+                        </span>
+                    </div>
+
+            </div>
+        </header>
+
+<!-- CONTENEDOR DE ESPACIO DE TRABAJO CENTRAL -->
+        <div class="w-full h-full pt-[125px] sm:pt-[135px] pb-[135px] sm:pb-[145px] flex flex-col justify-between items-center overflow-hidden relative z-10">
+
+            <!-- ZONA SUPERIOR: Render Fijo del Panel (Ocupa el espacio disponible de manera equilibrada) -->
+            <div class="flex-1 w-full flex flex-col items-center justify-center min-h-[220px] xs:min-h-[250px] p-4 select-none">
+                <div id="artepanel-pack-container" class="relative w-full max-w-[170px] xs:max-w-[190px] sm:max-w-[230px] aspect-[13/15] shrink-0 drop-shadow-[0_30px_50px_rgba(0,0,0,0.95)]">
+                    <div class="w-full h-full relative overflow-hidden bg-transparent">
+                        <img id="artepanel-pack-img-back" src="img/40x40W.png" alt="artepanel Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-contain opacity-0 pointer-events-none z-0" />
+                        <img id="artepanel-pack-img" src="img/40x40B.png" alt="artepanel Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-contain pointer-events-auto z-10" />
+                        <img id="artepanel-pack-img-raw" src="img/20x20B.png" alt="Raw Content" class="img-glow-transition absolute inset-0 w-full h-full object-contain opacity-0 pointer-events-none z-[5]" />
+                        
+                        <div class="absolute inset-0 flex items-center justify-center p-2 z-20 pointer-events-none">
+                            <svg id="laser-vector-target" viewBox="0 0 400 400" class="w-full h-full fill-none stroke-white/40 stroke-[1.5] transition-all duration-500 origin-center transform scale-[1.3] sm:scale-[1.2]">
                                 <defs>
                                     <path id="textPath-top" d="M 65,200 A 135,135 0 0,1 335,200" />
                                     <path id="textPath-bottom" d="M 65,200 A 135,135 0 0,0 335,200" />
                                 </defs>
-                                
-
-                                
                                 <g class="origin-center transform scale-[1.05]">
                                     <path d="M 110,120 L 290,120 L 110,280 L 290,280 Z" class="opacity-20 stroke-[1.2]" />
                                     <path d="M 110,120 Q 200,150 290,120" class="opacity-20 stroke-[1.2]" />
                                     <path d="M 110,280 Q 200,250 290,280" stroke-dasharray="2 2" class="opacity-20 stroke-[1.2]" />
-                                    
                                     <text x="200" y="165" text-anchor="middle" class="fill-white/30 text-[7px] tracking-[0.3em] font-bold uppercase"></text>
                                     <text id="z-dial" x="200" y="210" text-anchor="middle" class="fill-white font-black text-[38px] tracking-[0.4em] font-sans">8UST11</text>
                                     <text x="200" y="245" text-anchor="middle" class="fill-white/30 text-[6px] tracking-[0.4em] font-mono"></text>
                                 </g>
-                                
                                 <g style="display: none;">
                                     <text class="fill-white font-black text-[10px] sm:text-[10px] tracking-[0.25em] sm:tracking-[0.3em] uppercase transition-all duration-500">
-                                        <textPath id="laser-variant-title" href="#textPath-top" startOffset="50%" text-anchor="middle">
-                                            PULSOR FOCUS
-                                        </textPath>
+                                        <textPath id="laser-variant-title" href="#textPath-top" startOffset="50%" text-anchor="middle">PULSOR FOCUS</textPath>
                                     </text>
-
                                     <text class="fill-white/60 font-black text-[10px] sm:text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
-                                        <textPath id="fotopanel-description" href="#textPath-bottom" startOffset="50%" text-anchor="middle">
-                                            Enfoque y claridad cognitiva
-                                        </textPath>
+                                        <textPath id="artepanel-description" href="#textPath-bottom" startOffset="50%" text-anchor="middle">Enfoque y claridad cognitiva</textPath>
                                     </text>
                                 </g>
                             </svg>
-
+                        </div>
                     </div>
                 </div>
             </div>
+
+<!-- ZONA INFERIOR: Consola de Control HUD Táctil (Scroll elástico interno si la pantalla es muy baja) -->
+            <div class="w-full max-h-[50vh] overflow-y-auto overflow-x-hidden border-t border-white/5 bg-black/20 backdrop-blur-sm pointer-events-auto custom-hud-scroll">
+                <section class="w-full max-w-sm mx-auto px-6 pt-5 pb-6 flex flex-col gap-4">
+                    
+                    <!-- Fila de Interacción de Disparadores -->
+                    <div class="grid grid-cols-[50px_1fr_50px] items-center gap-2 w-full">
+                        <button id="btn-reveal-raw" class="h-[50px] flex items-center justify-center rounded-sm border border-white/10 bg-white/5 hover:border-sky-500/50 hover:bg-sky-500/10 transition-all duration-300 focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white/60">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            </svg>
+                        </button>
+
+                        <button onclick="adquirirNodo()" class="h-[50px] w-full bg-white/10 backdrop-blur-md text-white font-black text-[11px] tracking-[0.3em] uppercase rounded-sm border border-white/20 hover:border-sky-500/50 hover:bg-sky-500/10 transition-all duration-300 focus:outline-none">
+                            ACTIVAR
+                        </button>
+
+                        <button id="btn-reveal-bio" class="h-[50px] flex items-center justify-center rounded-sm border border-white/10 bg-white/5 hover:border-sky-500/50 hover:bg-sky-500/10 transition-all duration-300 focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white/60">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Carrusel Deslizable de Variantes Industriales (Dimensiones) -->
+                    <div class="w-full overflow-x-auto overflow-y-hidden py-1 custom-hud-scroll">
+                        <div id="artepanel-variants-container" class="flex items-center justify-start sm:justify-center gap-2 min-w-full w-max mx-auto px-2">
+                            <!-- Inyección JS de nodos de variante de forma fluida -->
+                        </div>
+                    </div>
+
+                    <!-- CONMUTADOR DE VECTORES MADRE (Catálogo Principal) -->
+                    <div class="w-full border-b border-white/5 pb-2">
+                        <div id="artepanel-items-menu" class="flex justify-center items-center gap-6 text-[9px] tracking-[0.35em] uppercase text-white/40 select-none">
+                            <!-- Se inyecta dinámicamente vía JS: PULSOR | ULTRAPULSOR -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+
         </div>
 
 
+<!-- FOOTER ESTRUCTURADO HUD (Telemetría técnica acoplada arriba + Navegación e Identidad abajo) -->
+        <footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 bg-gradient-to-t from-black/90 via-black/75 to-black/0 backdrop-blur-md border-t border-white/5 transition-opacity duration-500 select-none">
+            <div class="max-w-7xl mx-auto w-full flex flex-col">
 
-<section class="w-full max-w-sm mx-auto pt-1 pb-3 flex flex-col items-center">
-    <div class="grid grid-cols-4 gap-y-1 gap-x-2 w-full px-4 text-center">
+                    <!-- Información de Especificación Corta y Precio -->
+                    <div class="flex items-center justify-center gap-3 text-white/50 text-[8px] tracking-[0.3em] font-mono select-none w-full uppercase pt-1">
+                        <span id="artepanel-spec">MDF PREMIUM</span>
+                        <span class="opacity-30">|</span>
+                        <span id="artepanel-price" class="text-white-400/80">$00.000</span>
+                    </div>
+                
+                <!-- FILA SUPERIOR: Telemetría Técnica Justificada Justo Sobre el Footer -->
+                <section class="w-full max-w-sm mx-auto pt-4 flex flex-col items-center">
+                    <div class="grid grid-cols-4 gap-y-1 gap-x-2 w-full px-4 text-center">
 
-        <!-- Valores: Fila 2 -->
-        <span id="tele-tec" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
-        <span id="tele-gsr" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
-        <span id="tele-lam" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
-        <span id="tele-type" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+                        <!-- Valores: Fila 1 -->
+                        <span id="tele-tec" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+                        <span id="tele-gsr" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+                        <span id="tele-lam" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+                        <span id="tele-type" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
 
-        <!-- Etiquetas: Fila 2 (Debajo de los valores) -->
-        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Técnica</span>
-        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Grosor</span>
-        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Laminado</span>
-        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Superficie</span>
+                        <!-- Etiquetas: Fila 2 (Debajo de los valores) -->
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Técnica</span>
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Grosor</span>
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Laminado</span>
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Superficie</span>
 
-    </div>
-</section>
+                    </div>
+                </section>
 
+                <!-- FILA INFERIOR: Navegación de Cierre (3 Columnas estrictas similares al Header) -->
+                <div class="p-4 sm:p-6 grid grid-cols-3 items-center w-full uppercase tracking-widest font-mono text-[9px] text-white/40 min-h-[63px] sm:min-h-[69px]">
+                    
+                    <!-- Izquierda: Control de Retorno a jako.world -->
+                    <div class="justify-self-start flex items-center">
+                        <a href="https://jako.world" class="group w-9 h-9 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
+                            <img src="img/back.png" alt="Back to jako.world" class="w-4 h-4 object-contain opacity-60 group-hover:opacity-100 transition-all duration-500" />
+                        </a>
+                    </div>    
+                    
+                    <!-- Centro: Registro de Copyright Minimalista -->
+                    <div class="justify-self-center text-center tracking-[0.6em] font-bold text-white/40 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] text-[7px] sm:text-[9px]">
+                        BY JAKO.WORLD
+                    </div>
+                    
+                    <!-- Derecha: Control de Enlace a biorush.shop -->
+                    <div class="justify-self-end flex items-center">
+                        <a href="https://biorush.shop" class="group w-9 h-9 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
+                            <img src="img/pace.png" alt="To biorush.shop" class="w-4 h-4 object-contain opacity-60 group-hover:opacity-100 transition-all duration-500" />
+                        </a>
+                    </div>
 
-
-
-
-<section class="w-full max-w-sm mx-auto px-6 py-4 border-t border-white/5 flex flex-col gap-4">
-    
-    <div class="flex flex-col items-center justify-center w-full">
-        <span id="panel-telemetry-data" class="text-[8px] text-center tracking-[0.5em] text-sky-400 uppercase transition-colors duration-300">
-            PROTOCOLO BIOCINÉTICO P.U.L.S.<span class="opacity-30">O.R.</span>
-        </span>
-    </div>
-    
-    <div class="grid grid-cols-[50px_1fr_50px] items-center gap-2 w-full">
-        <button id="btn-reveal-raw" class="h-[50px] flex items-center justify-center rounded-sm border border-white/10 bg-white/5 hover:border-sky-500/50 hover:bg-sky-500/10 transition-all duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white/60">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-            </svg>
-        </button>
-
-        <button onclick="adquirirNodo()" class="h-[50px] w-full bg-white/10 backdrop-blur-md text-white font-black text-[11px] tracking-[0.3em] uppercase rounded-sm border border-white/20 hover:border-sky-500/50 hover:bg-sky-500/10 transition-all duration-300">
-            ACTIVAR
-        </button>
-
-        <button id="btn-reveal-bio" class="h-[50px] flex items-center justify-center rounded-sm border border-white/10 bg-white/5 hover:border-sky-500/50 hover:bg-sky-500/10 transition-all duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white/60">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-            </svg>
-        </button>
-    </div>
-
-    <div id="fotopanel-variants-container" class="w-full">
-    </div>
-
-
-
-    <div class="flex items-center justify-center gap-3 text-white/50 text-[8px] tracking-[0.3em] font-mono select-none w-full uppercase">
-        <span id="fotopanel-spec">LION’S MANE</span>
-        <span class="opacity-30">|</span>
-        <span id="fotopanel-price" class="text-white-400/80">$68.000</span>
-    </div>
-
-
-</section>
-
-
-        <footer class="h-[72px] shrink-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent backdrop-blur-md z-50 flex items-center justify-center">
-            <div class="p-6 flex justify-center items-center w-full min-h-[72px]">
-                        <span class="text-[6px] tracking-[0.6em] font-bold text-white/40 uppercase">
-                            FOTOPANEL © 2026
-                        </span>
-                </a>
+                </div>
             </div>
-
         </footer>
     </main>
 
@@ -192,27 +274,27 @@
     // =========================================================================
     // 1. CONFIGURACIÓN DE CATÁLOGOS COMERCIALES
     // =========================================================================
-    const FOTOPANEL_CATALOG = {
+    const ARTEPANEL_CATALOG = {
         'PULSOR': {
             defaultVariant: 'RITMO',
             variants: {
                 'PULSO': { 
                     label: 'PANEL PULSO', desc: 'Expone, recuerda, regala, sueña', 
-                    spec: 'FOTOPANEL 20x20CMS', cant: '20x20 CM', price: '$22.000', id: 'FP-PULSO',
+                    spec: 'ARTEPANEL 20x20CMS', cant: '20x20 CM', price: '$22.000', id: 'FP-PULSO',
                     img: 'img/40x40B.png', imgBack: 'img/40x40W.png', imgRaw: 'img/20x20B.png',
                     telemetry: { TEC: 'INKJET', GSR: '9MM', LAM: 'MATE', TYPE: 'MDF' },
                     benefits: ['FÍSICO > DIGITAL', 'EXPRESIÓN ARTÍSTICA', 'REALIDAD TANGIBLE', 'PERSONALIZACIÓN ESPACIAL']
                 },
                 'RITMO': { 
                     label: 'PANEL RITMO', desc: 'Expone, recuerda, regala, sueña', 
-                    spec: 'FOTOPANEL 30X30CMS', cant: '30X30 CM', price: '$33.000', id: 'FP-RITMO',
+                    spec: 'ARTEPANEL 30X30CMS', cant: '30X30 CM', price: '$33.000', id: 'FP-RITMO',
                     img: 'img/40x40B.png', imgBack: 'img/40x40W.png', imgRaw: 'img/20x20B.png',
                     telemetry: { TEC: 'INKJET', GSR: '9MM', LAM: 'MATE', TYPE: 'MDF' },
                     benefits: ['FÍSICO > DIGITAL', 'EXPRESIÓN ARTÍSTICA', 'REALIDAD TANGIBLE', 'PERSONALIZACIÓN ESPACIAL']
                 },
                 'FLUJO': { 
                     label: 'PANEL FLUJO', desc: 'Expone, recuerda, regala, sueña', 
-                    spec: 'FOTOPANEL 40x40CMS', cant: '40x40B', price: '$44.000', id: 'FP-FLUJO',
+                    spec: 'ARTEPANEL 40x40CMS', cant: '40x40B', price: '$44.000', id: 'FP-FLUJO',
                     img: 'img/40x40B.png', imgBack: 'img/40x40W.png', imgRaw: 'img/20x20B.png',
                     telemetry: { TEC: 'INKJET', GSR: '9MM', LAM: 'MATE', TYPE: 'MDF' },
                     benefits: ['FÍSICO > DIGITAL', 'EXPRESIÓN ARTÍSTICA', 'REALIDAD TANGIBLE', 'PERSONALIZACIÓN ESPACIAL']
@@ -222,6 +304,40 @@
                     spec: 'MURALPANEL 1X1MTS', cant: 'MULTI-PANEL', price: '$111.000', id: 'FP-CICLO',
                     img: 'img/40x40B.png', imgBack: 'img/40x40W.png', imgRaw: 'img/20x20B.png',
                     telemetry: { TEC: 'INKJET', GSR: '9MM', LAM: 'MATE', TYPE: 'MDF' },
+                    benefits: ['FÍSICO > DIGITAL', 'EXPRESIÓN ARTÍSTICA', 'REALIDAD TANGIBLE', 'PERSONALIZACIÓN ESPACIAL']
+                }
+            }
+        },
+
+        'ULTRAPULSOR': {
+            defaultVariant: 'RITMO',
+            variants: {
+                'PULSO': { 
+                    label: 'PANEL PULSO', desc: 'Expone, recuerda, regala, sueña', 
+                    spec: 'ARTEPANEL 20x20CMS', cant: '20x20 CM', price: '$22.000', id: 'FP-PULSO',
+                    img: 'img/40x40B.png', imgBack: 'img/40x40W.png', imgRaw: 'img/20x20B.png',
+                    telemetry: { TEC: 'INKJET', GSR: '9MM', LAM: 'MATE', TYPE: 'ACM' },
+                    benefits: ['FÍSICO > DIGITAL', 'EXPRESIÓN ARTÍSTICA', 'REALIDAD TANGIBLE', 'PERSONALIZACIÓN ESPACIAL']
+                },
+                'RITMO': { 
+                    label: 'PANEL RITMO', desc: 'Expone, recuerda, regala, sueña', 
+                    spec: 'ARTEPANEL 30X30CMS', cant: '30X30 CM', price: '$33.000', id: 'FP-RITMO',
+                    img: 'img/40x40B.png', imgBack: 'img/40x40W.png', imgRaw: 'img/20x20B.png',
+                    telemetry: { TEC: 'INKJET', GSR: '9MM', LAM: 'MATE', TYPE: 'ACM' },
+                    benefits: ['FÍSICO > DIGITAL', 'EXPRESIÓN ARTÍSTICA', 'REALIDAD TANGIBLE', 'PERSONALIZACIÓN ESPACIAL']
+                },
+                'FLUJO': { 
+                    label: 'PANEL FLUJO', desc: 'Expone, recuerda, regala, sueña', 
+                    spec: 'ARTEPANEL 40x40CMS', cant: '40x40B', price: '$44.000', id: 'FP-FLUJO',
+                    img: 'img/40x40B.png', imgBack: 'img/40x40W.png', imgRaw: 'img/20x20B.png',
+                    telemetry: { TEC: 'INKJET', GSR: '9MM', LAM: 'MATE', TYPE: 'ACM' },
+                    benefits: ['FÍSICO > DIGITAL', 'EXPRESIÓN ARTÍSTICA', 'REALIDAD TANGIBLE', 'PERSONALIZACIÓN ESPACIAL']
+                },
+                'CICLO': { 
+                    label: 'PANEL CICLO', desc: 'Expone, recuerda, regala, sueña', 
+                    spec: 'MURALPANEL 1X1MTS', cant: 'MULTI-PANEL', price: '$111.000', id: 'FP-CICLO',
+                    img: 'img/40x40B.png', imgBack: 'img/40x40W.png', imgRaw: 'img/20x20B.png',
+                    telemetry: { TEC: 'INKJET', GSR: '9MM', LAM: 'MATE', TYPE: 'ACM' },
                     benefits: ['FÍSICO > DIGITAL', 'EXPRESIÓN ARTÍSTICA', 'REALIDAD TANGIBLE', 'PERSONALIZACIÓN ESPACIAL']
                 }
             }
@@ -254,9 +370,9 @@
     // 3. MOTOR DE ESTADO VISUAL (Centralizado)
     // ==========================================
     function aplicarModoVisual(modo) {
-        const front = getCachedEl('fotopanel-pack-img');
-        const back = getCachedEl('fotopanel-pack-img-back');
-        const raw = getCachedEl('fotopanel-pack-img-raw');
+        const front = getCachedEl('artepanel-pack-img');
+        const back = getCachedEl('artepanel-pack-img-back');
+        const raw = getCachedEl('artepanel-pack-img-raw');
         const svg = getCachedEl('laser-vector-target');
 
         // Reset general
@@ -304,10 +420,10 @@
     // ==========================================
     // 4. CONTROLADORES DE INTERFAZ DE USUARIO
     // ==========================================
-    function inicializarFotopanel() {
-        const menuContainer = getCachedEl('fotopanel-items-menu');
+    function inicializarArtepanel() {
+        const menuContainer = getCachedEl('artepanel-items-menu');
         if (menuContainer) {
-            menuContainer.innerHTML = Object.keys(FOTOPANEL_CATALOG).map(item => `
+            menuContainer.innerHTML = Object.keys(ARTEPANEL_CATALOG).map(item => `
                 <span id="menu-bio-${item}" onclick="cambiarBioItem('${item}')" class="cursor-pointer tracking-[0.15em] transition-all duration-300 h-5 leading-none font-bold">
                     ${item}
                 </span>
@@ -320,7 +436,7 @@
 
     function cambiarBioItem(itemKey) {
         currentBioItem = itemKey;
-        currentBioVariant = FOTOPANEL_CATALOG[itemKey].defaultVariant;
+        currentBioVariant = ARTEPANEL_CATALOG[itemKey].defaultVariant;
         actualizarBioUI();
         triggerHaptic(15);
     }
@@ -331,14 +447,14 @@
         triggerHaptic(10);
     }
 
-    function actualizarBioUI() {
-        const itemConfig = FOTOPANEL_CATALOG[currentBioItem];
+function actualizarBioUI() {
+        const itemConfig = ARTEPANEL_CATALOG[currentBioItem];
         const variantConfig = itemConfig.variants[currentBioVariant];
-        const vContainer = getCachedEl('fotopanel-variants-container');
+        const vContainer = getCachedEl('artepanel-variants-container');
         
-        const descEl = getCachedEl('fotopanel-description');
-        const packImg = getCachedEl('fotopanel-pack-img');
-        const packImgBack = getCachedEl('fotopanel-pack-img-back');
+        const descEl = getCachedEl('artepanel-description');
+        const packImg = getCachedEl('artepanel-pack-img');
+        const packImgBack = getCachedEl('artepanel-pack-img-back');
         
         if (descEl && packImg && packImgBack) {
             descEl.classList.add('opacity-0');
@@ -347,46 +463,49 @@
                 descEl.textContent = variantConfig.desc;
                 packImg.src = variantConfig.img;
                 packImgBack.src = variantConfig.imgBack;
-                getCachedEl('fotopanel-pack-img-raw').src = variantConfig.imgRaw;
+                getCachedEl('artepanel-pack-img-raw').src = variantConfig.imgRaw;
                 
                 const labelTitle = getCachedEl('laser-variant-title');
                 if (labelTitle) labelTitle.textContent = variantConfig.label;
-                getCachedEl('fotopanel-spec').textContent = variantConfig.spec;
-                getCachedEl('fotopanel-price').textContent = variantConfig.price;
+                getCachedEl('artepanel-spec').textContent = variantConfig.spec;
+                getCachedEl('artepanel-price').textContent = variantConfig.price;
                 
                 descEl.classList.remove('opacity-0');
             }, 120);
         }
 
-        // Actualizar estados visuales de menú
-        Object.keys(FOTOPANEL_CATALOG).forEach(item => {
+        // Actualizar estados visuales de menú superior (Vectores Madre)
+        Object.keys(ARTEPANEL_CATALOG).forEach(item => {
             const el = getCachedEl(`menu-bio-${item}`);
-            if (el) el.className = (item === currentBioItem) ? "cursor-pointer tracking-[0.15em] transition-all duration-300 h-5 leading-none font-bold text-white scale-105 border-b border-sky-400 pb-0.5" : "cursor-pointer tracking-[0.15em] transition-all duration-300 h-5 leading-none text-white/80 hover:text-white/80";
+            if (el) el.className = (item === currentBioItem) 
+                ? "cursor-pointer tracking-[0.25em] transition-all duration-300 h-5 leading-none font-bold text-white scale-105 border-b border-sky-400 pb-1" 
+                : "cursor-pointer tracking-[0.25em] transition-all duration-300 h-5 leading-none text-white/40 hover:text-white/80";
         });
 
-        // ... dentro de actualizarBioUI() ...
-
-        // Actualizar variantes
+        // Actualizar telemetría de especificaciones inferiores de manera instantánea
         const tele = variantConfig.telemetry;
-        getCachedEl('tele-tec').textContent = tele.TEC;
-        getCachedEl('tele-gsr').textContent = tele.GSR;
-        getCachedEl('tele-lam').textContent = tele.LAM;
-        getCachedEl('tele-type').textContent = tele.TYPE;
-
-        if (vContainer) {
-        vContainer.innerHTML = `
-                    <div class="col-start-2 flex items-center justify-center gap-2">
-                        ${Object.keys(itemConfig.variants).map(vKey => `
-                            <span onclick="cambiarBioVariant('${vKey}')" 
-                                class="cursor-pointer transition-all duration-300 px-4 py-3 rounded-sm border backdrop-blur-md whitespace-nowrap font-black uppercase tracking-[0.3em] text-[10px]
-                                ${vKey === currentBioVariant 
-                                    ? 'bg-sky-500/20 border-sky-500/50 text-white' 
-                                    : 'bg-white/10 border-white/20 text-white/60 hover:border-sky-500/50 hover:bg-sky-500/10'}">
-                                ${vKey}
-                            </span>`).join('')}
-                    </div>`;
-            }
+        if (tele) {
+            getCachedEl('tele-tec').textContent = tele.TEC;
+            getCachedEl('tele-gsr').textContent = tele.GSR;
+            getCachedEl('tele-lam').textContent = tele.LAM;
+            getCachedEl('tele-type').textContent = tele.TYPE;
         }
+
+        // Actualizar botones de variantes con contenedor elástico nativo (Evita Clipped Text)
+        if (vContainer) {
+            vContainer.innerHTML = `
+                <div class="flex items-center justify-start sm:justify-center gap-2 px-4 overflow-x-auto w-full">
+                    ${Object.keys(itemConfig.variants).map(vKey => `
+                        <span onclick="cambiarBioVariant('${vKey}')" 
+                            class="cursor-pointer transition-all duration-300 px-4 py-3 rounded-sm border backdrop-blur-md whitespace-nowrap font-black uppercase tracking-[0.3em] text-[10px]
+                            ${vKey === currentBioVariant 
+                                ? 'bg-sky-500/20 border-sky-500/50 text-white' 
+                                : 'bg-white/10 border-white/20 text-white/60 hover:border-sky-500/50 hover:bg-sky-500/10'}">
+                            ${vKey}
+                        </span>`).join('')}
+                </div>`;
+        }
+    }
 
     // =========================================================================
     // 5. MOTOR DE TELEMETRÍA (PROTOCOLO PULS)
@@ -518,7 +637,7 @@
     // 6. CAPTURA DE TELEMETRÍA DE COMPRA (GENERACIÓN DE PAYLOAD)
     // =========================================================================
     function adquirirNodo() {
-        const variantConfig = FOTOPANEL_CATALOG[currentBioItem].variants[currentBioVariant];
+        const variantConfig = ARTEPANEL_CATALOG[currentBioItem].variants[currentBioVariant];
         const currentCoord = getCachedEl('z-dial')?.textContent || "N/A";
         const currentSphere = getCachedEl('telemetry-sphere-idx')?.textContent || "N/A";
         const currentNode = getCachedEl('telemetry-active-node')?.textContent || "N/A";
@@ -530,7 +649,7 @@
         // Traducción técnica bajo Sinergia Molecular Óptima
         const dialInterpretation = currentCoord.replace(/(\d+)([A-Z]+)(\d+)/, "$1 FASES, $3 NODOS - ESTADO $2");
         
-        const mensaje = `⚡ *ORDEN - FOTOPANEL* ⚡\n\n` +
+        const mensaje = `⚡ *ORDEN - ARTEPANEL* ⚡\n\n` +
                         `• *Vector:* ${currentBioItem} ${currentBioVariant}\n` +
                         `• *Carga:* ${variantConfig.spec}\n` +
                         `• *ID:* \`${variantConfig.id}\`\n` +
@@ -550,7 +669,7 @@
 
     // Inicialización coordinada del Ciclo de Vida del DOM
     document.addEventListener('DOMContentLoaded', () => {
-        inicializarFotopanel();
+        inicializarArtepanel();
         updateZ(); 
         setInterval(updateZ, 1000);
         habilitarReveladoTelemetria();
