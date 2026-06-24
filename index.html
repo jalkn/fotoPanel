@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link class="icon" type="image/png" href="img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARTEPANEL</title>
+    <title>JAKO VAULT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script>
@@ -95,7 +95,7 @@
                     
                     <!-- Centro: Identidad de Marca -->
                     <div class="justify-self-center text-center tracking-[0.25em] font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] text-white text-[11px] sm:text-[13px]">
-                        <span>ARTEPANEL</span>
+                        <span>VAULT</span>
                     </div>
                     
                     <!-- Derecha: Control de Enlace a biorush.shop -->
@@ -201,6 +201,7 @@
                         </div>
                     </div>
 
+
                     <!-- CONMUTADOR DE VECTORES MADRE (Catálogo Principal) -->
                     <div class="w-full border-b border-white/5 pb-2">
                         <div id="artepanel-items-menu" class="flex justify-center items-center gap-6 text-[9px] tracking-[0.35em] uppercase text-white/40 select-none">
@@ -219,26 +220,23 @@
 
                     <!-- Información de Especificación Corta y Precio -->
                     <div class="flex items-center justify-center gap-3 text-white/50 text-[8px] tracking-[0.3em] font-mono select-none w-full uppercase pt-1">
-                        <span id="artepanel-spec">MDF PREMIUM</span>
+                        <span id="artepanel-spec"></span>
                         <span class="opacity-30">|</span>
-                        <span id="artepanel-price" class="text-white-400/80">$00.000</span>
+                        <span id="artepanel-price" class="text-white-400/80"></span>
                     </div>
                 
-                <!-- FILA SUPERIOR: Telemetría Técnica Justificada Justo Sobre el Footer -->
                 <section class="w-full max-w-sm mx-auto pt-4 flex flex-col items-center">
                     <div class="grid grid-cols-4 gap-y-1 gap-x-2 w-full px-4 text-center">
 
-                        <!-- Valores: Fila 1 -->
                         <span id="tele-tec" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
-                        <span id="tele-size" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
-                        <span id="tele-grid" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
-                        <span id="tele-price" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+                        <span id="tele-dim" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+                        <span id="tele-media" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+                        <span id="tele-dials" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
 
-                        <!-- Etiquetas: Fila 2 (Debajo de los valores) -->
-                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Corte</span>
-                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">100X100CMS</span>
-                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Cada ⧖ DIAL</span>
-                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">225⧖DIALS</span>
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">TEC</span>
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">DIM CMS</span>
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">MEDIA</span>
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">⧗DIALS</span>
 
                     </div>
                 </section>
@@ -255,7 +253,8 @@
                     
                     <!-- Centro: Registro de Copyright Minimalista -->
                     <div class="justify-self-center text-center tracking-[0.6em] font-bold text-white/40 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] text-[7px] sm:text-[9px]">
-                        BY JAKO.WORLD
+                        <a href="https://jako.world" class="group w-9 h-9 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">BY JAKO.WORLD
+                        </a>
                     </div>
                     
                     <!-- Derecha: Control de Enlace a biorush.shop -->
@@ -272,150 +271,77 @@
 
 <script>
     // =========================================================================
-    // 1. CONFIGURACIÓN DE CATÁLOGOS COMERCIALES
+    // 1. CONFIGURACIÓN DE CATÁLOGOS COMERCIALES (MODELO SIMBIÓTICO 1:1)
     // =========================================================================
-const ARTEPANEL_CATALOG = {
-        'MICROPULSOR': {
-            defaultVariant: 'RITMO',
+    const ARTEPANEL_CATALOG = {
+        'STENCIL': {
+            defaultVariant: '25X25',
             variants: {
-                'PULSO': { 
-                    label: 'MICROPULSO', 
-                    desc: 'Cada nodo es una gota fluida; un dial marcando el tiempo del lenguaje biocinético.', 
-                    spec: 'DIMENSIÓN: 25x25CM // DIALS: 225⧖', 
-                    cant: '225 NODOS', 
-                    price: '⧖ x $0.05 = $11.25USD', 
-                    id: 'AP-MICROPULS',
-                    img: 'img/surface.png', imgBack: 'img/micropulsoW.png', imgRaw: 'img/micropulsoB.png',
-                    telemetry: { TEC: 'CNC', MIN: '0.15CM', MAX: '1.20CM', MEDIA: 'Stencil', GRID: '1.56CM', SIZE: '25x25CM' }
+                '25X25': { 
+                    label: 'STENCIL25X25', 
+                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
+                    spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
+                    price: '240⧗ x $0.05USD = $12USD', 
+                    id: 'ST-25X25',
+                    img: 'img/surface.png', imgBack: 'img/stencil25W.png', imgRaw: 'img/stencil25B.png',
+                    telemetry: { TEC: 'CNC', DIM: '25x25', MEDIA: 'RECICLADO', DIALS: '240' }
                 },
-                'RITMO': { 
-                    label: 'MICRORITMO', 
-                    desc: 'Cada nodo es una gota fluida; un dial marcando el tiempo del lenguaje biocinético.', 
-                    spec: 'DIMENSIÓN: 25x25CM // DIALS: 100⧖', 
-                    cant: '100 NODOS', 
-                    price: '⧖ x $0.05 = $5.00USD', 
-                    id: 'AP-MICRORITM',
-                    img: 'img/surface.png', imgBack: 'img/microritmoW.png', imgRaw: 'img/microritmoB.png',
-                    telemetry: { TEC: 'CNC', MIN: '0.20CM', MAX: '1.80CM', MEDIA: 'Stencil', GRID: '2.34CM', SIZE: '25x25CM' }
+                'MICRO': { 
+                    label: 'MICROSTENCIL FOCUS', 
+                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
+                    spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
+                    price: '576⧗ x $0.05USD = $28.80USD', 
+                    id: 'ST-MICRO',
+                    img: 'img/surface.png', imgBack: 'img/microW.png', imgRaw: 'img/microB.png',
+                    telemetry: { TEC: 'CNC', DIM: '40x40', MEDIA: 'STENCIL', DIALS: '576' }
                 },
-                'FLUJO': { 
-                    label: 'MICROFLUJO', 
-                    desc: 'Cada nodo es una gota fluida; un dial marcando el tiempo del lenguaje biocinético.', 
-                    spec: 'DIMENSIÓN: 25x25CM // DIALS: 49⧖', 
-                    cant: '49 NODOS', 
-                    price: '⧖ x $0.05 = $2.45USD', 
-                    id: 'AP-MICROFLUJ',
-                    img: 'img/surface.png', imgBack: 'img/microflujoW.png', imgRaw: 'img/microflujoB.png',
-                    telemetry: { TEC: 'CNC', MIN: '0.30CM', MAX: '2.40CM', MEDIA: 'Stencil', GRID: '3.13CM', SIZE: '25x25CM' }
-                },
-                'CICLO': { 
-                    label: 'MICROCICLO', 
-                    desc: 'Cada nodo es una gota fluida; un dial marcando el tiempo del lenguaje biocinético.', 
-                    spec: 'DIMENSIÓN: 25x25CM // DIALS: 36⧖', 
-                    cant: '36 NODOS', 
-                    price: '⧖ x $0.05 = $1.80USD', 
-                    id: 'AP-MICROCICL',
-                    img: 'img/surface.png', imgBack: 'img/microcicloW.png', imgRaw: 'img/microcicloB.png',
-                    telemetry: { TEC: 'CNC', MIN: '0.40CM', MAX: '3.20CM', MEDIA: 'Stencil', GRID: '3.91CM', SIZE: '25x25CM' }
+                'MACRO': { 
+                    label: 'MACROSTENCIL SURGE', 
+                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
+                    spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
+                    price: '2500⧗ x $0.05USD = $125.00USD', 
+                    id: 'ST-MACRO',
+                    img: 'img/surface.png', imgBack: 'img/macroW.png', imgRaw: 'img/macroB.png',
+                    telemetry: { TEC: 'CNC', DIM: '80x80', MEDIA: 'STENCIL', DIALS: '2500' }
                 }
             }
         },
-
-        'PULSOR': {
-            defaultVariant: 'RITMO',
+        'PANEL': {
+            defaultVariant: '20X20',
             variants: {
-                'PULSO': { 
-                    label: 'PULSO', 
-                    desc: 'Cada nodo es una gota fluida; un dial marcando el tiempo del lenguaje biocinético.', 
-                    spec: 'DIMENSIÓN: 50x50CM // DIALS: 900⧖', 
-                    cant: '900 NODOS', 
-                    price: '⧖ x $0.05 = $45.00USD', 
-                    id: 'AP-PULS',
-                    img: 'img/surface.png', imgBack: 'img/pulsoW.png', imgRaw: 'img/pulsoB.png',
-                    telemetry: { TEC: 'CNC', MIN: '0.15CM', MAX: '1.20CM', MEDIA: 'Stencil', GRID: '1.56CM', SIZE: '50x50CM' }
+                '20X20': { 
+                    label: 'PANEL20X20', 
+                    desc: 'INKJET ADH sobre MDF para montajes individuales o mosaicos.', 
+                    spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
+                    price: '240⧗ x $0.05USD = $12USD', 
+                    id: 'FP-20X20',
+                    img: 'img/surface.png', imgBack: 'img/panel20W.png', imgRaw: 'img/panel20B.png',
+                    telemetry: { TEC: 'INKJET', DIM: '20x20', MEDIA: 'MDF', DIALS: '240' }
                 },
-                'RITMO': { 
-                    label: 'RITMO', 
-                    desc: 'Cada nodo es una gota fluida; un dial marcando el tiempo del lenguaje biocinético.', 
-                    spec: 'DIMENSIÓN: 50x50CM // DIALS: 400⧖', 
-                    cant: '400 NODOS', 
-                    price: '⧖ x $0.05 = $20.00USD', 
-                    id: 'AP-RITM',
-                    img: 'img/surface.png', imgBack: 'img/ritmoW.png', imgRaw: 'img/ritmoB.png',
-                    telemetry: { TEC: 'CNC', MIN: '0.20CM', MAX: '1.80CM', MEDIA: 'Stencil', GRID: '2.34CM', SIZE: '50x50CM' }
+                '30X30': { 
+                    label: 'PANEL30X30', 
+                    desc: 'INKJET ADH sobre MDF para montajes individuales o mosaicos.', 
+                    spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
+                    price: '576⧗ x $0.05USD = $28.80USD', 
+                    id: 'FP-30X30',
+                    img: 'img/surface.png', imgBack: 'img/panel30W.png', imgRaw: 'img/panel30B.png',
+                    telemetry: { TEC: 'INKJET', DIM: '30x30', MEDIA: 'MDF', DIALS: '576' }
                 },
-                'FLUJO': { 
-                    label: 'FLUJO', 
-                    desc: 'Cada nodo es una gota fluida; un dial marcando el tiempo del lenguaje biocinético.', 
-                    spec: 'DIMENSIÓN: 50x50CM // DIALS: 196⧖', 
-                    cant: '196 NODOS', 
-                    price: '⧖ x $0.05 = $9.80USD', 
-                    id: 'AP-FLUJ',
-                    img: 'img/surface.png', imgBack: 'img/flujoW.png', imgRaw: 'img/flujoB.png',
-                    telemetry: { TEC: 'CNC', MIN: '0.30CM', MAX: '2.40CM', MEDIA: 'Stencil', GRID: '3.13CM', SIZE: '50x50CM' }
-                },
-                'CICLO': { 
-                    label: 'CICLO', 
-                    desc: 'Cada nodo es una gota fluida; un dial marcando el tiempo del lenguaje biocinético.', 
-                    spec: 'DIMENSIÓN: 50x50CM // DIALS: 144⧖', 
-                    cant: '144 NODOS', 
-                    price: '⧖ x $0.05 = $7.20USD', 
-                    id: 'AP-CICL',
-                    img: 'img/surface.png', imgBack: 'img/cicloW.png', imgRaw: 'img/cicloB.png',
-                    telemetry: { TEC: 'CNC', MIN: '0.40CM', MAX: '3.20CM', MEDIA: 'Stencil', GRID: '3.91CM', SIZE: '50x50CM' }
-                }
-            }
-        },
-
-        'MACROPULSOR': {
-            defaultVariant: 'RITMO',
-            variants: {
-                'PULSO': { 
-                    label: 'MACROPULSO', 
-                    desc: 'un dial marcando el tiempo del lenguaje biocinético.', 
-                    spec: '', 
-                    cant: '3969⧖ DIALS', 
-                    price: '$198.45USD', 
-                    id: 'AP-MACROPULS',
-                    img: 'img/surface.png', imgBack: 'img/macropulsoW.png', imgRaw: 'img/macropulsoB.png',
-                    telemetry: { TEC: 'CNC', MIN: '0.15CM', MAX: '1.20CM', MEDIA: 'Stencil', GRID: '1.56CM', SIZE: 'Stencil' }
-                },
-                'RITMO': { 
-                    label: 'MACRORITMO', 
-                    desc: 'Cada nodo es una gota fluida; un dial marcando el tiempo del lenguaje biocinético.', 
-                    spec: 'DIMENSIÓN: 100x100CM // DIALS: 1764⧖', 
-                    cant: '1764 NODOS', 
-                    price: '⧖ x $0.05 = $88.20USD', 
-                    id: 'AP-MACRORITM',
-                    img: 'img/surface.png', imgBack: 'img/macroritmoW.png', imgRaw: 'img/macroritmoB.png',
-                    telemetry: { TEC: 'CNC', MIN: '0.20CM', MAX: '1.80CM', MEDIA: 'Stencil', GRID: '2.34CM', SIZE: '100x100CM' }
-                },
-                'FLUJO': { 
-                    label: 'MACROFLUJO', 
-                    desc: 'Cada nodo es una gota fluida; un dial marcando el tiempo del lenguaje biocinético.', 
-                    spec: 'DIMENSIÓN: 100x100CM // DIALS: 961⧖', 
-                    cant: '961 NODOS', 
-                    price: '⧖ x $0.05 = $48.05USD', 
-                    id: 'AP-MACROFLUJ',
-                    img: 'img/surface.png', imgBack: 'img/macroflujoW.png', imgRaw: 'img/macroflujoB.png',
-                    telemetry: { TEC: 'CNC', MIN: '0.30CM', MAX: '2.40CM', MEDIA: 'Stencil', GRID: '3.13CM', SIZE: '100x100CM' }
-                },
-                'CICLO': { 
-                    label: 'MACROCICLO', 
-                    desc: 'Cada nodo es una gota fluida; un dial marcando el tiempo del lenguaje biocinético.', 
-                    spec: 'DIMENSIÓN: 100x100CM // DIALS: 625⧖', 
-                    cant: '625 NODOS', 
-                    price: '⧖ x $0.05 = $31.25USD', 
-                    id: 'AP-MACROCICL',
-                    img: 'img/surface.png', imgBack: 'img/macrocicloW.png', imgRaw: 'img/macrocicloB.png',
-                    telemetry: { TEC: 'CNC', MIN: '0.40CM', MAX: '3.20CM', MEDIA: 'Stencil', GRID: '3.91CM', SIZE: '100x100CM' }
+                '40X40': { 
+                    label: 'PANEL40X40', 
+                    desc: 'INKJET ADH sobre MDF para montajes individuales o mosaicos.', 
+                    spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
+                    price: '1100⧗ x $0.05USD = $55USD', // Ajustado proporcionalmente a tus costos base en dials
+                    id: 'FP-40X40',
+                    img: 'img/surface.png', imgBack: 'img/panel40W.png', imgRaw: 'img/panel40B.png',
+                    telemetry: { TEC: 'INKJET', DIM: '40x40', MEDIA: 'MDF', DIALS: '1100' }
                 }
             }
         }
     };
 
-    let currentBioItem = 'MACROPULSOR';
-    let currentBioVariant = 'PULSO';
+    let currentBioItem = 'STENCIL';
+    let currentBioVariant = 'MICRO';
     const numeroCelular = "573025333130";
 
     // ==========================================
@@ -556,9 +482,9 @@ function actualizarBioUI() {
         const tele = variantConfig.telemetry;
         if (tele) {
             getCachedEl('tele-tec').textContent = tele.TEC;
-            getCachedEl('tele-size').textContent = tele.SIZE;
-            getCachedEl('tele-grid').textContent = tele.GRID;
-            getCachedEl('tele-price').textContent = tele.PRICE;
+            getCachedEl('tele-dim').textContent = tele.DIM;
+            getCachedEl('tele-media').textContent = tele.MEDIA;
+            getCachedEl('tele-dials').textContent = tele.DIALS;
         }
 
         // Actualizar botones de variantes con contenedor elástico nativo (Evita Clipped Text)
@@ -658,9 +584,9 @@ function actualizarBioUI() {
         'sub-sets-solar': "Frecuencia de resonancia",
         'sub-reps-tension': "Índice de cohesión molecular",
         'tele-tec': "Impresión inkjet adh sobre MDF",
-        'tele-size': "Grosor estructural",
-        'tele-grid': "Laminado de protección",
-        'tele-price': "Sustrato industrial"
+        'tele-dim': "Grosor estructural",
+        'tele-media': "Laminado de protección",
+        'tele-dials': "Sustrato industrial"
         
     };
 
