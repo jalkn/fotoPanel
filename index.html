@@ -123,34 +123,38 @@
 
         </header>
 
-<!-- CONTENEDOR FLEX PRINCIPAL DEL PACK -->
+        <!-- CONTENEDOR FLEX PRINCIPAL DEL PACK -->
         <div class="flex-1 w-full flex flex-col items-center justify-center p-6 select-none relative z-10 overflow-hidden">
             
-            <!-- REJILLA TELEMÉTRICA ABSOLUTA: Ajustada a los extremos del contenedor (Esquinas HUD) -->
-            <div class="absolute inset-0 pointer-events-none z-20 font-mono text-[8px] sm:text-[9px] tracking-[0.15em] p-4 sm:p-6 flex flex-col justify-between">
-                <!-- Esquinas Superiores (Justo debajo del Header) -->
-                <div class="flex justify-between w-full text-white/60 uppercase">
-                    <div class="flex gap-1.5 cursor-pointer hover:text-sky-400 transition-colors pointer-events-auto">
-                        <span class="text-white/30">DIM</span>
-                        <span id="tele-dim">--</span>
+            <!-- REJILLA TELEMÉTRICA ABSOLUTA: Agrupada en las esquinas inferiores (Encima del Footer) -->
+            <div class="absolute inset-0 pointer-events-none z-20 font-mono text-[8px] sm:text-[9px] tracking-[0.15em] p-4 sm:p-6 flex flex-col justify-end">
+                
+                <div class="flex justify-between items-end w-full text-white/60 uppercase">
+                    <!-- ESQUINA INFERIOR IZQUIERDA: DIM + DIAL_EX -->
+                    <div class="flex flex-col gap-1 text-left">
+                        <div class="flex gap-1.5 cursor-pointer hover:text-sky-400 transition-colors pointer-events-auto">
+                            <span class="text-white/30">DIM</span>
+                            <span id="tele-dim">--</span>
+                        </div>
+                        <div class="flex gap-1.5 cursor-pointer hover:text-sky-400 transition-colors pointer-events-auto">
+                            <span class="text-white/30">DIAL_EX</span>
+                            <span id="tele-dial_ex">--</span>
+                        </div>
                     </div>
-                    <div class="flex gap-1.5 cursor-pointer hover:text-sky-400 transition-colors pointer-events-auto">
-                        <span id="tele-media">--</span>
-                        <span class="text-white/30">MEDIO</span>
+
+                    <!-- ESQUINA INFERIOR DERECHA: MEDIO + PRECIO -->
+                    <div class="flex flex-col gap-1 text-right items-end">
+                        <div class="flex gap-1.5 cursor-pointer hover:text-sky-400 transition-colors pointer-events-auto">
+                            <span id="tele-media">--</span>
+                            <span class="text-white/30">MEDIO</span>
+                        </div>
+                        <div class="flex gap-1.5 cursor-pointer hover:text-sky-400 transition-colors pointer-events-auto">
+                            <span id="tele-price">--</span>
+                            <span class="text-white/30">PRECIO</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Esquinas Inferiores (Justo encima del Footer) -->
-                <div class="flex justify-between w-full text-white/60 uppercase">
-                    <div class="flex gap-1.5 cursor-pointer hover:text-sky-400 transition-colors pointer-events-auto">
-                        <span class="text-white/30">DIAL_EX</span>
-                        <span id="tele-dial_ex">--</span>
-                    </div>
-                    <div class="flex gap-1.5 cursor-pointer hover:text-sky-400 transition-colors pointer-events-auto">
-                        <span id="tele-price">--</span>
-                        <span class="text-white/30">PRECIO</span>
-                    </div>
-                </div>
             </div>
 
             <!-- CONTENEDOR DEL ARTEPANEL (Manteniendo proporciones exactas) -->
@@ -188,7 +192,7 @@
             </div>
 
         </div>
-        
+
         <!-- FOOTER HUD OPTIMIZADO -->
         <footer id="dynamic-footer" class="w-full z-30 bg-black/60 backdrop-blur-lg border-t border-white/5 select-none shrink-0">
             <div class="w-full flex flex-col">
