@@ -102,18 +102,12 @@
                 
             </div>
 
-            <div class="flex flex-col items-center justify-center w-full select-none pb-3">
-                <span id="panel-telemetry-data" class="text-[7.5px] sm:text-[8px] text-center tracking-[0.4em] text-sky-400/90 uppercase transition-colors duration-300">
-                    LENGUAJE BIOCINÉTICO P.U.L.S.<span class="opacity-30">O.R.</span>
-                </span>
-            </div>
-
         </header>
 
         <!-- CONTENEDOR FLEX PRINCIPAL DEL PACK -->
         <div class="flex-1 w-full flex flex-col items-center justify-center p-6 select-none relative z-10 overflow-hidden">
             
-<div class="absolute inset-0 pointer-events-none z-20 font-mono p-4 sm:p-6 flex flex-col justify-end">
+            <div class="absolute inset-0 pointer-events-none z-20 font-mono p-4 sm:p-6 flex flex-col justify-end">
                 
                 <div class="flex justify-between items-end w-full uppercase">
                     
@@ -199,12 +193,25 @@
         <footer id="dynamic-footer" class="w-full z-30 bg-black/60 backdrop-blur-lg border-t border-white/5 select-none shrink-0">
             <div class="w-full flex flex-col">
 
+
+
                 <!-- Panel de Control y Variantes -->
                 <div class="w-full max-h-[36vh] overflow-y-auto overflow-x-hidden border-b border-white/5 bg-black/40 custom-hud-scroll">
 
+
+
+
+
                     <section class="w-full max-w-sm mx-auto px-6 pt-4 pb-3 flex flex-col gap-3.5">
+
+                        <div class="flex flex-col items-center justify-center w-full select-none pb-3">
+                            <span id="panel-telemetry-data" class="text-[7.5px] sm:text-[8px] text-center tracking-[0.4em] text-sky-400/90 uppercase transition-colors duration-300">
+                                LENGUAJE BIOCINÉTICO P.U.L.S.<span class="opacity-30">O.R.</span>
+                            </span>
+                        </div>
                         
                         <div class="grid grid-cols-[50px_1fr_50px] items-center gap-2 w-full">
+                            
                             <button id="btn-reveal-raw" class="h-[46px] flex items-center justify-center rounded-sm border border-white/10 bg-white/5 hover:border-sky-500/50 hover:bg-sky-500/10 transition-all duration-300 focus:outline-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white/60">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
@@ -279,7 +286,7 @@
                     img: 'img/surface.png', imgBack: 'img/stencil25W.png', imgRaw: 'img/stencil25B.png',
                     telemetry: { MODEL: '1:1', MEDIA: 'STENCIL', DIALS: '240', DIAL_EX: '⧗240x$0.05' }
                 },
-                'MICRO': { 
+                '40X40': { 
                     label: 'MICROSTENCIL FOCUS', 
                     desc: 'Stencil para murales participativos en interiores y exteriores.', 
                     spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
@@ -288,7 +295,7 @@
                     img: 'img/surface.png', imgBack: 'img/microW.png', imgRaw: 'img/microB.png',
                     telemetry: { MODEL: '1:1', MEDIA: 'STENCIL', DIALS: '576', DIAL_EX: '⧗240x$0.05' }
                 },
-                'MACRO': { 
+                '80X80': { 
                     label: 'MACROSTENCIL SURGE', 
                     desc: 'Stencil para murales participativos en interiores y exteriores.', 
                     spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
@@ -333,7 +340,7 @@
         }
     };
     let currentBioItem = 'STENCIL';
-    let currentBioVariant = 'MICRO';
+    let currentBioVariant = '40X40';
     const numeroCelular = "573025333130";
 
     // ==========================================
