@@ -102,59 +102,32 @@
                 
             </div>
 
-        </header>
-
-        <!-- CONTENEDOR FLEX PRINCIPAL DEL PACK -->
-        <div class="flex-1 w-full flex flex-col items-center justify-center p-6 select-none relative z-10 overflow-hidden">
-            
-            <div class="absolute inset-0 pointer-events-none z-20 font-mono p-4 sm:p-6 flex flex-col justify-end">
-                
-                <div class="flex justify-between items-end w-full uppercase">
-                    
-                    <div class="flex flex-col gap-2.5 text-left items-start">
-                        <div class="flex flex-col-reverse items-start cursor-pointer hover:text-sky-400 text-white/60 transition-colors pointer-events-auto">
-                            <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Hz</span>
-                            <span id="sub-sets-solar" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.00</span>
-                        </div>
-                        <div class="flex flex-col-reverse items-start cursor-pointer hover:text-sky-400 text-white/60 transition-colors pointer-events-auto">
-                            <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Ciclo</span>
-                            <span id="telemetry-sphere-idx" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
-                        </div>
-                        <div class="flex flex-col-reverse items-start cursor-pointer hover:text-sky-400 text-white/60 transition-colors pointer-events-auto">
-                            <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">MODEL</span>
-                            <span id="tele-model" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
-                        </div>
-                        <div class="flex flex-col-reverse items-start cursor-pointer hover:text-sky-400 text-white/60 transition-colors pointer-events-auto">
-                            <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">DIAL_EX</span>
-                            <span id="tele-dial_ex" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col gap-2.5 text-right items-end">
-                        <div class="flex flex-col-reverse items-end cursor-pointer hover:text-sky-400 text-white/60 transition-colors pointer-events-auto">
-                            <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Tensión</span>
-                            <span id="sub-reps-tension" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.0</span>
-                        </div>
-                        <div class="flex flex-col-reverse items-end cursor-pointer hover:text-sky-400 text-white/60 transition-colors pointer-events-auto">
-                            <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Nodo</span>
-                            <span id="telemetry-active-node" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
-                        </div>
-                        <div class="flex flex-col-reverse items-end cursor-pointer hover:text-sky-400 text-white/60 transition-colors pointer-events-auto">
-                            <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">MEDIO</span>
-                            <span id="tele-media" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
-                        </div>
-                        <div class="flex flex-col-reverse items-end cursor-pointer hover:text-sky-400 text-white/60 transition-colors pointer-events-auto">
-                            <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">PRECIO</span>
-                            <span id="tele-price" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
-                        </div>
-                    </div>
-
+            <div class="w-full flex justify-between items-start uppercase px-5 sm:px-8 pb-3 font-mono">
+                <div class="flex flex-col-reverse items-start cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+                    <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Hz</span>
+                    <span id="sub-sets-solar" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.00</span>
                 </div>
-
+                <div class="flex flex-col-reverse items-center text-center cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+                    <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Ciclo</span>
+                    <span id="telemetry-sphere-idx" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
+                </div>
+                <div class="flex flex-col-reverse items-center text-center cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+                    <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Nodo</span>
+                    <span id="telemetry-active-node" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
+                </div>
+                <div class="flex flex-col-reverse items-end cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+                    <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Tensión</span>
+                    <span id="sub-reps-tension" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.0</span>
+                </div>
             </div>
 
-            <!-- CONTENEDOR DEL ARTEPANEL (Manteniendo proporciones exactas) -->
-            <div id="artepanel-pack-container" class="relative w-full max-w-[160px] xs:max-w-[185px] sm:max-w-[215px] max-h-[40vh] aspect-[13/15] shrink-0 drop-shadow-[0_25px_45px_rgba(0,0,0,0.95)]">
+        </header>
+
+        <div class="flex-1 w-full flex flex-col items-center justify-between pt-2 sm:pt-4 p-6 select-none relative z-10 overflow-hidden">
+            
+
+
+            <div id="artepanel-pack-container" class="relative w-full max-w-[160px] xs:max-w-[185px] sm:max-w-[215px] max-h-[40vh] aspect-[13/15] shrink-0 drop-shadow-[0_25px_45px_rgba(0,0,0,0.95)] my-auto">
                 <div class="w-full h-full relative overflow-hidden bg-transparent">
                     <img id="artepanel-pack-img-back" src="img/40x40W.png" alt="artepanel Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-contain opacity-0 pointer-events-none z-0" />
                     <img id="artepanel-pack-img" src="img/40x40B.png" alt="artepanel Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-contain pointer-events-auto z-10" />
@@ -189,13 +162,28 @@
 
         </div>
 
-        <!-- FOOTER HUD OPTIMIZADO -->
-        <footer id="dynamic-footer" class="w-full z-30 bg-black/60 backdrop-blur-lg border-t border-white/5 select-none shrink-0">
+<footer id="dynamic-footer" class="w-full z-30 bg-black/60 backdrop-blur-lg border-t border-white/5 select-none shrink-0">
             <div class="w-full flex flex-col">
 
+                <div class="w-full flex justify-between items-end uppercase px-5 sm:px-8 pt-3.5 pb-2 border-b border-white/5 bg-black/20 font-mono">
+                    <div class="flex flex-col-reverse items-start cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+                        <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">MODEL</span>
+                        <span id="tele-model" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
+                    </div>
+                    <div class="flex flex-col-reverse items-center text-center cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+                        <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">MEDIO</span>
+                        <span id="tele-media" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
+                    </div>
+                    <div class="flex flex-col-reverse items-center text-center cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+                        <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">DIAL_EX</span>
+                        <span id="tele-dial_ex" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
+                    </div>
+                    <div class="flex flex-col-reverse items-end cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+                        <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">PRECIO</span>
+                        <span id="tele-price" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
+                    </div>
+                </div>
 
-
-                <!-- Panel de Control y Variantes -->
                 <div class="w-full max-h-[36vh] overflow-y-auto overflow-x-hidden border-b border-white/5 bg-black/40 custom-hud-scroll">
 
 
@@ -206,7 +194,7 @@
 
                         <div class="flex flex-col items-center justify-center w-full select-none pb-3">
                             <span id="panel-telemetry-data" class="text-[7.5px] sm:text-[8px] text-center tracking-[0.4em] text-sky-400/90 uppercase transition-colors duration-300">
-                                (MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD
+                                (MODELO 1:1) COMPRAS TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD
                             </span>
                         </div>
                         
