@@ -80,51 +80,30 @@
  <main id="main-vault" class="w-screen h-screen flex flex-col justify-between relative overflow-hidden">
         
         <header class="w-full z-50 bg-gradient-to-b from-black/90 via-black/75 to-black/0 backdrop-blur-md border-b border-white/5 shrink-0">
-            <div class="max-w-7xl mx-auto w-full flex flex-col">
+            <div class="w-full px-4 sm:px-6 grid grid-cols-3 items-center uppercase tracking-widest font-mono text-[9px] text-white/40 min-h-[63px] sm:min-h-[69px] select-none">
                 
-                <div class="p-4 sm:p-6 grid grid-cols-3 items-center uppercase tracking-widest font-mono text-[9px] text-white/40 min-h-[63px] sm:min-h-[69px] select-none">
-                    
-                    <div class="justify-self-start flex items-center">
-                        <a href="https://jako.world" class="group w-9 h-9 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
-                            <img src="img/back.png" alt="Back to jako.world" class="w-4 h-4 object-contain opacity-60 group-hover:opacity-100 transition-all duration-500" />
-                        </a>
-                    </div>
-                    
-                    <div class="justify-self-center text-center tracking-[0.25em] font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] text-white text-[11px] sm:text-[13px]">
-                        <span>VAULT</span>
-                    </div>
-                    
-                    <div class="justify-self-end flex items-center">
-                        <a href="https://biorush.shop" class="group w-9 h-9 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
-                            <img src="img/pace.png" alt="To biorush.shop" class="w-4 h-4 object-contain opacity-60 group-hover:opacity-100 transition-all duration-500" />
-                        </a>
-                    </div>
+                <div class="justify-self-start flex items-center">
+                    <a href="https://jako.world" class="group w-9 h-9 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
+                        <img src="img/back.png" alt="Back to jako.world" class="w-4 h-4 object-contain opacity-60 group-hover:opacity-100 transition-all duration-500" />
+                    </a>
                 </div>
-
-                <section class="w-full max-w-sm mx-auto pb-4 flex flex-col items-center select-none">
-                    <div class="grid grid-cols-4 gap-y-1 gap-x-2 w-full px-4 text-center">
-                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Hz</span>
-                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Ciclo</span>
-                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Nodo</span>
-                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Tensión</span>
-                        
-                        <span id="sub-sets-solar" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0.00</span>
-                        <span id="telemetry-sphere-idx" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0000</span>
-                        <span id="telemetry-active-node" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0000</span>
-                        <span id="sub-reps-tension" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0.0</span>
-                    </div>
-                </section>
-
-                <div class="flex flex-col items-center justify-center w-full select-none pb-2">
-                    <span id="panel-telemetry-data" class="text-[8px] text-center tracking-[0.5em] text-sky-400 uppercase transition-colors duration-300">
-                        LENGUAJE BIOCINÉTICO P.U.L.S.<span class="opacity-30">O.R.</span>
-                    </span>
+                
+                <div class="justify-self-center text-center tracking-[0.25em] font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] text-white text-[11px] sm:text-[13px]">
+                    <span>VAULT</span>
+                </div>
+                
+                <div class="justify-self-end flex items-center">
+                    <a href="https://biorush.shop" class="group w-9 h-9 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
+                        <img src="img/pace.png" alt="To biorush.shop" class="w-4 h-4 object-contain opacity-60 group-hover:opacity-100 transition-all duration-500" />
+                    </a>
                 </div>
             </div>
+
+
         </header>
 
-        <div class="flex-1 w-full flex flex-col items-center justify-center p-4 select-none relative z-10 overflow-hidden">
-            <div id="artepanel-pack-container" class="relative w-full max-w-[160px] xs:max-w-[185px] sm:max-w-[215px] aspect-[13/15] shrink-0 drop-shadow-[0_25px_45px_rgba(0,0,0,0.95)]">
+        <div class="flex-1 w-full flex flex-col items-center justify-center py-8 px-4 select-none relative z-10 overflow-hidden">
+            <div id="artepanel-pack-container" class="relative w-full max-w-[160px] xs:max-w-[185px] sm:max-w-[215px] max-h-[40vh] aspect-[13/15] shrink-0 drop-shadow-[0_25px_45px_rgba(0,0,0,0.95)]">
                 <div class="w-full h-full relative overflow-hidden bg-transparent">
                     <img id="artepanel-pack-img-back" src="img/40x40W.png" alt="artepanel Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-contain opacity-0 pointer-events-none z-0" />
                     <img id="artepanel-pack-img" src="img/40x40B.png" alt="artepanel Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-contain pointer-events-auto z-10" />
@@ -159,9 +138,55 @@
         </div>
 
         <footer id="dynamic-footer" class="w-full z-30 bg-black/60 backdrop-blur-lg border-t border-white/5 select-none shrink-0">
-            <div class="max-w-7xl mx-auto w-full flex flex-col">
+            <div class="w-full flex flex-col">
+
+                <div class="flex flex-col items-center justify-center gap-1.5 text-white/50 text-[8px] tracking-[0.25em] font-mono w-full uppercase pt-3.5 text-center px-6">
+
+                    <span id="artepanel-price" class="text-white-400/90 font-bold text-[10px] tracking-[0.3em] pt-1"></span>
+                    <span id="artepanel-spec" class="text-white/60 line-clamp-2 max-w-xs leading-normal"></span>
+                    <span id="artepanel-footer-desc" class="text-white/30 text-[7px] tracking-[0.2em] lowercase line-clamp-2 max-w-xs leading-normal"></span>
+                </div>
+                
+                <section class="w-full max-w-sm mx-auto pt-3 flex flex-col items-center">
+                    <div class="grid grid-cols-4 gap-y-0.5 gap-x-2 w-full px-4 text-center">
+                        <span id="tele-dim" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+                        <span id="tele-media" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+                        <span id="tele-dials" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+                        <span id="tele-dial_ex" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
+
+                        <span class="text-[6.5px] tracking-[0.25em] text-white/30 uppercase pt-0.5">DIM. CMS</span>
+                        <span class="text-[6.5px] tracking-[0.25em] text-white/30 uppercase pt-0.5">MEDIO</span>
+                        <span class="text-[6.5px] tracking-[0.25em] text-white/30 uppercase pt-0.5">⧗DIALS</span>
+                        <span class="text-[6.5px] tracking-[0.25em] text-white/30 uppercase pt-0.5">DIAL_EX</span>
+                    </div>
+                </section>
+
+                <section class="w-full max-w-sm mx-auto pb-4 flex flex-col items-center select-none">
+                    <div class="grid grid-cols-4 gap-y-1 gap-x-2 w-full px-4 text-center">
+                        
+                        <span id="sub-sets-solar" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0.00</span>
+                        <span id="telemetry-sphere-idx" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0000</span>
+                        <span id="telemetry-active-node" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0000</span>
+                        <span id="sub-reps-tension" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors pb-2">0.0</span>
+
+
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Hz</span>
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Ciclo</span>
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Nodo</span>
+                        <span class="text-[7px] tracking-[0.3em] text-white/40 uppercase">Tensión</span>
+                    </div>
+                </section>
+
+                <div class="flex flex-col items-center justify-center w-full select-none pb-2">
+                    <span id="panel-telemetry-data" class="text-[8px] text-center tracking-[0.5em] text-sky-400 uppercase transition-colors duration-300">
+                        LENGUAJE BIOCINÉTICO P.U.L.S.<span class="opacity-30">O.R.</span>
+                    </span>
+                </div>
+
 
                 <div class="w-full max-h-[36vh] overflow-y-auto overflow-x-hidden border-b border-white/5 bg-black/40 custom-hud-scroll">
+
+
                     <section class="w-full max-w-sm mx-auto px-6 pt-4 pb-3 flex flex-col gap-3.5">
                         
                         <div class="grid grid-cols-[50px_1fr_50px] items-center gap-2 w-full">
@@ -184,36 +209,14 @@
                         </div>
 
                         <div class="w-full overflow-x-auto overflow-y-hidden py-0.5 custom-hud-scroll">
-                            <div id="artepanel-variants-container" class="flex items-center justify-start sm:justify-center gap-2 min-w-full w-max mx-auto px-2">
-                                </div>
+                            <div id="artepanel-variants-container" class="flex items-center justify-start sm:justify-center gap-2 min-w-full w-max mx-auto px-2"></div>
                         </div>
 
                         <div class="w-full pb-1">
-                            <div id="artepanel-items-menu" class="flex justify-center items-center gap-6 text-[9px] tracking-[0.35em] uppercase text-white/40 select-none">
-                                </div>
+                            <div id="artepanel-items-menu" class="flex justify-center items-center gap-6 text-[9px] tracking-[0.35em] uppercase text-white/40 select-none"></div>
                         </div>
                     </section>
                 </div>
-
-                <div class="flex flex-col items-center justify-center gap-1.5 text-white/50 text-[8px] tracking-[0.25em] font-mono w-full uppercase pt-3.5 text-center px-6">
-                    <span id="artepanel-spec" class="text-white/60 line-clamp-2 max-w-xs leading-normal"></span>
-                    <span id="artepanel-footer-desc" class="text-white/30 text-[7px] tracking-[0.2em] lowercase line-clamp-2 max-w-xs leading-normal"></span>
-                    <span id="artepanel-price" class="text-sky-400/90 font-bold text-[10px] tracking-[0.3em] pt-1"></span>
-                </div>
-                
-                <section class="w-full max-w-sm mx-auto pt-3 flex flex-col items-center">
-                    <div class="grid grid-cols-4 gap-y-0.5 gap-x-2 w-full px-4 text-center">
-                        <span id="tele-dim" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
-                        <span id="tele-media" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
-                        <span id="tele-dials" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
-                        <span id="tele-dial_ex" class="font-mono text-white/60 tracking-[0.2em] text-[11px] cursor-pointer hover:text-sky-400 transition-colors">--</span>
-
-                        <span class="text-[6.5px] tracking-[0.25em] text-white/30 uppercase pt-0.5">DIM. CMS</span>
-                        <span class="text-[6.5px] tracking-[0.25em] text-white/30 uppercase pt-0.5">MEDIO</span>
-                        <span class="text-[6.5px] tracking-[0.25em] text-white/30 uppercase pt-0.5">⧗DIALS</span>
-                        <span class="text-[6.5px] tracking-[0.25em] text-white/30 uppercase pt-0.5">DIAL_EX</span>
-                    </div>
-                </section>
 
                 <div class="px-4 py-3 sm:py-4 grid grid-cols-3 items-center w-full uppercase tracking-widest font-mono text-[9px] text-white/40 min-h-[55px] sm:min-h-[60px]">
                     <div class="justify-self-start flex items-center">
