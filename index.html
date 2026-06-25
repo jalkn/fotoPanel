@@ -126,8 +126,8 @@
                             <span id="telemetry-sphere-idx" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
                         </div>
                         <div class="flex flex-col-reverse items-start cursor-pointer hover:text-sky-400 text-white/60 transition-colors pointer-events-auto">
-                            <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">DIM</span>
-                            <span id="tele-dim" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
+                            <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">MODEL</span>
+                            <span id="tele-model" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
                         </div>
                         <div class="flex flex-col-reverse items-start cursor-pointer hover:text-sky-400 text-white/60 transition-colors pointer-events-auto">
                             <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">DIAL_EX</span>
@@ -154,12 +154,6 @@
                         </div>
                     </div>
 
-                </div>
-
-                <div class="flex flex-col items-center justify-center w-full select-none pt-2 mt-4 border-t border-white/[0.02]">
-                    <span id="panel-telemetry-data" class="text-[7.5px] sm:text-[8px] text-center tracking-[0.4em] text-sky-400/90 uppercase transition-colors duration-300">
-                        LENGUAJE BIOCINÉTICO P.U.L.S.<span class="opacity-30">O.R.</span>
-                    </span>
                 </div>
 
             </div>
@@ -204,13 +198,15 @@
         <footer id="dynamic-footer" class="w-full z-30 bg-black/60 backdrop-blur-lg border-t border-white/5 select-none shrink-0">
             <div class="w-full flex flex-col">
 
-                <!-- Bloque Único de Información (Especificaciones unificadas) -->
-                <div class="w-full flex flex-col items-center py-3 text-center px-6 font-mono uppercase select-none">
-                    <span id="artepanel-spec" class="text-white/60 text-[8px] tracking-[0.25em] line-clamp-2 max-w-xs leading-normal"></span>
+                <div class="flex flex-col items-center justify-center w-full select-none pt-2 mt-4 border-t border-white/[0.02]">
+                    <span id="panel-telemetry-data" class="text-[7.5px] sm:text-[8px] text-center tracking-[0.4em] text-sky-400/90 uppercase transition-colors duration-300">
+                        LENGUAJE BIOCINÉTICO P.U.L.S.<span class="opacity-30">O.R.</span>
+                    </span>
                 </div>
 
                 <!-- Panel de Control y Variantes -->
                 <div class="w-full max-h-[36vh] overflow-y-auto overflow-x-hidden border-b border-white/5 bg-black/40 custom-hud-scroll">
+
                     <section class="w-full max-w-sm mx-auto px-6 pt-4 pb-3 flex flex-col gap-3.5">
                         
                         <div class="grid grid-cols-[50px_1fr_50px] items-center gap-2 w-full">
@@ -238,13 +234,6 @@
 
                         <div class="w-full pb-1">
                             <div id="artepanel-items-menu" class="flex justify-center items-center gap-6 text-[9px] tracking-[0.35em] uppercase text-white/40 select-none"></div>
-                        </div>
-
-
-
-                        <!-- 3. Bloque Independiente: Descripción -->
-                        <div class="w-full flex flex-col items-center pt-1 pb-2 text-center px-6 font-mono uppercase select-none">
-                            <span id="artepanel-footer-desc" class="text-white/60 text-[8px] tracking-[0.25em] line-clamp-2 max-w-xs leading-normal"></span>
                         </div>
                     </section>
                 </div>
@@ -290,28 +279,28 @@
                     label: 'STENCIL25X25', 
                     desc: 'Stencil para murales participativos en interiores y exteriores.', 
                     spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
-                    price: '$12 USD', 
+                    price: '$12USD', 
                     id: 'ST-25X25',
                     img: 'img/surface.png', imgBack: 'img/stencil25W.png', imgRaw: 'img/stencil25B.png',
-                    telemetry: { DIM: '25x25', MEDIA: '♻', DIALS: '240', DIAL_EX: '⧗240x$0.05' }
+                    telemetry: { MODEL: '1:1', MEDIA: 'STENCIL', DIALS: '240', DIAL_EX: '⧗240x$0.05' }
                 },
                 'MICRO': { 
                     label: 'MICROSTENCIL FOCUS', 
                     desc: 'Stencil para murales participativos en interiores y exteriores.', 
                     spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
-                    price: '$29 USD', 
+                    price: '$29USD', 
                     id: 'ST-MICRO',
                     img: 'img/surface.png', imgBack: 'img/microW.png', imgRaw: 'img/microB.png',
-                    telemetry: { DIM: '40x40', MEDIA: '♻', DIALS: '576', DIAL_EX: '⧗240x$0.05' }
+                    telemetry: { MODEL: '1:1', MEDIA: 'STENCIL', DIALS: '576', DIAL_EX: '⧗240x$0.05' }
                 },
                 'MACRO': { 
                     label: 'MACROSTENCIL SURGE', 
                     desc: 'Stencil para murales participativos en interiores y exteriores.', 
                     spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
-                    price: '$125 USD', 
+                    price: '$125USD', 
                     id: 'ST-MACRO',
                     img: 'img/surface.png', imgBack: 'img/macroW.png', imgRaw: 'img/macroB.png',
-                    telemetry: { DIM: '80x80', MEDIA: '♻', DIALS: '2500', DIAL_EX: '⧗2500x$0.05' }
+                    telemetry: { MODEL: '1:1', MEDIA: 'STENCIL', DIALS: '2500', DIAL_EX: '⧗2500x$0.05' }
                 }
             }
         },
@@ -325,25 +314,25 @@
                     price: '$12USD', 
                     id: 'FP-20X20',
                     img: 'img/surface.png', imgBack: 'img/panel20W.png', imgRaw: 'img/panel20B.png',
-                    telemetry: { TEC: 'INKJET', DIM: '20x20', MEDIA: 'MDF', DIALS: '240', DIAL_EX: '⧗240x$0.05' }
+                    telemetry: { TEC: 'INKJET', MODEL: '1:1', MEDIA: 'MDF', DIALS: '240', DIAL_EX: '⧗240x$0.05' }
                 },
                 '30X30': { 
                     label: 'PANEL30X30', 
                     desc: 'INKJET ADH sobre MDF para montajes individuales o mosaicos.', 
                     spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
-                    price: '$28.80USD', 
+                    price: '$290USD', 
                     id: 'FP-30X30',
                     img: 'img/surface.png', imgBack: 'img/panel30W.png', imgRaw: 'img/panel30B.png',
-                    telemetry: { TEC: 'INKJET', DIM: '30x30', MEDIA: 'MDF', DIALS: '576', DIAL_EX: '⧗576x$0.055' }
+                    telemetry: { TEC: 'INKJET', MODEL: '1:1', MEDIA: 'MDF', DIALS: '576', DIAL_EX: '⧗576x$0.055' }
                 },
                 '40X40': { 
                     label: 'PANEL40X40', 
                     desc: 'INKJET ADH sobre MDF para montajes individuales o mosaicos.', 
                     spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
-                    price: '$55.00USD', 
+                    price: '$55USD', 
                     id: 'FP-40X40',
                     img: 'img/surface.png', imgBack: 'img/panel40W.png', imgRaw: 'img/panel40B.png',
-                    telemetry: { TEC: 'INKJET', DIM: '40x40', MEDIA: 'MDF', DIALS: '1100', DIAL_EX: '⧗1100x$0.05' }
+                    telemetry: { TEC: 'INKJET', MODEL: '1:1', MEDIA: 'MDF', DIALS: '1100', DIAL_EX: '⧗1100x$0.05' }
                 }
             }
         }
@@ -472,13 +461,6 @@
                     const labelTitle = getCachedEl('laser-variant-title');
                     if (labelTitle) labelTitle.textContent = variantConfig.label;
                     
-                    // INYECCIÓN DE LOS 3 RENGLONES DEL FOOTER INDEPENDIENTES
-                    getCachedEl('artepanel-spec').textContent = variantConfig.spec;
-                    if (getCachedEl('artepanel-footer-desc')) {
-                        getCachedEl('artepanel-footer-desc').textContent = variantConfig.desc;
-                    }
-                    getCachedEl('artepanel-price').textContent = variantConfig.price;
-                    
                     descEl.classList.remove('opacity-0');
                 }, 120);
             }
@@ -495,7 +477,7 @@
         const tele = variantConfig.telemetry;
         if (tele) {
             getCachedEl('tele-dial_ex').textContent = tele.DIAL_EX;
-            getCachedEl('tele-dim').textContent = tele.DIM;
+            getCachedEl('tele-model').textContent = tele.MODEL;
             getCachedEl('tele-media').textContent = tele.MEDIA;
             getCachedEl('tele-price').textContent = variantConfig.price;
         }
@@ -597,8 +579,8 @@
         'sub-sets-solar': "Frecuencia de resonancia",
         'sub-reps-tension': "Índice de cohesión molecular",
         'tele-dial_ex': "Impresión inkjet adh sobre MDF",
-        'tele-dim': "Grosor estructural",
-        'tele-media': "Laminado de protección",
+        'tele-model': "Compras tu pieza y financias otra para la comunidad",
+        'tele-media': "para murales participativos en interiores y exteriores",
         'tele-price': "Sustrato industrial"
         
     };
