@@ -79,25 +79,21 @@
 
  <main id="main-vault" class="w-screen h-screen flex flex-col justify-between relative overflow-hidden">
         
-<!-- HEADER HUD REESTRUCTURADO -->
-<!-- HEADER HUD OPTIMIZADO (Métricas en los extremos) -->
+        <!-- HEADER HUD REESTRUCTURADO -->
         <header class="w-full z-50 bg-gradient-to-b from-black/90 via-black/75 to-black/0 backdrop-blur-md border-b border-white/5 shrink-0">
             
             <div class="w-full px-4 sm:px-6 grid grid-cols-3 items-center min-h-[63px] sm:min-h-[69px] select-none">
                 
-                <!-- EXTREMO IZQUIERDO: Botón Back + Frecuencia (Hz) -->
                 <div class="justify-self-start flex items-center gap-3 font-mono">
                     <a href="https://jako.world" class="group w-9 h-9 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
                         <img src="img/back.png" alt="Back to jako.world" class="w-4 h-4 object-contain opacity-60 group-hover:opacity-100 transition-all duration-500" />
                     </a>
                 </div>
                 
-                <!-- CENTRO: Título del Panel -->
                 <div class="justify-self-center text-center tracking-[0.25em] font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] text-white text-[11px] sm:text-[13px] uppercase">
                     <span>VAULT</span>
                 </div>
                 
-                <!-- EXTREMO DERECHO: Tensión + Botón Pace -->
                 <div class="justify-self-end flex items-center gap-3 font-mono">
                     <a href="https://biorush.shop" class="group w-9 h-9 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
                         <img src="img/pace.png" alt="To biorush.shop" class="w-4 h-4 object-contain opacity-60 group-hover:opacity-100 transition-all duration-500" />
@@ -106,6 +102,11 @@
                 
             </div>
 
+            <div class="flex flex-col items-center justify-center w-full select-none pb-3">
+                <span id="panel-telemetry-data" class="text-[7.5px] sm:text-[8px] text-center tracking-[0.4em] text-sky-400/90 uppercase transition-colors duration-300">
+                    LENGUAJE BIOCINÉTICO P.U.L.S.<span class="opacity-30">O.R.</span>
+                </span>
+            </div>
 
         </header>
 
@@ -197,12 +198,6 @@
         <!-- FOOTER HUD OPTIMIZADO -->
         <footer id="dynamic-footer" class="w-full z-30 bg-black/60 backdrop-blur-lg border-t border-white/5 select-none shrink-0">
             <div class="w-full flex flex-col">
-
-                <div class="flex flex-col items-center justify-center w-full select-none pt-2 mt-4 border-t border-white/[0.02]">
-                    <span id="panel-telemetry-data" class="text-[7.5px] sm:text-[8px] text-center tracking-[0.4em] text-sky-400/90 uppercase transition-colors duration-300">
-                        LENGUAJE BIOCINÉTICO P.U.L.S.<span class="opacity-30">O.R.</span>
-                    </span>
-                </div>
 
                 <!-- Panel de Control y Variantes -->
                 <div class="w-full max-h-[36vh] overflow-y-auto overflow-x-hidden border-b border-white/5 bg-black/40 custom-hud-scroll">
