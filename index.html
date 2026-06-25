@@ -162,12 +162,17 @@
         <footer id="dynamic-footer" class="w-full z-30 bg-black/60 backdrop-blur-lg border-t border-white/5 select-none shrink-0">
             <div class="w-full flex flex-col">
 
-                <!-- Área de Información del Producto -->
-                <div class="flex flex-col items-center justify-center gap-1.5 text-white/50 text-[8px] tracking-[0.25em] font-mono w-full uppercase pt-3.5 text-center px-6">
-                    <span id="artepanel-price" class="text-sky-400/90 font-bold text-[10px] tracking-[0.3em] pt-1"></span>
-                    <span id="artepanel-spec" class="text-white/60 line-clamp-2 max-w-xs leading-normal"></span>
-                    <span id="artepanel-footer-desc" class="text-white/30 text-[7px] tracking-[0.2em] lowercase line-clamp-2 max-w-xs leading-normal"></span>
+                <!-- 1. Bloque Independiente: Precio -->
+                <div class="w-full flex flex-col items-center pt-3.5 pb-1 text-center px-6 font-mono uppercase select-none">
+                    <span id="artepanel-price" class="text-white/60 text-[8px] tracking-[0.25em] line-clamp-2 max-w-xs leading-normal"></span>
                 </div>
+
+                <!-- 2. Bloque Independiente: Especificaciones -->
+                <div class="w-full flex flex-col items-center py-1 text-center px-6 font-mono uppercase select-none">
+                    <span id="artepanel-spec" class="text-white/60 text-[8px] tracking-[0.25em] line-clamp-2 max-w-xs leading-normal"></span>
+                </div>
+
+
                 
                 <!-- BLOQUE CENTRAL: REJILLA TÉCNICA REORDENADA A 4 COLUMNAS -->
                 <section class="w-full max-w-sm mx-auto pt-3 pb-2 flex flex-col items-center select-none">
@@ -215,6 +220,13 @@
 
                         <div class="w-full pb-1">
                             <div id="artepanel-items-menu" class="flex justify-center items-center gap-6 text-[9px] tracking-[0.35em] uppercase text-white/40 select-none"></div>
+                        </div>
+
+
+
+                        <!-- 3. Bloque Independiente: Descripción -->
+                        <div class="w-full flex flex-col items-center pt-1 pb-2 text-center px-6 font-mono uppercase select-none">
+                            <span id="artepanel-footer-desc" class="text-white/60 text-[8px] tracking-[0.25em] line-clamp-2 max-w-xs leading-normal"></span>
                         </div>
                     </section>
                 </div>
