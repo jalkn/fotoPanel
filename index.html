@@ -106,22 +106,20 @@
             <div class="w-full pb-3 flex justify-center overflow-x-auto overflow-y-hidden py-0.5 custom-hud-scroll">
                 <div id="artepanel-variants-container" class="flex items-center justify-center gap-2 px-4"></div>
             </div>
-
-            <div class="w-full grid grid-cols-3 items-center uppercase px-5 sm:px-8 pt-3.5 pb-2 border-b border-white/5 font-mono">
+            <div class="w-full flex items-center justify-between uppercase px-5 sm:px-8 pt-3.5 pb-2 border-b border-white/5 font-mono gap-2">
                 
-                <div class="flex flex-col-reverse items-start text-left cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+                <div class="flex flex-col-reverse items-start text-left cursor-pointer hover:text-sky-400 text-white/60 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
                     <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5 uppercase">Hz</span>
                     <span id="sub-sets-solar" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.00</span>
                 </div>
 
-<!-- Centro Exacto -->
-                <div class="w-full flex items-center justify-center select-none px-1">
-                    <span id="panel-telemetry-data-secondary" class="text-[7.5px] xs:text-[8px] sm:text-[9px] text-center tracking-[0.25em] sm:tracking-[0.35em] text-sky-400/90 font-medium uppercase transition-colors duration-300 whitespace-normal block px-2 leading-normal">
+                <div class="flex-1 flex items-center justify-center select-none px-2 sm:px-4">
+                    <span id="panel-telemetry-data-secondary" class="text-[7.5px] xs:text-[8px] sm:text-[9px] text-center tracking-[0.15em] sm:tracking-[0.25em] text-sky-400/90 font-medium uppercase transition-colors duration-300 whitespace-normal block leading-normal">
                         LENGUAJE BIOCINÉTICO P.U.L.S.
                     </span>
                 </div>
 
-                <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+                <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-sky-400 text-white/60 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
                     <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5 uppercase">Tensión</span>
                     <span id="sub-reps-tension" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.0</span>
                 </div>
@@ -171,24 +169,20 @@
 <footer class="w-full z-50 backdrop-blur-md border-b border-white/5 shrink-0 select-none">
             <div class="w-full flex flex-col">
 
-<!-- FOOTER: SUB-BARRA DE CONTROL TRIPLE (CICLO / PANEL / NODO) -->
-<div class="w-full grid grid-cols-3 items-center uppercase px-5 sm:px-8 pt-3.5 pb-2 border-b border-white/5 font-mono">
+<div class="w-full flex items-center justify-between uppercase px-5 sm:px-8 pt-3.5 pb-2 border-b border-white/5 font-mono gap-2">
     
-    <!-- Extremo Izquierdo: Ciclo -->
-    <div class="flex flex-col-reverse items-start text-left cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+    <div class="flex flex-col-reverse items-start text-left cursor-pointer hover:text-sky-400 text-white/60 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
         <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Ciclo</span>
         <span id="telemetry-sphere-idx" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
     </div>
 
-<!-- Centro Exacto: Pantalla de Mensajes Globales -->
-    <div class="w-full flex items-center justify-center select-none px-1">
-        <span id="panel-telemetry-data" class="text-[6.5px] xs:text-[7.5px] sm:text-[8px] text-center tracking-[0.2em] sm:tracking-[0.25em] text-sky-400/90 font-medium uppercase transition-colors duration-300 whitespace-normal block leading-normal">
+    <div class="flex-1 flex items-center justify-center select-none px-2 sm:px-4">
+        <span id="panel-telemetry-data" class="text-[6.5px] xs:text-[7.5px] sm:text-[8px] text-center tracking-[0.15em] sm:tracking-[0.25em] text-sky-400/90 font-medium uppercase transition-colors duration-300 whitespace-normal block leading-normal">
             (MODELO 1:1) COMPRAS TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD
         </span>
     </div>
 
-    <!-- Extremo Derecho: Nodo -->
-    <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+    <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-sky-400 text-white/60 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
         <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Nodo</span>
         <span id="telemetry-active-node" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
     </div>
