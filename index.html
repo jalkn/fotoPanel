@@ -226,28 +226,30 @@
     </div>
 </div>
 
-                <!-- BASEBOARD INFERIOR: Ciclo (Izquierda) y Nodo (Derecha) en los extremos -->
-                <div class="px-4 py-3 sm:py-4 grid grid-cols-3 items-center w-full uppercase tracking-widest font-mono text-[9px] text-white/40 min-h-[55px] sm:min-h-[60px]">
-                    
-                    <div class="justify-self-start flex items-center gap-3">
-                        <a href="https://jako.world" class="group w-8 h-8 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
-                            <img src="img/back.png" alt="Back to jako.world" class="w-3.5 h-3.5 object-contain opacity-50 group-hover:opacity-100 transition-all duration-500" />
-                        </a>
-                    </div>    
-                    
-                    <div class="justify-self-center text-center tracking-[0.5em] font-bold text-white/30 text-[7px] sm:text-[8px] hover:text-white/60 transition-colors">
-                        <a href="https://jako.world" class="focus:outline-none">BY JAKO.WORLD</a>
-                    </div>
-                    
-                    <div class="justify-self-end flex items-center gap-3">
-                        <div class="flex flex-col-reverse items-end cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
-                        </div>
-                        <a href="https://biorush.shop" class="group w-8 h-8 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
-                            <img src="img/pace.png" alt="To biorush.shop" class="w-3.5 h-3.5 object-contain opacity-50 group-hover:opacity-100 transition-all duration-500" />
-                        </a>
-                    </div>
+<div class="w-full h-[52px] sm:h-[58px] bg-gradient-to-b from-white/[0.04] to-white/[0.01] backdrop-blur-xl border-t border-t-white/10 border-b border-b-black/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),_inset_0_-1px_0_rgba(0,0,0,0.35)] relative z-10 select-none">
+    
+    <div class="grid grid-cols-[58px_1fr_58px] items-center h-full w-full uppercase tracking-widest font-mono text-[9px]">
+        
+        <div class="h-full w-full flex items-center justify-center border-r border-r-black/30 shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)]">
+            <a href="https://jako.world" class="group w-full h-full flex items-center justify-center hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer">
+                <img src="img/back.png" alt="Back to jako.world" class="w-3.5 h-3.5 object-contain opacity-40 group-hover:opacity-100 transition-all duration-500" />
+            </a>
+        </div>    
+        
+        <div class="h-full w-full flex items-center justify-center text-center tracking-[0.5em] font-bold text-white/30 text-[7px] sm:text-[8px]">
+            <a href="https://jako.world" class="h-full w-full flex items-center justify-center hover:text-white/70 hover:bg-white/[0.005] transition-all duration-300 focus:outline-none">
+                BY JAKO.WORLD
+            </a>
+        </div>
+        
+        <div class="h-full w-full flex items-center justify-center border-l border-l-black/30 shadow-[inset_1px_0_0_rgba(255,255,255,0.03)]">
+            <a href="https://biorush.shop" class="group w-full h-full flex items-center justify-center hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer">
+                <img src="img/pace.png" alt="To biorush.shop" class="w-3.5 h-3.5 object-contain opacity-40 group-hover:opacity-100 transition-all duration-500" />
+            </a>
+        </div>
 
-                </div>
+    </div>
+</div>
             </div>
         </footer>
     </main>
@@ -565,73 +567,79 @@
         'sub-reps-tension': "Índice de cohesión molecular y tensión de red"
     };
 
+    // =========================================================================
+    // MOTOR DE REVELADO DE TELEMETRÍA (ENCAPSULADO INDEPENDIENTE POR BLOQUE)
+    // =========================================================================
     function habilitarReveladoTelemetria() {
-        const telemetryData = getCachedEl('panel-telemetry-data');
-        const telemetryDataSecondary = getCachedEl('panel-telemetry-data-secondary');
         
-        const textoOriginal = "(MODELO 1:1) COMPRAS TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD";
-        const textoOriginalSecondary = "LENGUAJE BIOCINÉTICO P.U.L.S.";
-        
-        let ultimoElemento = null;
-        let ultimoElementoPuls = null;
+        //---------------------------------------------------------
+        // BLOQUE 1: PANEL INTERMEDIO (TELEMETRÍA DE COMPRA)
+        //---------------------------------------------------------
+        const setupBloqueIntermedio = () => {
+            const telemetryData = getCachedEl('panel-telemetry-data');
+            const txtOriginal = "(MODELO 1:1) COMPRAS TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD";
+            let timerIntermedio = null;
 
-        // FLUJO 1: Controladores para la Telemetría de Control (Footer Sky Blue)
-        Object.keys(TELEMETRY_MEANINGS).forEach(id => {
-            const el = getCachedEl(id);
-            if (!el) return;
+            const activarRevelado = (idElemento, mensajeTecnico) => {
+                const el = getCachedEl(idElemento);
+                if (!el || !telemetryData) return;
 
-            el.addEventListener('click', () => {
-                if (ultimoElemento) {
-                    // Cambia el color directamente en el contenedor padre del elemento clickeado
-                    ultimoElemento.parentElement.classList.remove('text-sky-400');
-                    ultimoElemento.parentElement.classList.add('text-white/60');
-                }
-                
-                el.parentElement.classList.remove('text-white/60');
-                el.parentElement.classList.add('text-sky-400');
-                ultimoElemento = el;
+                el.addEventListener('click', () => {
+                    // Limpiar cualquier ciclo de retorno previo activo en este bloque
+                    clearTimeout(timerIntermedio);
+                    
+                    // Efecto visual HUD activo
+                    el.parentElement.classList.replace('text-white/60', 'text-sky-400');
+                    telemetryData.innerHTML = mensajeTecnico.toUpperCase();
+                    
+                    // Ciclo de restauración exclusivo del bloque
+                    timerIntermedio = setTimeout(() => {
+                        telemetryData.innerHTML = txtOriginal;
+                        el.parentElement.classList.replace('text-sky-400', 'text-white/60');
+                    }, 8000);
+                });
+            };
 
-                telemetryData.innerHTML = TELEMETRY_MEANINGS[id].toUpperCase();
-                
-                setTimeout(() => {
-                    telemetryData.innerHTML = textoOriginal;
-                    if (ultimoElemento === el) {
-                        el.parentElement.classList.remove('text-sky-400');
-                        el.parentElement.classList.add('text-white/60');
-                        ultimoElemento = null;
-                    }
-                }, 8000);
-            });
-        });
+            // Vincular los disparadores exclusivos de este panel
+            activarRevelado('telemetry-sphere-idx', "Matrix actual (Ciclo temporal)");
+            activarRevelado('telemetry-active-node', "Cantidad de dials acumulados por matrix");
+        };
 
-        // FLUJO 2: Controladores para Métricas Técnicas (Header Sky Blue)
-        Object.keys(PULS_MEANINGS).forEach(id => {
-            const el = getCachedEl(id);
-            if (!el) return;
+        //---------------------------------------------------------
+        // BLOQUE 2: HEADER SUPERIOR (MÉTRICAS TÉCNICAS P.U.L.S.)
+        //---------------------------------------------------------
+        const setupBloqueHeader = () => {
+            const telemetryDataSecondary = getCachedEl('panel-telemetry-data-secondary');
+            const txtOriginalSecondary = "LENGUAJE BIOCINÉTICO P.U.L.S.";
+            let timerHeader = null;
 
-            el.addEventListener('click', () => {
-                if (ultimoElementoPuls) {
-                    ultimoElementoPuls.parentElement.classList.remove('text-sky-400');
-                    ultimoElementoPuls.parentElement.classList.add('text-white/60');
-                }
-                
-                el.parentElement.classList.remove('text-white/60');
-                el.parentElement.classList.add('text-sky-400');
-                ultimoElementoPuls = el;
+            const activarReveladoHeader = (idElemento, mensajeTecnico) => {
+                const el = getCachedEl(idElemento);
+                if (!el || !telemetryDataSecondary) return;
 
-                telemetryDataSecondary.innerHTML = PULS_MEANINGS[id].toUpperCase();
-                
-                setTimeout(() => {
-                    telemetryDataSecondary.innerHTML = textoOriginalSecondary;
-                    if (ultimoElementoPuls === el) {
-                        el.parentElement.classList.remove('text-sky-400');
-                        el.parentElement.classList.add('text-white/60');
-                        ultimoElementoPuls = null;
-                    }
-                }, 8000);
-            });
-        });
-    }
+                el.addEventListener('click', () => {
+                    clearTimeout(timerHeader);
+                    
+                    el.parentElement.classList.replace('text-white/60', 'text-sky-400');
+                    telemetryDataSecondary.innerHTML = mensajeTecnico.toUpperCase();
+                    
+                    timerHeader = setTimeout(() => {
+                        telemetryDataSecondary.innerHTML = txtOriginalSecondary;
+                        el.parentElement.classList.replace('text-sky-400', 'text-white/60');
+                    }, 8000);
+                });
+            };
+
+            // Vincular los disparadores exclusivos del Header
+            activarReveladoHeader('sub-sets-solar', "Frecuencia de resonancia biocinética activa");
+            activarReveladoHeader('sub-reps-tension', "Índice de cohesión molecular y tensión de red");
+        };
+
+        // Inicializar ambos módulos de forma aislada y segura
+        setupBloqueIntermedio();
+        setupBloqueHeader();
+
+        }
 
     // =========================================================================
     // 6. CAPTURA DE TELEMETRÍA DE COMPRA (GENERACIÓN DE PAYLOAD)
