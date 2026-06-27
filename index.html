@@ -107,22 +107,25 @@
                 <div id="artepanel-variants-container" class="flex items-center justify-center gap-2 px-4"></div>
             </div>
 
-                <div class="w-full flex justify-between items-end uppercase px-5 sm:px-8 pt-3.5 pb-2 border-b border-white/5 font-mono">
-                    <div class="flex flex-col-reverse items-center text-center cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
-                        <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5 uppercase">Hz</span>
-                        <span id="sub-sets-solar" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.00</span>
-                    </div>
-                    <div class="flex flex-col-reverse items-center text-center cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
-                            <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Ciclo</span>
-                            <span id="telemetry-sphere-idx" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
-            
-
-                    </div>
-                    <div class="flex flex-col-reverse items-end cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
-                        <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5 uppercase">Tensión</span>
-                        <span id="sub-reps-tension" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.0</span>
-                    </div>
+            <div class="w-full grid grid-cols-3 items-center uppercase px-5 sm:px-8 pt-3.5 pb-2 border-b border-white/5 font-mono">
+                
+                <div class="flex flex-col-reverse items-start text-left cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+                    <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5 uppercase">Hz</span>
+                    <span id="sub-sets-solar" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.00</span>
                 </div>
+
+                <div class="w-full flex items-center justify-center select-none overflow-hidden px-1">
+                    <span id="panel-telemetry-data-secondary" class="text-[2vw] xs:text-[7.5px] sm:text-[8.5px] md:text-[9px] text-center tracking-[0.35em] text-sky-400/90 font-medium uppercase transition-colors duration-300 whitespace-nowrap block truncate px-2">
+                        LENGUAJE BIOCINÉTICO P.U.L.S.
+                    </span>
+                </div>
+
+                <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+                    <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5 uppercase">Tensión</span>
+                    <span id="sub-reps-tension" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.0</span>
+                </div>
+
+            </div>
 
         </header>
 
@@ -161,31 +164,31 @@
         </div>
     </div>
 
-    <div class="w-full h-8 sm:h-10 flex items-center justify-center shrink-0 select-none mt-auto mb-2 overflow-hidden">
-        <span id="panel-telemetry-data" class="text-[2vw] xs:text-[7.5px] sm:text-[8.5px] md:text-[9px] text-center tracking-[0.35em] text-sky-400/90 font-medium uppercase transition-colors duration-300 whitespace-nowrap block truncate px-2">
-            (MODELO 1:1) COMPRAS TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD
-        </span>
-    </div>
 
 </div>
 
 <footer class="w-full z-50 backdrop-blur-md border-b border-white/5 shrink-0 select-none">
             <div class="w-full flex flex-col">
 
-                <div class="w-full flex justify-between items-end uppercase px-5 sm:px-8 pt-3.5 pb-2 border-b border-white/5 font-mono">
-                    <div class="flex flex-col-reverse items-center text-center cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
-                        <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">DIAL_EX</span>
-                        <span id="tele-dial_ex" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
-                    </div>
-                    <div class="flex flex-col-reverse items-center text-center cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
-                            <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Nodo</span>
-                            <span id="telemetry-active-node" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
-                    </div>
-                    <div class="flex flex-col-reverse items-end cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
-                        <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">PRECIO</span>
-                        <span id="tele-price" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
-                    </div>
-                </div>
+<div class="w-full grid grid-cols-3 items-center uppercase px-5 sm:px-8 pt-3.5 pb-2 border-b border-white/5 font-mono">
+    
+    <div class="flex flex-col-reverse items-start text-left cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+        <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">DIAL_EX</span>
+        <span id="tele-dial_ex" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
+    </div>
+
+    <div class="w-full flex items-center justify-center select-none overflow-hidden px-1">
+        <span id="panel-telemetry-data" class="text-[1.8vw] xs:text-[6.5px] sm:text-[7.5px] md:text-[8px] text-center tracking-[0.25em] text-sky-400/90 font-medium uppercase transition-colors duration-300 whitespace-nowrap block truncate">
+            (MODELO 1:1) COMPRAS TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD
+        </span>
+    </div>
+
+    <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-sky-400 text-white/60 transition-colors">
+        <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">PRECIO</span>
+        <span id="tele-price" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
+    </div>
+
+</div>
 
                 <div class="w-full max-h-[36vh] overflow-y-auto overflow-x-hidden border-b border-white/5 bg-black/40 custom-hud-scroll">
 
@@ -552,24 +555,37 @@
         if (subRepsTension) subRepsTension.textContent = `${(14.2 + (repsStage * 0.8)).toFixed(1)}`;
     }
 
+// =========================================================================
+    // 5. MOTOR DE TELEMETRÍA (LENGUAJE PULSOR - REDISTRIBUIDO INDEPENDIENTE)
+    // =========================================================================
+    
+// =========================================================================
+    // 5. MOTOR DE TELEMETRÍA (LENGUAJE PULSOR - REDISTRIBUIDO INDEPENDIENTE)
+    // =========================================================================
+    
+    // TELEMETRY: Reducido estrictamente a los 2 elementos comerciales del Footer
     const TELEMETRY_MEANINGS = {
-        'telemetry-sphere-idx': "Matrix actual", 
-        'telemetry-active-node': "Cantidad de dials por matrix",
-        'sub-sets-solar': "Frecuencia de resonancia biocinética",
-        'sub-reps-tension': "Índice de cohesión molecular",
-        'tele-dial_ex': "Valor de conversion por dial biocinetico",
+        'tele-dial_ex': "Valor de conversión por dial biocinético",
         'tele-price': "Compras tu pieza y financias otra para la comunidad"
     };
 
-// =========================================================================
-    // 5. MOTOR DE TELEMETRÍA (LENGUAJE PULSOR - ACTUALIZADO)
-    // =========================================================================
+    // PULS_MEANINGS: Mantiene de forma independiente las 2 métricas físicas del Header
+    const PULS_MEANINGS = {
+        'sub-sets-solar': "Frecuencia de resonancia biocinética activa",
+        'sub-reps-tension': "Índice de cohesión molecular y tensión de red"
+    };
+
     function habilitarReveladoTelemetria() {
         const telemetryData = getCachedEl('panel-telemetry-data');
-        // Texto con el efecto visual deseado
+        const telemetryDataSecondary = getCachedEl('panel-telemetry-data-secondary');
+        
         const textoOriginal = "(MODELO 1:1) COMPRAS TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD";
+        const textoOriginalSecondary = "LENGUAJE BIOCINÉTICO P.U.L.S.";
+        
         let ultimoElemento = null;
+        let ultimoElementoPuls = null;
 
+        // FLUJO 1: Controladores para la Telemetría Comercial (Footer Sky Blue)
         Object.keys(TELEMETRY_MEANINGS).forEach(id => {
             const el = getCachedEl(id);
             if (!el) return;
@@ -584,16 +600,44 @@
                 el.classList.add('text-sky-400');
                 ultimoElemento = el;
 
-                // Actualizamos con innerHTML para renderizar el span de opacidad
                 telemetryData.innerHTML = TELEMETRY_MEANINGS[id].toUpperCase();
                 
                 setTimeout(() => {
                     telemetryData.innerHTML = textoOriginal;
-                    
                     if (ultimoElemento === el) {
                         el.classList.remove('text-sky-400');
                         el.classList.add('text-white/60');
                         ultimoElemento = null;
+                    }
+                }, 8000);
+            });
+        });
+
+        // FLUJO 2: Controladores para Métricas Técnicas (Header Sky Blue)
+        Object.keys(PULS_MEANINGS).forEach(id => {
+            const el = getCachedEl(id);
+            if (!el) return;
+
+            el.addEventListener('click', () => {
+                if (ultimoElementoPuls) {
+                    ultimoElementoPuls.parentElement.classList.remove('text-sky-400');
+                    ultimoElementoPuls.parentElement.classList.add('text-white/60');
+                }
+                
+                // Aplica el color reactivo directamente al contenedor padre en el Header
+                el.parentElement.classList.remove('text-white/60');
+                el.parentElement.classList.add('text-sky-400');
+                ultimoElementoPuls = el;
+
+                // Renderiza el significado en la barra centralizada del Header
+                telemetryDataSecondary.innerHTML = PULS_MEANINGS[id].toUpperCase();
+                
+                setTimeout(() => {
+                    telemetryDataSecondary.innerHTML = textoOriginalSecondary;
+                    if (ultimoElementoPuls === el) {
+                        el.parentElement.classList.remove('text-sky-400');
+                        el.parentElement.classList.add('text-white/60');
+                        ultimoElementoPuls = null;
                     }
                 }, 8000);
             });
