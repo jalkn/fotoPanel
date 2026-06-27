@@ -107,30 +107,7 @@
             </div>
         </div>
 
-<!-- BLOQUE 2: 5 Columnas de ancho idéntico simétrico (Estilo HUD Crudo Jako) -->
-        <div class="w-full h-12 relative z-10 border-b border-white/5">
-            <div class="grid grid-cols-5 h-full w-full items-center">
-                
-                <!-- Columna 1: STENCIL -->
-                <div id="menu-bio-STENCIL-holder" class="h-full w-full flex items-center justify-center border-r border-white/5 select-none text-[9px]">
-                    <!-- Inyectado dinámicamente desde JS -->
-                </div>
 
-                <!-- Columna 2: Variante Izquierda -->
-                <div id="v-cell-0" class="h-full w-full border-r border-white/5"></div>
-
-                <!-- Columna 3: Variante Central -->
-                <div id="v-cell-1" class="h-full w-full border-r border-white/5"></div>
-
-                <!-- Columna 4: Variante Derecha -->
-                <div id="v-cell-2" class="h-full w-full border-r border-white/5"></div>
-
-                <!-- Columna 5: PANEL -->
-                <div id="menu-bio-PANEL-holder" class="h-full w-full flex items-center justify-center select-none text-[9px]">
-                    <!-- Inyectado dinámicamente desde JS -->
-                </div>
-            </div>
-        </div>
 
         <!-- BLOQUE 3 (Reflejo del bloque superior del footer): Altura h-10 y Telemetría -->
         <div class="w-full flex items-center justify-between px-5 sm:px-8 h-10 gap-2">
@@ -188,29 +165,50 @@
             </div>
         </div>
     </div>
+    
 
 
+</div>
+
+<!-- SECCIÓN DE TELEMETRÍA DE COMPRA (Ubicación: Justo encima del Footer, fuera de él) -->
+<div class="w-full bg-black/10 border-t border-white/[0.03] py-2 px-4 z-10 relative">
+    <div class="max-w-7xl mx-auto flex items-center justify-center">
+        <span id="panel-telemetry-data" class="text-[6.5px] xs:text-[7.5px] sm:text-[8px] text-center tracking-[0.15em] sm:tracking-[0.25em] text-sky-400/80 font-medium transition-colors duration-300 whitespace-normal block leading-normal uppercase">
+            (MODELO 1:1) COMPRAS TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD
+        </span>
+    </div>
 </div>
 
 <footer class="w-full z-50 bg-gradient-to-b from-white/[0.03] to-white/[0.005] backdrop-blur-2xl border-t border-t-white/10 border-b border-b-black/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),_0_-10px_40px_rgba(0,0,0,0.5)] shrink-0 select-none">
     <div class="w-full flex flex-col divide-y divide-white/5 font-mono uppercase text-xs">
 
-        <div class="w-full flex items-center justify-between px-5 sm:px-8 h-10 gap-2">
-            <div class="flex flex-col-reverse items-start text-left cursor-pointer hover:text-sky-400 text-white/50 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
+        <div class="w-full flex items-center justify-between px-4 sm:px-8 h-10 gap-2 border-b border-white/5 bg-black/5">
+            
+            <div class="flex flex-col-reverse items-start text-left cursor-pointer hover:text-sky-400 text-white/50 transition-colors shrink-0 min-w-[55px]">
                 <span class="text-[6.5px] tracking-[0.2em] text-white/20 mt-0.5">Ciclo</span>
                 <span id="telemetry-sphere-idx" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
             </div>
 
-            <div class="flex-1 flex items-center justify-center px-2 sm:px-4">
-                <span id="panel-telemetry-data" class="text-[6.5px] xs:text-[7.5px] sm:text-[8px] text-center tracking-[0.15em] sm:tracking-[0.25em] text-sky-400/80 font-medium transition-colors duration-300 whitespace-normal block leading-normal">
-                    (MODELO 1:1) COMPRAS TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD
-                </span>
+            <div class="flex flex-col-reverse items-start text-left cursor-pointer hover:text-sky-400 text-white/50 transition-colors shrink-0 min-w-[55px]">
+                <span class="text-[6.5px] tracking-[0.2em] text-white/20 mt-0.5">DIM CMS</span>
+                <span id="telemetry-product-dim" class="tracking-[0.15em] text-[9px] sm:text-[10px] text-sky-400/90 font-medium">--</span>
             </div>
 
-            <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-sky-400 text-white/50 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
+            <div class="flex-1 flex flex-col-reverse items-center text-center cursor-pointer hover:text-sky-400 text-white/50 transition-colors px-1">
+                <span class="text-[6.5px] tracking-[0.2em] text-white/20 mt-0.5">Precio</span>
+                <span id="telemetry-product-price" class="tracking-[0.15em] text-[10px] sm:text-[11px] text-white font-black">--</span>
+            </div>
+
+            <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-sky-400 text-white/50 transition-colors shrink-0 min-w-[55px]">
+                <span class="text-[6.5px] tracking-[0.2em] text-white/20 mt-0.5">Dials</span>
+                <span id="telemetry-product-dialex" class="tracking-[0.15em] text-[9px] sm:text-[10px] text-sky-400/90 font-medium">--</span>
+            </div>
+
+            <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-sky-400 text-white/50 transition-colors shrink-0 min-w-[55px]">
                 <span class="text-[6.5px] tracking-[0.2em] text-white/20 mt-0.5">Nodo</span>
                 <span id="telemetry-active-node" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
             </div>
+
         </div>
 
         <div class="w-full h-12 relative z-10">
@@ -246,6 +244,36 @@
                 </button>
             </div>
         </div>
+<!-- BLOQUE 2 (Reflejo del bloque central del footer): Altura h-12 HUD Crudo Simétrico -->
+<div class="w-full h-12 relative z-10 bg-black/20 p-1">
+    <div class="grid grid-cols-[1fr_1fr] gap-3 h-full w-full">
+        
+        <!-- Extremo Izquierdo: Módulo de Navegación STENCIL -->
+        <div class="grid grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center">
+            <button onclick="ciclarVariante('STENCIL', -1)" class="h-full flex items-center justify-center text-white/20 hover:text-sky-400 hover:bg-white/[0.02] rounded-l-lg transition-all focus:outline-none">
+                <span class="text-[9px] font-bold">&lt;</span>
+            </button>
+            <div id="menu-bio-STENCIL-holder" class="h-full w-full flex items-center justify-center select-none">
+            </div>
+            <button onclick="ciclarVariante('STENCIL', 1)" class="h-full flex items-center justify-center text-white/20 hover:text-sky-400 hover:bg-white/[0.02] rounded-r-lg transition-all focus:outline-none">
+                <span class="text-[9px] font-bold">&gt;</span>
+            </button>
+        </div>
+
+        <!-- Extremo Derecho: Módulo de Navegación PANEL -->
+        <div class="grid grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center">
+            <button onclick="ciclarVariante('PANEL', -1)" class="h-full flex items-center justify-center text-white/20 hover:text-sky-400 hover:bg-white/[0.02] rounded-l-lg transition-all focus:outline-none">
+                <span class="text-[9px] font-bold">&lt;</span>
+            </button>
+            <div id="menu-bio-PANEL-holder" class="h-full w-full flex items-center justify-center select-none">
+            </div>
+            <button onclick="ciclarVariante('PANEL', 1)" class="h-full flex items-center justify-center text-white/20 hover:text-sky-400 hover:bg-white/[0.02] rounded-r-lg transition-all focus:outline-none">
+                <span class="text-[9px] font-bold">&gt;</span>
+            </button>
+        </div>
+
+    </div>
+</div>
 
         <div class="w-full h-11 relative z-10">
             <div class="grid grid-cols-[54px_1fr_54px] items-center h-full w-full text-[8px] tracking-[0.4em]">
@@ -290,7 +318,7 @@
                     price: '$12USD', 
                     id: 'ST-25X25',
                     img: 'img/surface.png', imgBack: 'img/stencil25W.png', imgRaw: 'img/stencil25B.png',
-                    telemetry: { DIM: '25x25', MEDIA: 'STENCIL', DIALS: '240', DIAL_EX: '⧗240x$0.05' }
+                    telemetry: { DIM: '25x25', MEDIA: 'STENCIL', DIAL_EX: '⧗240', RATE: '$0.05USD' }
                 },
                 '40X40': { 
                     label: 'MICROSTENCIL FOCUS', 
@@ -299,7 +327,7 @@
                     price: '$29USD', 
                     id: 'ST-MICRO',
                     img: 'img/surface.png', imgBack: 'img/microW.png', imgRaw: 'img/microB.png',
-                    telemetry: { DIM: '40x40', MEDIA: 'STENCIL', DIALS: '576', DIAL_EX: '⧗240x$0.05' }
+                    telemetry: { DIM: '40x40', MEDIA: 'STENCIL', DIAL_EX: '⧗240', RATE: '$0.05USD' }
                 },
                 '80X80': { 
                     label: 'MACROSTENCIL SURGE', 
@@ -308,7 +336,7 @@
                     price: '$125USD', 
                     id: 'ST-MACRO',
                     img: 'img/surface.png', imgBack: 'img/macroW.png', imgRaw: 'img/macroB.png',
-                    telemetry: { DIM: '80x80', MEDIA: 'STENCIL', DIALS: '2500', DIAL_EX: '⧗2500x$0.05' }
+                    telemetry: { DIM: '80x80', MEDIA: 'STENCIL', DIAL_EX: '⧗2500', RATE: '$0.05USD' }
                 }
             }
         },
@@ -322,7 +350,7 @@
                     price: '$12USD', 
                     id: 'FP-20X20',
                     img: 'img/surface.png', imgBack: 'img/panel20W.png', imgRaw: 'img/panel20B.png',
-                    telemetry: { TEC: 'INKJET', DIM: '20x20', MEDIA: 'MDF', DIALS: '240', DIAL_EX: '⧗240x$0.05' }
+                    telemetry: { DIM: '20x20', MEDIA: 'MDF', DIAL_EX: '⧗240', RATE: '$0.05USD' }
                 },
                 '30X30': { 
                     label: 'PANEL30X30', 
@@ -331,7 +359,7 @@
                     price: '$29USD', 
                     id: 'FP-30X30',
                     img: 'img/surface.png', imgBack: 'img/panel30W.png', imgRaw: 'img/panel30B.png',
-                    telemetry: { TEC: 'INKJET', DIM: '30x30', MEDIA: 'MDF', DIALS: '576', DIAL_EX: '⧗576x$0.055' }
+                    telemetry: { DIM: '30x30', MEDIA: 'MDF', DIAL_EX: '⧗576', RATE: '$0.05USD' }
                 },
                 '40X40': { 
                     label: 'PANEL40X40', 
@@ -340,7 +368,7 @@
                     price: '$55USD', 
                     id: 'FP-40X40',
                     img: 'img/surface.png', imgBack: 'img/panel40W.png', imgRaw: 'img/panel40B.png',
-                    telemetry: { TEC: 'INKJET', DIM: '40x40', MEDIA: 'MDF', DIALS: '1100', DIAL_EX: '⧗1100x$0.05' }
+                    telemetry: { DIM: '40x40', MEDIA: 'MDF', DIAL_EX: '⧗1100', RATE: '$0.05USD' }
                 }
             }
         }
@@ -418,7 +446,7 @@
         btnBio.addEventListener('click', () => alternarModo('back', 12));
         btnRaw.addEventListener('click', () => alternarModo('raw', 10));
     }
-    // ==========================================
+// ==========================================
     // 4. CONTROLADORES DE INTERFAZ DE USUARIO
     // ==========================================
     function inicializarArtepanel() {
@@ -456,57 +484,27 @@
         triggerHaptic(10);
     }
 
-    function actualizarBioUI() {
-        const itemConfig = ARTEPANEL_CATALOG[currentBioItem];
-        const variantConfig = itemConfig.variants[currentBioVariant];
-        
-        const descEl = getCachedEl('artepanel-description');
-        const packImg = getCachedEl('artepanel-pack-img');
-        const packImgBack = getCachedEl('artepanel-pack-img-back');
-        
-        if (descEl && packImg && packImgBack) {
-            descEl.classList.add('opacity-0');
-            
-            setTimeout(() => {
-                descEl.textContent = variantConfig.desc;
-                packImg.src = variantConfig.img;
-                packImgBack.src = variantConfig.imgBack;
-                getCachedEl('artepanel-pack-img-raw').src = variantConfig.imgRaw;
-                
-                const labelTitle = getCachedEl('laser-variant-title');
-                if (labelTitle) labelTitle.textContent = variantConfig.label;
-                
-                descEl.classList.remove('opacity-0');
-            }, 120);
+    // Cicla perfectamente respetando las llaves únicas de cada catálogo
+    function ciclarVariante(tipo, direccion) {
+        // Si el usuario clickea flechas de un grupo que no está activo, lo activamos
+        if (currentBioItem !== tipo) {
+            currentBioItem = tipo;
+            currentBioVariant = ARTEPANEL_CATALOG[tipo].defaultVariant;
         }
 
-        // Estilos del menú lateral superior (STENCIL / PANEL) alineados al HUD
-        Object.keys(ARTEPANEL_CATALOG).forEach(item => {
-            const el = getCachedEl(`menu-bio-${item}`);
-            if (el) el.className = (item === currentBioItem) 
-                ? "cursor-pointer tracking-[0.35em] text-[10px] font-black transition-all duration-300 h-full w-full flex items-center justify-center text-sky-400 bg-sky-500/5" 
-                : "cursor-pointer tracking-[0.35em] text-[10px] font-medium transition-all duration-300 h-full w-full flex items-center justify-center text-white/40 hover:text-sky-400 hover:bg-sky-500/5";
-        });
+        const variantes = Object.keys(ARTEPANEL_CATALOG[tipo].variants);
+        let currentIndex = variantes.indexOf(currentBioVariant);
 
-        // Distribución Cruda de Variantes en Celdas de Ancho Idéntico
-        const variantKeys = Object.keys(itemConfig.variants); // ['25X25', '40X40', '80X80']
-        
-        variantKeys.forEach((vKey, index) => {
-            const cell = getCachedEl(`v-cell-${index}`);
-            if (cell) {
-                const isSelected = vKey === currentBioVariant;
-                const stateStyles = isSelected
-                    ? 'bg-sky-500/10 text-sky-400 font-black'
-                    : 'bg-transparent text-white/40 hover:bg-sky-500/5 hover:text-sky-400';
+        // Fail-safe por si los estados globales se cruzaron
+        if (currentIndex === -1) currentIndex = 0;
 
-                cell.innerHTML = `
-                    <button onclick="cambiarBioVariant('${vKey}')" 
-                        class="h-full w-full flex items-center justify-center tracking-[0.35em] text-[11px] font-sans uppercase transition-all duration-300 focus:outline-none ${stateStyles}">
-                        ${vKey}
-                    </button>
-                `;
-            }
-        });
+        // Navegación cíclica pura basada en el catálogo específico
+        let nextIndex = (currentIndex + direccion) % variantes.length;
+        if (nextIndex < 0) nextIndex = variantes.length - 1;
+
+        currentBioVariant = variantes[nextIndex];
+        actualizarBioUI();
+        triggerHaptic(12);
     }
 
     // =========================================================================
@@ -584,17 +582,16 @@
         if (subRepsTension) subRepsTension.textContent = `${(14.2 + (repsStage * 0.8)).toFixed(1)}`;
     }
 
-// =========================================================================
-    // 5. MOTOR DE TELEMETRÍA (LENGUAJE PULSOR - REDISTRIBUIDO INDEPENDIENTE)
-    // =========================================================================
-
-    // TELEMETRY: Se redujo a los 2 elementos de control que decidiste mantener
+    // TELEMETRY: Agrupamos todo el panel intermedio con los nuevos significados técnicos solicitados
     const TELEMETRY_MEANINGS = {
         'telemetry-sphere-idx': "Matrix actual (Ciclo temporal)", 
-        'telemetry-active-node': "Cantidad de dials acumulados por matrix"
+        'telemetry-active-node': "Cantidad de dials acumulados por matrix",
+        'telemetry-product-dim': "Plantilla stencil (tamano, ej: 25x25)",
+        'telemetry-product-dialex': "$0.05USD por dial biocinetico",
+        'telemetry-product-price': "Compras tu pieza y financias otra para la comunidad"
     };
 
-    // PULS_MEANINGS: Mantiene de forma independiente las 2 métricas físicas del Header
+    // PULS_MEANINGS: Se mantiene intacto en el Header Superior
     const PULS_MEANINGS = {
         'sub-sets-solar': "Frecuencia de resonancia biocinética activa",
         'sub-reps-tension': "Índice de cohesión molecular y tensión de red"
@@ -603,10 +600,58 @@
     // =========================================================================
     // MOTOR DE REVELADO DE TELEMETRÍA (ENCAPSULADO INDEPENDIENTE POR BLOQUE)
     // =========================================================================
+    function actualizarBioUI() {
+        const itemConfig = ARTEPANEL_CATALOG[currentBioItem];
+        const variantConfig = itemConfig.variants[currentBioVariant];
+        
+        const descEl = getCachedEl('artepanel-description');
+        const packImg = getCachedEl('artepanel-pack-img');
+        const packImgBack = getCachedEl('artepanel-pack-img-back');
+        
+        if (descEl && packImg && packImgBack) {
+            descEl.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                descEl.textContent = variantConfig.desc;
+                packImg.src = variantConfig.img;
+                packImgBack.src = variantConfig.imgBack;
+                getCachedEl('artepanel-pack-img-raw').src = variantConfig.imgRaw;
+                
+                const labelTitle = getCachedEl('laser-variant-title');
+                if (labelTitle) labelTitle.textContent = variantConfig.label;
+                
+                descEl.classList.remove('opacity-0');
+            }, 120);
+        }
+
+        // --- NUEVA INYECCIÓN: Telemetría Técnica Dinámica en Pantalla ---
+        const elDim = getCachedEl('telemetry-product-dim');
+        const elDialEx = getCachedEl('telemetry-product-dialex');
+        const elPrice = getCachedEl('telemetry-product-price');
+
+        if (elDim) elDim.textContent = variantConfig.telemetry.DIM;
+        if (elDialEx) elDialEx.textContent = variantConfig.telemetry.DIAL_EX;
+        if (elPrice) elPrice.textContent = variantConfig.price;
+        // ---------------------------------------------------------------
+
+        const textFluidClass = "text-[8px] xs:text-[9.5px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.35em] uppercase font-sans transition-all duration-300";
+
+        Object.keys(ARTEPANEL_CATALOG).forEach(item => {
+            const el = getCachedEl(`menu-bio-${item}`);
+            if (el) {
+                const isSelected = (item === currentBioItem);
+                el.textContent = item;
+                el.className = isSelected 
+                    ? `cursor-pointer font-black h-full w-full flex items-center justify-center text-white bg-white/[0.07] rounded-lg border border-white/20 shadow-[inset_0_1px_3px_rgba(255,255,255,0.25),_0_2px_8px_rgba(255,255,255,0.05)] ${textFluidClass}` 
+                    : `cursor-pointer font-medium h-full w-full flex items-center justify-center text-white/20 bg-transparent rounded-lg hover:text-white/50 hover:bg-white/[0.02] ${textFluidClass}`;
+            }
+        });
+    }
+
     function habilitarReveladoTelemetria() {
         
         //---------------------------------------------------------
-        // BLOQUE 1: PANEL INTERMEDIO (TELEMETRÍA DE COMPRA)
+        // BLOQUE 1: PANEL INTERMEDIO AUTOMATIZADO CON NUEVOS SIGNIFCADOS
         //---------------------------------------------------------
         const setupBloqueIntermedio = () => {
             const telemetryData = getCachedEl('panel-telemetry-data');
@@ -618,24 +663,22 @@
                 if (!el || !telemetryData) return;
 
                 el.addEventListener('click', () => {
-                    // Limpiar cualquier ciclo de retorno previo activo en este bloque
                     clearTimeout(timerIntermedio);
                     
-                    // Efecto visual HUD activo
-                    el.parentElement.classList.replace('text-white/60', 'text-sky-400');
+                    el.parentElement.classList.replace('text-white/50', 'text-sky-400');
                     telemetryData.innerHTML = mensajeTecnico.toUpperCase();
                     
-                    // Ciclo de restauración exclusivo del bloque
                     timerIntermedio = setTimeout(() => {
                         telemetryData.innerHTML = txtOriginal;
-                        el.parentElement.classList.replace('text-sky-400', 'text-white/60');
+                        el.parentElement.classList.replace('text-sky-400', 'text-white/50');
                     }, 8000);
                 });
             };
 
-            // Vincular los disparadores exclusivos de este panel
-            activarRevelado('telemetry-sphere-idx', "Matrix actual (Ciclo temporal)");
-            activarRevelado('telemetry-active-node', "Cantidad de dials acumulados por matrix");
+            // Vinculamos de forma iterativa usando nuestro nuevo diccionario extendido
+            Object.keys(TELEMETRY_MEANINGS).forEach(id => {
+                activarRevelado(id, TELEMETRY_MEANINGS[id]);
+            });
         };
 
         //---------------------------------------------------------
@@ -653,26 +696,24 @@
                 el.addEventListener('click', () => {
                     clearTimeout(timerHeader);
                     
-                    el.parentElement.classList.replace('text-white/60', 'text-sky-400');
+                    el.parentElement.classList.replace('text-white/50', 'text-sky-400');
                     telemetryDataSecondary.innerHTML = mensajeTecnico.toUpperCase();
                     
                     timerHeader = setTimeout(() => {
                         telemetryDataSecondary.innerHTML = txtOriginalSecondary;
-                        el.parentElement.classList.replace('text-sky-400', 'text-white/60');
+                        el.parentElement.classList.replace('text-sky-400', 'text-white/50');
                     }, 8000);
                 });
             };
 
-            // Vincular los disparadores exclusivos del Header
-            activarReveladoHeader('sub-sets-solar', "Frecuencia de resonancia biocinética activa");
-            activarReveladoHeader('sub-reps-tension', "Índice de cohesión molecular y tensión de red");
+            Object.keys(PULS_MEANINGS).forEach(id => {
+                activarReveladoHeader(id, PULS_MEANINGS[id]);
+            });
         };
 
-        // Inicializar ambos módulos de forma aislada y segura
         setupBloqueIntermedio();
         setupBloqueHeader();
-
-        }
+    }
 
     // =========================================================================
     // 6. CAPTURA DE TELEMETRÍA DE COMPRA (GENERACIÓN DE PAYLOAD)
