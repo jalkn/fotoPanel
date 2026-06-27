@@ -79,54 +79,80 @@
 
  <main id="main-vault" class="w-screen h-screen flex flex-col justify-between relative overflow-hidden">
 
-<header class="w-full z-50 bg-gradient-to-b from-black/90 via-black/75 to-black/0 backdrop-blur-md border-b border-white/5 shrink-0 select-none">
-            
-            <div class="w-full px-4 sm:px-6 grid grid-cols-3 items-center min-h-[63px] sm:min-h-[69px]">
+<header class="w-full z-50 bg-gradient-to-b from-white/[0.03] to-white/[0.005] backdrop-blur-2xl border-b border-b-black/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),_0_10px_40px_rgba(0,0,0,0.5)] shrink-0 select-none">
+    <div class="w-full flex flex-col divide-y divide-white/5 font-mono uppercase text-xs">
+
+        <!-- BLOQUE 1 (Reflejo del bloque inferior del footer): Altura h-11 y rejilla de 3 columnas -->
+        <div class="w-full h-11 relative z-10">
+            <div class="grid grid-cols-[54px_1fr_54px] items-center h-full w-full text-[8px] tracking-[0.4em]">
                 
-                <div class="justify-self-start flex items-center gap-3 font-mono">
-                    <a href="https://jako.world" class="group w-9 h-9 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
-                        <img src="img/back.png" alt="Back to jako.world" class="w-4 h-4 object-contain opacity-60 group-hover:opacity-100 transition-all duration-500" />
+                <!-- Extremo Izquierdo: Botón Volver -->
+                <div class="h-full w-full flex items-center justify-center border-r border-white/5">
+                    <a href="https://jako.world" class="group w-full h-full flex items-center justify-center hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer">
+                        <img src="img/back.png" alt="Back to jako.world" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500" />
                     </a>
-
+                </div>    
+                
+                <!-- Centro Estructural -->
+                <div class="h-full w-full flex items-center justify-center text-center font-bold text-white/20">
+                    <span class="tracking-[0.35em]">JAKO VAULT</span>
                 </div>
                 
-                <div class="w-full">
-                    <div id="artepanel-items-menu" class="flex justify-center items-center gap-6 text-[9px] tracking-[0.35em] uppercase text-white/40 select-none"></div>
-                </div>
-                
-                <div class="justify-self-end flex items-center gap-3 font-mono">
-
-                    <a href="https://biorush.shop" class="group w-9 h-9 flex items-center justify-center transition-all duration-300 focus:outline-none cursor-pointer">
-                        <img src="img/pace.png" alt="To biorush.shop" class="w-4 h-4 object-contain opacity-60 group-hover:opacity-100 transition-all duration-500" />
+                <!-- Extremo Derecho: Botón Tienda -->
+                <div class="h-full w-full flex items-center justify-center border-l border-white/5">
+                    <a href="https://biorush.shop" class="group w-full h-full flex items-center justify-center hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer">
+                        <img src="img/pace.png" alt="To biorush.shop" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500" />
                     </a>
                 </div>
+            </div>
+        </div>
+
+<!-- BLOQUE 2: 5 Columnas de ancho idéntico simétrico (Estilo HUD Crudo Jako) -->
+        <div class="w-full h-12 relative z-10 border-b border-white/5">
+            <div class="grid grid-cols-5 h-full w-full items-center">
                 
-            </div>
-
-            <div class="w-full pb-3 flex justify-center overflow-x-auto overflow-y-hidden py-0.5 custom-hud-scroll">
-                <div id="artepanel-variants-container" class="flex items-center justify-center gap-2 px-4"></div>
-            </div>
-            <div class="w-full flex items-center justify-between uppercase px-5 sm:px-8 pt-3.5 pb-2 border-b border-white/5 font-mono gap-2">
-                
-                <div class="flex flex-col-reverse items-start text-left cursor-pointer hover:text-sky-400 text-white/60 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
-                    <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5 uppercase">Hz</span>
-                    <span id="sub-sets-solar" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.00</span>
+                <!-- Columna 1: STENCIL -->
+                <div id="menu-bio-STENCIL-holder" class="h-full w-full flex items-center justify-center border-r border-white/5 select-none text-[9px]">
+                    <!-- Inyectado dinámicamente desde JS -->
                 </div>
 
-                <div class="flex-1 flex items-center justify-center select-none px-2 sm:px-4">
-                    <span id="panel-telemetry-data-secondary" class="text-[7.5px] xs:text-[8px] sm:text-[9px] text-center tracking-[0.15em] sm:tracking-[0.25em] text-sky-400/90 font-medium uppercase transition-colors duration-300 whitespace-normal block leading-normal">
-                        LENGUAJE BIOCINÉTICO P.U.L.S.
-                    </span>
-                </div>
+                <!-- Columna 2: Variante Izquierda -->
+                <div id="v-cell-0" class="h-full w-full border-r border-white/5"></div>
 
-                <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-sky-400 text-white/60 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
-                    <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5 uppercase">Tensión</span>
-                    <span id="sub-reps-tension" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.0</span>
-                </div>
+                <!-- Columna 3: Variante Central -->
+                <div id="v-cell-1" class="h-full w-full border-r border-white/5"></div>
 
+                <!-- Columna 4: Variante Derecha -->
+                <div id="v-cell-2" class="h-full w-full border-r border-white/5"></div>
+
+                <!-- Columna 5: PANEL -->
+                <div id="menu-bio-PANEL-holder" class="h-full w-full flex items-center justify-center select-none text-[9px]">
+                    <!-- Inyectado dinámicamente desde JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOQUE 3 (Reflejo del bloque superior del footer): Altura h-10 y Telemetría -->
+        <div class="w-full flex items-center justify-between px-5 sm:px-8 h-10 gap-2">
+            <div class="flex flex-col-reverse items-start text-left cursor-pointer hover:text-sky-400 text-white/50 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
+                <span class="text-[6.5px] tracking-[0.2em] text-white/20 mt-0.5">Hz</span>
+                <span id="sub-sets-solar" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.00</span>
             </div>
 
-        </header>
+            <div class="flex-1 flex items-center justify-center px-2 sm:px-4">
+                <span id="panel-telemetry-data-secondary" class="text-[6.5px] xs:text-[7.5px] sm:text-[8px] text-center tracking-[0.15em] sm:tracking-[0.25em] text-sky-400/80 font-medium transition-colors duration-300 whitespace-normal block leading-normal">
+                    LENGUAJE BIOCINÉTICO P.U.L.S.
+                </span>
+            </div>
+
+            <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-sky-400 text-white/50 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
+                <span class="text-[6.5px] tracking-[0.2em] text-white/20 mt-0.5">Tensión</span>
+                <span id="sub-reps-tension" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0.0</span>
+            </div>
+        </div>
+
+    </div>
+</header>
 
 <div class="flex-1 w-full flex flex-col items-center justify-between p-4 sm:p-6 select-none relative z-10 overflow-hidden">
     
@@ -166,92 +192,85 @@
 
 </div>
 
-<footer class="w-full z-50 backdrop-blur-md border-b border-white/5 shrink-0 select-none">
-            <div class="w-full flex flex-col">
+<footer class="w-full z-50 bg-gradient-to-b from-white/[0.03] to-white/[0.005] backdrop-blur-2xl border-t border-t-white/10 border-b border-b-black/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),_0_-10px_40px_rgba(0,0,0,0.5)] shrink-0 select-none">
+    <div class="w-full flex flex-col divide-y divide-white/5 font-mono uppercase text-xs">
 
-<div class="w-full flex items-center justify-between uppercase px-5 sm:px-8 pt-3.5 pb-2 border-b border-white/5 font-mono gap-2">
-    
-    <div class="flex flex-col-reverse items-start text-left cursor-pointer hover:text-sky-400 text-white/60 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
-        <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Ciclo</span>
-        <span id="telemetry-sphere-idx" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
-    </div>
-
-    <div class="flex-1 flex items-center justify-center select-none px-2 sm:px-4">
-        <span id="panel-telemetry-data" class="text-[6.5px] xs:text-[7.5px] sm:text-[8px] text-center tracking-[0.15em] sm:tracking-[0.25em] text-sky-400/90 font-medium uppercase transition-colors duration-300 whitespace-normal block leading-normal">
-            (MODELO 1:1) COMPRAS TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD
-        </span>
-    </div>
-
-    <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-sky-400 text-white/60 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
-        <span class="text-[6.5px] tracking-[0.2em] text-white/30 mt-0.5">Nodo</span>
-        <span id="telemetry-active-node" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
-    </div>
-
-</div>
-
-<div class="w-full h-[48px] bg-gradient-to-b from-white/[0.04] to-white/[0.01] backdrop-blur-xl border-t border-t-white/15 border-b border-b-black/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),_inset_0_-1px_0_rgba(0,0,0,0.3)] relative z-10 select-none">
-    
-    <div class="grid grid-cols-[54px_54px_1fr_54px_54px] items-center h-full w-full">
-        
-        <button id="btn-extra-left" class="h-full w-full flex items-center justify-center bg-transparent border-r border-r-black/30 shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)] hover:bg-sky-500/5 hover:text-sky-400 text-white/40 transition-all duration-300 focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0 1 15 0m-15 0a7.5 7.5 0 1 1 15 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077 1.41-.513m14.095-5.13 1.41-.513M5.106 17.785l1.15-.827m11.379-8.16 1.15-.827M8.14 21.27l.707-1.03m7.432-10.858.707-1.03M12 3v1.5m0 15V21m-2.83-16.543.827 1.15m10.15 14.15.827 1.15m-11.54 2.83 1.03-.707m10.858-7.432 1.03-.707M3.077 8.14l.513.707m15.13 14.095.513.707M4.175 5.106l.827 1.15m14.15 10.15.827 1.15" />
-            </svg>
-        </button>
-
-        <button id="btn-reveal-raw" class="h-full w-full flex items-center justify-center bg-transparent border-r border-r-black/30 shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)] hover:bg-sky-500/5 hover:text-sky-400 text-white/40 transition-all duration-300 focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-            </svg>
-        </button>
-
-        <button onclick="adquirirNodo()" class="h-full w-full bg-white/[0.005] hover:bg-sky-500/10 hover:text-sky-400 text-white font-black text-[11px] tracking-[0.35em] uppercase transition-all duration-300 focus:outline-none">
-            ACTIVAR
-        </button>
-
-        <button id="btn-reveal-bio" class="h-full w-full flex items-center justify-center bg-transparent border-l border-l-black/30 shadow-[inset_1px_0_0_rgba(255,255,255,0.03)] hover:bg-sky-500/5 hover:text-sky-400 text-white/40 transition-all duration-300 focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-            </svg>
-        </button>
-
-        <button id="btn-extra-right" class="h-full w-full flex items-center justify-center bg-transparent border-l border-l-black/30 shadow-[inset_1px_0_0_rgba(255,255,255,0.03)] hover:bg-sky-500/5 hover:text-sky-400 text-white/40 transition-all duration-300 focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.43l-1.003.767a1.123 1.123 0 0 0-.417 1.03c.004.074.006.148.006.222 0 .074-.002.148-.006.222a1.123 1.123 0 0 0 .417 1.03l1.003.767a1.125 1.125 0 0 1 .26 1.43l-1.296 2.247a1.125 1.125 0 0 1-1.37.49l-1.216-.456a1.125 1.125 0 0 0-1.075.124c-.073.044-.146.087-.22.128-.332.183-.582.495-.645.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281a1.125 1.125 0 0 0-.646-.869c-.074-.041-.147-.084-.22-.129a1.125 1.125 0 0 0-1.075-.124l-1.216.456a1.125 1.125 0 0 1-1.37-.49l-1.296-2.247a1.125 1.125 0 0 1 .26-1.43l1.003-.767c.318-.243.483-.646.417-1.03a1.121 1.121 0 0 0-.006-.222c0-.074.002-.148.006-.222a1.122 1.122 0 0 0-.417-1.03l-1.003-.767a1.125 1.125 0 0 1-.26-1.43l1.296-2.247a1.125 1.125 0 0 1 1.37-.49l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.646-.869L9.593 3.94Z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-            </svg>
-        </button>
-
-    </div>
-</div>
-
-<div class="w-full h-[52px] sm:h-[58px] bg-gradient-to-b from-white/[0.04] to-white/[0.01] backdrop-blur-xl border-t border-t-white/10 border-b border-b-black/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),_inset_0_-1px_0_rgba(0,0,0,0.35)] relative z-10 select-none">
-    
-    <div class="grid grid-cols-[58px_1fr_58px] items-center h-full w-full uppercase tracking-widest font-mono text-[9px]">
-        
-        <div class="h-full w-full flex items-center justify-center border-r border-r-black/30 shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)]">
-            <a href="https://jako.world" class="group w-full h-full flex items-center justify-center hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer">
-                <img src="img/back.png" alt="Back to jako.world" class="w-3.5 h-3.5 object-contain opacity-40 group-hover:opacity-100 transition-all duration-500" />
-            </a>
-        </div>    
-        
-        <div class="h-full w-full flex items-center justify-center text-center tracking-[0.5em] font-bold text-white/30 text-[7px] sm:text-[8px]">
-            <a href="https://jako.world" class="h-full w-full flex items-center justify-center hover:text-white/70 hover:bg-white/[0.005] transition-all duration-300 focus:outline-none">
-                BY JAKO.WORLD
-            </a>
-        </div>
-        
-        <div class="h-full w-full flex items-center justify-center border-l border-l-black/30 shadow-[inset_1px_0_0_rgba(255,255,255,0.03)]">
-            <a href="https://biorush.shop" class="group w-full h-full flex items-center justify-center hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer">
-                <img src="img/pace.png" alt="To biorush.shop" class="w-3.5 h-3.5 object-contain opacity-40 group-hover:opacity-100 transition-all duration-500" />
-            </a>
-        </div>
-
-    </div>
-</div>
+        <div class="w-full flex items-center justify-between px-5 sm:px-8 h-10 gap-2">
+            <div class="flex flex-col-reverse items-start text-left cursor-pointer hover:text-sky-400 text-white/50 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
+                <span class="text-[6.5px] tracking-[0.2em] text-white/20 mt-0.5">Ciclo</span>
+                <span id="telemetry-sphere-idx" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
             </div>
-        </footer>
+
+            <div class="flex-1 flex items-center justify-center px-2 sm:px-4">
+                <span id="panel-telemetry-data" class="text-[6.5px] xs:text-[7.5px] sm:text-[8px] text-center tracking-[0.15em] sm:tracking-[0.25em] text-sky-400/80 font-medium transition-colors duration-300 whitespace-normal block leading-normal">
+                    (MODELO 1:1) COMPRAS TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD
+                </span>
+            </div>
+
+            <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-sky-400 text-white/50 transition-colors shrink-0 min-w-[50px] sm:min-w-[60px]">
+                <span class="text-[6.5px] tracking-[0.2em] text-white/20 mt-0.5">Nodo</span>
+                <span id="telemetry-active-node" class="tracking-[0.15em] text-[9px] sm:text-[10px]">0000</span>
+            </div>
+        </div>
+
+        <div class="w-full h-12 relative z-10">
+            <div class="grid grid-cols-[54px_54px_1fr_54px_54px] items-center h-full w-full">
+                <button id="btn-extra-left" class="h-full w-full flex items-center justify-center bg-transparent border-r border-white/5 hover:bg-sky-500/5 hover:text-sky-400 text-white/40 transition-all duration-300 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0 1 15 0m-15 0a7.5 7.5 0 1 1 15 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077 1.41-.513m14.095-5.13 1.41-.513M5.106 17.785l1.15-.827m11.379-8.16 1.15-.827M8.14 21.27l.707-1.03m7.432-10.858.707-1.03M12 3v1.5m0 15V21m-2.83-16.543.827 1.15m10.15 14.15.827 1.15m-11.54 2.83 1.03-.707m10.858-7.432 1.03-.707M3.077 8.14l.513.707m15.13 14.095.513.707M4.175 5.106l.827 1.15m14.15 10.15.827 1.15" />
+                    </svg>
+                </button>
+
+                <button id="btn-reveal-raw" class="h-full w-full flex items-center justify-center bg-transparent border-r border-white/5 hover:bg-sky-500/5 hover:text-sky-400 text-white/40 transition-all duration-300 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                    </svg>
+                </button>
+
+                <button onclick="adquirirNodo()" class="h-full w-full bg-transparent hover:bg-sky-500/10 hover:text-sky-400 text-white font-black text-[11px] tracking-[0.35em] transition-all duration-300 focus:outline-none">
+                    ACTIVAR
+                </button>
+
+                <button id="btn-reveal-bio" class="h-full w-full flex items-center justify-center bg-transparent border-l border-white/5 hover:bg-sky-500/5 hover:text-sky-400 text-white/40 transition-all duration-300 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                </button>
+
+                <button id="btn-extra-right" class="h-full w-full flex items-center justify-center bg-transparent border-l border-white/5 hover:bg-sky-500/5 hover:text-sky-400 text-white/40 transition-all duration-300 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.43l-1.003.767a1.123 1.123 0 0 0-.417 1.03c.004.074.006.148.006.222 0 .074-.002.148-.006.222a1.123 1.123 0 0 0 .417 1.03l1.003.767a1.125 1.125 0 0 1 .26 1.43l-1.296 2.247a1.125 1.125 0 0 1-1.37.49l-1.216-.456a1.125 1.125 0 0 0-1.075.124c-.073.044-.146.087-.22.128-.332.183-.582.495-.645.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281a1.125 1.125 0 0 0-.646-.869c-.074-.041-.147-.084-.22-.129a1.125 1.125 0 0 0-1.075-.124l-1.216.456a1.125 1.125 0 0 1-1.37-.49l-1.296-2.247a1.125 1.125 0 0 1 .26-1.43l1.003-.767c.318-.243.483-.646.417-1.03a1.121 1.121 0 0 0-.006-.222c0-.074.002-.148.006-.222a1.122 1.122 0 0 0-.417-1.03l-1.003-.767a1.125 1.125 0 0 1-.26-1.43l1.296-2.247a1.125 1.125 0 0 1 1.37-.49l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.646-.869L9.593 3.94Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="w-full h-11 relative z-10">
+            <div class="grid grid-cols-[54px_1fr_54px] items-center h-full w-full text-[8px] tracking-[0.4em]">
+                <div class="h-full w-full flex items-center justify-center border-r border-white/5">
+                    <a href="https://jako.world" class="group w-full h-full flex items-center justify-center hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer">
+                        <img src="img/back.png" alt="Back to jako.world" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500" />
+                    </a>
+                </div>    
+                
+                <div class="h-full w-full flex items-center justify-center text-center font-bold text-white/20">
+                    <a href="https://jako.world" class="h-full w-full flex items-center justify-center hover:text-white/60 hover:bg-white/[0.005] transition-all duration-300 focus:outline-none">
+                        BY JAKO.WORLD
+                    </a>
+                </div>
+                
+                <div class="h-full w-full flex items-center justify-center border-l border-white/5">
+                    <a href="https://biorush.shop" class="group w-full h-full flex items-center justify-center hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer">
+                        <img src="img/pace.png" alt="To biorush.shop" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500" />
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</footer>
     </main>
 
     
@@ -403,13 +422,21 @@
     // 4. CONTROLADORES DE INTERFAZ DE USUARIO
     // ==========================================
     function inicializarArtepanel() {
-        const menuContainer = getCachedEl('artepanel-items-menu');
-        if (menuContainer) {
-            menuContainer.innerHTML = Object.keys(ARTEPANEL_CATALOG).map(item => `
-                <span id="menu-bio-${item}" onclick="cambiarBioItem('${item}')" class="cursor-pointer tracking-[0.15em] transition-all duration-300 h-5 leading-none font-bold">
-                    ${item}
-                </span>
-            `).join('');
+        // Inyectamos cada botón directamente en su contenedor del extremo correspondiente
+        const stencilHolder = getCachedEl('menu-bio-STENCIL-holder');
+        const panelHolder = getCachedEl('menu-bio-PANEL-holder');
+        
+        if (stencilHolder) {
+            stencilHolder.innerHTML = `
+                <span id="menu-bio-STENCIL" onclick="cambiarBioItem('STENCIL')" class="cursor-pointer tracking-[0.15em] transition-all duration-300 h-full w-full flex items-center justify-center font-bold">
+                    STENCIL
+                </span>`;
+        }
+        if (panelHolder) {
+            panelHolder.innerHTML = `
+                <span id="menu-bio-PANEL" onclick="cambiarBioItem('PANEL')" class="cursor-pointer tracking-[0.15em] transition-all duration-300 h-full w-full flex items-center justify-center font-bold">
+                    PANEL
+                </span>`;
         }
         
         vincularBotones();
@@ -432,7 +459,6 @@
     function actualizarBioUI() {
         const itemConfig = ARTEPANEL_CATALOG[currentBioItem];
         const variantConfig = itemConfig.variants[currentBioVariant];
-        const vContainer = getCachedEl('artepanel-variants-container');
         
         const descEl = getCachedEl('artepanel-description');
         const packImg = getCachedEl('artepanel-pack-img');
@@ -454,26 +480,33 @@
             }, 120);
         }
 
+        // Estilos del menú lateral superior (STENCIL / PANEL) alineados al HUD
         Object.keys(ARTEPANEL_CATALOG).forEach(item => {
             const el = getCachedEl(`menu-bio-${item}`);
             if (el) el.className = (item === currentBioItem) 
-                ? "cursor-pointer tracking-[0.25em] transition-all duration-300 h-5 leading-none font-bold text-white scale-105 border-b border-sky-400 pb-1" 
-                : "cursor-pointer tracking-[0.25em] transition-all duration-300 h-5 leading-none text-white/40 hover:text-white/80";
+                ? "cursor-pointer tracking-[0.35em] text-[10px] font-black transition-all duration-300 h-full w-full flex items-center justify-center text-sky-400 bg-sky-500/5" 
+                : "cursor-pointer tracking-[0.35em] text-[10px] font-medium transition-all duration-300 h-full w-full flex items-center justify-center text-white/40 hover:text-sky-400 hover:bg-sky-500/5";
         });
 
-        if (vContainer) {
-            vContainer.innerHTML = `
-                <div class="flex items-center justify-start sm:justify-center gap-2 px-4 overflow-x-auto w-full">
-                    ${Object.keys(itemConfig.variants).map(vKey => `
-                        <span onclick="cambiarBioVariant('${vKey}')" 
-                            class="cursor-pointer transition-all duration-300 px-4 py-3 rounded-sm border backdrop-blur-md whitespace-nowrap font-black uppercase tracking-[0.3em] text-[10px]
-                            ${vKey === currentBioVariant 
-                                ? 'bg-sky-500/20 border-sky-500/50 text-white' 
-                                : 'bg-white/10 border-white/20 text-white/60 hover:border-sky-500/50 hover:bg-sky-500/10'}">
-                            ${vKey}
-                        </span>`).join('')}
-                </div>`;
-        }
+        // Distribución Cruda de Variantes en Celdas de Ancho Idéntico
+        const variantKeys = Object.keys(itemConfig.variants); // ['25X25', '40X40', '80X80']
+        
+        variantKeys.forEach((vKey, index) => {
+            const cell = getCachedEl(`v-cell-${index}`);
+            if (cell) {
+                const isSelected = vKey === currentBioVariant;
+                const stateStyles = isSelected
+                    ? 'bg-sky-500/10 text-sky-400 font-black'
+                    : 'bg-transparent text-white/40 hover:bg-sky-500/5 hover:text-sky-400';
+
+                cell.innerHTML = `
+                    <button onclick="cambiarBioVariant('${vKey}')" 
+                        class="h-full w-full flex items-center justify-center tracking-[0.35em] text-[11px] font-sans uppercase transition-all duration-300 focus:outline-none ${stateStyles}">
+                        ${vKey}
+                    </button>
+                `;
+            }
+        });
     }
 
     // =========================================================================
