@@ -581,7 +581,7 @@
                     repsStage = Math.floor((seconds % 10) + 2);
                 } else {
                     const subSlot = Math.floor(((seconds - 30) % 30) / 7.5);
-                    currentAction = ["PUL", "PLS", "LUP", "ULS"][subSlot] || "ULS";
+                    currentAction = ["PUL", "UPS", "SPU", "ULS"][subSlot] || "ULS";
                     repsStage = Math.floor(((seconds - 30) % 10) + 3);
                 }
             }
@@ -621,7 +621,7 @@
         'telemetry-product-price': "Compras tu pieza y financias otra para la comunidad" 
     };
     
-    // PULS_MEANINGS: Nomenclatura de Fluido Regenerativo (Drops, Waves & Double)
+    // PULS_MEANINGS: Nomenclatura Biocinética Orientada a Geometría de Cristal
     const PULS_MEANINGS = {
         'sub-sets-solar-trigger': "FRECUENCIA COAXIAL VIVA TIERRA-LUNA-SOL.", 
         'sub-reps-tension-trigger': "COHESIÓN TENSIONAL Y MAGNETISMO GRAVITACIONAL.", 
@@ -631,33 +631,33 @@
             if (!match) return "MATRIZ BIOCINÉTICA ACTIVA.";
             
             const [_, drops, action, reps] = match;
-            let vectorText = "PULSO";
+            let vectorText = "";
 
-            // Mapeo exacto de las 12 compuertas según el manifiesto de la Gota Biocinética
+            // Mapeo sintáctico definitivo: Integración técnico-militar de magnitudes físicas
             switch (action) {
-                // --- ONDAS SIMPLES (Fuerzas Puras y Absolutas) ---
-                case 'P':  vectorText = "PULSO DE PASO"; break; 
-                case 'S':  vectorText = "PULSO DE SALTO"; break; 
-                case 'U':  vectorText = "PRESIÓN"; break; 
-                case 'L':  vectorText = "CARGA"; break;    
+                // --- FUERZAS PURAS Y ABSOLUTAS ---
+                case 'P':  vectorText = `PASOS X${reps}`; break; 
+                case 'S':  vectorText = `SALTOS X${reps}`; break; 
+                case 'U':  vectorText = `PRESIONES X${reps}`; break; 
+                case 'L':  vectorText = `CARGAS X${reps}`; break;    
                 
-                // --- ONDAS DUALES (Fuerzas de Balance) ---
-                case 'PL': vectorText = "PULSO DE PASO Y CARGA"; break;
-                case 'PU': vectorText = "PULSO DE PASO Y PRESIÓN"; break;
-                case 'LU': vectorText = "PULSO DE CARGA Y PRESIÓN"; break;
-                case 'SU': vectorText = "PULSO DE SALTO Y PRESIÓN"; break;
+                // --- FUERZAS DUALES DE BALANCE ---
+                case 'PL': vectorText = `PASOS CON CARGA X${reps}`; break;
+                case 'PU': vectorText = `PASOS CON PRESIÓN X${reps}`; break;
+                case 'LU': vectorText = `CARGAS CON PRESIÓN X${reps}`; break;
+                case 'SU': vectorText = `SALTOS CON PRESIÓN X${reps}`; break;
                 
-                // --- ONDAS TRIPLES (Vórtices Complejos de Iluminación) ---
-                case 'PUL': vectorText = "PASO EN PRESIÓN Y CARGA"; break;
-                case 'PLS': vectorText = "PASO EN CARGA Y SALTO"; break;
-                case 'LUP': vectorText = "CARGA EN PRESIÓN Y PASO"; break;
-                case 'ULS': vectorText = "PRESIÓN EN CARGA Y SALTO"; break;
+                // --- VÓRTICES COMPLEJOS DE ILUMINACIÓN ---
+                case 'PUL': vectorText = `PASOS CON PRESIÓN Y CARGA X${reps}`; break;
+                case 'UPS': vectorText = `CARGAS CON PASO Y SALTO X${reps}`; break;
+                case 'SPU': vectorText = `SALTOS CON PASO Y PRESIÓN X${reps}`; break; 
+                case 'ULS': vectorText = `PRESIONES CON CARGA Y SALTO X${reps}`; break;
                 
-                default: vectorText = "PULSO REGENERATIVO";
+                default: vectorText = "GOTA BIOCINÉTICA REGENERATIVA";
             }
 
-            // Formato final de lectura ultra estructurado: "8 DROPS &rarr; DOUBLE TRIGGER PUSH &rarr; 10 WAVES"
-            return `${drops} GOTAS &rarr; ${vectorText} &rarr; ${reps} ONDAS`;
+            // Entrega continua aséptica monochrome (Unión directa sin caracteres o flechas intermedias)
+            return `${drops} ${vectorText}`;
         }, 
         'telemetry-sphere-idx-trigger': "MATRIZ CUÁNTICA. CICLO DE ESFERA.", 
         'telemetry-active-node-trigger': "SATURACIÓN SINÁPTICA. NODOS ACUMULADOS REALES." 
