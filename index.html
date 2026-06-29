@@ -581,7 +581,7 @@
                     repsStage = Math.floor((seconds % 10) + 2);
                 } else {
                     const subSlot = Math.floor(((seconds - 30) % 30) / 7.5);
-                    currentAction = ["PUL", "UPS", "SPU", "ULS"][subSlot] || "ULS";
+                    currentAction = ["PUL", "LPS", "SPU", "ULS"][subSlot] || "ULS";
                     repsStage = Math.floor(((seconds - 30) % 10) + 3);
                 }
             }
@@ -630,34 +630,35 @@
             const match = coord.match(/^(\d+)([A-Z]+)(\d+)$/);
             if (!match) return "MATRIZ BIOCINÉTICA ACTIVA.";
             
-            const [_, drops, action, reps] = match;
+            const [_, sets, action, reps] = match;
             let vectorText = "";
 
             // Mapeo sintáctico definitivo: Integración técnico-militar de magnitudes físicas
             switch (action) {
                 // --- FUERZAS PURAS Y ABSOLUTAS ---
-                case 'P':  vectorText = `PASOS X${reps}`; break; 
-                case 'S':  vectorText = `SALTOS X${reps}`; break; 
-                case 'U':  vectorText = `PRESIONES X${reps}`; break; 
-                case 'L':  vectorText = `CARGAS X${reps}`; break;    
+                case 'P':  vectorText = `PASOS X${sets}`; break; // El multiplicador final ahora son los Sets (sets)
+                case 'S':  vectorText = `SALTOS X${sets}`; break; 
+                case 'U':  vectorText = `PRESIONES X${sets}`; break; 
+                case 'L':  vectorText = `CARGAS X${sets}`; break;    
                 
                 // --- FUERZAS DUALES DE BALANCE ---
-                case 'PL': vectorText = `PASOS CON CARGA X${reps}`; break;
-                case 'PU': vectorText = `PASOS CON PRESIÓN X${reps}`; break;
-                case 'LU': vectorText = `CARGAS CON PRESIÓN X${reps}`; break;
-                case 'SU': vectorText = `SALTOS CON PRESIÓN X${reps}`; break;
+                case 'PL': vectorText = `PASOS CON CARGA X${sets}`; break;
+                case 'PU': vectorText = `PASOS CON PRESIÓN X${sets}`; break;
+                case 'LU': vectorText = `CARGAS CON PRESIÓN X${sets}`; break;
+                case 'SU': vectorText = `SALTOS CON PRESIÓN X${sets}`; break;
                 
-                // --- VÓRTICES COMPLEJOS DE ILUMINACIÓN ---
-                case 'PUL': vectorText = `PASOS CON PRESIÓN Y CARGA X${reps}`; break;
-                case 'UPS': vectorText = `CARGAS CON PASO Y SALTO X${reps}`; break;
-                case 'SPU': vectorText = `SALTOS CON PASO Y PRESIÓN X${reps}`; break; 
-                case 'ULS': vectorText = `PRESIONES CON CARGA Y SALTO X${reps}`; break;
+                // --- VÓRTICES COMPLEJOS DE ILUMINACIÓN (Sincronizados al Motor Analógico) ---
+                case 'PUL': vectorText = `PASOS CON PRESIÓN Y CARGA X${sets}`; break;
+                case 'LPS': vectorText = `CARGAS CON PASO Y SALTO X${sets}`; break;
+                case 'SPU': vectorText = `SALTOS CON PASO Y PRESIÓN X${sets}`; break; 
+                case 'ULS': vectorText = `PRESIONES CON CARGA Y SALTO X${sets}`; break;
                 
                 default: vectorText = "GOTA BIOCINÉTICA REGENERATIVA";
             }
 
-            // Entrega continua aséptica monochrome (Unión directa sin caracteres o flechas intermedias)
-            return `${drops} ${vectorText}`;
+            // Entrega continua aséptica: Las Reps (reps) van al inicio, seguidas del vector y sus Sets (vectorText)
+            return `${reps} ${vectorText}`;
+
         }, 
         'telemetry-sphere-idx-trigger': "MATRIZ CUÁNTICA. CICLO DE ESFERA.", 
         'telemetry-active-node-trigger': "SATURACIÓN SINÁPTICA. NODOS ACUMULADOS REALES." 
