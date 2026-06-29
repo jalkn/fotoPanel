@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAKO.TECH-LAB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = { 
+            theme: { 
+                extend: { 
+                    screens: { 'xs': '400px' },
+                    colors: { 'jako-black': '#0a0705' },
+                    fontFamily: { 
+                        'sans': ['Orbitron', 'sans-serif'],
+                        'mono': ['Orbitron', 'monospace'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body { 
+        font-family: 'Orbitron', sans-serif; 
+        scroll-behavior: smooth; 
+        letter-spacing: 0.05em; 
+        background-color: #020617; /* Fondo azul medianoche profundo */
+    } 
+
+    #page-bg-overlay {
+        position: fixed;
+        inset: 0;
+        /* Degradado azul profundo característico */
+        background: radial-gradient(circle at 50% 50%, #1e3a8a 0%, #0f172a 50%, #020617 100%);
+        z-index: -1;
+        transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.6s ease;
+    }
+
+    .drawer-active #page-bg-overlay {
+        opacity: 0.4;
+        filter: brightness(60%);
+    }
+    
+    .glass { 
+        background: rgba(2, 6, 23, 0.85); /* Azul muy oscuro semitransparente */
+        border-left: 1px solid rgba(56, 189, 248, 0.2); /* Borde cian sutil */
+        backdrop-filter: blur(40px); 
+        -webkit-backdrop-filter: blur(40px);
+        box-shadow: -20px 0 60px rgba(0, 0, 0, 0.95);
+    }
+
+    .img-glow-transition {
+        transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: filter, transform;
+    }
+
+    .drawer-active .img-glow-transition {
+        opacity: 1 !important;
+        transform: scale(1.05);
+        /* Glow en azul cian (#38bdf8) para que resalte sobre el fondo azul oscuro */
+        filter: brightness(1.2) drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+    }
+
+    .axis-x-overlay::before, .axis-x-overlay::after {
+        content: '';
+        position: absolute;
+        background: rgba(100, 116, 139, 0.2); /* Color de las líneas de rejilla */
+    }
+
+    #interactive-pulsor-svg circle {
+        stroke: #38bdf8; /* Color de valor activo */
+        transform-origin: 120px 120px;
+        transition: stroke-dasharray 0.5s ease, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease;
+    }
+</style>
+</head>
+<body class="antialiased selection:text-black overflow-x-hidden text-white">
+    
+    
+    <main class="w-full h-screen pt-[68px] pb-[69px] sm:pb-[81px] flex flex-col justify-center items-center overflow-hidden relative z-10">
+        <section id="biokinetic-portfolio" class="w-full h-full bg-transparent flex justify-start sm:justify-center items-center overflow-x-auto overflow-y-hidden select-none scrollbar-none cursor-grab active:cursor-grabbing">
+            <div id="mesh-container" class="w-full h-full max-h-full min-w-[760px] sm:min-w-0 sm:max-w-[840px] px-4 sm:px-8 relative z-10 flex justify-center items-center mx-auto transition-all duration-500">
+            </div>
+        </section>
+    </main>
+
+<script>
+    const $ = (id) => document.getElementById(id);
+// ==========================================
+    // PROTOCOLO DE MOVIMIENTO: PULS (MECÁNICA MAESTRA)
+    // ==========================================
+    const GOLDEN_RATIO = 1.61803398875; // Proporción Áurea para Densidad Dinámica
+    function updateZ() {
+        let biokineticCoordinate = "";
+        
+        const now = new Date();
+        const hours = now.getHours(); 
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        const milliseconds = now.getMilliseconds();
+
+        const currentSolarAngle = ((hours * 15) + (minutes * 0.25)) % 360;
+        const currentSphereIdx = calculateSphereIndex();
+        const sphereElement = $('telemetry-sphere-idx');
+        
+        if (sphereElement && sphereElement.textContent !== currentSphereIdx) {
+            sphereElement.textContent = currentSphereIdx;
+        }
+
+        // NUEVA ACTUALIZACIÓN para el Vault-Drawer
+        const sphereVaultElement = $('telemetry-sphere-idx-vault');
+        if (sphereVaultElement && sphereVaultElement.textContent !== currentSphereIdx) {
+            sphereVaultElement.textContent = currentSphereIdx;
+        }
+
+        if ($('telemetry-sphere-dens')) {
+            $('telemetry-sphere-dens').textContent = "Q.8640"; 
+        }
+
+        let setsStage = 1;  
+        let repsStage = 1;  
+        let currentAction = 'P'; 
+
+        if (window.selectedNodeFromMesh) {
+            biokineticCoordinate = window.selectedNodeFromMesh.replace(/^0+/, '');
+            const matchMesh = biokineticCoordinate.match(/^(\d+)([A-Z]+)(\d+)$/);
+            if (matchMesh) {
+                setsStage = Math.max(1, Math.min(12, parseInt(matchMesh[1], 10)));
+                currentAction = matchMesh[2];
+                repsStage = Math.max(1, Math.min(12, parseInt(matchMesh[3], 10)));
+            }
+        } else {
+            // RESTRUCTURACIÓN COHERENTE CON LA MATRIZ DE 12 VARIABLES ÓPTIMAS
+            if (seconds % 2 !== 0) {
+                // A. Fase del Impulso Puro (4 Monádicas // Cero Resistencia // Segundos Impares)
+                const progress1s = milliseconds / 1000; 
+                setsStage = Math.floor(progress1s * 12) + 1;
+                repsStage = 13 - setsStage; 
+
+                if (progress1s < 0.25) currentAction = 'P';        // Pace
+                else if (progress1s < 0.5) currentAction = 'U';     // Under
+                else if (progress1s < 0.75) currentAction = 'L';    // Lift
+                else currentAction = 'S';                           // Surge
+            } else {
+                // Segundos Pares: Distribución Basal por Minutos % 12
+                setsStage = Math.max(1, Math.min(12, Math.floor((minutes % 12) + 1)));
+                
+                if (seconds < 30) {
+                    // B. Fase de Transferencia (4 Binarias // Desplazamiento de Carga)
+                    const subSlot = Math.floor((seconds % 30) / 7.5); // 4 ranuras uniformes en 30s
+                    const binaryMatrix = ["PL", "PU", "LU", "SU"];
+                    currentAction = binaryMatrix[subSlot] || "PL";
+                    repsStage = Math.max(1, Math.min(12, Math.floor((seconds % 10) + 2)));
+                } else {
+                    // C. Fase de Bloqueo Estructural (4 Ternarias // Isometría y Densidad)
+                    const subSlot = Math.floor(((seconds - 30) % 30) / 7.5); // 4 ranuras uniformes
+                    const ternaryMatrix = ["PUL", "PLS", "LUP", "UTS"];
+                    currentAction = ternaryMatrix[subSlot] || "UTS";
+                    repsStage = Math.max(1, Math.min(12, Math.floor(((seconds - 30) % 10) + 3)));
+
+                    // Disparador háptico en punto crítico de bloqueo isométrico (UTS)
+                    if (currentAction === 'UTS' && navigator.vibrate && milliseconds < 40) {
+                        navigator.vibrate(12);
+                    }
+                }
+            }
+
+            setsStage = Math.max(1, Math.min(12, setsStage));
+            repsStage = Math.max(1, Math.min(12, repsStage));
+            biokineticCoordinate = `${setsStage}${currentAction}${repsStage}`;
+        }
+
+        window.currentTelemetryValue = biokineticCoordinate;
+
+        if (!isReading && $('hologram-dial')) $('hologram-dial').textContent = biokineticCoordinate;
+        if ($('z-dial-footer')) $('z-dial-footer').textContent = biokineticCoordinate;
+        if ($('big-dial')) $('big-dial').textContent = biokineticCoordinate;
+        
+        document.querySelectorAll('.big-dial-target').forEach(target => {
+            if (target.textContent !== biokineticCoordinate) {
+                target.textContent = biokineticCoordinate;
+            }
+        });
+
+        // ACTUALIZACIÓN COORDINADA DE LOS NODOS ACTIVOS (MAIN HEADER & VAULT DRAWER)
+        let activeNodeText = '';
+        if (window.selectedNodeFromMesh) {
+            const nodeNum = window.selectedNodeFromMesh.replace('node-', '').padStart(4, '0');
+            activeNodeText = `◯.${nodeNum}`;
+        } else {
+            const totalSecondsToday = (hours * 3600) + (minutes * 60) + seconds;
+            const preciseDialIndex = Math.floor(totalSecondsToday / 10) + 1;
+            activeNodeText = `◯.${String(preciseDialIndex).padStart(4, '0')}`;
+        }
+
+        if ($('telemetry-active-node')) {
+            $('telemetry-active-node').textContent = activeNodeText;
+        }
+        if ($('telemetry-active-node-vault')) {
+            $('telemetry-active-node-vault').textContent = activeNodeText;
+        }
+
+        if (!waveInspectionActive) {
+            if ($('dial-part-sets')) $('dial-part-sets').textContent = String(setsStage);
+            if ($('dial-part-action')) $('dial-part-action').textContent = currentAction;
+            if ($('dial-part-reps')) $('dial-part-reps').textContent = String(repsStage);
+
+            const calculatedTension = (14.2 + (repsStage * 0.8)).toFixed(1);
+            const currentHz = (0.05 + (setsStage / 240)).toFixed(3);
+
+            if ($('sub-sets-solar')) $('sub-sets-solar').textContent = `${currentHz} Hz`;
+            if ($('sub-reps-tension')) $('sub-reps-tension').textContent = `${calculatedTension} N`;
+        }
+
+        if ($('telemetry-sphere-actions')) {
+            $('telemetry-sphere-actions').textContent = `Φ ${currentSolarAngle.toFixed(1)}°`;
+        }
+
+        if ($('telemetry-sphere-actions-vault')) {
+            $('telemetry-sphere-actions-vault').textContent = `Φ ${currentSolarAngle.toFixed(1)}°`;
+        }
+
+        // Cálculos astronómicos estables
+        const geoNode = "6.251° N";
+        const solarRad = (currentSolarAngle * Math.PI) / 180;
+        const calculatedAltitude = Math.abs(Math.sin(solarRad)) * 84.426; 
+        const altDegrees = Math.floor(calculatedAltitude);
+        const altMinutes = Math.floor((calculatedAltitude - altDegrees) * 60);
+        const solarAltitudeText = `H.${String(altDegrees).padStart(2, '0')}°${String(altMinutes).padStart(2, '0')}'`;
+
+        // ACTUALIZACIONES SINCRO DE ALTITUD SOLAR
+        if ($('telemetry-footer-alt'))       $('telemetry-footer-alt').textContent = solarAltitudeText;
+        if ($('telemetry-solar-alt'))        $('telemetry-solar-alt').textContent = solarAltitudeText;
+        if ($('telemetry-vault-footer-alt')) $('telemetry-vault-footer-alt').textContent = solarAltitudeText; // Vault Drawer
+        if ($('telemetry-left-footer-alt'))  $('telemetry-left-footer-alt').textContent = solarAltitudeText;  // Left Core Drawer
+
+        if ($('telemetry-solstice-node')) $('telemetry-solstice-node').textContent = "SS.54 • EQ.54";
+        if ($('telemetry-geo'))           $('telemetry-geo').textContent = geoNode;
+
+        // ONDAS NODES-DRAWER (MENÚ PRINCIPAL)
+        const wOuter = $('wave-outer');
+        const wMid = $('wave-mid');    
+        const wInner = $('wave-inner');
+
+        // ONDAS VAULT-DRAWER (NUEVO CONTROL INTEGRADO)
+        const wOuterVault = $('wave-outer-vault');
+        const wMidVault = $('wave-mid-vault');
+        const wInnerVault = $('wave-inner-vault');
+
+        if (wOuter && wMid && wInner) {
+            const polarity = (currentSolarAngle <= 180) ? 1 : -1; 
+            const baseRotation = currentSolarAngle * polarity;
+
+            // 1. ONDA INTERNA
+            const totalLengthInner = 2 * Math.PI * 39;
+            const innerArcLength = totalLengthInner * (setsStage / 12);
+            wInner.style.strokeDasharray = `${innerArcLength} ${totalLengthInner}`;
+            wInner.style.transform = `rotate(${baseRotation * 0.5}deg)`;
+            
+            if (wInnerVault) {
+                wInnerVault.style.strokeDasharray = `${innerArcLength} ${totalLengthInner}`;
+                wInnerVault.style.transform = `rotate(${baseRotation * 0.5}deg)`;
+            }
+
+            // 2. ONDA MEDIA
+            const totalLengthMid = 2 * Math.PI * 67;
+            let midArcLength = totalLengthMid * 0.5; 
+            let midVectorRotation = currentSolarAngle;
+
+            if (currentAction.length === 1) {
+                midArcLength = totalLengthMid * 0.25; 
+                midVectorRotation = baseRotation;
+            } else if (currentAction.length === 2) {
+                midArcLength = totalLengthMid * 0.5;  
+                midVectorRotation = -baseRotation * 1.5;
+            } else if (currentAction.length === 3) {
+                midArcLength = totalLengthMid * 0.85; 
+                midVectorRotation = 0; 
+            }
+
+            wMid.style.strokeDasharray = `${midArcLength} ${totalLengthMid}`;
+            wMid.style.transform = `rotate(${midVectorRotation}deg)`;
+            
+            if (wMidVault) {
+                wMidVault.style.strokeDasharray = `${midArcLength} ${totalLengthMid}`;
+                wMidVault.style.transform = `rotate(${midVectorRotation}deg)`;
+            }
+
+            // 3. ONDA EXTERNA
+            const totalLengthOuter = 2 * Math.PI * 95;
+            const outerArcLength = totalLengthOuter * (repsStage / 12);
+            wOuter.style.strokeDasharray = `${outerArcLength} ${totalLengthOuter}`;
+            wOuter.style.transform = `rotate(${-baseRotation}deg)`;
+            
+            if (wOuterVault) {
+                wOuterVault.style.strokeDasharray = `${outerArcLength} ${totalLengthOuter}`;
+                wOuterVault.style.transform = `rotate(${-baseRotation}deg)`;
+            }
+        }
+    }
+
+    function switchVaultMode(mode) {
+        const viewSignal = $('vault-view-signal');
+        const viewDial = $('vault-view-dial');
+        const btnSignal = $('btn-mode-signal');
+        const btnDial = $('btn-mode-dial');
+
+        if (mode === 'SIGNAL') {
+            // Mostrar Ondas Animadas
+            viewSignal.classList.remove('hidden');
+            setTimeout(() => viewSignal.classList.remove('opacity-0'), 10);
+            
+            // Ocultar Dial
+            viewDial.classList.add('opacity-0');
+            setTimeout(() => viewDial.classList.add('hidden'), 300);
+
+            // Estilos de botones HUD
+            btnSignal.className = "transition-all duration-300 cursor-pointer px-4 py-1.5 bg-[#141414]/80 text-white border border-white/40 rounded-sm";
+            btnDial.className = "transition-all duration-300 cursor-pointer px-4 py-1.5 bg-black/40 text-white/40 border border-white/5 rounded-sm hover:text-white/80";
+        } else if (mode === 'DIAL') {
+            // Mostrar Dial Vectorial
+            viewDial.classList.remove('hidden');
+            setTimeout(() => viewDial.classList.remove('opacity-0'), 10);
+            
+            // Ocultar Ondas
+            viewSignal.classList.add('opacity-0');
+            setTimeout(() => viewSignal.classList.add('hidden'), 300);
+
+            // Estilos de botones HUD
+            btnDial.className = "transition-all duration-300 cursor-pointer px-4 py-1.5 bg-[#141414]/80 text-white border border-white/40 rounded-sm";
+            btnSignal.className = "transition-all duration-300 cursor-pointer px-4 py-1.5 bg-black/40 text-white/40 border border-white/5 rounded-sm hover:text-white/80";
+        }
+        
+        if (navigator.vibrate) navigator.vibrate(8);
+    }
+
+    window.selectedNodeFromMesh = null;
+    window.currentTelemetryValue = "--"; 
+    window.currentVariant = "FOCUS";
+    let waveInspectionActive = false;     
+    let biokineticInterval = null;
+    let isReading = false;
+
+    function inspectKineticWave(type, targetRing) {
+        waveInspectionActive = true;
+
+        ['wave-outer', 'wave-mid', 'wave-inner'].forEach(id => { if($(id)) $(id).style.stroke = "rgba(255,255,255,0.12)"; });
+        ['proto-p', 'proto-u', 'proto-l', 'proto-s'].forEach(id => { if($(id)) $(id).className = "transition-colors duration-300 px-0.5 text-white/10"; });
+
+        if(targetRing === 'INNER' && $('wave-inner')) {
+            $('wave-inner').style.stroke = "#00d2ff";
+        } else if (targetRing === 'MID' && $('wave-mid')) {
+            $('wave-mid').style.stroke = "#00d2ff";
+        } else if (targetRing === 'OUTER' && $('wave-outer')) {
+            $('wave-outer').style.stroke = "#00d2ff";
+        }
+
+        if ($('footer-default-text')) $('footer-default-text').classList.add('hidden');
+        if ($('puls-protocol-list')) { $('puls-protocol-list').classList.remove('hidden'); $('puls-protocol-list').classList.add('flex'); }
+
+        // Opacidad atenuada por defecto para la Gota Alfanumérica
+        if($('dial-part-sets')) $('dial-part-sets').className = "text-white/15 transition-colors duration-300 cursor-pointer";
+        if($('dial-part-action')) $('dial-part-action').className = "text-white/15 transition-colors duration-300 cursor-pointer px-1";
+        if($('dial-part-reps')) $('dial-part-reps').className = "text-white/15 transition-colors duration-300 cursor-pointer";
+
+        // Opacidad atenuada para los costados del HUD
+        if($('sub-sets-solar')) $('sub-sets-solar').className = 'transition-colors duration-300 text-white/10 cursor-pointer';
+        if($('sub-reps-tension')) $('sub-reps-tension').className = 'transition-colors duration-300 text-white/10 cursor-pointer';
+
+        if($('telemetry-solar-alt'))    $('telemetry-solar-alt').className = "text-left text-white/10 transition-colors duration-300";
+        if($('telemetry-solstice-node')) $('telemetry-solstice-node').className = "text-center text-white/10 transition-colors duration-300";
+        if($('telemetry-geo'))           $('telemetry-geo').className  = "text-right text-white/10 transition-colors duration-300";
+
+        const rawTelemetry = window.currentTelemetryValue || "3UST7";
+        const match = rawTelemetry.match(/^(\d+)([A-Z]+)(\d+)$/);
+
+        if (match) {
+            const [_, setsStr, actionStr, repsStr] = match;
+
+            if (type === 'SETS') {
+                if($('sub-sets-solar')) {
+                    $('sub-sets-solar').textContent = "SETS";
+                    $('sub-sets-solar').className = 'transition-colors duration-300 text-cyan-400 font-bold cursor-pointer tracking-[0.25em]';
+                }
+                if($('dial-part-sets')) $('dial-part-sets').className = "text-cyan-400 font-bold cursor-pointer";
+                if($('telemetry-solar-alt')) $('telemetry-solar-alt').className = "text-left text-cyan-400 font-bold transition-colors duration-300";
+            } 
+            else if (type === 'ACTION' || type === 'ONLY_ACTION') {
+                if($('dial-part-action')) {
+                    $('dial-part-action').textContent = "ACTIONS";
+                    $('dial-part-action').className = "text-cyan-400 font-bold cursor-pointer px-1 text-[10px] tracking-[0.1em]";
+                }
+                if($('telemetry-solstice-node')) $('telemetry-solstice-node').className = "text-center text-cyan-400 font-bold transition-colors duration-300";
+                
+                if (actionStr.includes('P') && $('proto-p')) $('proto-p').className = "text-cyan-400 font-bold px-0.5";
+                if (actionStr.includes('U') && $('proto-u')) $('proto-u').className = "text-cyan-400 font-bold px-0.5";
+                if (actionStr.includes('L') && $('proto-l')) $('proto-l').className = "text-cyan-400 font-bold px-0.5";
+                if (actionStr.includes('S') && $('proto-s')) $('proto-s').className = "text-cyan-400 font-bold px-0.5";
+            } 
+            else if (type === 'REPS') {
+                if($('sub-reps-tension')) {
+                    $('sub-reps-tension').textContent = "REPS";
+                    $('sub-reps-tension').className = 'transition-colors duration-300 text-cyan-400 font-bold cursor-pointer tracking-[0.25em]';
+                }
+                if($('dial-part-reps')) $('dial-part-reps').className = "text-cyan-400 font-bold cursor-pointer";
+                if($('telemetry-geo')) $('telemetry-geo').className = "text-right text-cyan-400 font-bold transition-colors duration-300";
+            }
+        }
+        if (navigator.vibrate) navigator.vibrate(5);
+    }
+
+    function clearKineticWave() {
+        waveInspectionActive = false;
+        
+        ['wave-outer', 'wave-mid', 'wave-inner'].forEach(id => { const r = $(id); if(r) { r.style.stroke = ""; } });
+
+        if ($('puls-protocol-list')) { $('puls-protocol-list').classList.remove('flex'); $('puls-protocol-list').classList.add('hidden'); }
+        if ($('footer-default-text')) $('footer-default-text').classList.remove('hidden');
+
+        // Restablecer estilos base del HUD
+        if($('sub-sets-solar')) $('sub-sets-solar').className = 'transition-colors duration-300 text-white/40 cursor-pointer hover:text-white/80 whitespace-nowrap !text-left tracking-[0.25em]';
+        if($('sub-reps-tension')) $('sub-reps-tension').className = 'transition-colors duration-300 text-white/40 cursor-pointer hover:text-white/80 whitespace-nowrap !text-right tracking-[0.25em]';
+        
+        if($('telemetry-solar-alt'))    $('telemetry-solar-alt').className = "text-left text-white/40 transition-colors duration-300";
+        if($('telemetry-solstice-node')) $('telemetry-solstice-node').className = "text-center text-white/40 transition-colors duration-300";
+        if($('telemetry-geo'))           $('telemetry-geo').className  = "text-right text-white/40 transition-colors duration-300";
+
+        if($('dial-part-sets')) $('dial-part-sets').className = "text-white transition-colors duration-300 cursor-pointer";
+        if($('dial-part-action')) $('dial-part-action').className = "text-white font-black transition-colors duration-300 cursor-pointer text-center hover:text-cyan-400";
+        if($('dial-part-reps')) $('dial-part-reps').className = "text-white transition-colors duration-300 cursor-pointer";
+
+        updateZ();
+    }
+
+
+    function harmonizeMeshNodes() {
+        const nodes = document.querySelectorAll('#mesh-container svg [id^="node-"]');
+        nodes.forEach(node => {
+            node.addEventListener('mouseenter', (e) => {
+                const rawId = e.target.id; 
+                const nodeNum = rawId.replace('node-', '').padStart(3, '0');
+                if ($('telemetry-active-node')) {
+                    $('telemetry-active-node').textContent = `◯.${nodeNum}`;
+                    $('telemetry-active-node').className = "tracking-[0.25em] text-right text-cyan-400 font-bold transition-all duration-300";
+                }
+            });
+            node.addEventListener('mouseleave', () => { updateZ(); });
+        });
+    }
+
+    function handleTouchInspect(event, type, targetRing) {
+        if (event) event.stopPropagation();
+        inspectKineticWave(type, targetRing);
+    }
+
+    function checkResetTouch(event) {
+        const isCircle = event.target.tagName === 'circle';
+        if (!isCircle) clearKineticWave();
+    }
+
+    function openNodesDrawer() {
+        const drawer = $('nodes-drawer');
+        const overlay = $('drawer-overlay');
+        if (drawer) {
+            closeAllDrawers();
+            drawer.classList.remove('translate-x-full');
+            overlay.classList.remove('hidden');
+            document.body.classList.add('drawer-active', 'overflow-hidden');
+            if ($('dynamic-footer')) $('dynamic-footer').classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => overlay.classList.add('opacity-100'), 10);
+        }
+    }
+
+    function toggleDrawer() {
+        const drawer = $('nodes-drawer');
+        if (drawer.classList.contains('translate-x-full')) { openNodesDrawer(); } else { closeAllDrawers(); }
+    }
+
+    function toggleVaultDrawer() {
+        const vault = document.getElementById('vault-drawer');
+        if (vault) { vault.classList.toggle('translate-y-full'); }
+    }
+
+    function toggleLeftDrawer() {
+        const leftDrawer = $('left-core-drawer');
+        const overlay = $('drawer-overlay');
+        if (leftDrawer.classList.contains('-translate-x-full')) {
+            closeAllDrawers();
+            leftDrawer.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            document.body.classList.add('drawer-active', 'overflow-hidden'); 
+            if ($('dynamic-footer')) $('dynamic-footer').classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => overlay.classList.add('opacity-100'), 10);
+        } else {
+            closeAllDrawers();
+        }
+    }
+
+    function closeAllDrawers() {
+        if ($('nodes-drawer')) $('nodes-drawer').classList.add('translate-x-full');
+        if ($('left-core-drawer')) $('left-core-drawer').classList.add('-translate-x-full');
+        if ($('drawer-overlay')) {
+            $('drawer-overlay').classList.remove('opacity-100');
+            $('drawer-overlay').classList.add('hidden');
+        }
+        document.body.classList.remove('drawer-active', 'overflow-hidden');
+        if ($('dynamic-footer')) $('dynamic-footer').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function openManifesto() { 
+        closeAllDrawers();
+        $('manifesto').classList.remove('-translate-y-full'); 
+        if ($('dynamic-footer')) $('dynamic-footer').classList.add('opacity-0', 'pointer-events-none');
+    }
+    
+    function closeManifesto() { 
+        $('manifesto').classList.add('-translate-y-full'); 
+        stopRSVPStream(); 
+        if ($('dynamic-footer')) $('dynamic-footer').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    const manifestoChapters = {
+        1: "BIOMANIFESTO // THE COGNITIVE SYSTEM My concept of art is what we bring from imagination into reality, drawing the patterns of a possible wellness body. I believe the body is the unconscious mind—a space of pure nature and raw creativity currently suppressed by digital noise. To keep this gap open, we code the functional movements of the body into a live language. The unconscious mind operates through kinetic traction: attracting and pushing away thoughts. By mapping these sequences into mechanical blocks, we ignite constant creativity.",
+        2: "THE ALGORITHMIC DIAL // TRANSLATION MANUAL The algorithm does not invent data; it is a translator. It takes the Earth's rotation relative to the Sun in a 24-hour cycle and converts it into a unique 'bio-kinetic coordinate.' Time becomes a matrix of movement. 1. SOLAR DRIFT: Reads global hours and minutes to calculate the exact rotation angle of the Earth (15° per hour + 0.25° per minute). At solar noon, the angle is strictly 180°.",
+        3: "BIOMECHANICAL INTEGRATION // FRACTAL GEOMETRY 2. ALGORITHMIC QUADRANTS: Divides the 360° matrix into 4 biomechanical actions: 0°-90° [UL], 90°-180° [PL], 180°-270° [LST], and 270°-360° [UST]. 3. GOLDEN RATIO (PHI): Sets fluctuate through a sine function (from 2 to 8), while Repetitions are multiplied by PHI (1.618033), mimicking the fractal geometry of mycelium. Formula: FilteredSets + QuadrantAction + FilteredReps"
+    };
+
+    let activeWords = manifestoChapters[1].split(/\s+/);
+    let wordIndex = 0;
+    let readSpeed = 250; 
+    let rsvpIntervalId = null;
+
+    function loadManifestoChapter(chapterNum) {
+        if (manifestoChapters[chapterNum]) {
+            stopRSVPStream();
+            activeWords = manifestoChapters[chapterNum].split(/\s+/);
+            wordIndex = 0;
+            if ($('rsvp-word-display')) $('rsvp-word-display').innerText = "READ";
+        }
+    }
+
+    function startRSVPStream() {
+        if (isReading) return;
+        isReading = true;
+        rsvpIntervalId = setInterval(() => {
+            if (wordIndex < activeWords.length) {
+                if ($('rsvp-word-display')) $('rsvp-word-display').textContent = activeWords[wordIndex];
+                wordIndex++;
+            } else {
+                stopRSVPStream();
+                wordIndex = 0;
+            }
+        }, readSpeed);
+    }
+
+    function stopRSVPStream() {
+        isReading = false;
+        clearInterval(rsvpIntervalId);
+        if ($('rsvp-word-display') && wordIndex === 0) {
+            $('rsvp-word-display').innerHTML = `<img src="img/pace.png" class="w-9 h-9 object-contain opacity-70" alt="Pace Icon">`;
+        }
+    }
+
+    function calculateSphereIndex() {
+        const epoch = new Date('2012-12-21T00:00:00Z'); 
+        const daysSinceEpoch = Math.floor((new Date() - epoch) / (1000 * 60 * 60 * 24));
+        const symbol = '.⨀'; 
+        return `${String(daysSinceEpoch).padStart(4, '0')}${symbol}`;
+    }
+
+    function scrollToSection(id) {
+        const target = $(id);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+    }
+
+
+    function adquirirNodo(producto) {
+        const varianteActiva = window.currentVariant || "FOCUS";
+        const dialActual = window.currentTelemetryValue || "--";
+        const esferaActual = typeof calculateSphereIndex === "function" ? calculateSphereIndex() : "0000◉";
+
+        const lineMap = {
+            'FOCUS': 'BIORUSH MENTAL FOCUS 🧠',
+            'ZEN': 'BIORUSH MENTAL ZEN 🌌',
+            'STAMINA': 'BIORUSH BODY STAMINA ⚡',
+            'CORE': 'BIORUSH BODY CORE 🧬'
+        };
+
+        const productoSeleccionado = lineMap[varianteActiva] || `${producto} ${varianteActiva}`;
+        const numeroCelular = "573025333130"; 
+        const mensaje = `⚡ *NUEVA ORDEN DE NODO - JAKO* ⚡\n\n` +
+                        `• *Producto:* ${productoSeleccionado}\n` +
+                        `• *Coordenada Dial:* \`${dialActual}\`\n` +
+                        `• *Registro Esfera:* \`${esferaActual}\`\n\n` +
+                        `Solicito la inicialización y el despacho de este nodo funcional.`;
+
+        const urlWhatsapp = `https://api.whatsapp.com/send?phone=${numeroCelular}&text=${encodeURIComponent(mensaje)}`;
+        if (navigator.vibrate) navigator.vibrate([10, 30, 10]);
+        window.open(urlWhatsapp, '_blank');
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const startBtn = $('btn-stream-start');
+        const pauseBtn = $('btn-stream-pause');
+        const stopBtn = $('btn-stream-stop');
+
+        if (startBtn) {
+            startBtn.addEventListener('click', () => {
+                if (!isReading) {
+                    startRSVPStream();
+                    if ($('rsvp-status-indicator')) $('rsvp-status-indicator').textContent = 'PLAYING';
+                }
+            });
+        }
+        if (pauseBtn) {
+            pauseBtn.addEventListener('click', () => {
+                if (isReading) {
+                    stopRSVPStream(); 
+                    if ($('rsvp-status-indicator')) $('rsvp-status-indicator').textContent = 'PAUSED';
+                }
+            });
+        }
+        if (stopBtn) {
+            stopBtn.addEventListener('click', () => {
+                stopRSVPStream();
+                wordIndex = 0; 
+                if ($('rsvp-status-indicator')) $('rsvp-status-indicator').textContent = 'READ';
+                if ($('rsvp-word-display')) {
+                    $('rsvp-word-display').innerHTML = `<img src="img/pace.png" class="w-8 h-8 object-contain opacity-70" alt="Pace Icon">`;
+                }
+            });
+        }
+        
+        updateZ(); 
+        setInterval(updateZ, 1000); 
+
+        fetch('img/bigPicture.svg')
+            .then(res => res.text())
+            .then(data => {
+                if ($('mesh-container')) {
+                    $('mesh-container').innerHTML = data;
+                    harmonizeMeshNodes();
+                }
+            }).catch(err => console.error(err));
+    });
+</script>
+</body>
+</html>

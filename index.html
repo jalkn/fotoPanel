@@ -141,7 +141,7 @@
                         <!-- 5. Saturación Sináptica (Nodos) -->
                         <div id="telemetry-active-node-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-white text-white/60 transition-colors">
                             <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono">Nodos</span>
-                            <span id="telemetry-active-node" class="font-mono tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white/90">0000</span>
+                            <span id="telemetry-active-node" class="font-mono tracking-[0z-dial-mirror.15em] text-[10px] sm:text-[12px] font-bold text-white/90">0000</span>
                         </div>
 
                     </div>
@@ -224,8 +224,8 @@
             </div>
 
             <div class="flex flex-col-reverse items-end text-right cursor-pointer hover:text-white-400 text-white/50 transition-colors shrink-0 min-w-[55px]">
-                <span class="text-[6.5px] tracking-[0.2em] text-white/20 mt-0.5">Dials</span>
                 <span id="telemetry-product-dial" class="tracking-[0.15em] text-[9px] sm:text-[10px]">--</span>
+                <span class="text-[6.5px] tracking-[0.2em] text-white/20 mt-0.5">Dials</span>
             </div>
 
         </div>
@@ -304,7 +304,7 @@
                 
                 <div class="h-full w-full flex items-center justify-center text-center font-bold text-white/20">
                     <a href="https://jako.world" class="h-full w-full flex items-center justify-center hover:text-white/60 hover:bg-white/[0.005] transition-all duration-300 focus:outline-none">
-                        BY JAKO.WORLD
+                        POWERED BY JAKO.WORLD
                     </a>
                 </div>
                 
@@ -336,7 +336,7 @@
                     spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
                     price: '$12USD', 
                     id: 'ST-25X25',
-                    img: 'img/surface.png', imgBack: 'img/stencil25W.png', imgRaw: 'img/stencil25B.png',
+                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/stencil25B.png',
                     telemetry: { DIM: '25x25', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
                 },
                 '40X40': { 
@@ -345,7 +345,7 @@
                     spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
                     price: '$29USD', 
                     id: 'ST-MICRO',
-                    img: 'img/surface.png', imgBack: 'img/microW.png', imgRaw: 'img/microB.png',
+                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/microB.png',
                     telemetry: { DIM: '40x40', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
                 },
                 '80X80': { 
@@ -354,7 +354,7 @@
                     spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
                     price: '$125USD', 
                     id: 'ST-MACRO',
-                    img: 'img/surface.png', imgBack: 'img/macroW.png', imgRaw: 'img/macroB.png',
+                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/macroB.png',
                     telemetry: { DIM: '80x80', MEDIA: 'STENCIL', DIAL: '⧗2500', RATE: '$0.05USD' }
                 }
             }
@@ -368,7 +368,7 @@
                     spec: '(MODELO 1:1) ADQUIERES TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD', 
                     price: '$12USD', 
                     id: 'FP-20X20',
-                    img: 'img/surface.png', imgBack: 'img/panel20W.png', imgRaw: 'img/panel20B.png',
+                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/panel20B.png',
                     telemetry: { DIM: '20x20', MEDIA: 'MDF', DIAL: '⧗240', RATE: '$0.05USD' }
                 },
                 '30X30': { 
@@ -395,6 +395,9 @@
     let currentBioItem = 'STENCIL';
     let currentBioVariant = '40X40';
     const numeroCelular = "573025333130";
+    
+    // --- NUEVO: ESTADO GLOBAL DE FLUJO BIOCINÉTICO ---
+    let isDialFrozen = false;
 
     // ==========================================
     // 2. CACHÉ DE ELEMENTOS DE UI (OPTIMIZADO)
@@ -545,64 +548,68 @@
     }
 
     function updateZ() {
-        let biokineticCoordinate = "";
         const now = new Date();
         const hours = now.getHours(); 
         const minutes = now.getMinutes();
         const seconds = now.getSeconds();
 
         const currentSphereIdx = calculateSphereIndex();
-        
         const elIdx = getCachedEl('telemetry-sphere-idx');
         if (elIdx && elIdx.textContent !== currentSphereIdx) elIdx.textContent = currentSphereIdx;
 
-        let setsStage = 1;  
-        let repsStage = 1;  
-        let currentAction = 'P'; 
+        // --- MÁSCARA DE CONTROL: SISTEMA DE CONGELACIÓN TEMPORAL P.U.L.S. ---
+        if (!window.isDialFrozen) {
+            let setsStage = 1;  
+            let repsStage = 1;  
+            let currentAction = 'P'; 
 
-        if (seconds % 2 !== 0) {
-            const progress1s = now.getMilliseconds() / 1000; 
-            setsStage = Math.floor(progress1s * 12) + 1;
-            repsStage = 13 - setsStage; 
+            if (seconds % 2 !== 0) {
+                const progress1s = now.getMilliseconds() / 1000; 
+                setsStage = Math.floor(progress1s * 12) + 1;
+                repsStage = 13 - setsStage; 
 
-            if (progress1s < 0.25) currentAction = 'P';
-            else if (progress1s < 0.5) currentAction = 'U';
-            else if (progress1s < 0.75) currentAction = 'L';
-            else currentAction = 'S';
-        } else {
-            setsStage = Math.floor((minutes % 12) + 1);
-            
-            if (seconds < 30) {
-                const subSlot = Math.floor((seconds % 30) / 7.5);
-                currentAction = ["PL", "PU", "LU", "SU"][subSlot] || "PL";
-                repsStage = Math.floor((seconds % 10) + 2);
+                if (progress1s < 0.25) currentAction = 'P';
+                else if (progress1s < 0.5) currentAction = 'U';
+                else if (progress1s < 0.75) currentAction = 'L';
+                else currentAction = 'S';
             } else {
-                const subSlot = Math.floor(((seconds - 30) % 30) / 7.5);
-                currentAction = ["PUL", "PLS", "LUP", "ULS"][subSlot] || "ULS";
-                repsStage = Math.floor(((seconds - 30) % 10) + 3);
-            }
-        }
-        setsStage = Math.max(1, Math.min(12, setsStage));
-        repsStage = Math.max(1, Math.min(12, repsStage));
-        biokineticCoordinate = `${setsStage}${currentAction}${repsStage}`;
-
-        const elDial = getCachedEl('z-dial');
-        if (elDial) elDial.textContent = biokineticCoordinate;
+                setsStage = Math.floor((minutes % 12) + 1);
                 
-        // Dentro de la función updateZ(), reemplaza la línea de activeNodeText por esta:
+                if (seconds < 30) {
+                    const subSlot = Math.floor((seconds % 30) / 7.5);
+                    currentAction = ["PL", "PU", "LU", "SU"][subSlot] || "PL";
+                    repsStage = Math.floor((seconds % 10) + 2);
+                } else {
+                    const subSlot = Math.floor(((seconds - 30) % 30) / 7.5);
+                    currentAction = ["PUL", "PLS", "LUP", "ULS"][subSlot] || "ULS";
+                    repsStage = Math.floor(((seconds - 30) % 10) + 3);
+                }
+            }
+            
+            setsStage = Math.max(1, Math.min(12, setsStage));
+            repsStage = Math.max(1, Math.min(12, repsStage));
+            const biokineticCoordinate = `${setsStage}${currentAction}${repsStage}`;
+
+            // Actualizar número central gigante SVG
+            const elDial = getCachedEl('z-dial');
+            if (elDial) elDial.textContent = biokineticCoordinate;
+                    
+            // Actualizar sub-métricas del HUD superior
+            const subSetsSolar = getCachedEl('sub-sets-solar');
+            const subRepsTension = getCachedEl('sub-reps-tension');
+            if (subSetsSolar) subSetsSolar.textContent = `${(0.05 + (setsStage / 240)).toFixed(3)}`;
+            if (subRepsTension) subRepsTension.textContent = `${(14.2 + (repsStage * 0.8)).toFixed(1)}`;
+
+            // Actualizar Dial Espejo (HUD superior centro)
+            const elDialMirror = getCachedEl('z-dial-mirror');
+            if (elDialMirror) elDialMirror.textContent = biokineticCoordinate;
+        }
+                
+        // Nodos (Saturación) sigue fluyendo en tiempo real de forma aséptica
         const totalSecondsSinceMidnight = (hours * 3600) + (minutes * 60) + seconds;
         const activeNodeText = `${String(totalSecondsSinceMidnight + 1).padStart(4, '0')}`;
         const elActiveNode = getCachedEl('telemetry-active-node');
         if (elActiveNode) elActiveNode.textContent = activeNodeText;
-
-        const subSetsSolar = getCachedEl('sub-sets-solar');
-        const subRepsTension = getCachedEl('sub-reps-tension');
-        if (subSetsSolar) subSetsSolar.textContent = `${(0.05 + (setsStage / 240)).toFixed(3)}`;
-        if (subRepsTension) subRepsTension.textContent = `${(14.2 + (repsStage * 0.8)).toFixed(1)}`;
-
-        const currentCoordinate = `${setsStage}${currentAction}${repsStage}`;
-        const elDialMirror = getCachedEl('z-dial-mirror');
-        if (elDialMirror) elDialMirror.textContent = currentCoordinate;
     }
 
     // TELEMETRY: Panel material de transferencia física e intercambio.
@@ -613,12 +620,45 @@
         'telemetry-product-rate': "Valor base por dial activo.", 
         'telemetry-product-price': "Compras tu pieza y financias otra para la comunidad" 
     };
-
-    // PULS_MEANINGS: Firmware cuántico del lenguaje de la gota.
+    
+    // PULS_MEANINGS: Nomenclatura de Fluido Regenerativo (Drops, Waves & Double)
     const PULS_MEANINGS = {
         'sub-sets-solar-trigger': "FRECUENCIA COAXIAL VIVA TIERRA-LUNA-SOL.", 
         'sub-reps-tension-trigger': "COHESIÓN TENSIONAL Y MAGNETISMO GRAVITACIONAL.", 
-        'z-dial-trigger': "GOTAS BIOCINÉTICAS EN TIEMPO VERTICAL.", 
+        'z-dial-trigger': () => {
+            const coord = getCachedEl('z-dial-mirror')?.textContent || "1P1";
+            const match = coord.match(/^(\d+)([A-Z]+)(\d+)$/);
+            if (!match) return "MATRIZ BIOCINÉTICA ACTIVA.";
+            
+            const [_, drops, action, reps] = match;
+            let vectorText = "PULSO";
+
+            // Mapeo exacto de las 12 compuertas según el manifiesto de la Gota Biocinética
+            switch (action) {
+                // --- ONDAS SIMPLES (Fuerzas Puras y Absolutas) ---
+                case 'P':  vectorText = "PULSO DE PASO"; break; 
+                case 'S':  vectorText = "PULSO DE SALTO"; break; 
+                case 'U':  vectorText = "PRESIÓN"; break; 
+                case 'L':  vectorText = "CARGA"; break;    
+                
+                // --- ONDAS DUALES (Fuerzas de Balance) ---
+                case 'PL': vectorText = "PULSO DE PASO Y CARGA"; break;
+                case 'PU': vectorText = "PULSO DE PASO Y PRESIÓN"; break;
+                case 'LU': vectorText = "PULSO DE CARGA Y PRESIÓN"; break;
+                case 'SU': vectorText = "PULSO DE SALTO Y PRESIÓN"; break;
+                
+                // --- ONDAS TRIPLES (Vórtices Complejos de Iluminación) ---
+                case 'PUL': vectorText = "PASO EN PRESIÓN Y CARGA"; break;
+                case 'PLS': vectorText = "PASO EN CARGA Y SALTO"; break;
+                case 'LUP': vectorText = "CARGA EN PRESIÓN Y PASO"; break;
+                case 'ULS': vectorText = "PRESIÓN EN CARGA Y SALTO"; break;
+                
+                default: vectorText = "PULSO REGENERATIVO";
+            }
+
+            // Formato final de lectura ultra estructurado: "8 DROPS &rarr; DOUBLE TRIGGER PUSH &rarr; 10 WAVES"
+            return `${drops} GOTAS &rarr; ${vectorText} &rarr; ${reps} ONDAS`;
+        }, 
         'telemetry-sphere-idx-trigger': "MATRIZ CUÁNTICA. CICLO DE ESFERA.", 
         'telemetry-active-node-trigger': "SATURACIÓN SINÁPTICA. NODOS ACUMULADOS REALES." 
     };
@@ -723,28 +763,38 @@
                 el.addEventListener('click', () => {
                     clearTimeout(timerQuantum);
                     
+                    // Si se hace clic en el Dial (o viene redirigido desde el SVG central), congelamos
+                    if (id === 'z-dial-trigger') {
+                        window.isDialFrozen = true;
+                    }
+
                     // Disparo lumínico LED blanco según la naturaleza del elemento
                     if (esHeaderPuro) {
                         contenedorLed.classList.replace('text-white/60', 'text-white');
-                    } else if (id === 'z-dial') {
+                    } else if (id === 'z-dial-trigger') {
                         el.style.filter = "drop-shadow(0 0 25px rgba(255,255,255,0.95))";
                     } else {
-                        // Esferas y Nodos de las esquinas inferiores
                         contenedorLed.classList.replace('text-white/40', 'text-white');
-                        contenedorLed.querySelector('span:last-child').classList.replace('text-white/60', 'text-white');
+                        contenedorLed.querySelector('span:last-child').classList.replace('text-white', 'text-white/60');
                     }
                     
-                    telemetryDataSecondary.innerHTML = PULS_MEANINGS[id];
+                    // EVALUACIÓN DINÁMICA: Procesar string o función
+                    const meaningValue = PULS_MEANINGS[id];
+                    telemetryDataSecondary.innerHTML = typeof meaningValue === 'function' ? meaningValue() : meaningValue;
                     
                     timerQuantum = setTimeout(() => {
                         telemetryDataSecondary.innerHTML = txtOriginalSecondary;
                         
+                        // Al terminar los 8 segundos, descongelamos el loop global del Dial
+                        if (id === 'z-dial-trigger') {
+                            window.isDialFrozen = false;
+                            el.style.filter = "none";
+                        }
+
                         // Retorno al estado aséptico de cámara oscura
                         if (esHeaderPuro) {
                             contenedorLed.classList.replace('text-white', 'text-white/60');
-                        } else if (id === 'z-dial') {
-                            el.style.filter = "drop-shadow(0 0 15px rgba(255,255,255,0.5))";
-                        } else {
+                        } else if (id !== 'z-dial-trigger') {
                             contenedorLed.classList.replace('text-white', 'text-white/40');
                             contenedorLed.querySelector('span:last-child').classList.replace('text-white', 'text-white/60');
                         }
@@ -791,12 +841,24 @@
         window.open(`https://api.whatsapp.com/send?phone=${numeroCelular}&text=${encodeURIComponent(mensaje)}`, '_blank');
     }
 
-    // Inicialización coordinada del Ciclo de Vida del DOM
+// Inicialización coordinada del Ciclo de Vida del DOM
     document.addEventListener('DOMContentLoaded', () => {
         inicializarArtepanel();
         updateZ(); 
         setInterval(updateZ, 1000);
         habilitarReveladoTelemetria();
+
+        // INTERCONEXIÓN BIOCINÉTICA: Clic en número gigante central SVG traduce y congela el HUD
+        const zDialSvgText = getCachedEl('z-dial');
+        if (zDialSvgText) {
+            zDialSvgText.style.cursor = 'pointer';
+            zDialSvgText.style.pointerEvents = 'auto'; // Asegurar que el SVG reciba los clics de forma nativa
+            zDialSvgText.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Forzamos el trigger del HUD superior para unificar el comportamiento lumínico y congelado
+                getCachedEl('z-dial-trigger')?.click();
+            });
+        }
     });
 </script>
 </body>
