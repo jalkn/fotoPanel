@@ -68,14 +68,12 @@
         }
         .border-custom:hover { border-color: rgba(255, 255, 255, 0.6); }
 
-        /* VIDRIO HIPERREALISTA: Optimización de subpíxel y bisel de captura lumínica */
+        /* VIDRIO HIPERREALISTA SIMÉTRICO */
         .glass { 
-            background: rgba(5, 5, 8, 0.35); 
+            background: rgba(5, 5, 8, 0.5); /* Unificado para Header y Footer */
             border: 1px solid rgba(255, 255, 255, 0.06); 
-            border-top: 1px solid rgba(255, 255, 255, 0.25); 
             backdrop-filter: blur(30px); 
             -webkit-backdrop-filter: blur(30px);
-            /* Sombra profunda y aislamiento de capa */
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.03);
             transform: translateZ(0);
         }
@@ -100,14 +98,15 @@
             width: 0 !important;
             height: 0 !important;
         }
+
+        button, span, div {
+            -webkit-tap-highlight-color: transparent;
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-white selection:text-black overflow-x-hidden text-white min-h-screen">
 
     <div id="page-bg-overlay"></div>
-   
-
-<main id="main-vault" class="w-full h-screen flex flex-col relative overflow-hidden">
         
         <header class="fixed top-0 left-0 w-full z-50 glass border-b border-white/5">
             <div class="w-full flex flex-col">
@@ -175,185 +174,136 @@
             </div>
         </header>
 
-<div class="flex-1 w-full flex flex-col items-center justify-between p-4 sm:p-6 select-none relative z-10 overflow-hidden">
-    
-    <div id="artepanel-pack-container" class="my-auto relative w-[68vw] h-[68vw] sm:w-[58vw] sm:h-[58vw] md:w-[35vh] md:h-[35vh] max-w-[350px] max-h-[350px] min-w-[210px] min-h-[210px] aspect-square shrink-0 drop-shadow-[0_25px_55px_rgba(0,0,0,0.95)] transition-all duration-300">
-        <div class="w-full h-full relative overflow-hidden rounded-md bg-transparent">
-            
-            <img id="artepanel-pack-img-back" src="img/40x40W.png" alt="artepanel Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-0" />
-            <img id="artepanel-pack-img" src="img/40x40B.png" alt="artepanel Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-cover pointer-events-auto z-10" />
-            <img id="artepanel-pack-img-raw" src="img/20x20B.png" alt="Raw Content" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-[5]" />
-            
-            <div class="absolute inset-0 flex items-center justify-center p-0 z-20 pointer-events-none">
-                <svg id="laser-vector-target" viewBox="0 0 400 400" class="w-full h-full fill-none stroke-white/25 stroke-[1.2] transition-all duration-500 origin-center">
-                    <defs>
-                        <path id="textPath-top" d="M 65,200 A 135,135 0 0,1 335,200" />
-                        <path id="textPath-bottom" d="M 65,200 A 135,135 0 0,0 335,200" />
-                    </defs>
-                    <g class="origin-center">
-                        <path d="M 90,90 L 310,90 L 90,310 L 310,310 Z" class="opacity-15 stroke-[1]" />
-                        <path d="M 90,90 Q 200,125 310,90" class="opacity-15 stroke-[1]" />
-                        <path d="M 90,310 Q 200,275 310,310" stroke-dasharray="3 3" class="opacity-15 stroke-[1]" />
-                        
-                        <text id="z-dial" x="200" y="218" text-anchor="middle" class="fill-white font-black text-[45px] tracking-[0.35em] font-sans">8PU10</text>
-                    </g>
-                    <g style="display: none;">
-                        <text class="fill-white font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
-                            <textPath id="laser-variant-title" href="#textPath-top" startOffset="50%" text-anchor="middle">MACROPULSOR FOCUS</textPath>
-                        </text>
-                        <text class="fill-white/60 font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
-                            <textPath id="artepanel-description" href="#textPath-bottom" startOffset="50%" text-anchor="middle">Enfoque y claridad cognitiva</textPath>
-                        </text>
-                    </g>
-                </svg>
-            </div>
-        </div>
-    
-
-
-</div>
-<!-- FOOTER GENERAL HUD: Asegurando aislamiento de capa y un fondo con gradiente optimizado para GPU -->
-<footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-white/5 transition-opacity duration-500 select-none bg-gradient-to-t from-black/95 via-black/80 to-transparent transform translateZ(0)">
-    <div class="w-full flex flex-col font-mono uppercase text-xs">
-
-        <!-- TEXTO DE TELEMETRÍA COMERCIAL -->
-        <div class="w-full flex items-center justify-center px-4 h-8 bg-black/30">
-            <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-white/70 font-medium transition-all duration-300 whitespace-normal block leading-none uppercase select-none">
-                (MODELO 1:1) COMPRAS TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD
-            </span>
-        </div>
-
-        <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
-        <!-- SECCIÓN 2: DATOS DEL PRODUCTO ACTIVO (5 Columnas balanceadas y seguras para mobile) -->
-        <div class="w-full bg-white/[0.01]">
-            <div class="w-full grid grid-cols-5 items-center justify-between px-3 sm:px-8 h-12 gap-0.5 sm:gap-4 text-center select-none">
-                
-                <div id="telemetry-product-media-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
-                    <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Medio</span>
-                    <span id="telemetry-product-media" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white/90">--</span>
-                </div>
-
-                <div id="telemetry-product-dim-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
-                    <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Dim Cms</span>
-                    <span id="telemetry-product-dim" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">--</span>
-                </div>
-
-                <div id="telemetry-product-price-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
-                    <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Precio</span>
-                    <span id="telemetry-product-price" class="font-mono tracking-[0.15em] text-[10px] sm:text-[12px] font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">--</span>
-                </div>
-
-                <div id="telemetry-product-rate-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
-                    <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Rate</span>
-                    <span id="telemetry-product-rate" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">--</span>
-                </div>
-
-                <div id="telemetry-product-dial-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
-                    <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Dials</span>
-                    <span id="telemetry-product-dial" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white/90">--</span>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="w-full h-[1px] bg-white/5"></div>
-
-        <!-- SECCIÓN 3: BOTONES DE ACCIÓN PRINCIPALES (Flex en mobile / Grid exacto en sm para evitar desborde de SVG) -->
-        <div class="w-full h-12 relative z-10">
-            <div class="w-full flex sm:grid sm:grid-cols-[54px_54px_1fr_54px_54px] items-center h-full px-2 sm:px-8 justify-between">
-                
-                <button id="btn-extra-left" class="h-full w-[45px] sm:w-full flex items-center justify-center bg-transparent border-r border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white transition-all duration-300 focus:outline-none shrink-0" aria-label="Extra Left Operations">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0 1 15 0m-15 0a7.5 7.5 0 1 1 15 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077 1.41-.513m14.095-5.13 1.41-.513M5.106 17.785l1.15-.827m11.379-8.16 1.15-.827M8.14 21.27l.707-1.03m7.432-10.858.707-1.03M12 3v1.5m0 15V21m-2.83-16.543.827 1.15m10.15 14.15.827 1.15m-11.54 2.83 1.03-.707m10.858-7.432 1.03-.707M3.077 8.14l.513.707m15.13 14.095.513.707M4.175 5.106l.827 1.15m14.15 10.15.827 1.15" />
-                    </svg>
-                </button>
-
-                <button id="btn-reveal-raw" class="h-full w-[45px] sm:w-full flex items-center justify-center bg-transparent border-r border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white transition-all duration-300 focus:outline-none shrink-0" aria-label="Reveal Raw Mesh">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-                    </svg>
-                </button>
-
-                <button onclick="adquirirNodo()" class="h-full flex-1 sm:w-full bg-transparent hover:bg-white/[0.05] text-white/90 font-black text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.35em] transition-all duration-300 focus:outline-none whitespace-nowrap px-2">
-                    ACTIVAR
-                </button>
-
-                <button id="btn-reveal-bio" class="h-full w-[45px] sm:w-full flex items-center justify-center bg-transparent border-l border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white transition-all duration-300 focus:outline-none shrink-0" aria-label="Reveal Bio Contrast">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    </svg>
-                </button>
-
-                <button id="btn-extra-right" class="h-full w-[45px] sm:w-full flex items-center justify-center bg-transparent border-l border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white transition-all duration-300 focus:outline-none shrink-0" aria-label="Extra Right Systems">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.43l-1.003.767a1.123 1.123 0 0 0-.417 1.03c.004.074.006.148.006.222 0 .074-.002.148-.006.222a1.123 1.123 0 0 0 .417 1.03l1.003.767a1.125 1.125 0 0 1 .26 1.43l-1.296 2.247a1.125 1.125 0 0 1-1.37.49l-1.216-.456a1.125 1.125 0 0 0-1.075.124c-.073.044-.146.087-.22.128-.332.183-.582.495-.645.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281a1.125 1.125 0 0 0-.646-.869c-.074-.041-.147-.084-.22-.129a1.125 1.125 0 0 0-1.075-.124l-1.216.456a1.125 1.125 0 0 1-1.37-.49l-1.296-2.247a1.125 1.125 0 0 1 .26-1.43l1.003-.767c.318-.243.483-.646.417-1.03a1.121 1.121 0 0 0-.006-.222c0-.074.002-.148.006-.222a1.122 1.122 0 0 0-.417-1.03l-1.003-.767a1.125 1.125 0 0 1-.26-1.43l1.296-2.247a1.125 1.125 0 0 1 1.37-.49l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.646-.869L9.593 3.94Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <div class="w-full h-[1px] bg-white/5"></div>
-
-        <!-- SECCIÓN 4: SELECTORES CÍCLICOS DE BIOTIPOS (STENCIL / PANEL) -->
-        <div class="w-full h-12 relative z-10 bg-black/20 p-1">
-            <div class="w-full grid grid-cols-2 gap-2 sm:gap-3 h-full px-2 sm:px-8">
-                
-                <div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center">
-                    <button onclick="ciclarVariante('STENCIL', -1)" class="h-full flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded-l-lg transition-all focus:outline-none">
-                        <span class="text-[10px] font-bold">&lt;</span>
-                    </button>
-                    <div id="menu-bio-STENCIL-holder" class="h-full w-full flex items-center justify-center select-none"></div>
-                    <button onclick="ciclarVariante('STENCIL', 1)" class="h-full flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded-r-lg transition-all focus:outline-none">
-                        <span class="text-[10px] font-bold">&gt;</span>
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center">
-                    <button onclick="ciclarVariante('PANEL', -1)" class="h-full flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded-l-lg transition-all focus:outline-none">
-                        <span class="text-[10px] font-bold">&lt;</span>
-                    </button>
-                    <div id="menu-bio-PANEL-holder" class="h-full w-full flex items-center justify-center select-none"></div>
-                    <button onclick="ciclarVariante('PANEL', 1)" class="h-full flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded-r-lg transition-all focus:outline-none">
-                        <span class="text-[10px] font-bold">&gt;</span>
-                    </button>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="w-full h-[1px] bg-white/5"></div>
-
-        <!-- SECCIÓN 5: LEGAL / CREDITS FINALES HUD -->
-        <div class="w-full h-11 relative z-10">
-            <div class="w-full grid grid-cols-[40px_1fr_40px] sm:grid-cols-[54px_1fr_54px] items-center h-full px-4 sm:px-8 text-[8px] tracking-[0.3em] sm:tracking-[0.4em]">
-                <div class="h-full w-full flex items-center justify-start border-r border-white/5">
-                    <a href="https://jako.world" class="group w-full h-full flex items-center justify-start hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Link to jako.world">
-                        <img src="img/back.png" alt="" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500" />
-                    </a>
-                </div>    
-                
-                <div class="h-full w-full flex items-center justify-center text-center font-bold text-white/20">
-                    <a href="https://jako.world" class="h-full w-full flex items-center justify-center hover:text-white/60 hover:bg-white/[0.005] transition-all duration-300 focus:outline-none whitespace-nowrap">
-                        POWERED BY JAKO.WORLD
-                    </a>
-                </div>
-                
-                <div class="h-full w-full flex items-center justify-end border-l border-white/5">
-                    <a href="https://biorush.shop" class="group w-full h-full flex items-center justify-end hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Link to biorush.shop">
-                        <img src="img/pace.png" alt="" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500" />
-                    </a>
+<main id="main-vault" class="w-full flex-1 flex flex-col justify-center items-center pt-[155px] pb-[195px] min-h-screen relative overflow-hidden"> 
+        <div class="w-full flex flex-col items-center justify-center p-4 sm:p-6 select-none relative z-10">
+            <div id="artepanel-pack-container" class="relative w-[65vw] h-[65vw] sm:w-[50vw] sm:h-[50vw] md:w-[38vh] md:h-[38vh] max-w-[340px] max-h-[340px] min-w-[200px] min-h-[200px] aspect-square shrink-0 drop-shadow-[0_25px_55px_rgba(0,0,0,0.95)] transition-all duration-300">
+                <div class="w-full h-full relative overflow-hidden rounded-md bg-transparent">
+                    <img id="artepanel-pack-img-back" src="img/40x40W.png" alt="artepanel Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-0" />
+                    <img id="artepanel-pack-img" src="img/40x40B.png" alt="artepanel Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-cover pointer-events-auto z-10" />
+                    <img id="artepanel-pack-img-raw" src="img/20x20B.png" alt="Raw Content" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-[5]" />
+                    
+                    <div class="absolute inset-0 flex items-center justify-center p-0 z-20 pointer-events-none">
+                        <svg id="laser-vector-target" viewBox="0 0 400 400" class="w-full h-full fill-none stroke-white/25 stroke-[1.2] transition-all duration-500 origin-center">
+                            <defs>
+                                <path id="textPath-top" d="M 65,200 A 135,135 0 0,1 335,200" />
+                                <path id="textPath-bottom" d="M 65,200 A 135,135 0 0,0 335,200" />
+                            </defs>
+                            <g class="origin-center">
+                                <path d="M 90,90 L 310,90 L 90,310 L 310,310 Z" class="opacity-15 stroke-[1]" />
+                                <path d="M 90,90 Q 200,125 310,90" class="opacity-15 stroke-[1]" />
+                                <path d="M 90,310 Q 200,275 310,310" stroke-dasharray="3 3" class="opacity-15 stroke-[1]" />
+                                <text id="z-dial" x="200" y="218" text-anchor="middle" class="fill-white font-black text-[45px] tracking-[0.35em] font-sans">8PU10</text>
+                            </g>
+                            <g style="display: none;">
+                                <text class="fill-white font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
+                                    <textPath id="laser-variant-title" href="#textPath-top" startOffset="50%" text-anchor="middle">MACROPULSOR FOCUS</textPath>
+                                </text>
+                                <text class="fill-white/60 font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
+                                    <textPath id="artepanel-description" href="#textPath-bottom" startOffset="50%" text-anchor="middle">Enfoque y claridad cognitive</textPath>
+                                </text>
+                            </g>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
-
-    </div>
-</footer>
     </main>
 
-    
+<footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-white/5 transition-opacity duration-500 select-none transform translateZ(0)">
+        <div class="w-full flex flex-col font-mono uppercase text-xs">
+            <div class="w-full flex items-center justify-center px-4 h-8 bg-black/20">
+                <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-white/70 font-medium transition-all duration-300 whitespace-normal block leading-none uppercase select-none">
+                    (MODELO 1:1) COMPRAS TU PIEZA Y FINANCIAS OTRA PARA LA COMUNIDAD
+                </span>
+            </div>
+
+            <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+            <div class="w-full bg-white/[0.01]">
+                <div class="w-full grid grid-cols-5 items-center justify-between px-3 sm:px-8 h-12 gap-0.5 sm:gap-4 text-center select-none">
+                    <div id="telemetry-product-media-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
+                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Medio</span>
+                        <span id="telemetry-product-media" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white/90">--</span>
+                    </div>
+                    <div id="telemetry-product-dim-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
+                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Dim Cms</span>
+                        <span id="telemetry-product-dim" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">--</span>
+                    </div>
+                    <div id="telemetry-product-price-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
+                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Precio</span>
+                        <span id="telemetry-product-price" class="font-mono tracking-[0.15em] text-[10px] sm:text-[12px] font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">--</span>
+                    </div>
+                    <div id="telemetry-product-rate-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
+                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Rate</span>
+                        <span id="telemetry-product-rate" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">--</span>
+                    </div>
+                    <div id="telemetry-product-dial-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
+                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Dials</span>
+                        <span id="telemetry-product-dial" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white/90">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full h-[1px] bg-white/5"></div>
+
+            <div class="w-full h-12 relative z-10">
+                <div class="w-full flex sm:grid sm:grid-cols-[54px_54px_1fr_54px_54px] items-center h-full px-2 sm:px-8 justify-between">
+                    <button id="btn-extra-left" class="h-full w-[45px] sm:w-full flex items-center justify-center bg-transparent border-r border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white transition-all duration-300 focus:outline-none shrink-0" aria-label="Extra Left Operations">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0 1 15 0m-15 0a7.5 7.5 0 1 1 15 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077 1.41-.513m14.095-5.13 1.41-.513M5.106 17.785l1.15-.827m11.379-8.16 1.15-.827M8.14 21.27l.707-1.03m7.432-10.858.707-1.03M12 3v1.5m0 15V21m-2.83-16.543.827 1.15m10.15 14.15.827 1.15m-11.54 2.83 1.03-.707m10.858-7.432 1.03-.707M3.077 8.14l.513.707m15.13 14.095.513.707M4.175 5.106l.827 1.15m14.15 10.15.827 1.15" /></svg>
+                    </button>
+                    <button id="btn-reveal-raw" class="h-full w-[45px] sm:w-full flex items-center justify-center bg-transparent border-r border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white transition-all duration-300 focus:outline-none shrink-0" aria-label="Reveal Raw Mesh">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /></svg>
+                    </button>
+                    <button onclick="adquirirNodo()" class="h-full flex-1 sm:w-full bg-transparent hover:bg-white/[0.05] text-white/90 font-black text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.35em] transition-all duration-300 focus:outline-none whitespace-nowrap px-2">
+                        ACTIVAR
+                    </button>
+                    <button id="btn-reveal-bio" class="h-full w-[45px] sm:w-full flex items-center justify-center bg-transparent border-l border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white transition-all duration-300 focus:outline-none shrink-0" aria-label="Reveal Bio Contrast">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                    </button>
+                    <button id="btn-extra-right" class="h-full w-[45px] sm:w-full flex items-center justify-center bg-transparent border-l border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white transition-all duration-300 focus:outline-none shrink-0" aria-label="Extra Right Systems">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.43l-1.003.767a1.123 1.123 0 0 0-.417 1.03c.004.074.006.148.006.222 0 .074-.002.148-.006.222a1.123 1.123 0 0 0 .417 1.03l1.003.767a1.125 1.125 0 0 1 .26 1.43l-1.296 2.247a1.125 1.125 0 0 1-1.37.49l-1.216-.456a1.125 1.125 0 0 0-1.075.124c-.073.044-.146.087-.22.128-.332.183-.582.495-.645.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281a1.125 1.125 0 0 0-.646-.869c-.074-.041-.147-.084-.22-.129a1.125 1.125 0 0 0-1.075-.124l-1.216.456a1.125 1.125 0 0 1-1.37-.49l-1.296-2.247a1.125 1.125 0 0 1 .26-1.43l1.003-.767c.318-.243.483-.646.417-1.03a1.121 1.121 0 0 0-.006-.222c0-.074.002-.148.006-.222a1.122 1.122 0 0 0-.417-1.03l-1.003-.767a1.125 1.125 0 0 1-.26-1.43l1.296-2.247a1.125 1.125 0 0 1 1.37-.49l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.646-.869L9.593 3.94Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="w-full h-[1px] bg-white/5"></div>
+
+            <div class="w-full h-12 relative z-10 bg-black/10 p-1">
+                <div class="w-full grid grid-cols-2 gap-2 sm:gap-3 h-full px-2 sm:px-8">
+                    <div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center">
+                        <button onclick="ciclarVariante('STENCIL', -1)" class="h-full flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded-l-lg transition-all focus:outline-none"><span class="text-[10px] font-bold">&lt;</span></button>
+                        <div id="menu-bio-STENCIL-holder" class="h-full w-full flex items-center justify-center select-none"></div>
+                        <button onclick="ciclarVariante('STENCIL', 1)" class="h-full flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded-r-lg transition-all focus:outline-none"><span class="text-[10px] font-bold">&gt;</span></button>
+                    </div>
+                    <div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center">
+                        <button onclick="ciclarVariante('PANEL', -1)" class="h-full flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded-l-lg transition-all focus:outline-none"><span class="text-[10px] font-bold">&lt;</span></button>
+                        <div id="menu-bio-PANEL-holder" class="h-full w-full flex items-center justify-center select-none"></div>
+                        <button onclick="ciclarVariante('PANEL', 1)" class="h-full flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded-r-lg transition-all focus:outline-none"><span class="text-[10px] font-bold">&gt;</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full h-[1px] bg-white/5"></div>
+
+            <div class="w-full h-11 relative z-10">
+                <div class="w-full grid grid-cols-[40px_1fr_40px] sm:grid-cols-[54px_1fr_54px] items-center h-full px-4 sm:px-8 text-[8px] tracking-[0.3em] sm:tracking-[0.4em]">
+                    <div class="h-full w-full flex items-center justify-start border-r border-white/5">
+                        <a href="https://jako.world" class="group w-full h-full flex items-center justify-start hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Link to jako.world">
+                            <img src="img/back.png" alt="" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500" />
+                        </a>
+                    </div>    
+                    <div class="h-full w-full flex items-center justify-center text-center font-bold text-white/20">
+                        <a href="https://jako.world" class="h-full w-full flex items-center justify-center hover:text-white/60 hover:bg-white/[0.005] transition-all duration-300 focus:outline-none whitespace-nowrap">POWERED BY JAKO.WORLD</a>
+                    </div>
+                    <div class="h-full w-full flex items-center justify-end border-l border-white/5">
+                        <a href="https://biorush.shop" class="group w-full h-full flex items-center justify-end hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Link to biorush.shop">
+                            <img src="img/pace.png" alt="" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 <script>
     // =========================================================================
