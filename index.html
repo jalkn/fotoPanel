@@ -241,14 +241,21 @@
             <div class="w-full h-[1px] bg-white/5"></div>
 
             <!-- REEMPLAZAR ESTE BLOQUE EN TU HTML (Líneas de los botones de control inferior) -->
-            <div class="w-full h-12 relative z-10">
-                <div class="w-full flex sm:grid sm:grid-cols-[54px_1fr] items-center h-full px-2 sm:px-8 justify-between">
-                    <button id="btn-reveal-raw" class="h-full w-[45px] sm:w-full flex items-center justify-center bg-transparent border-r border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white transition-all duration-300 focus:outline-none shrink-0" aria-label="Alternar Capas Visuales">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /></svg>
+            <div class="w-full h-12 relative z-10 border-t border-white/5 bg-black/20">
+                <div class="w-full grid grid-cols-3 items-center h-full text-center select-none">
+                    
+                    <button id="btn-reveal-raw" class="h-full w-full flex items-center justify-center bg-transparent border-r border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Capas Visuales">
+                        VER
                     </button>
-                    <button onclick="adquirirNodo()" class="h-full flex-1 sm:w-full bg-transparent hover:bg-white/[0.05] text-white/90 font-black text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.35em] transition-all duration-300 focus:outline-none whitespace-nowrap px-2">
+                    
+                    <button onclick="adquirirNodo()" class="h-full w-full bg-transparent border-r border-white/5 hover:bg-white/[0.05] text-white/90 font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
                         ACTIVAR
                     </button>
+                    
+                    <button id="btn-footer-dial" class="h-full w-full bg-transparent hover:bg-white/[0.03] text-white/40 hover:text-white font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
+                        DIAL
+                    </button>
+                    
                 </div>
             </div>
 
