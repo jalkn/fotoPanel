@@ -182,8 +182,12 @@
                         <g id="wave-quantum-container" class="origin-center -rotate-90">
                             </g>
 
-                        <g class="origin-center">
-                            <text id="z-dial" x="200" y="218" text-anchor="middle" class="fill-white font-black text-[45px] tracking-[0.35em] font-sans opacity-0 transition-all duration-500 pointer-events-auto select-none cursor-pointer">8PU10</text>
+                        <!-- RESTAURACIÓN DE SANDWATCH Y COORDINADA ALFANUMÉRICA (SINCRONIZADOS) -->
+                        <g id="sandwatch-group" class="origin-center opacity-0 transition-all duration-500 pointer-events-none style-gpu" style="will-change: opacity;">
+                            <path d="M 90,90 L 310,90 L 90,310 L 310,310 Z" class="stroke-white stroke-[1] opacity-20" />
+                            <path d="M 90,90 Q 200,125 310,90" class="stroke-white stroke-[1] opacity-20" />
+                            <path d="M 90,310 Q 200,275 310,310" stroke-dasharray="3 3" class="stroke-white stroke-[1] opacity-20" />
+                            <text id="z-dial" x="200" y="218" text-anchor="middle" class="fill-white font-black text-[45px] tracking-[0.35em] font-sans pointer-events-auto select-none cursor-pointer">8PU10</text>
                         </g>
 
                         <g style="display: none;">
@@ -389,7 +393,7 @@
         return cachedElements[id];
     }
 
-    const triggerHaptic = (ms) => { if (navigator.vibrate) navigator.vibrate(ms); };// // // // =========================================================================
+    const triggerHaptic = (ms) => { if (navigator.vibrate) navigator.vibrate(ms); };// // // // // =========================================================================
     // MOTOR GRÁFICO: TRIPLE ESTRUCTURA DE ONDAS CONSTRUIDAS (SISTEMA INDEX_10)
     // =========================================================================
     function renderBiokineticWaves() {
@@ -399,18 +403,12 @@
         let htmlContent = '';
 
         biokineticWaveHistory.forEach((dial, tIndex) => {
-            // Tu nueva escala base lineal limpia
             const currentScale = tIndex * (3 / 3); 
-
-            // Ajuste dinámico de opacidad adaptado al nuevo tamaño de historial (12)
             const baseOpacity = isDialTextRevealed ? 0.05 : (1.0 - (tIndex * 0.08));
             if (baseOpacity <= 0) return;
 
-            // Multiplicador visual aumentado para expandir el radio en el lienzo SVG de 400x400
-            // Sube este valor a 18 o 20 si quieres que las ondas toquen los bordes del Artepanel
             const viewFactor = 18; 
 
-            // Estructura de Capas
             const layers = [
                 { id: 'internal',     r: (currentScale * 1.0) * viewFactor, opacity: baseOpacity * 0.70, value: dial.sets },
                 { id: 'intermediate', r: (currentScale * 1.4) * viewFactor, opacity: baseOpacity * 0.55, value: dial.vector },
@@ -425,6 +423,7 @@
                 const arcLength = (layer.value / 12) * circumference;
                 const dashArray = `${arcLength} ${circumference}`;
 
+                // OPTIMIZACIÓN: Remoción de transiciones CSS para renderizado síncrono cuadro por cuadro (GPU)
                 htmlContent += `
                     <circle 
                         id="wave-${layer.id}-t${tIndex}" 
@@ -432,7 +431,7 @@
                         cy="200" 
                         r="${layer.r}" 
                         transform="rotate(${angle} 200 200)"
-                        class="stroke-white transition-all duration-1000 cubic-bezier(0.4, 0, 0.2, 1)"
+                        class="stroke-white"
                         stroke-width="${tIndex === 0 ? 1.5 : 1.0}"
                         stroke-opacity="${layer.opacity}"
                         stroke-dasharray="${dashArray}"
@@ -499,12 +498,11 @@
             });
         }
 
-        // --- NUEVO: VINCULACIÓN DEL BOTÓN DIAL ---
+        // --- VINCULACIÓN DEL BOTÓN DIAL RECTIFICADO ---
         if (btnDial) {
             btnDial.addEventListener('click', () => {
-                isDialTextRevealed = !isDialTextRevealed; // Alterna el estado verdadero/falso
+                isDialTextRevealed = !isDialTextRevealed; 
                 
-                // Cambiar estilos visuales del botón para dar feedback de activo/inactivo
                 if (isDialTextRevealed) {
                     btnDial.classList.replace('text-white/40', 'text-white');
                     btnDial.classList.add('bg-white/[0.04]');
@@ -513,9 +511,12 @@
                     btnDial.classList.remove('bg-white/[0.04]');
                 }
                 
-                // Forzar actualización inmediata del motor para pintar o esconder el texto
-                const elDial = getCachedEl('z-dial');
-                if (elDial) elDial.style.opacity = isDialTextRevealed ? "1" : "0";
+                // Forzar revelado síncrono del grupo completo (Reloj + Texto)
+                const sandwatchGroup = getCachedEl('sandwatch-group');
+                if (sandwatchGroup) {
+                    sandwatchGroup.style.opacity = isDialTextRevealed ? "1" : "0";
+                    sandwatchGroup.style.pointerEvents = isDialTextRevealed ? "auto" : "none";
+                }
                 
                 renderBiokineticWaves(); 
                 triggerHaptic([10]);
@@ -692,12 +693,14 @@
             // Invocar renderizado unificado
             renderBiokineticWaves();
 
-            // Sincronizar texto alfanumérico gigante
+// Sincronizar texto alfanumérico gigante y su entorno geométrico
             const elDial = getCachedEl('z-dial');
-            if (elDial) {
-                elDial.textContent = biokineticCoordinate;
-                // Control dinámico de opacidad: se revela solo si isDialTextRevealed es true
-                elDial.style.opacity = isDialTextRevealed ? "1" : "0";
+            if (elDial) elDial.textContent = biokineticCoordinate;
+            
+            const sandwatchGroup = getCachedEl('sandwatch-group');
+            if (sandwatchGroup) {
+                sandwatchGroup.style.opacity = isDialTextRevealed ? "1" : "0";
+                sandwatchGroup.style.pointerEvents = isDialTextRevealed ? "auto" : "none";
             }
                     
             // Actualizar sub-métricas del HUD superior
