@@ -219,28 +219,32 @@
 
             <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
-            <div class="w-full bg-white/[0.01]">
+            <div class="w-full bg-white/[0.01] border-b border-white/5">
                 <div class="w-full grid grid-cols-5 items-center justify-between px-3 sm:px-8 h-12 gap-0.5 sm:gap-4 text-center select-none">
-                    <div id="telemetry-product-media-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
+                    
+                    <div id="telemetry-product-media-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
                         <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Medio</span>
                         <span id="telemetry-product-media" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white/90">--</span>
                     </div>
-                    <div id="telemetry-product-dim-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
-                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Dim Cms</span>
-                        <span id="telemetry-product-dim" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">--</span>
+
+                    <div class="col-span-3 grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center max-w-xs mx-auto">
+                        <button id="btn-variant-prev" class="h-8 flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded transition-all focus:outline-none">
+                            <span class="text-[10px] font-bold">&lt;</span>
+                        </button>
+                        
+                        <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center cursor-pointer group">
+                            </div>
+                        
+                        <button id="btn-variant-next" class="h-8 flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded transition-all focus:outline-none">
+                            <span class="text-[10px] font-bold">&gt;</span>
+                        </button>
                     </div>
-                    <div id="telemetry-product-price-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
-                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Precio</span>
-                        <span id="telemetry-product-price" class="font-mono tracking-[0.15em] text-[10px] sm:text-[12px] font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">--</span>
-                    </div>
-                    <div id="telemetry-product-rate-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
-                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Rate</span>
-                        <span id="telemetry-product-rate" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">--</span>
-                    </div>
-                    <div id="telemetry-product-dial-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
+
+                    <div id="telemetry-product-dial-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
                         <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Dials</span>
                         <span id="telemetry-product-dial" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white/90">--</span>
                     </div>
+
                 </div>
             </div>
 
@@ -258,22 +262,6 @@
                 </div>
             </div>
 
-            <div class="w-full h-[1px] bg-white/5"></div>
-
-            <div class="w-full h-12 relative z-10 bg-black/10 p-1">
-                <div class="w-full max-w-xs mx-auto grid grid-cols-[32px_1fr_32px] gap-2 h-full px-4 items-center">
-                    <button id="btn-variant-prev" class="h-full flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded-l-lg transition-all focus:outline-none">
-                        <span class="text-[10px] font-bold">&lt;</span>
-                    </button>
-                    
-                    <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center select-none cursor-pointer group">
-                        </div>
-                    
-                    <button id="btn-variant-next" class="h-full flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded-r-lg transition-all focus:outline-none">
-                        <span class="text-[10px] font-bold">&gt;</span>
-                    </button>
-                </div>
-            </div>
 
             <div class="w-full h-[1px] bg-white/5"></div>
 
