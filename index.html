@@ -246,16 +246,14 @@
 
             <div class="w-full h-[1px] bg-white/5"></div>
 
+            <!-- REEMPLAZAR ESTE BLOQUE EN TU HTML (Líneas de los botones de control inferior) -->
             <div class="w-full h-12 relative z-10">
-                <div class="w-full flex sm:grid sm:grid-cols-[54px_54px_1fr_54px_54px] items-center h-full px-2 sm:px-8 justify-between">
-                    <button id="btn-reveal-raw" class="h-full w-[45px] sm:w-full flex items-center justify-center bg-transparent border-r border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white transition-all duration-300 focus:outline-none shrink-0" aria-label="Reveal Raw Mesh">
+                <div class="w-full flex sm:grid sm:grid-cols-[54px_1fr] items-center h-full px-2 sm:px-8 justify-between">
+                    <button id="btn-reveal-raw" class="h-full w-[45px] sm:w-full flex items-center justify-center bg-transparent border-r border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white transition-all duration-300 focus:outline-none shrink-0" aria-label="Alternar Capas Visuales">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /></svg>
                     </button>
                     <button onclick="adquirirNodo()" class="h-full flex-1 sm:w-full bg-transparent hover:bg-white/[0.05] text-white/90 font-black text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.35em] transition-all duration-300 focus:outline-none whitespace-nowrap px-2">
                         ACTIVAR
-                    </button>
-                    <button id="btn-reveal-bio" class="h-full w-[45px] sm:w-full flex items-center justify-center bg-transparent border-l border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white transition-all duration-300 focus:outline-none shrink-0" aria-label="Reveal Bio Contrast">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
                     </button>
                 </div>
             </div>
@@ -424,32 +422,33 @@
     }
 
     function vincularBotones() {
-        const btnBio = getCachedEl('btn-reveal-bio');
         const btnRaw = getCachedEl('btn-reveal-raw');
         
-        // Estado para gestionar el modo actual y permitir el "cierre" al presionar de nuevo
+        // Estado cíclico de 3 pasos: 'front' (Normal) -> 'raw' (Raw Mesh) -> 'back' (Bio Contrast)
         let modoActual = 'front';
 
-        const alternarModo = (modo, haptic) => {
-            if (modoActual === modo) {
-                aplicarModoVisual('front');
-                modoActual = 'front';
-            } else {
-                aplicarModoVisual(modo);
-                modoActual = modo;
-                triggerHaptic(haptic);
-            }
-        };
-
-        // Eventos de clic simple
-        btnBio.addEventListener('click', () => alternarModo('back', 12));
-        btnRaw.addEventListener('click', () => alternarModo('raw', 10));
+        if (btnRaw) {
+            btnRaw.addEventListener('click', () => {
+                if (modoActual === 'front') {
+                    aplicarModoVisual('raw');
+                    modoActual = 'raw';
+                    triggerHaptic([10]);
+                } else if (modoActual === 'raw') {
+                    aplicarModoVisual('back');
+                    modoActual = 'back';
+                    triggerHaptic([12]);
+                } else {
+                    aplicarModoVisual('front');
+                    modoActual = 'front';
+                    triggerHaptic([8]);
+                }
+            });
+        }
     }
-// ==========================================
+    // ==========================================
     // 4. CONTROLADORES DE INTERFAZ DE USUARIO
     // ==========================================
     function inicializarArtepanel() {
-        // Inyectamos cada botón directamente en su contenedor del extremo correspondiente
         const stencilHolder = getCachedEl('menu-bio-STENCIL-holder');
         const panelHolder = getCachedEl('menu-bio-PANEL-holder');
         
@@ -709,7 +708,6 @@
                 el.addEventListener('click', () => {
                     clearTimeout(timerComercial);
                     
-                    // Efecto de encendido LED: Iluminación blanca pura al presionar
                     el.parentElement.classList.remove('text-white/50');
                     el.parentElement.classList.add('text-white');
                     telemetryData.innerHTML = TELEMETRY_MEANINGS[id];
@@ -741,12 +739,10 @@
                 el.addEventListener('click', () => {
                     clearTimeout(timerQuantum);
                     
-                    // Si se hace clic en el Dial (o viene redirigido desde el SVG central), congelamos
                     if (id === 'z-dial-trigger') {
                         window.isDialFrozen = true;
                     }
 
-                    // Disparo lumínico LED blanco según la naturaleza del elemento
                     if (esHeaderPuro) {
                         contenedorLed.classList.replace('text-white/60', 'text-white');
                     } else if (id === 'z-dial-trigger') {
@@ -756,20 +752,17 @@
                         contenedorLed.querySelector('span:last-child').classList.replace('text-white', 'text-white/60');
                     }
                     
-                    // EVALUACIÓN DINÁMICA: Procesar string o función
                     const meaningValue = PULS_MEANINGS[id];
                     telemetryDataSecondary.innerHTML = typeof meaningValue === 'function' ? meaningValue() : meaningValue;
                     
                     timerQuantum = setTimeout(() => {
                         telemetryDataSecondary.innerHTML = txtOriginalSecondary;
                         
-                        // Al terminar los 8 segundos, descongelamos el loop global del Dial
                         if (id === 'z-dial-trigger') {
                             window.isDialFrozen = false;
                             el.style.filter = "none";
                         }
 
-                        // Retorno al estado aséptico de cámara oscura
                         if (esHeaderPuro) {
                             contenedorLed.classList.replace('text-white', 'text-white/60');
                         } else if (id !== 'z-dial-trigger') {
