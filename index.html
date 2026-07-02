@@ -366,6 +366,9 @@
     // Control de colapso visual del observador (false = ondas por defecto, true = texto alfanumérico)
     let isDialTextRevealed = false;
 
+    // --- NUEVO: CONTROL DE SUB-PASOS E INDEPENDIZACIÓN DE CAPAS ---
+    let currentWaveSubStep = 0; // Cambia de 0 a 2 cada tercio de segundo (internal, intermediate, external)
+
     // Diccionario de Vectores: Mapea de forma aséptica tus 12 variantes de acción a posiciones del reloj
     const VECTOR_TO_CLOCK_INDEX = {
         'P': 1,  'U': 2,  'L': 3,  'S': 4,
@@ -386,39 +389,40 @@
         return cachedElements[id];
     }
 
-    const triggerHaptic = (ms) => { if (navigator.vibrate) navigator.vibrate(ms); };
-
-    // =========================================================================
-    // MOTOR GRÁFICO: PROPAGACIÓN DE ONDAS CONCÉNTRICAS (ECO CUÁNTICO)
+    const triggerHaptic = (ms) => { if (navigator.vibrate) navigator.vibrate(ms); };// // // // =========================================================================
+    // MOTOR GRÁFICO: TRIPLE ESTRUCTURA DE ONDAS CONSTRUIDAS (SISTEMA INDEX_10)
     // =========================================================================
     function renderBiokineticWaves() {
         const container = getCachedEl('wave-quantum-container');
-        if (!container) return;
+        if (!container || biokineticWaveHistory.length === 0) return;
 
         let htmlContent = '';
 
         biokineticWaveHistory.forEach((dial, tIndex) => {
-            // Factor de expansión: mantenemos tu lógica de ecos (opacidad decreciente)
-            const radiusMultiplier = 1 + (tIndex * 0.45);
-            const baseOpacity = isDialTextRevealed ? 0.05 : (1.0 - (tIndex * 0.28));
+            // Tu nueva escala base lineal limpia
+            const currentScale = tIndex * (3 / 3); 
+
+            // Ajuste dinámico de opacidad adaptado al nuevo tamaño de historial (12)
+            const baseOpacity = isDialTextRevealed ? 0.05 : (1.0 - (tIndex * 0.08));
             if (baseOpacity <= 0) return;
 
+            // Multiplicador visual aumentado para expandir el radio en el lienzo SVG de 400x400
+            // Sube este valor a 18 o 20 si quieres que las ondas toquen los bordes del Artepanel
+            const viewFactor = 18; 
+
+            // Estructura de Capas
             const layers = [
-                { id: 'internal',     r: 50  * radiusMultiplier, opacity: baseOpacity * 0.70, value: dial.sets },
-                { id: 'intermediate', r: 95  * radiusMultiplier, opacity: baseOpacity * 0.55, value: dial.vector },
-                { id: 'external',     r: 140 * radiusMultiplier, opacity: baseOpacity * 0.40, value: dial.reps }
+                { id: 'internal',     r: (currentScale * 1.0) * viewFactor, opacity: baseOpacity * 0.70, value: dial.sets },
+                { id: 'intermediate', r: (currentScale * 1.4) * viewFactor, opacity: baseOpacity * 0.55, value: dial.vector },
+                { id: 'external',     r: (currentScale * 1.8) * viewFactor, opacity: baseOpacity * 0.40, value: dial.reps }
             ];
 
             layers.forEach(layer => {
+                if (layer.r <= 0) return;
+
                 const circumference = 2 * Math.PI * layer.r;
-                
-                // 1. CÁLCULO ANGULAR: 360/12 = 30 grados por variante.
                 const angle = (layer.value - 1) * 30; 
-                
-                // 2. CÁLCULO DE CRECIMIENTO: El tamaño del arco crece con la variante (1/12 a 12/12)
                 const arcLength = (layer.value / 12) * circumference;
-                
-                // 3. APLICACIÓN DE ESTILO: Dasharray para la longitud, Transform para el ángulo
                 const dashArray = `${arcLength} ${circumference}`;
 
                 htmlContent += `
@@ -428,12 +432,13 @@
                         cy="200" 
                         r="${layer.r}" 
                         transform="rotate(${angle} 200 200)"
-                        class="stroke-white transition-all duration-1000 ease-out"
+                        class="stroke-white transition-all duration-1000 cubic-bezier(0.4, 0, 0.2, 1)"
                         stroke-width="${tIndex === 0 ? 1.5 : 1.0}"
                         stroke-opacity="${layer.opacity}"
                         stroke-dasharray="${dashArray}"
                         stroke-linecap="round"
                         fill="none"
+                        style="will-change: r, stroke-opacity, stroke-dasharray;"
                     />`;
             });
         });
@@ -472,8 +477,8 @@
 
     function vincularBotones() {
         const btnRaw = getCachedEl('btn-reveal-raw');
+        const btnDial = getCachedEl('btn-reveal-dial'); // <-- Capturar el botón DIAL
         
-        // Estado cíclico de 3 pasos: 'front' (Normal) -> 'raw' (Raw Mesh) -> 'back' (Bio Contrast)
         let modoActual = 'front';
 
         if (btnRaw) {
@@ -491,6 +496,29 @@
                     modoActual = 'front';
                     triggerHaptic([8]);
                 }
+            });
+        }
+
+        // --- NUEVO: VINCULACIÓN DEL BOTÓN DIAL ---
+        if (btnDial) {
+            btnDial.addEventListener('click', () => {
+                isDialTextRevealed = !isDialTextRevealed; // Alterna el estado verdadero/falso
+                
+                // Cambiar estilos visuales del botón para dar feedback de activo/inactivo
+                if (isDialTextRevealed) {
+                    btnDial.classList.replace('text-white/40', 'text-white');
+                    btnDial.classList.add('bg-white/[0.04]');
+                } else {
+                    btnDial.classList.replace('text-white', 'text-white/40');
+                    btnDial.classList.remove('bg-white/[0.04]');
+                }
+                
+                // Forzar actualización inmediata del motor para pintar o esconder el texto
+                const elDial = getCachedEl('z-dial');
+                if (elDial) elDial.style.opacity = isDialTextRevealed ? "1" : "0";
+                
+                renderBiokineticWaves(); 
+                triggerHaptic([10]);
             });
         }
     }
@@ -644,24 +672,24 @@
 
             // --- CAPTURA DE ONDA PARA HISTORIAL FIFO ---
             const vectorIndex = VECTOR_TO_CLOCK_INDEX[currentAction] || 1;
-            
-            // Verificar si el segundo cambió para evitar duplicados en frames intermedios de milisegundos
+
             const lastSavedDial = biokineticWaveHistory[0];
             if (!lastSavedDial || lastSavedDial.rawCoord !== biokineticCoordinate) {
-                // Insertar nuevo dial en el epicentro (t0)
+                // Insertar nuevo dial completo en el epicentro (t0)
                 biokineticWaveHistory.unshift({
                     sets: setsStage,
                     vector: vectorIndex,
                     reps: repsStage,
                     rawCoord: biokineticCoordinate
                 });
-                // Mantener límite estricto de 4 diales de memoria (12 ondas concurrentes)
-                if (biokineticWaveHistory.length > 4) {
+                
+                // CAMBIO: Elevamos el pool de ondas a 12 para que tengan tiempo de viajar al exterior
+                if (biokineticWaveHistory.length > 12) {
                     biokineticWaveHistory.pop();
                 }
             }
 
-            // Ejecutar propagación visual en el contenedor SVG
+            // Invocar renderizado unificado
             renderBiokineticWaves();
 
             // Sincronizar texto alfanumérico gigante
@@ -908,7 +936,10 @@
     document.addEventListener('DOMContentLoaded', () => {
         inicializarArtepanel();
         updateZ(); 
+        
+        // MOTOR DE TELEMETRÍA Y ONDAS UNIFICADO (1 segundo estricto)
         setInterval(updateZ, 1000);
+
         habilitarReveladoTelemetria();
 
         // Desactivar bloqueo de puntero sobre el SVG general para liberar interacciones traseras
