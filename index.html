@@ -165,39 +165,41 @@
         </header>
 
 <main id="main-vault" class="w-full flex-1 flex flex-col justify-center items-center pt-[155px] pb-[195px] min-h-screen relative overflow-hidden"> 
-        <div class="w-full flex flex-col items-center justify-center p-4 sm:p-6 select-none relative z-10">
-            <div id="artepanel-pack-container" class="relative w-[65vw] h-[65vw] sm:w-[50vw] sm:h-[50vw] md:w-[38vh] md:h-[38vh] max-w-[340px] max-h-[340px] min-w-[200px] min-h-[200px] aspect-square shrink-0 drop-shadow-[0_25px_55px_rgba(0,0,0,0.95)] transition-all duration-300">
-                <div class="w-full h-full relative overflow-hidden rounded-md bg-transparent">
-                    <img id="artepanel-pack-img-back" src="img/40x40W.png" alt="artepanel Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-0" />
-                    <img id="artepanel-pack-img" src="img/40x40B.png" alt="artepanel Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-cover pointer-events-auto z-10" />
-                    <img id="artepanel-pack-img-raw" src="img/20x20B.png" alt="Raw Content" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-[5]" />
-                    
-                    <div class="absolute inset-0 flex items-center justify-center p-0 z-20 pointer-events-none">
-                        <svg id="laser-vector-target" viewBox="0 0 400 400" class="w-full h-full fill-none stroke-white/25 stroke-[1.2] transition-all duration-500 origin-center">
-                            <defs>
-                                <path id="textPath-top" d="M 65,200 A 135,135 0 0,1 335,200" />
-                                <path id="textPath-bottom" d="M 65,200 A 135,135 0 0,0 335,200" />
-                            </defs>
-                            <g class="origin-center">
-                                <path d="M 90,90 L 310,90 L 90,310 L 310,310 Z" class="opacity-15 stroke-[1]" />
-                                <path d="M 90,90 Q 200,125 310,90" class="opacity-15 stroke-[1]" />
-                                <path d="M 90,310 Q 200,275 310,310" stroke-dasharray="3 3" class="opacity-15 stroke-[1]" />
-                                <text id="z-dial" x="200" y="218" text-anchor="middle" class="fill-white font-black text-[45px] tracking-[0.35em] font-sans">8PU10</text>
+    <div class="w-full flex flex-col items-center justify-center p-4 sm:p-6 select-none relative z-10">
+        <div id="artepanel-pack-container" class="relative w-[65vw] h-[65vw] sm:w-[50vw] sm:h-[50vw] md:w-[38vh] md:h-[38vh] max-w-[340px] max-h-[340px] min-w-[200px] min-h-[200px] aspect-square shrink-0 drop-shadow-[0_25px_55px_rgba(0,0,0,0.95)] transition-all duration-300">
+            <div class="w-full h-full relative overflow-hidden rounded-md bg-transparent">
+                <img id="artepanel-pack-img-back" src="img/40x40W.png" alt="artepanel Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-0" />
+                <img id="artepanel-pack-img" src="img/40x40B.png" alt="artepanel Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-cover pointer-events-auto z-10" />
+                <img id="artepanel-pack-img-raw" src="img/20x20B.png" alt="Raw Content" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-[5]" />
+                
+                <div class="absolute inset-0 flex items-center justify-center p-0 z-20 pointer-events-none">
+                    <svg id="laser-vector-target" viewBox="0 0 400 400" class="w-full h-full fill-none stroke-white transition-all duration-500 origin-center">
+                        <defs>
+                            <path id="textPath-top" d="M 65,200 A 135,135 0 0,1 335,200" />
+                            <path id="textPath-bottom" d="M 65,200 A 135,135 0 0,0 335,200" />
+                        </defs>
+                        
+                        <g id="wave-quantum-container" class="origin-center -rotate-90">
                             </g>
-                            <g style="display: none;">
-                                <text class="fill-white font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
-                                    <textPath id="laser-variant-title" href="#textPath-top" startOffset="50%" text-anchor="middle">MACROPULSOR FOCUS</textPath>
-                                </text>
-                                <text class="fill-white/60 font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
-                                    <textPath id="artepanel-description" href="#textPath-bottom" startOffset="50%" text-anchor="middle">Enfoque y claridad cognitive</textPath>
-                                </text>
-                            </g>
-                        </svg>
-                    </div>
+
+                        <g class="origin-center">
+                            <text id="z-dial" x="200" y="218" text-anchor="middle" class="fill-white font-black text-[45px] tracking-[0.35em] font-sans opacity-0 transition-all duration-500 pointer-events-auto select-none cursor-pointer">8PU10</text>
+                        </g>
+
+                        <g style="display: none;">
+                            <text class="fill-white font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
+                                <textPath id="laser-variant-title" href="#textPath-top" startOffset="50%" text-anchor="middle">MACROPULSOR FOCUS</textPath>
+                            </text>
+                            <text class="fill-white/60 font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
+                                <textPath id="artepanel-description" href="#textPath-bottom" startOffset="50%" text-anchor="middle">Enfoque y claridad cognitive</textPath>
+                            </text>
+                        </g>
+                    </svg>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
 <footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-white/5 transition-opacity duration-500 select-none transform translateZ(0)">
         <div class="w-full flex flex-col font-mono uppercase text-xs">
@@ -252,7 +254,7 @@
                         ACTIVAR
                     </button>
                     
-                    <button id="btn-footer-dial" class="h-full w-full bg-transparent hover:bg-white/[0.03] text-white/40 hover:text-white font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
+                    <button id="btn-reveal-dial" class="h-full w-full bg-transparent hover:bg-white/[0.03] text-white/40 hover:text-white font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
                         DIAL
                     </button>
                     
@@ -358,6 +360,18 @@
     
     // --- NUEVO: ESTADO GLOBAL DE FLUJO BIOCINÉTICO ---
     window.isDialFrozen = false; 
+    
+    // Historial dinámico para sostener el Eco de 4 Dials (Máximo de 4 elementos)
+    let biokineticWaveHistory = []; 
+    // Control de colapso visual del observador (false = ondas por defecto, true = texto alfanumérico)
+    let isDialTextRevealed = false;
+
+    // Diccionario de Vectores: Mapea de forma aséptica tus 12 variantes de acción a posiciones del reloj
+    const VECTOR_TO_CLOCK_INDEX = {
+        'P': 1,  'U': 2,  'L': 3,  'S': 4,
+        'PL': 5, 'PU': 6, 'LU': 7, 'SU': 8,
+        'PUL': 9,'LPS': 10,'SPU': 11,'ULS': 12
+    };
 
     // ==========================================
     // 2. CACHÉ DE ELEMENTOS DE UI (OPTIMIZADO)
@@ -374,9 +388,59 @@
 
     const triggerHaptic = (ms) => { if (navigator.vibrate) navigator.vibrate(ms); };
 
-    // ==========================================
-    // 3. SISTEMA DE REVELADO (POINTER EVENTS)
-    // ==========================================
+    // =========================================================================
+    // MOTOR GRÁFICO: PROPAGACIÓN DE ONDAS CONCÉNTRICAS (ECO CUÁNTICO)
+    // =========================================================================
+    function renderBiokineticWaves() {
+        const container = getCachedEl('wave-quantum-container');
+        if (!container) return;
+
+        let htmlContent = '';
+
+        biokineticWaveHistory.forEach((dial, tIndex) => {
+            // Factor de expansión: mantenemos tu lógica de ecos (opacidad decreciente)
+            const radiusMultiplier = 1 + (tIndex * 0.45);
+            const baseOpacity = isDialTextRevealed ? 0.05 : (1.0 - (tIndex * 0.28));
+            if (baseOpacity <= 0) return;
+
+            const layers = [
+                { id: 'internal',     r: 50  * radiusMultiplier, opacity: baseOpacity * 0.70, value: dial.sets },
+                { id: 'intermediate', r: 95  * radiusMultiplier, opacity: baseOpacity * 0.55, value: dial.vector },
+                { id: 'external',     r: 140 * radiusMultiplier, opacity: baseOpacity * 0.40, value: dial.reps }
+            ];
+
+            layers.forEach(layer => {
+                const circumference = 2 * Math.PI * layer.r;
+                
+                // 1. CÁLCULO ANGULAR: 360/12 = 30 grados por variante.
+                const angle = (layer.value - 1) * 30; 
+                
+                // 2. CÁLCULO DE CRECIMIENTO: El tamaño del arco crece con la variante (1/12 a 12/12)
+                const arcLength = (layer.value / 12) * circumference;
+                
+                // 3. APLICACIÓN DE ESTILO: Dasharray para la longitud, Transform para el ángulo
+                const dashArray = `${arcLength} ${circumference}`;
+
+                htmlContent += `
+                    <circle 
+                        id="wave-${layer.id}-t${tIndex}" 
+                        cx="200" 
+                        cy="200" 
+                        r="${layer.r}" 
+                        transform="rotate(${angle} 200 200)"
+                        class="stroke-white transition-all duration-1000 ease-out"
+                        stroke-width="${tIndex === 0 ? 1.5 : 1.0}"
+                        stroke-opacity="${layer.opacity}"
+                        stroke-dasharray="${dashArray}"
+                        stroke-linecap="round"
+                        fill="none"
+                    />`;
+            });
+        });
+
+        container.innerHTML = htmlContent;
+    }
+
 // ==========================================
     // 3. MOTOR DE ESTADO VISUAL (Centralizado)
     // ==========================================
@@ -578,9 +642,35 @@
             repsStage = Math.max(1, Math.min(12, repsStage));
             const biokineticCoordinate = `${setsStage}${currentAction}${repsStage}`;
 
-            // Actualizar número central gigante SVG
+            // --- CAPTURA DE ONDA PARA HISTORIAL FIFO ---
+            const vectorIndex = VECTOR_TO_CLOCK_INDEX[currentAction] || 1;
+            
+            // Verificar si el segundo cambió para evitar duplicados en frames intermedios de milisegundos
+            const lastSavedDial = biokineticWaveHistory[0];
+            if (!lastSavedDial || lastSavedDial.rawCoord !== biokineticCoordinate) {
+                // Insertar nuevo dial en el epicentro (t0)
+                biokineticWaveHistory.unshift({
+                    sets: setsStage,
+                    vector: vectorIndex,
+                    reps: repsStage,
+                    rawCoord: biokineticCoordinate
+                });
+                // Mantener límite estricto de 4 diales de memoria (12 ondas concurrentes)
+                if (biokineticWaveHistory.length > 4) {
+                    biokineticWaveHistory.pop();
+                }
+            }
+
+            // Ejecutar propagación visual en el contenedor SVG
+            renderBiokineticWaves();
+
+            // Sincronizar texto alfanumérico gigante
             const elDial = getCachedEl('z-dial');
-            if (elDial) elDial.textContent = biokineticCoordinate;
+            if (elDial) {
+                elDial.textContent = biokineticCoordinate;
+                // Control dinámico de opacidad: se revela solo si isDialTextRevealed es true
+                elDial.style.opacity = isDialTextRevealed ? "1" : "0";
+            }
                     
             // Actualizar sub-métricas del HUD superior
             const subSetsSolar = getCachedEl('sub-sets-solar');
