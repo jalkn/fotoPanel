@@ -134,31 +134,21 @@
 
                 <div class="w-full flex flex-col bg-white/[0.01]">
                     
-                    <div class="w-full grid grid-cols-5 items-center justify-between px-3 sm:px-8 h-12 gap-0.5 sm:gap-4 text-center select-none">
+                    <div class="w-full grid grid-cols-3 items-center justify-between px-3 sm:px-8 h-12 gap-2 sm:gap-4 text-center select-none">
                         
-                        <div id="telemetry-sphere-idx-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Ciclos</span>
-                            <span id="telemetry-sphere-idx" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white/90 standard-num">0000</span>
-                        </div>
-
-                        <div id="sub-sets-solar-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
+                        <div id="sub-sets-solar-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
                             <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Hz</span>
                             <span id="sub-sets-solar" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] standard-num">0.00</span>
                         </div>
 
-                        <div id="z-dial-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
+                        <div id="z-dial-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
                             <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Dial</span>
                             <span id="z-dial-mirror" class="font-mono tracking-[0.15em] text-[10px] sm:text-[12px] font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">0PU0</span>
                         </div>
 
-                        <div id="sub-reps-tension-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
+                        <div id="sub-reps-tension-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
                             <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Tensión</span>
                             <span id="sub-reps-tension" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] standard-num">0.0</span>
-                        </div>
-
-                        <div id="telemetry-active-node-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-white/60 hover:text-white transition-colors duration-200">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Nodos</span>
-                            <span id="telemetry-active-node" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white/90 standard-num">0000</span>
                         </div>
 
                     </div>
@@ -611,7 +601,7 @@
     
     // PULS_MEANINGS: Nomenclatura Biocinética Orientada a Geometría de Cristal
     const PULS_MEANINGS = {
-        'sub-sets-solar-trigger': "ONDA INTERNA DE FRECUENCIA COAXIAL VIVA TIERRA-LUNA-SOL.", 
+        'sub-sets-solar-trigger': "ONDA INTERNA DE FRECUENCIA COAXIAL TIERRA-LUNA-SOL.", 
         'sub-reps-tension-trigger': "ONDA EXTERNA DE MAGNETISMO GRAVITACIONAL.", 
         'z-dial-trigger': () => {
             const coord = getCachedEl('z-dial-mirror')?.textContent || "1P1";
