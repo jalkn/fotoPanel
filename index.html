@@ -149,10 +149,17 @@
                         </button>
                     </div>
 
-                    <!-- 2. IDIOMA / CONMUTADOR DE MATRIZ (Lado derecho de Back) -->
+                    <!-- 2. IDIOMA / CONMUTADOR DE MATRIZ TRILÍNGÜE (Estructura de Red Compacta) -->
                     <div class="flex items-center h-full">
-                        <button id="lang-toggle-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" title="Conmutar Idioma / Switch Language" aria-label="Toggle language">
-                            <span id="lang-indicator" class="font-mono text-[11px] font-black tracking-wider opacity-50 group-hover:opacity-100 transition-all duration-500 text-jako-text">ES</span>
+                        <button id="lang-toggle-trigger" class="group flex items-center gap-1.5 justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" title="Conmutar Idioma / Switch Language" aria-label="Toggle language">
+                            <!-- Ícono Global de Red (Inspirado en Screenshot 2026-07-03 at 6.02.03 PM.png) -->
+                            <svg class="w-3.5 h-3.5 text-jako-text opacity-40 group-hover:opacity-100 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                <path d="M2 12h20"/>
+                            </svg>
+                            <!-- Indicador de Idioma Dinámico -->
+                            <span id="lang-indicator" class="font-mono text-[10px] font-black tracking-wider opacity-50 group-hover:opacity-100 transition-all duration-500 text-jako-text">ES</span>
                         </button>
                     </div>
                     
@@ -450,7 +457,7 @@
     }
 
     // ==========================================
-    // DICCIONARIO ACROMÁTICO DE TRADUCCIÓN (HUD)
+    // DICCIONARIO ACROMÁTICO TRILÍNGÜE (HUD)
     // ==========================================
     const VAULT_DICTIONARY = {
         es: {
@@ -466,11 +473,26 @@
             primaryTelemetry: "Buy your piece and finance another for the community",
             btnRevealRaw: "VIEW",
             btnActivar: "ACTIVATE"
+        },
+        ita: {
+            indicator: "ITA",
+            secondaryTelemetry: "ONDA BIOCINETICA RIGENERATIVA",
+            primaryTelemetry: "Acquisti un pezzo y ne finanzi un altro per la comunità",
+            btnRevealRaw: "VEDI",
+            btnActivar: "ATTIVARE"
         }
     };
 
     // Estado global interno del idioma
     let currentLang = 'es';
+
+    // Secuencia matricial de ordenamiento cíclico
+    const NEXT_LANG_SEQUENCE = {
+        'es': 'en',
+        'en': 'ita',
+        'ita': 'es'
+    };
+
     // ==========================================
     // MOTOR DE IDIOMA Y RECONFIGURACIÓN DE TEXTOS
     // ==========================================
@@ -479,22 +501,20 @@
         if (!trigger) return;
 
         trigger.addEventListener('click', () => {
-            // Conmutación de estado
-            currentLang = currentLang === 'es' ? 'en' : 'es';
+            // Conmutación cíclica controlada por el mapa secuencial
+            currentLang = NEXT_LANG_SEQUENCE[currentLang] || 'es';
             
-            // 1. Inyectar atributo global en el DOM
+            // 1. Inyectar atributo de idioma global en el DOM
             document.documentElement.setAttribute('data-lang', currentLang);
             
             // 2. Obtener el sub-diccionario correspondiente
             const texts = VAULT_DICTIONARY[currentLang];
             
-            // 3. Actualizar textos estáticos en caliente
+            // 3. Reconfiguración de elementos estáticos en caliente
             const elIndicator = getCachedEl('lang-indicator');
             const elSecondary = getCachedEl('panel-telemetry-data-secondary');
             const elPrimary = getCachedEl('panel-telemetry-data');
             const elBtnRaw = getCachedEl('btn-reveal-raw');
-            
-            // El botón ACTIVAR no tiene ID propio, lo buscaremos por su función onclick
             const elBtnActivar = document.querySelector('button[onclick="adquirirNodo()"]');
 
             if (elIndicator) elIndicator.textContent = texts.indicator;
@@ -503,15 +523,10 @@
             if (elBtnRaw) elBtnRaw.textContent = texts.btnRevealRaw;
             if (elBtnActivar) elBtnActivar.textContent = texts.btnActivar;
 
-            // Feedback háptico sincronizado con el sistema
+            // Feedback háptico sincronizado con la interfaz
             triggerHaptic([20, 10]);
         });
     }
-
-    // Vinculamos la inicialización al ciclo de carga existente
-    document.addEventListener('DOMContentLoaded', () => {
-        inicializarAlternadorIdioma();
-    });
 
     function renderBiokineticWaves() {
         const container = getCachedEl('wave-quantum-container');
@@ -893,6 +908,7 @@
         updateZ(); 
         setInterval(updateZ, 1000);
         habilitarReveladoTelemetria();
+        inicializarAlternadorIdioma();
 
         const laserSvg = getCachedEl('laser-vector-target');
         if (laserSvg) laserSvg.style.pointerEvents = 'none'; 
