@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <link class="icon" type="image/png" href="img/favicon.png">
@@ -13,8 +13,11 @@
                 extend: { 
                     screens: { 'xs': '400px' },
                     colors: { 
-                        'jako-black': '#050508',
-                        'jako-darkblue': '#030712'
+                        'jako-bg': 'var(--jako-bg)',
+                        'jako-text': 'var(--jako-text)',
+                        'jako-border': 'var(--jako-border)',
+                        'jako-glass': 'var(--jako-glass)',
+                        'jako-led': 'var(--jako-led)',
                     },
                     fontFamily: { 
                         'sans': ['Orbitron', 'sans-serif'],
@@ -26,62 +29,78 @@
         }
     </script>
 
-<style>
+    <style>
+        /* VARIABLES ACROMÁTICAS DE ENTORNO MATRICIAL */
+        :root[data-theme="dark"] {
+            --jako-bg: #050508;
+            --jako-text: #ffffff;
+            --jako-border: rgba(255, 255, 255, 0.06);
+            --jako-glass: rgba(0, 0, 0, 0.5);
+            --jako-led: rgba(255, 255, 255, 0.65);
+            --gradient-start: rgba(255, 255, 255, 0.03);
+            --gradient-mid: rgba(5, 5, 8, 0.85);
+            --gradient-end: #000000;
+        }
+        :root[data-theme="white"] {
+            --jako-bg: #f8f9fa;
+            --jako-text: #000000;
+            --jako-border: rgba(0, 0, 0, 0.08);
+            --jako-glass: rgba(255, 255, 255, 0.4);
+            --jako-led: rgba(0, 0, 0, 0.75);
+            --gradient-start: rgba(0, 0, 0, 0.02);
+            --gradient-mid: rgba(248, 249, 250, 0.85);
+            --gradient-end: #ffffff;
+        }
+
         /* MOTOR BASE DE LA INTERFAZ */
         body { 
-            font-family: 'Orbitron', sans-serif; 
             scroll-behavior: smooth; 
-            letter-spacing: 0.05em; 
-            background-color: #000000; 
-            color: #f8fafc;
-            /* Prevención de sobre-desplazamiento elástico en móviles */
+            letter-spacing: 0.05em;  
             overscroll-behavior: none;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        } 
+            background-color: var(--jako-bg);
+            color: var(--jako-text);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
 
-        /* CÁMARA OSCURA: Optimización de hardware para el gradiente bio-lumínico */
+        /* CÁMARA OSCURA / CLARA: Gradiente bio-lumínico optimizado por Hardware */
         #page-bg-overlay {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at 50% 30%, rgba(60, 66, 79, 0.22) 0%, rgba(80, 96, 136, 0.75) 60%, #000000 100%);
+            background: radial-gradient(circle at 50% 30%, var(--gradient-start) 0%, var(--gradient-mid) 65%, var(--gradient-end) 100%);
             z-index: -1;
-            /* transform y will-change aíslan el renderizado en su propia capa de la GPU */
             transform: translateZ(0);
             will-change: opacity, filter;
-            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.6s ease;
+            transition: background 0.5s ease;
         }
-
-        /* TELEMETRÍA PURISTA: Escala neutral */
-        .tele-label { color: #94a3b8; } 
-        
-        /* EFECTO LED BLANCO: Ajuste de subpíxel para evitar bordes dentados al escalar */
-        .tele-value { 
-            color: #ffffff; 
-            text-shadow: 0 0 14px rgba(255, 255, 255, 0.65), 0 0 4px rgba(255, 255, 255, 0.3);
-            transform: translateZ(0);
-        } 
-        
-        .border-custom { 
-            border-color: rgba(255, 255, 255, 0.15); 
-            transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .border-custom:hover { border-color: rgba(255, 255, 255, 0.6); }
 
         /* VIDRIO HIPERREALISTA SIMÉTRICO */
         .glass { 
-            background: rgba(5, 5, 8, 0.5); /* Unificado para Header y Footer */
-            border: 1px solid rgba(255, 255, 255, 0.06); 
+            background: var(--jako-glass);
+            border: 1px solid var(--jako-border); 
             backdrop-filter: blur(30px); 
             -webkit-backdrop-filter: blur(30px);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.02);
             transform: translateZ(0);
+            transition: background 0.5s ease, border-color 0.5s ease;
         }
 
-        /* TRANSICIÓN DE GLOW: Eliminación total de saltos ópticos mediante hardware-acceleration */
+        .border-custom { 
+            border-color: var(--jako-border); 
+            transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .border-custom:hover { border-color: var(--jako-text); }
+
+        /* EFECTO LED DINÁMICO (EMISIÓN NEUTRAL) */
+        .tele-value { 
+            color: var(--jako-text); 
+            text-shadow: 0 0 14px var(--jako-led), 0 0 4px var(--jako-led);
+            transform: translateZ(0);
+            transition: color 0.5s ease, text-shadow 0.5s ease;
+        } 
+
+        /* TRANSICIÓN DE GLOW SIN SALTOS OPTICOS */
         .img-glow-transition {
             transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            /* backface-visibility elimina parpadeos blancos en iOS y navegadores basados en WebKit */
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             transform: translate3d(0, 0, 0);
@@ -102,59 +121,93 @@
         button, span, div {
             -webkit-tap-highlight-color: transparent;
         }
+
+        :root[data-theme="dark"] {
+            /* ... tus variables actuales ... */
+            --toggle-handle-transform: translate(28px, 3px);
+        }
+        :root[data-theme="white"] {
+            /* ... tus variables actuales ... */
+            --toggle-handle-transform: translate(3px, 3px);
+        }
     </style>
 </head>
-<body class="antialiased selection:bg-white selection:text-black overflow-x-hidden text-white min-h-screen">
+<body class="antialiased selection:bg-jako-text selection:text-jako-bg overflow-x-hidden min-h-screen">
 
     <div id="page-bg-overlay"></div>
         
-        <header class="fixed top-0 left-0 w-full z-50 glass border-b border-white/5">
+<header class="fixed top-0 left-0 w-full z-50 glass border-b border-jako-text/5">
             <div class="w-full flex flex-col">
                 
-                <div class="px-4 sm:px-8 grid grid-cols-3 items-center uppercase tracking-widest font-mono text-[11px] text-white/50 min-h-[65px] sm:min-h-[72px] select-none">
+                <!-- RECONFIGURACIÓN MATRICIAL A 5 COLUMNAS ASIMÉTRICAS -->
+                <div class="px-4 sm:px-8 grid grid-cols-[auto_auto_1fr_auto_auto] items-center uppercase tracking-widest font-mono text-[11px] text-jako-text/50 min-h-[65px] sm:min-h-[72px] select-none gap-4 sm:gap-6">
                     
-                    <div class="justify-self-start flex items-center h-full">
-                        <a href="https://jako.world" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Back to jako.world">
-                            <img src="img/back.png" alt="" class="h-[13px] sm:h-[15px] w-auto object-contain opacity-65 group-hover:opacity-100 transition-all duration-500 filter drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" />
-                        </a>
+<!-- 1. RETORNO (Extremo Izquierdo) -->
+                    <div class="flex items-center h-full">
+                        <button class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Back">
+                            <img src="img/" alt="" class="h-[13px] sm:h-[15px] w-auto object-contain opacity-65 group-hover:opacity-100 transition-all duration-500 filter invert dark:invert-0" />
+                        </button>
+                    </div>
+
+                    <!-- 2. IDIOMA / CONMUTADOR DE MATRIZ (Lado derecho de Back) -->
+                    <div class="flex items-center h-full">
+                        <button id="lang-toggle-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" title="Conmutar Idioma / Switch Language" aria-label="Toggle language">
+                            <span id="lang-indicator" class="font-mono text-[11px] font-black tracking-wider opacity-50 group-hover:opacity-100 transition-all duration-500 text-jako-text">ES</span>
+                        </button>
                     </div>
                     
-                    <div class="justify-self-center text-center tracking-[0.28em] font-black drop-shadow-[0_0_12px_rgba(255,255,255,0.45)] text-white text-[13px] sm:text-[15px] leading-none">
+                    <!-- 3. IDENTIDAD CENTRAL (Eje de Gravedad) -->
+                    <div class="text-center tracking-[0.28em] font-black drop-shadow-[0_0_12px_var(--jako-led)] text-jako-text text-[13px] sm:text-[15px] leading-none">
                         <span>JAKO VAULT</span>
                     </div>
-                    
-                    <div class="justify-self-end flex items-center h-full">
-                        <a href="https://biorush.shop" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="To biorush.shop">
-                            <img src="img/pace.png" alt="" class="h-[13px] sm:h-[15px] w-auto object-contain opacity-65 group-hover:opacity-100 transition-all duration-500 filter drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" />
-                        </a>
+
+                    <!-- 4. INTERRUPTOR ACROMÁTICO (Cápsula Vectorial Interactiva) -->
+                    <div class="flex items-center h-full">
+                        <button id="acromatic-toggle-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" title="Conmutar Matriz Visual" aria-label="Toggle acromatic theme">
+                            <svg class="w-[38px] sm:w-[44px] h-auto object-contain text-jako-text fill-current opacity-70 group-hover:opacity-100 transition-all duration-300 distribution-gpu" viewBox="0 0 54 28" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Cuerpo de la Cápsula -->
+                                <rect width="54" height="28" rx="14" />
+                                <!-- Contenedor Deslizable del Lente -->
+                                <g class="transition-transform duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]" style="transform: var(--toggle-handle-transform);">
+                                    <circle cx="11" cy="11" r="11" class="fill-current text-jako-bg" />
+                                </g>
+                            </svg>
+                        </button>
                     </div>
+                    
+                    <!-- 5. FLUJO BIOCINÉTICO (Extremo Derecho) -->
+                    <div class="flex items-center h-full">
+                        <button class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Pace">
+                            <img src="img/" alt="" class="h-[13px] sm:h-[15px] w-auto object-contain opacity-65 group-hover:opacity-100 transition-all duration-500 filter invert dark:invert-0" />
+                        </button>
+                    </div>
+
                 </div>
 
-                <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
-                <div class="w-full flex flex-col bg-white/[0.01]">
+                <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-jako-text/10 to-transparent"></div>
+                <div class="w-full flex flex-col bg-jako-text/[0.01]">
                     
                     <div class="w-full grid grid-cols-3 items-center justify-between px-3 sm:px-8 h-12 gap-2 sm:gap-4 text-center select-none">
                         
-                        <div id="sub-sets-solar-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Hz</span>
-                            <span id="sub-sets-solar" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] standard-num">0.00</span>
+                        <div id="sub-sets-solar-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Hz</span>
+                            <span id="sub-sets-solar" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text drop-shadow-[0_0_8px_var(--jako-led)] standard-num">0.00</span>
                         </div>
 
-                        <div id="z-dial-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Dial</span>
-                            <span id="z-dial-mirror" class="font-mono tracking-[0.15em] text-[10px] sm:text-[12px] font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">0PU0</span>
+                        <div id="z-dial-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Dial</span>
+                            <span id="z-dial-mirror" class="font-mono tracking-[0.15em] text-[10px] sm:text-[12px] font-black text-jako-text drop-shadow-[0_0_10px_var(--jako-led)]">0PU0</span>
                         </div>
 
-                        <div id="sub-reps-tension-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Tensión</span>
-                            <span id="sub-reps-tension" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] standard-num">0.0</span>
+                        <div id="sub-reps-tension-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Tensión</span>
+                            <span id="sub-reps-tension" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text drop-shadow-[0_0_8px_var(--jako-led)] standard-num">0.0</span>
                         </div>
 
                     </div>
 
-                    <div class="w-full flex items-center justify-center px-4 h-8 bg-black/20 border-t border-white/[0.02]">
-                        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-white/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
+                    <div class="w-full flex items-center justify-center px-4 h-8 bg-jako-text/[0.02] border-t border-jako-text/[0.02]">
+                        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
                             ONDA BIOCINÉTICA REGENERATIVA
                         </span>
                     </div>
@@ -166,14 +219,14 @@
 
 <main id="main-vault" class="w-full flex-1 flex flex-col justify-center items-center pt-[155px] pb-[195px] min-h-screen relative overflow-hidden"> 
     <div class="w-full flex flex-col items-center justify-center p-4 sm:p-6 select-none relative z-10">
-        <div id="artepanel-pack-container" class="relative w-[65vw] h-[65vw] sm:w-[50vw] sm:h-[50vw] md:w-[38vh] md:h-[38vh] max-w-[340px] max-h-[340px] min-w-[200px] min-h-[200px] aspect-square shrink-0 drop-shadow-[0_25px_55px_rgba(0,0,0,0.95)] transition-all duration-300">
+        <div id="artepanel-pack-container" class="relative w-[65vw] h-[65vw] sm:w-[50vw] sm:h-[50vw] md:w-[38vh] md:h-[38vh] max-w-[340px] max-h-[340px] min-w-[200px] min-h-[200px] aspect-square shrink-0 drop-shadow-[0_25px_55px_rgba(0,0,0,0.85)] transition-all duration-300">
             <div class="w-full h-full relative overflow-hidden rounded-md bg-transparent">
                 <img id="artepanel-pack-img-back" src="img/40x40W.png" alt="artepanel Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-0" />
                 <img id="artepanel-pack-img" src="img/40x40B.png" alt="artepanel Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-cover pointer-events-auto z-10" />
                 <img id="artepanel-pack-img-raw" src="img/20x20B.png" alt="Raw Content" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-[5]" />
                 
                 <div class="absolute inset-0 flex items-center justify-center p-0 z-20 pointer-events-none">
-                    <svg id="laser-vector-target" viewBox="0 0 400 400" class="w-full h-full fill-none stroke-white transition-all duration-500 origin-center">
+                    <svg id="laser-vector-target" viewBox="0 0 400 400" class="w-full h-full fill-none stroke-current text-jako-text transition-all duration-500 origin-center">
                         <defs>
                             <path id="textPath-top" d="M 65,200 A 135,135 0 0,1 335,200" />
                             <path id="textPath-bottom" d="M 65,200 A 135,135 0 0,0 335,200" />
@@ -182,19 +235,19 @@
                         <g id="wave-quantum-container" class="origin-center -rotate-90">
                             </g>
 
-                        <!-- RESTAURACIÓN DE SANDWATCH Y COORDINADA ALFANUMÉRICA (SINCRONIZADOS) -->
+                        <!-- RESTAURACIÓN DE SANDWATCH Y COORDINADA ALFANUMÉRICA -->
                         <g id="sandwatch-group" class="origin-center opacity-0 transition-all duration-500 pointer-events-none style-gpu" style="will-change: opacity;">
-                            <path d="M 90,90 L 310,90 L 90,310 L 310,310 Z" class="stroke-white stroke-[1] opacity-20" />
-                            <path d="M 90,90 Q 200,125 310,90" class="stroke-white stroke-[1] opacity-20" />
-                            <path d="M 90,310 Q 200,275 310,310" stroke-dasharray="3 3" class="stroke-white stroke-[1] opacity-20" />
-                            <text id="z-dial" x="200" y="218" text-anchor="middle" class="fill-white font-black text-[45px] tracking-[0.35em] font-sans pointer-events-auto select-none cursor-pointer">8PU10</text>
+                            <path d="M 90,90 L 310,90 L 90,310 L 310,310 Z" class="stroke-current opacity-20" />
+                            <path d="M 90,90 Q 200,125 310,90" class="stroke-current opacity-20" />
+                            <path d="M 90,310 Q 200,275 310,310" stroke-dasharray="3 3" class="stroke-current opacity-20" />
+                            <text id="z-dial" x="200" y="218" text-anchor="middle" class="fill-current font-black text-[45px] tracking-[0.35em] font-sans pointer-events-auto select-none cursor-pointer">8PU10</text>
                         </g>
 
                         <g style="display: none;">
-                            <text class="fill-white font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
+                            <text class="fill-current font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
                                 <textPath id="laser-variant-title" href="#textPath-top" startOffset="50%" text-anchor="middle">MACROPULSOR FOCUS</textPath>
                             </text>
-                            <text class="fill-white/60 font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
+                            <text class="fill-current opacity-60 font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
                                 <textPath id="artepanel-description" href="#textPath-bottom" startOffset="50%" text-anchor="middle">Enfoque y claridad cognitive</textPath>
                             </text>
                         </g>
@@ -205,82 +258,79 @@
     </div>
 </main>
 
-<footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-white/5 transition-opacity duration-500 select-none transform translateZ(0)">
+<footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-jako-text/5 transition-opacity duration-500 select-none transform translateZ(0)">
         <div class="w-full flex flex-col font-mono uppercase text-xs">
-            <div class="w-full flex items-center justify-center px-4 h-8 bg-black/20">
-                <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-white/70 font-medium transition-all duration-300 whitespace-normal block leading-none uppercase select-none">
+            <div class="w-full flex items-center justify-center px-4 h-8 bg-jako-text/[0.02]">
+                <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 whitespace-normal block leading-none uppercase select-none">
                     Compras tu pieza y financias otra para la comunidad
                 </span>
             </div>
 
-            <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+            <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-jako-text/10 to-transparent"></div>
 
-            <div class="w-full bg-white/[0.01] border-b border-white/5">
+            <div class="w-full bg-jako-text/[0.01] border-b border-jako-text/5">
                 <div class="w-full grid grid-cols-5 items-center justify-between px-3 sm:px-8 h-12 gap-0.5 sm:gap-4 text-center select-none">
                     
-                    <div id="telemetry-product-dim-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
-                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">CMS</span>
-                        <span id="telemetry-product-dim" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white/90">--</span>
+                    <div id="telemetry-product-dim-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">CMS</span>
+                        <span id="telemetry-product-dim" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text/90">--</span>
                     </div>
 
                     <div class="col-span-3 grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center max-w-xs mx-auto">
-                        <button id="btn-variant-prev" class="h-8 flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded transition-all focus:outline-none">
+                        <button id="btn-variant-prev" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none">
                             <span class="text-[10px] font-bold">&lt;</span>
                         </button>
                         
-                        <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center cursor-pointer group">
-                            </div>
+                        <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center cursor-pointer group"></div>
                         
-                        <button id="btn-variant-next" class="h-8 flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded transition-all focus:outline-none">
+                        <button id="btn-variant-next" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none">
                             <span class="text-[10px] font-bold">&gt;</span>
                         </button>
                     </div>
 
-                    <div id="telemetry-product-dial-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
-                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Dials</span>
-                        <span id="telemetry-product-dial" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white/90">--</span>
+                    <div id="telemetry-product-dial-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Dials</span>
+                        <span id="telemetry-product-dial" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text/90">--</span>
                     </div>
 
                 </div>
             </div>
 
-            <div class="w-full h-[1px] bg-white/5"></div>
+            <div class="w-full h-[1px] bg-jako-text/5"></div>
 
-            <!-- REEMPLAZAR ESTE BLOQUE EN TU HTML (Líneas de los botones de control inferior) -->
-            <div class="w-full h-12 relative z-10 border-t border-white/5 bg-black/20">
+            <div class="w-full h-12 relative z-10 border-t border-jako-text/5 bg-jako-text/[0.02]">
                 <div class="w-full grid grid-cols-3 items-center h-full text-center select-none">
                     
-                    <button id="btn-reveal-raw" class="h-full w-full flex items-center justify-center bg-transparent border-r border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Capas Visuales">
+                    <button id="btn-reveal-raw" class="h-full w-full flex items-center justify-center bg-transparent border-r border-jako-text/5 hover:bg-jako-text/[0.03] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Capas Visuales">
                         VER
                     </button>
                     
-                    <button onclick="adquirirNodo()" class="h-full w-full bg-transparent border-r border-white/5 hover:bg-white/[0.05] text-white/90 font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
+                    <button onclick="adquirirNodo()" class="h-full w-full bg-transparent border-r border-jako-text/5 hover:bg-jako-text/[0.05] text-jako-text/90 font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
                         ACTIVAR
                     </button>
                     
-                    <button id="btn-reveal-dial" class="h-full w-full bg-transparent hover:bg-white/[0.03] text-white/40 hover:text-white font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
+                    <button id="btn-reveal-dial" class="h-full w-full bg-transparent hover:bg-jako-text/[0.03] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
                         DIAL
                     </button>
                     
                 </div>
             </div>
 
-
-            <div class="w-full h-[1px] bg-white/5"></div>
+            <div class="w-full h-[1px] bg-jako-text/5"></div>
 
             <div class="w-full h-11 relative z-10">
                 <div class="w-full grid grid-cols-[40px_1fr_40px] sm:grid-cols-[54px_1fr_54px] items-center h-full px-4 sm:px-8 text-[8px] tracking-[0.3em] sm:tracking-[0.4em]">
-                    <div class="h-full w-full flex items-center justify-start border-r border-white/5">
-                        <a href="https://jako.world" class="group w-full h-full flex items-center justify-start hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Link to jako.world">
-                            <img src="img/back.png" alt="" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500" />
+                    <div class="h-full w-full flex items-center justify-start border-r border-jako-text/5">
+                        <a href="https://jako.world" class="group w-full h-full flex items-center justify-start hover:bg-jako-text/[0.02] transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Link to jako.world">
+                            <img src="img/back.png" alt="" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500 filter invert dark:invert-0" />
                         </a>
                     </div>    
-                    <div class="h-full w-full flex items-center justify-center text-center font-bold text-white/20">
-                        <a href="https://jako.world" class="h-full w-full flex items-center justify-center hover:text-white/60 hover:bg-white/[0.005] transition-all duration-300 focus:outline-none whitespace-nowrap">POWERED BY JAKO.WORLD</a>
+                    <div class="h-full w-full flex items-center justify-center text-center font-bold text-jako-text/20">
+                        <a href="https://jako.world" class="h-full w-full flex items-center justify-center hover:text-jako-text/60 hover:bg-jako-text/[0.005] transition-all duration-300 focus:outline-none whitespace-nowrap">POWERED BY JAKO.WORLD</a>
                     </div>
-                    <div class="h-full w-full flex items-center justify-end border-l border-white/5">
+                    <div class="h-full w-full flex items-center justify-end border-l border-jako-text/5">
                         <a href="https://biorush.shop" class="group w-full h-full flex items-center justify-end hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Link to biorush.shop">
-                            <img src="img/pace.png" alt="" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500" />
+                            <img src="img/pace.png" alt="" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500 filter invert dark:invert-0" />
                         </a>
                     </div>
                 </div>
@@ -289,9 +339,6 @@
     </footer>
 
 <script>
-    // =========================================================================
-    // 1. CONFIGURACIÓN DE CATÁLOGOS COMERCIALES (MODELO SIMBIÓTICO 1:1)
-    // =========================================================================
     const ARTEPANEL_CATALOG = {
         'STENCIL': {
             defaultVariant: '25X25',
@@ -358,57 +405,125 @@
             }
         }
     };
+
     let currentBioItem = 'PANEL';
     let currentBioVariant = '40X40';
     const numeroCelular = "573025333130";
     
-    // --- NUEVO: ESTADO GLOBAL DE FLUJO BIOCINÉTICO ---
     window.isDialFrozen = false; 
-    
-    // Historial dinámico para sostener el Eco de 4 Dials (Máximo de 4 elementos)
     let biokineticWaveHistory = []; 
-    // Control de colapso visual del observador (false = ondas por defecto, true = texto alfanumérico)
     let isDialTextRevealed = false;
+    let currentWaveSubStep = 0;
 
-    // --- NUEVO: CONTROL DE SUB-PASOS E INDEPENDIZACIÓN DE CAPAS ---
-    let currentWaveSubStep = 0; // Cambia de 0 a 2 cada tercio de segundo (internal, intermediate, external)
-
-    // Diccionario de Vectores: Mapea de forma aséptica tus 12 variantes de acción a posiciones del reloj
     const VECTOR_TO_CLOCK_INDEX = {
         'P': 1,  'U': 2,  'L': 3,  'S': 4,
         'PL': 5, 'PU': 6, 'LU': 7, 'SU': 8,
         'PUL': 9,'LPS': 10,'SPU': 11,'ULS': 12
     };
 
-    // ==========================================
-    // 2. CACHÉ DE ELEMENTOS DE UI (OPTIMIZADO)
-    // ==========================================
     const $ = (id) => document.getElementById(id);
     const cachedElements = {};
     
     function getCachedEl(id) {
-        if (!cachedElements[id]) {
-            cachedElements[id] = $(id);
-        }
+        if (!cachedElements[id]) cachedElements[id] = $(id);
         return cachedElements[id];
     }
 
-    const triggerHaptic = (ms) => { if (navigator.vibrate) navigator.vibrate(ms); };// // // // // =========================================================================
-    // MOTOR GRÁFICO: TRIPLE ESTRUCTURA DE ONDAS CONSTRUIDAS (SISTEMA INDEX_10)
-    // =========================================================================
+    const triggerHaptic = (ms) => { if (navigator.vibrate) navigator.vibrate(ms); };
+
+    // ==========================================
+    // INTERRUPTOR ACROMÁTICO (DARK / WHITE MODE)
+    // ==========================================
+    function inicializarAlternadorAcromatico() {
+        const trigger = getCachedEl('acromatic-toggle-trigger');
+        if (!trigger) return;
+
+        trigger.addEventListener('click', () => {
+            const htmlNode = document.documentElement;
+            const currentTheme = htmlNode.getAttribute('data-theme') || 'dark';
+            const nextTheme = currentTheme === 'dark' ? 'white' : 'dark';
+            
+            htmlNode.setAttribute('data-theme', nextTheme);
+            triggerHaptic([20, 10]);
+            renderBiokineticWaves();
+        });
+    }
+
+    // ==========================================
+    // DICCIONARIO ACROMÁTICO DE TRADUCCIÓN (HUD)
+    // ==========================================
+    const VAULT_DICTIONARY = {
+        es: {
+            indicator: "ES",
+            secondaryTelemetry: "ONDA BIOCINÉTICA REGENERATIVA",
+            primaryTelemetry: "Compras tu pieza y financias otra para la comunidad",
+            btnRevealRaw: "VER",
+            btnActivar: "ACTIVAR"
+        },
+        en: {
+            indicator: "EN",
+            secondaryTelemetry: "REGENERATIVE BIOKINETIC WAVE",
+            primaryTelemetry: "Buy your piece and finance another for the community",
+            btnRevealRaw: "VIEW",
+            btnActivar: "ACTIVATE"
+        }
+    };
+
+    // Estado global interno del idioma
+    let currentLang = 'es';
+    // ==========================================
+    // MOTOR DE IDIOMA Y RECONFIGURACIÓN DE TEXTOS
+    // ==========================================
+    function inicializarAlternadorIdioma() {
+        const trigger = getCachedEl('lang-toggle-trigger');
+        if (!trigger) return;
+
+        trigger.addEventListener('click', () => {
+            // Conmutación de estado
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            
+            // 1. Inyectar atributo global en el DOM
+            document.documentElement.setAttribute('data-lang', currentLang);
+            
+            // 2. Obtener el sub-diccionario correspondiente
+            const texts = VAULT_DICTIONARY[currentLang];
+            
+            // 3. Actualizar textos estáticos en caliente
+            const elIndicator = getCachedEl('lang-indicator');
+            const elSecondary = getCachedEl('panel-telemetry-data-secondary');
+            const elPrimary = getCachedEl('panel-telemetry-data');
+            const elBtnRaw = getCachedEl('btn-reveal-raw');
+            
+            // El botón ACTIVAR no tiene ID propio, lo buscaremos por su función onclick
+            const elBtnActivar = document.querySelector('button[onclick="adquirirNodo()"]');
+
+            if (elIndicator) elIndicator.textContent = texts.indicator;
+            if (elSecondary) elSecondary.textContent = texts.secondaryTelemetry;
+            if (elPrimary) elPrimary.textContent = texts.primaryTelemetry;
+            if (elBtnRaw) elBtnRaw.textContent = texts.btnRevealRaw;
+            if (elBtnActivar) elBtnActivar.textContent = texts.btnActivar;
+
+            // Feedback háptico sincronizado con el sistema
+            triggerHaptic([20, 10]);
+        });
+    }
+
+    // Vinculamos la inicialización al ciclo de carga existente
+    document.addEventListener('DOMContentLoaded', () => {
+        inicializarAlternadorIdioma();
+    });
+
     function renderBiokineticWaves() {
         const container = getCachedEl('wave-quantum-container');
         if (!container || biokineticWaveHistory.length === 0) return;
 
         let htmlContent = '';
-
         biokineticWaveHistory.forEach((dial, tIndex) => {
             const currentScale = tIndex * (3 / 3); 
             const baseOpacity = isDialTextRevealed ? 0.05 : (1.0 - (tIndex * 0.08));
             if (baseOpacity <= 0) return;
 
             const viewFactor = 18; 
-
             const layers = [
                 { id: 'internal',     r: (currentScale * 1.0) * viewFactor, opacity: baseOpacity * 0.70, value: dial.sets },
                 { id: 'intermediate', r: (currentScale * 1.4) * viewFactor, opacity: baseOpacity * 0.55, value: dial.vector },
@@ -417,13 +532,11 @@
 
             layers.forEach(layer => {
                 if (layer.r <= 0) return;
-
                 const circumference = 2 * Math.PI * layer.r;
                 const angle = (layer.value - 1) * 30; 
                 const arcLength = (layer.value / 12) * circumference;
                 const dashArray = `${arcLength} ${circumference}`;
 
-                // OPTIMIZACIÓN: Remoción de transiciones CSS para renderizado síncrono cuadro por cuadro (GPU)
                 htmlContent += `
                     <circle 
                         id="wave-${layer.id}-t${tIndex}" 
@@ -431,7 +544,7 @@
                         cy="200" 
                         r="${layer.r}" 
                         transform="rotate(${angle} 200 200)"
-                        class="stroke-white"
+                        class="stroke-current"
                         stroke-width="${tIndex === 0 ? 1.5 : 1.0}"
                         stroke-opacity="${layer.opacity}"
                         stroke-dasharray="${dashArray}"
@@ -441,32 +554,22 @@
                     />`;
             });
         });
-
         container.innerHTML = htmlContent;
     }
 
-// ==========================================
-    // 3. MOTOR DE ESTADO VISUAL (Centralizado)
-    // ==========================================
     function aplicarModoVisual(modo) {
         const front = getCachedEl('artepanel-pack-img');
         const back = getCachedEl('artepanel-pack-img-back');
         const raw = getCachedEl('artepanel-pack-img-raw');
         const svg = getCachedEl('laser-vector-target');
 
-        // Reset general
         [front, back, raw].forEach(el => { if(el) el.style.opacity = '0'; });
         
-        // Aplicar estado
         if (modo === 'front') {
-            front.style.opacity = '1';
-            front.style.zIndex = '10';
-            back.style.zIndex = '0';
+            front.style.opacity = '1'; front.style.zIndex = '10'; back.style.zIndex = '0';
             if (svg) { svg.style.opacity = '1'; svg.style.pointerEvents = 'auto'; }
         } else if (modo === 'back') {
-            back.style.opacity = '1';
-            back.style.zIndex = '10';
-            front.style.zIndex = '0';
+            back.style.opacity = '1'; back.style.zIndex = '10'; front.style.zIndex = '0';
             if (svg) { svg.style.opacity = '0'; svg.style.pointerEvents = 'none'; }
         } else if (modo === 'raw') {
             raw.style.opacity = '1';
@@ -476,57 +579,38 @@
 
     function vincularBotones() {
         const btnRaw = getCachedEl('btn-reveal-raw');
-        const btnDial = getCachedEl('btn-reveal-dial'); // <-- Capturar el botón DIAL
-        
+        const btnDial = getCachedEl('btn-reveal-dial'); 
         let modoActual = 'front';
 
         if (btnRaw) {
             btnRaw.addEventListener('click', () => {
-                if (modoActual === 'front') {
-                    aplicarModoVisual('raw');
-                    modoActual = 'raw';
-                    triggerHaptic([10]);
-                } else if (modoActual === 'raw') {
-                    aplicarModoVisual('back');
-                    modoActual = 'back';
-                    triggerHaptic([12]);
-                } else {
-                    aplicarModoVisual('front');
-                    modoActual = 'front';
-                    triggerHaptic([8]);
-                }
+                if (modoActual === 'front') { aplicarModoVisual('raw'); modoActual = 'raw'; triggerHaptic([10]); }
+                else if (modoActual === 'raw') { aplicarModoVisual('back'); modoActual = 'back'; triggerHaptic([12]); }
+                else { aplicarModoVisual('front'); modoActual = 'front'; triggerHaptic([8]); }
             });
         }
 
-        // --- VINCULACIÓN DEL BOTÓN DIAL RECTIFICADO ---
         if (btnDial) {
             btnDial.addEventListener('click', () => {
                 isDialTextRevealed = !isDialTextRevealed; 
-                
                 if (isDialTextRevealed) {
-                    btnDial.classList.replace('text-white/40', 'text-white');
-                    btnDial.classList.add('bg-white/[0.04]');
+                    btnDial.classList.replace('text-jako-text/40', 'text-jako-text');
+                    btnDial.classList.add('bg-jako-text/[0.04]');
                 } else {
-                    btnDial.classList.replace('text-white', 'text-white/40');
-                    btnDial.classList.remove('bg-white/[0.04]');
+                    btnDial.classList.replace('text-jako-text', 'text-jako-text/40');
+                    btnDial.classList.remove('bg-jako-text/[0.04]');
                 }
-                
-                // Forzar revelado síncrono del grupo completo (Reloj + Texto)
                 const sandwatchGroup = getCachedEl('sandwatch-group');
                 if (sandwatchGroup) {
                     sandwatchGroup.style.opacity = isDialTextRevealed ? "1" : "0";
                     sandwatchGroup.style.pointerEvents = isDialTextRevealed ? "auto" : "none";
                 }
-                
                 renderBiokineticWaves(); 
                 triggerHaptic([10]);
             });
         }
     }
-    // ==========================================
-    // 4. CONTROLADORES DE INTERFAZ DE USUARIO
-    // ==========================================
-// Variable global o de entorno para saber qué tipo de vista está seleccionada ('STENCIL' o 'PANEL')
+
     let tipoVarianteActiva = 'STENCIL';
 
     function inicializarArtepanel() {
@@ -535,40 +619,23 @@
         const btnNext = getCachedEl('btn-variant-next');
         
         if (dynamicHolder) {
-            // Función interna para refrescar el renderizado del texto dinámico central
             const renderTextoCentral = () => {
                 dynamicHolder.innerHTML = `
-                    <span id="menu-bio-${tipoVarianteActiva}" class="tracking-[0.15em] transition-all duration-300 h-full w-full flex items-center justify-center font-bold text-white/40 group-hover:text-white">
+                    <span id="menu-bio-${tipoVarianteActiva}" class="tracking-[0.15em] transition-all duration-300 h-full w-full flex items-center justify-center font-bold text-jako-text/40 group-hover:text-jako-text">
                         ${tipoVarianteActiva}
                     </span>`;
             };
-
-            // Evento Clic Central: Alterna de forma cíclica entre STENCIL y PANEL
             dynamicHolder.addEventListener('click', () => {
                 tipoVarianteActiva = (tipoVarianteActiva === 'STENCIL') ? 'PANEL' : 'STENCIL';
-                
                 renderTextoCentral();
-                cambiarBioItem(tipoVarianteActiva); // Ejecuta tu lógica nativa de cambio de tipo
+                cambiarBioItem(tipoVarianteActiva);
                 triggerHaptic([10]);
             });
-
-            // Inicialización del texto al cargar
             renderTextoCentral();
         }
 
-        // Vincular flechas laterales a la variante activa en tiempo real
-        if (btnPrev) {
-            btnPrev.addEventListener('click', () => {
-                ciclarVariante(tipoVarianteActiva, -1);
-                triggerHaptic([6]);
-            });
-        }
-        if (btnNext) {
-            btnNext.addEventListener('click', () => {
-                ciclarVariante(tipoVarianteActiva, 1);
-                triggerHaptic([6]);
-            });
-        }
+        if (btnPrev) btnPrev.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, -1); triggerHaptic([6]); });
+        if (btnNext) btnNext.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, 1); triggerHaptic([6]); });
         
         vincularBotones();
         actualizarBioUI();
@@ -581,27 +648,14 @@
         triggerHaptic(15);
     }
 
-    function cambiarBioVariant(variantKey) {
-        currentBioVariant = variantKey;
-        actualizarBioUI();
-        triggerHaptic(10);
-    }
-
-    // Cicla perfectamente respetando las llaves únicas de cada catálogo
     function ciclarVariante(tipo, direccion) {
-        // Si el usuario clickea flechas de un grupo que no está activo, lo activamos
         if (currentBioItem !== tipo) {
             currentBioItem = tipo;
             currentBioVariant = ARTEPANEL_CATALOG[tipo].defaultVariant;
         }
-
         const variantes = Object.keys(ARTEPANEL_CATALOG[tipo].variants);
         let currentIndex = variantes.indexOf(currentBioVariant);
-
-        // Fail-safe por si los estados globales se cruzaron
         if (currentIndex === -1) currentIndex = 0;
-
-        // Navegación cíclica pura basada en el catálogo específico
         let nextIndex = (currentIndex + direccion) % variantes.length;
         if (nextIndex < 0) nextIndex = variantes.length - 1;
 
@@ -610,22 +664,13 @@
         triggerHaptic(12);
     }
 
-    // =========================================================================
-    // 5. MOTOR DE TELEMETRÍA (LENGUAJE PULS)
-    // =========================================================================
     function calculateSphereIndex() {
         const now = new Date();
         const epoch = new Date('2012-12-21T00:00:00Z');
         const daysSinceEpoch = Math.floor((now - epoch) / 86400000);
-        
-        // Calculamos qué parte del día es (0 a 3, representando los 4 bloques de 6 horas)
         const currentHour = now.getHours();
         const sphereQuadrant = Math.floor(currentHour / 6);
-        
-        // El índice total será (Días * 4) + el cuadrante actual
-        const totalSpheres = (daysSinceEpoch * 4) + sphereQuadrant;
-        
-        return `${String(totalSpheres).padStart(4, '0')}`;
+        return `${String((daysSinceEpoch * 4) + sphereQuadrant).padStart(4, '0')}`;
     }
 
     function updateZ() {
@@ -634,11 +679,6 @@
         const minutes = now.getMinutes();
         const seconds = now.getSeconds();
 
-        const currentSphereIdx = calculateSphereIndex();
-        const elIdx = getCachedEl('telemetry-sphere-idx');
-        if (elIdx && elIdx.textContent !== currentSphereIdx) elIdx.textContent = currentSphereIdx;
-
-        // --- MÁSCARA DE CONTROL: SISTEMA DE CONGELACIÓN TEMPORAL P.U.L.S. ---
         if (!window.isDialFrozen) {
             let setsStage = 1;  
             let repsStage = 1;  
@@ -648,14 +688,12 @@
                 const progress1s = now.getMilliseconds() / 1000; 
                 setsStage = Math.floor(progress1s * 12) + 1;
                 repsStage = 13 - setsStage; 
-
                 if (progress1s < 0.25) currentAction = 'P';
                 else if (progress1s < 0.5) currentAction = 'U';
                 else if (progress1s < 0.75) currentAction = 'L';
                 else currentAction = 'S';
             } else {
                 setsStage = Math.floor((minutes % 12) + 1);
-                
                 if (seconds < 30) {
                     const subSlot = Math.floor((seconds % 30) / 7.5);
                     currentAction = ["PL", "PU", "LU", "SU"][subSlot] || "PL";
@@ -670,30 +708,16 @@
             setsStage = Math.max(1, Math.min(12, setsStage));
             repsStage = Math.max(1, Math.min(12, repsStage));
             const biokineticCoordinate = `${setsStage}${currentAction}${repsStage}`;
-
-            // --- CAPTURA DE ONDA PARA HISTORIAL FIFO ---
             const vectorIndex = VECTOR_TO_CLOCK_INDEX[currentAction] || 1;
 
             const lastSavedDial = biokineticWaveHistory[0];
             if (!lastSavedDial || lastSavedDial.rawCoord !== biokineticCoordinate) {
-                // Insertar nuevo dial completo en el epicentro (t0)
-                biokineticWaveHistory.unshift({
-                    sets: setsStage,
-                    vector: vectorIndex,
-                    reps: repsStage,
-                    rawCoord: biokineticCoordinate
-                });
-                
-                // CAMBIO: Elevamos el pool de ondas a 12 para que tengan tiempo de viajar al exterior
-                if (biokineticWaveHistory.length > 12) {
-                    biokineticWaveHistory.pop();
-                }
+                biokineticWaveHistory.unshift({ sets: setsStage, vector: vectorIndex, reps: repsStage, rawCoord: biokineticCoordinate });
+                if (biokineticWaveHistory.length > 12) biokineticWaveHistory.pop();
             }
 
-            // Invocar renderizado unificado
             renderBiokineticWaves();
 
-// Sincronizar texto alfanumérico gigante y su entorno geométrico
             const elDial = getCachedEl('z-dial');
             if (elDial) elDial.textContent = biokineticCoordinate;
             
@@ -703,31 +727,21 @@
                 sandwatchGroup.style.pointerEvents = isDialTextRevealed ? "auto" : "none";
             }
                     
-            // Actualizar sub-métricas del HUD superior
             const subSetsSolar = getCachedEl('sub-sets-solar');
             const subRepsTension = getCachedEl('sub-reps-tension');
             if (subSetsSolar) subSetsSolar.textContent = `${(0.05 + (setsStage / 240)).toFixed(3)}`;
             if (subRepsTension) subRepsTension.textContent = `${(14.2 + (repsStage * 0.8)).toFixed(1)}`;
 
-            // Actualizar Dial Espejo (HUD superior centro)
             const elDialMirror = getCachedEl('z-dial-mirror');
             if (elDialMirror) elDialMirror.textContent = biokineticCoordinate;
         }
-                
-        // Nodos (Saturación) sigue fluyendo en tiempo real de forma aséptica
-        const totalSecondsSinceMidnight = (hours * 3600) + (minutes * 60) + seconds;
-        const activeNodeText = `${String(totalSecondsSinceMidnight + 1).padStart(4, '0')}`;
-        const elActiveNode = getCachedEl('telemetry-active-node');
-        if (elActiveNode) elActiveNode.textContent = activeNodeText;
     }
 
-    // TELEMETRY: Panel material de transferencia física e intercambio.
     const TELEMETRY_MEANINGS = {
         'telemetry-product-dim': "Conversion del dial en el espacio", 
         'telemetry-product-dial': "Cantidad de ondas biocinéticas."
     };
     
-    // PULS_MEANINGS: Nomenclatura Biocinética Orientada a Geometría de Cristal
     const PULS_MEANINGS = {
         'sub-sets-solar-trigger': "ONDA INTERNA DE FRECUENCIA COAXIAL TIERRA-LUNA-SOL.", 
         'sub-reps-tension-trigger': "ONDA EXTERNA DE MAGNETISMO GRAVITACIONAL.", 
@@ -738,36 +752,23 @@
             
             const [_, sets, action, reps] = match;
             let vectorText = "";
-
-            // Mapeo sintáctico definitivo: Integración técnico-militar de magnitudes físicas
             switch (action) {
-                // --- FUERZAS PURAS Y ABSOLUTAS ---
-                case 'P':  vectorText = `PASOS X${sets}`; break; // El multiplicador final ahora son los Sets (sets)
+                case 'P':  vectorText = `PASOS X${sets}`; break;
                 case 'S':  vectorText = `SALTOS X${sets}`; break; 
                 case 'U':  vectorText = `PRESIONES X${sets}`; break; 
                 case 'L':  vectorText = `CARGAS X${sets}`; break;    
-                
-                // --- FUERZAS DUALES DE BALANCE ---
                 case 'PL': vectorText = `PASOS CON CARGA X${sets}`; break;
                 case 'PU': vectorText = `PASOS CON PRESIÓN X${sets}`; break;
                 case 'LU': vectorText = `CARGAS CON PRESIÓN X${sets}`; break;
                 case 'SU': vectorText = `SALTOS CON PRESIÓN X${sets}`; break;
-                
-                // --- VÓRTICES COMPLEJOS DE ILUMINACIÓN (Sincronizados al Motor Analógico) ---
                 case 'PUL': vectorText = `PASOS CON PRESIÓN Y CARGA X${sets}`; break;
                 case 'LPS': vectorText = `CARGAS CON PASO Y SALTO X${sets}`; break;
                 case 'SPU': vectorText = `SALTOS CON PASO Y PRESIÓN X${sets}`; break; 
                 case 'ULS': vectorText = `PRESIONES CON CARGA Y SALTO X${sets}`; break;
-                
                 default: vectorText = "ONDA BIOCINÉTICA REGENERATIVA";
             }
-
-            // Entrega continua aséptica: Las Reps (reps) van al inicio, seguidas del vector y sus Sets (vectorText)
             return `${reps} ${vectorText}`;
-
-        }, 
-        'telemetry-sphere-idx-trigger': "NUMERO DE LOTE, CICLO O MATRIZ CUÁNTICA", 
-        'telemetry-active-node-trigger': "NODOS ACUMULADOS REALES." 
+        }
     };
 
     function actualizarBioUI() {
@@ -780,7 +781,6 @@
         
         if (descEl && packImg && packImgBack) {
             descEl.classList.add('opacity-0');
-            
             setTimeout(() => {
                 descEl.textContent = variantConfig.desc;
                 packImg.src = variantConfig.img;
@@ -789,15 +789,12 @@
                 
                 const labelTitle = getCachedEl('laser-variant-title');
                 if (labelTitle) labelTitle.textContent = variantConfig.label;
-                
                 descEl.classList.remove('opacity-0');
             }, 120);
         }
 
-        // Sincronización milimétrica con la Telemetría del Footer Comercial
         const elDim = getCachedEl('telemetry-product-dim');
         const elDial = getCachedEl('telemetry-product-dial');
-
         if (elDim) elDim.textContent = variantConfig.telemetry.DIM;
         if (elDial) elDial.textContent = variantConfig.telemetry.DIAL;
 
@@ -809,113 +806,68 @@
                 const isSelected = (item === currentBioItem);
                 el.textContent = item;
                 el.className = isSelected 
-                    ? `cursor-pointer font-black h-full w-full flex items-center justify-center text-white bg-white/[0.07] rounded-lg border border-white/20 shadow-[inset_0_1px_3px_rgba(255,255,255,0.25),_0_2px_8px_rgba(255,255,255,0.05)] ${textFluidClass}` 
-                    : `cursor-pointer font-medium h-full w-full flex items-center justify-center text-white/20 bg-transparent rounded-lg hover:text-white/50 hover:bg-white/[0.02] ${textFluidClass}`;
+                    ? `cursor-pointer font-black h-full w-full flex items-center justify-center text-jako-bg bg-jako-text rounded-lg border border-jako-text/20 shadow-[inset_0_1px_3px_rgba(255,255,255,0.25)] ${textFluidClass}` 
+                    : `cursor-pointer font-medium h-full w-full flex items-center justify-center text-jako-text/20 bg-transparent rounded-lg hover:text-jako-text/50 hover:bg-jako-text/[0.02] ${textFluidClass}`;
             }
         });
     }
 
     function habilitarReveladoTelemetria() {
-        
-        //---------------------------------------------------------
-        // MOTOR 1: PANEL COMERCIAL (Inyección en Footer Centro)
-        //---------------------------------------------------------
-        const setupBloqueComercial = () => {
-            const telemetryData = getCachedEl('panel-telemetry-data');
-            const txtOriginal = "Compras tu pieza y financias otra para la comunidad";
-            let timerComercial = null;
+        const telemetryData = getCachedEl('panel-telemetry-data');
+        const txtOriginal = "Compras tu pieza y financias otra para la comunidad";
+        let timerComercial = null;
 
-            Object.keys(TELEMETRY_MEANINGS).forEach(id => {
-                const el = getCachedEl(id);
-                if (!el || !telemetryData) return;
-
-                el.addEventListener('click', () => {
-                    clearTimeout(timerComercial);
-                    
-                    el.parentElement.classList.remove('text-white/50');
-                    el.parentElement.classList.add('text-white');
-                    telemetryData.innerHTML = TELEMETRY_MEANINGS[id];
-                    
-                    timerComercial = setTimeout(() => {
-                        telemetryData.innerHTML = txtOriginal;
-                        el.parentElement.classList.remove('text-white');
-                        el.parentElement.classList.add('text-white/50');
-                    }, 8000);
-                });
+        Object.keys(TELEMETRY_MEANINGS).forEach(id => {
+            const el = getCachedEl(id);
+            if (!el || !telemetryData) return;
+            el.addEventListener('click', () => {
+                clearTimeout(timerComercial);
+                el.parentElement.classList.remove('text-jako-text/50');
+                el.parentElement.classList.add('text-jako-text');
+                telemetryData.innerHTML = TELEMETRY_MEANINGS[id];
+                timerComercial = setTimeout(() => {
+                    telemetryData.innerHTML = txtOriginal;
+                    el.parentElement.classList.remove('text-jako-text');
+                    el.parentElement.classList.add('text-jako-text/50');
+                }, 8000);
             });
-        };
+        });
 
-        //---------------------------------------------------------
-        // MOTOR 2: UNIVERSO ONDULATORIO (Inyección en Header Centro)
-        //---------------------------------------------------------
-        const setupBloqueQuantum = () => {
-            const telemetryDataSecondary = getCachedEl('panel-telemetry-data-secondary');
-            const txtOriginalSecondary = "ONDA BIOCINÉTICA REGENERATIVA";
-            let timerQuantum = null;
+        const telemetryDataSecondary = getCachedEl('panel-telemetry-data-secondary');
+        const txtOriginalSecondary = "ONDA BIOCINÉTICA REGENERATIVA";
+        let timerQuantum = null;
 
-            Object.keys(PULS_MEANINGS).forEach(id => {
-                const el = getCachedEl(id);
-                if (!el || !telemetryDataSecondary) return;
+        Object.keys(PULS_MEANINGS).forEach(id => {
+            const el = getCachedEl(id);
+            if (!el || !telemetryDataSecondary) return;
+            const esHeaderPuro = id.startsWith('sub-');
+            const contenedorLed = esHeaderPuro ? el.parentElement : el;
 
-                const esHeaderPuro = id.startsWith('sub-');
-                const contenedorLed = esHeaderPuro ? el.parentElement : el;
+            el.addEventListener('click', () => {
+                clearTimeout(timerQuantum);
+                if (id === 'z-dial-trigger') window.isDialFrozen = true;
 
-                el.addEventListener('click', () => {
-                    clearTimeout(timerQuantum);
-                    
-                    if (id === 'z-dial-trigger') {
-                        window.isDialFrozen = true;
-                    }
-
-                    if (esHeaderPuro) {
-                        contenedorLed.classList.replace('text-white/60', 'text-white');
-                    } else if (id === 'z-dial-trigger') {
-                        el.style.filter = "drop-shadow(0 0 25px rgba(255,255,255,0.95))";
-                    } else {
-                        contenedorLed.classList.replace('text-white/40', 'text-white');
-                        contenedorLed.querySelector('span:last-child').classList.replace('text-white', 'text-white/60');
-                    }
-                    
-                    const meaningValue = PULS_MEANINGS[id];
-                    telemetryDataSecondary.innerHTML = typeof meaningValue === 'function' ? meaningValue() : meaningValue;
-                    
-                    timerQuantum = setTimeout(() => {
-                        telemetryDataSecondary.innerHTML = txtOriginalSecondary;
-                        
-                        if (id === 'z-dial-trigger') {
-                            window.isDialFrozen = false;
-                            el.style.filter = "none";
-                        }
-
-                        if (esHeaderPuro) {
-                            contenedorLed.classList.replace('text-white', 'text-white/60');
-                        } else if (id !== 'z-dial-trigger') {
-                            contenedorLed.classList.replace('text-white', 'text-white/40');
-                            contenedorLed.querySelector('span:last-child').classList.replace('text-white', 'text-white/60');
-                        }
-                    }, 8000);
-                });
+                if (esHeaderPuro) contenedorLed.classList.replace('text-jako-text/60', 'text-jako-text');
+                else if (id === 'z-dial-trigger') el.style.filter = "drop-shadow(0 0 25px var(--jako-led))";
+                
+                const meaningValue = PULS_MEANINGS[id];
+                telemetryDataSecondary.innerHTML = typeof meaningValue === 'function' ? meaningValue() : meaningValue;
+                
+                timerQuantum = setTimeout(() => {
+                    telemetryDataSecondary.innerHTML = txtOriginalSecondary;
+                    if (id === 'z-dial-trigger') { window.isDialFrozen = false; el.style.filter = "none"; }
+                    if (esHeaderPuro) contenedorLed.classList.replace('text-jako-text', 'text-jako-text/60');
+                }, 8000);
             });
-        };
-
-        setupBloqueComercial();
-        setupBloqueQuantum();
+        });
     }
 
-    // =========================================================================
-    // 6. CAPTURA DE TELEMETRÍA DE COMPRA (GENERACIÓN DE PAYLOAD)
-    // =========================================================================
     function adquirirNodo() {
         const variantConfig = ARTEPANEL_CATALOG[currentBioItem].variants[currentBioVariant];
         const currentCoord = getCachedEl('z-dial')?.textContent || "N/A";
-        const currentSphere = getCachedEl('telemetry-sphere-idx')?.textContent || "N/A";
-        const currentNode = getCachedEl('telemetry-active-node')?.textContent || "N/A";
-        
-        // Captura de valores calculados en el DOM
+        const currentSphere = calculateSphereIndex();
         const freqValue = getCachedEl('sub-sets-solar')?.textContent || "0.00";
         const tensionValue = getCachedEl('sub-reps-tension')?.textContent || "0.0";
-        
-        // Traducción técnica bajo Sinergia Molecular Óptima
         const dialInterpretation = currentCoord.replace(/(\d+)([A-Z]+)(\d+)/, "$1 FASES, $3 NODOS - ESTADO $2");
         
         const mensaje = `⚡ *ORDEN - ARTEPANEL* ⚡\n\n` +
@@ -927,7 +879,6 @@
                         `• *Matriz de Configuración:* \`${currentCoord}\`\n` +
                         `• *Análisis de Estado:* ${dialInterpretation}\n` +
                         `• *Lote:* \`${currentSphere}\`\n` +
-                        `• *Saturación:* \`${currentNode}\`\n` +
                         `• *Resonancia:* \`${freqValue}\`\n` +
                         `• *Cohesión:* \`${tensionValue}\`\n\n` +
                         `Activar configuración actual.`;
@@ -937,21 +888,15 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        inicializarAlternadorAcromatico();
         inicializarArtepanel();
         updateZ(); 
-        
-        // MOTOR DE TELEMETRÍA Y ONDAS UNIFICADO (1 segundo estricto)
         setInterval(updateZ, 1000);
-
         habilitarReveladoTelemetria();
 
-        // Desactivar bloqueo de puntero sobre el SVG general para liberar interacciones traseras
         const laserSvg = getCachedEl('laser-vector-target');
-        if (laserSvg) {
-            laserSvg.style.pointerEvents = 'none'; 
-        }
+        if (laserSvg) laserSvg.style.pointerEvents = 'none'; 
 
-        // Reconexión y escucha independiente sobre el texto reactivo del Dial
         const zDialSvgText = getCachedEl('z-dial');
         if (zDialSvgText) {
             zDialSvgText.style.cursor = 'pointer';
