@@ -32,7 +32,7 @@
             font-family: 'Orbitron', sans-serif; 
             scroll-behavior: smooth; 
             letter-spacing: 0.05em; 
-            background-color: #030712; 
+            background-color: #000000; 
             color: #f8fafc;
             /* Prevención de sobre-desplazamiento elástico en móviles */
             overscroll-behavior: none;
@@ -44,7 +44,7 @@
         #page-bg-overlay {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at 50% 30%, rgba(37, 99, 235, 0.22) 0%, rgba(15, 23, 42, 0.75) 60%, #030712 100%);
+            background: radial-gradient(circle at 50% 30%, rgba(60, 66, 79, 0.22) 0%, rgba(80, 96, 136, 0.75) 60%, #000000 100%);
             z-index: -1;
             /* transform y will-change aíslan el renderizado en su propia capa de la GPU */
             transform: translateZ(0);
@@ -120,7 +120,7 @@
                     </div>
                     
                     <div class="justify-self-center text-center tracking-[0.28em] font-black drop-shadow-[0_0_12px_rgba(255,255,255,0.45)] text-white text-[13px] sm:text-[15px] leading-none">
-                        <span>ARTVAULT</span>
+                        <span>JAKO VAULT</span>
                     </div>
                     
                     <div class="justify-self-end flex items-center h-full">
@@ -326,39 +326,39 @@
             }
         },
         'PANEL': {
-            defaultVariant: '20X20',
+            defaultVariant: '40X40',
             variants: {
                 '20X20': { 
                     label: 'PANEL20X20', 
-                    desc: 'INKJET ADH sobre MDF para montajes individuales o mosaicos.', 
+                    desc: 'INKJET ADH sobre ACM para montajes individuales o mosaicos.', 
                     spec: 'Compras tu pieza y financias otra para la comunidad', 
                     price: '$12USD', 
                     id: 'FP-20X20',
                     img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/panel20B.png',
-                    telemetry: { DIM: '20x20', MEDIA: 'MDF', DIAL: '⧗240', RATE: '$0.05USD' }
+                    telemetry: { DIM: '20x20', MEDIA: 'ACM', DIAL: '⧗240', RATE: '$0.05USD' }
                 },
                 '30X30': { 
                     label: 'PANEL30X30', 
-                    desc: 'INKJET ADH sobre MDF para montajes individuales o mosaicos.', 
+                    desc: 'INKJET ADH sobre ACM para montajes individuales o mosaicos.', 
                     spec: 'Compras tu pieza y financias otra para la comunidad', 
                     price: '$29USD', 
                     id: 'FP-30X30',
                     img: 'img/surface.png', imgBack: 'img/panel30W.png', imgRaw: 'img/panel30B.png',
-                    telemetry: { DIM: '30x30', MEDIA: 'MDF', DIAL: '⧗576', RATE: '$0.05USD' }
+                    telemetry: { DIM: '30x30', MEDIA: 'ACM', DIAL: '⧗576', RATE: '$0.05USD' }
                 },
                 '40X40': { 
                     label: 'PANEL40X40', 
-                    desc: 'INKJET ADH sobre MDF para montajes individuales o mosaicos.', 
+                    desc: 'INKJET ADH sobre ACM para montajes individuales o mosaicos.', 
                     spec: 'Compras tu pieza y financias otra para la comunidad', 
                     price: '$55USD', 
                     id: 'FP-40X40',
                     img: 'img/surface.png', imgBack: 'img/panel40W.png', imgRaw: 'img/panel40B.png',
-                    telemetry: { DIM: '40x40', MEDIA: 'MDF', DIAL: '⧗1100', RATE: '$0.05USD' }
+                    telemetry: { DIM: '40x40', MEDIA: 'ACM', DIAL: '⧗1100', RATE: '$0.05USD' }
                 }
             }
         }
     };
-    let currentBioItem = 'STENCIL';
+    let currentBioItem = 'PANEL';
     let currentBioVariant = '40X40';
     const numeroCelular = "573025333130";
     
