@@ -858,18 +858,18 @@
         if (elDim) elDim.textContent = variantConfig.telemetry.DIM;
         if (elDial) elDial.textContent = variantConfig.telemetry.DIAL;
 
-        const textFluidClass = "text-[8px] xs:text-[9.5px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.35em] uppercase font-sans transition-all duration-300";
-
-        Object.keys(ARTEPANEL_CATALOG).forEach(item => {
-            const el = getCachedEl(`menu-bio-${item}`);
-            if (el) {
-                const isSelected = (item === currentBioItem);
-                el.textContent = item;
-                el.className = isSelected 
-                    ? `cursor-pointer font-black h-8 px-4 flex items-center justify-center text-jako-bg bg-jako-text rounded border border-jako-text/20 shadow-[inset_0_1px_3px_rgba(255,255,255,0.25)] ${textFluidClass}` 
-                    : `cursor-pointer font-medium h-8 px-4 flex items-center justify-center text-jako-text/20 bg-transparent rounded hover:text-jako-text/50 hover:bg-jako-text/[0.02] ${textFluidClass}`;
-            }
-        });
+        // --- CORRECCIÓN DE ESTILOS DEL BOTÓN CENTRAL ---
+        const dynamicHolder = getCachedEl('menu-bio-DYNAMIC-holder');
+        if (dynamicHolder) {
+            // Renderizamos el texto plano sin IDs internos duplicados que rompan el caché
+            dynamicHolder.innerHTML = `
+                <span class="tracking-[0.15em] uppercase font-sans text-[8px] xs:text-[9.5px] sm:text-[11px] font-black transition-all duration-300">
+                    ${currentBioItem}
+                </span>`;
+            
+            // El contenedor estable asume de forma robusta la identidad visual premium (Fondo blanco constante)
+            dynamicHolder.className = "h-full w-full flex items-center justify-center cursor-pointer rounded bg-jako-text text-jako-bg font-black border border-jako-text/20 shadow-[inset_0_1px_3px_rgba(255,255,255,0.25)] transition-all duration-300 mx-auto max-w-[110px]";
+        }
     }
 
     function habilitarReveladoTelemetria() {
