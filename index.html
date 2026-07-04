@@ -143,7 +143,7 @@
         <!-- GRID DE 5 COLUMNAS: Forzado a alineación exacta sin depender del min-h externo -->
         <div class="px-4 sm:px-8 grid grid-cols-[auto_auto_1fr_auto_auto] items-center uppercase tracking-widest font-mono text-[11px] text-jako-text/50 h-[65px] sm:h-[72px] min-h-[65px] sm:min-h-[72px] select-none gap-4 sm:gap-6">
                     
-<!-- 1. RETORNO (Extremo Izquierdo) -->
+                    <!-- 1. RETORNO (Extremo Izquierdo) -->
                     <div class="flex items-center h-full">
                         <button class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Back">
                             <img src="img/" alt="" class="h-[13px] sm:h-[15px] w-auto object-contain opacity-65 group-hover:opacity-100 transition-all duration-500 filter invert dark:invert-0" />
@@ -160,7 +160,7 @@
                                 <path d="M2 12h20"/>
                             </svg>
                             <!-- Indicador de Idioma Dinámico -->
-                            <span id="lang-indicator" class="font-mono text-[10px] font-black tracking-wider opacity-50 group-hover:opacity-100 transition-all duration-500 text-jako-text">ES</span>
+                            <span id="lang-indicator" class="font-mono text-[10px] font-black tracking-wider opacity-50 group-hover:opacity-100 transition-all duration-500 text-jako-text">ESP</span>
                         </button>
                     </div>
                     
@@ -326,23 +326,46 @@
 
             <div class="w-full h-[1px] bg-jako-text/5"></div>
 
-            <div class="w-full h-11 relative z-10">
-                <div class="w-full grid grid-cols-[40px_1fr_40px] sm:grid-cols-[54px_1fr_54px] items-center h-full px-4 sm:px-8 text-[8px] tracking-[0.3em] sm:tracking-[0.4em]">
-                    <div class="h-full w-full flex items-center justify-start border-r border-jako-text/5">
-                        <a href="https://jako.world" class="group w-full h-full flex items-center justify-start hover:bg-jako-text/[0.02] transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Link to jako.world">
-                            <img src="img/back.png" alt="" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500 filter invert dark:invert-0" />
-                        </a>
-                    </div>    
-                    <div class="h-full w-full flex items-center justify-center text-center font-bold text-jako-text/20">
-                        <a href="https://jako.world" class="h-full w-full flex items-center justify-center hover:text-jako-text/60 hover:bg-jako-text/[0.005] transition-all duration-300 focus:outline-none whitespace-nowrap">POWERED BY JAKO.WORLD</a>
-                    </div>
-                    <div class="h-full w-full flex items-center justify-end border-l border-jako-text/5">
-                        <a href="https://biorush.shop" class="group w-full h-full flex items-center justify-end hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Link to biorush.shop">
-                            <img src="img/pace.png" alt="" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500 filter invert dark:invert-0" />
-                        </a>
+                <!-- CIERRE DEL FOOTER: Reconfiguración Matricial a 5 Columnas Asimétricas (Estilo Header) -->
+                <div class="w-full h-11 min-h-[44px] max-h-[44px] relative z-10 overflow-hidden border-t border-jako-text/5">
+                    <div class="w-full h-full px-4 sm:px-8 grid grid-cols-[auto_auto_1fr_auto_auto] items-center uppercase tracking-[0.3em] sm:tracking-[0.4em] font-mono text-[8px] text-jako-text/20 select-none gap-4 sm:gap-6">
+                        
+                        <!-- 1. DISPARADOR INFERIOR IZQUIERDO (Preparado para Función A) -->
+                        <div class="flex items-center h-full">
+                            <button id="footer-fn-left-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Ajuste Matriz Inferior Izquierda">
+                                <svg class="w-3.5 h-3.5 text-jako-text opacity-30 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                    <path d="M9 3v18"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- 2. MARCADOR DE ESTADO INTERNO IZQUIERDO -->
+                        <div class="flex items-center h-full text-jako-text/40 font-black tracking-wider text-[9px]">
+                            <span>STB</span>
+                        </div>
+                        
+                        <!-- 3. IDENTIDAD CENTRAL DE FIRMA -->
+                        <div class="text-center font-bold tracking-[0.3em] sm:tracking-[0.4em] text-jako-text/20 hover:text-jako-text/60 hover:bg-jako-text/[0.005] transition-all duration-300 h-full flex items-center justify-center whitespace-nowrap">
+                            <a href="https://jako.world" class="h-full w-full flex items-center justify-center focus:outline-none">POWERED BY JAKO.WORLD</a>
+                        </div>
+
+                        <!-- 4. MARCADOR DE ESTADO INTERNO DERECHO -->
+                        <div class="flex items-center h-full text-jako-text/40 font-black tracking-wider text-[9px]">
+                            <span>RAW</span>
+                        </div>
+
+                        <!-- 5. DISPARADOR INFERIOR DERECHO (Preparado para Función B) -->
+                        <div class="flex items-center h-full">
+                            <button id="footer-fn-right-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Ajuste Matriz Inferior Derecha">
+                                <svg class="w-3.5 h-3.5 text-jako-text opacity-30 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                                </svg>
+                            </button>
+                        </div>
+
                     </div>
                 </div>
-            </div>
         </div>
     </footer>
 
@@ -461,15 +484,15 @@
     // DICCIONARIO ACROMÁTICO TRILÍNGÜE (HUD)
     // ==========================================
     const VAULT_DICTIONARY = {
-        es: {
-            indicator: "ES",
+        esp: {
+            indicator: "ESP",
             secondaryTelemetry: "ONDA BIOCINÉTICA REGENERATIVA",
             primaryTelemetry: "Compras tu pieza y financias otra para la comunidad",
             btnRevealRaw: "VER",
             btnActivar: "ACTIVAR"
         },
-        en: {
-            indicator: "EN",
+        eng: {
+            indicator: "ENG",
             secondaryTelemetry: "REGENERATIVE BIOKINETIC WAVE",
             primaryTelemetry: "Buy your piece and finance another for the community",
             btnRevealRaw: "VIEW",
@@ -485,13 +508,13 @@
     };
 
     // Estado global interno del idioma
-    let currentLang = 'es';
+    let currentLang = 'esp';
 
     // Secuencia matricial de ordenamiento cíclico
     const NEXT_LANG_SEQUENCE = {
-        'es': 'en',
-        'en': 'ita',
-        'ita': 'es'
+        'esp': 'eng',
+        'eng': 'ita',
+        'ita': 'esp'
     };
 
     // ==========================================
@@ -503,7 +526,7 @@
 
         trigger.addEventListener('click', () => {
             // Conmutación cíclica controlada por el mapa secuencial
-            currentLang = NEXT_LANG_SEQUENCE[currentLang] || 'es';
+            currentLang = NEXT_LANG_SEQUENCE[currentLang] || 'esp';
             
             // 1. Inyectar atributo de idioma global en el DOM
             document.documentElement.setAttribute('data-lang', currentLang);
