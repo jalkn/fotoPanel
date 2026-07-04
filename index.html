@@ -333,19 +333,19 @@
                 </div>
             </div>
 
-<!-- FILA DE ACCIONES PRINCIPALES (SÍN LÍNEAS VERTICALES) -->
+<!-- FILA DE ACCIONES PRINCIPALES (UNIFICADA / ESTÉTICA HUD) -->
 <div class="w-full h-12 relative z-10 border-jako-border bg-jako-text/[0.01]">
     <div class="w-full grid grid-cols-3 items-center h-full text-center select-none">
         
-        <button id="btn-reveal-raw" class="h-full w-full bg-transparent hover:bg-jako-text/[0.02] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Capas Visuales">
+        <button id="btn-reveal-raw" class="h-full w-full bg-transparent hover:bg-jako-text/[0.04] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Capas Visuales">
             VER
         </button>
         
-        <button id="btn-adquirir-nodo" onclick="adquirirNodo()" class="h-full w-full bg-transparent hover:bg-jako-text/[0.04] text-jako-text/90 font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
+        <button id="btn-adquirir-nodo" onclick="adquirirNodo()" class="h-full w-full bg-transparent hover:bg-jako-text/[0.04] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Activar Nodo">
             ACTIVAR
         </button>
         
-        <button id="btn-reveal-dial" class="h-full w-full bg-transparent hover:bg-jako-text/[0.02] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
+        <button id="btn-reveal-dial" class="h-full w-full bg-transparent hover:bg-jako-text/[0.04] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Dial">
             DIAL
         </button>
         
@@ -858,16 +858,24 @@
         if (elDim) elDim.textContent = variantConfig.telemetry.DIM;
         if (elDial) elDial.textContent = variantConfig.telemetry.DIAL;
 
-        // --- REDISEÑO DEL BOTÓN: ESTÉTICA UNIFICADA CON LA WEB ---
+        // --- ACTUALIZACIÓN INTEGRADA AL ECOSISTEMA HUD ---
         const dynamicHolder = getCachedEl('menu-bio-DYNAMIC-holder');
         if (dynamicHolder) {
+            // 1. Mapeamos a través del diccionario de idioma si existe, o usamos el fallback limpio.
+            const activeLang = typeof currentLang !== 'undefined' ? currentLang : 'ES';
+            const labelText = (typeof VAULT_DICTIONARY !== 'undefined' && VAULT_DICTIONARY[activeLang])
+                ? (VAULT_DICTIONARY[activeLang][currentBioItem] || currentBioItem)
+                : currentBioItem;
+
+            // 2. Inyección de texto limpio con tracking HUD refinado
             dynamicHolder.innerHTML = `
-                <span class="tracking-[0.15em] uppercase font-sans text-[8px] xs:text-[9.5px] sm:text-[11px] font-black transition-all duration-300">
-                    ${currentBioItem}
+                <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[10px] sm:text-[11px] font-black transition-all duration-300">
+                    ${labelText}
                 </span>`;
             
-            // texto nativo del tema y un borde sutil pero definido que encaja con el ecosistema visual.
-            dynamicHolder.className = "h-full w-full flex items-center justify-center cursor-pointer rounded bg-jako-text/[0.03] dark:bg-jako-bg/[0.4] text-jako-text font-black border dark:border-jako-text/20 shadow-sm transition-all duration-300 mx-auto max-w-[110px] hover:bg-jako-text/[0.08] hover:border-jako-text/50";
+            // 3. Clases unificadas: Sin bordes densos ni sombras extrañas. 
+            // Respeta el comportamiento pasivo/activo del menú integrado.
+            dynamicHolder.className = "h-full w-full flex items-center justify-center cursor-default text-jako-text/90 select-none transition-all duration-300 mx-auto";
         }
     }
 
