@@ -858,17 +858,16 @@
         if (elDim) elDim.textContent = variantConfig.telemetry.DIM;
         if (elDial) elDial.textContent = variantConfig.telemetry.DIAL;
 
-        // --- CORRECCIÓN DE ESTILOS DEL BOTÓN CENTRAL ---
+        // --- REDISEÑO DEL BOTÓN: ESTÉTICA UNIFICADA CON LA WEB ---
         const dynamicHolder = getCachedEl('menu-bio-DYNAMIC-holder');
         if (dynamicHolder) {
-            // Renderizamos el texto plano sin IDs internos duplicados que rompan el caché
             dynamicHolder.innerHTML = `
                 <span class="tracking-[0.15em] uppercase font-sans text-[8px] xs:text-[9.5px] sm:text-[11px] font-black transition-all duration-300">
                     ${currentBioItem}
                 </span>`;
             
-            // El contenedor estable asume de forma robusta la identidad visual premium (Fondo blanco constante)
-            dynamicHolder.className = "h-full w-full flex items-center justify-center cursor-pointer rounded bg-jako-text text-jako-bg font-black border border-jako-text/20 shadow-[inset_0_1px_3px_rgba(255,255,255,0.25)] transition-all duration-300 mx-auto max-w-[110px]";
+            // texto nativo del tema y un borde sutil pero definido que encaja con el ecosistema visual.
+            dynamicHolder.className = "h-full w-full flex items-center justify-center cursor-pointer rounded bg-jako-text/[0.03] dark:bg-jako-bg/[0.4] text-jako-text font-black border dark:border-jako-text/20 shadow-sm transition-all duration-300 mx-auto max-w-[110px] hover:bg-jako-text/[0.08] hover:border-jako-text/50";
         }
     }
 
