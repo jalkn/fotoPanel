@@ -174,13 +174,6 @@
                     
                     <!-- 1. RETORNO (Extremo Izquierdo) -->
                     <div class="flex items-center h-full">
-                        <button class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Back">
-                            <img src="img/" alt="" class="h-[13px] sm:h-[15px] w-auto object-contain opacity-65 group-hover:opacity-100 transition-all duration-500 filter invert dark:invert-0" />
-                        </button>
-                    </div>
-
-                    <!-- 2. IDIOMA / CONMUTADOR DE MATRIZ TRILÍNGÜE (Estructura de Red Compacta) -->
-                    <div class="flex items-center h-full">
                         <button id="lang-toggle-trigger" class="group flex items-center gap-1.5 justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" title="Conmutar Idioma / Switch Language" aria-label="Toggle language">
                             <!-- Ícono Global de Red (Inspirado en Screenshot 2026-07-03 at 6.02.03 PM.png) -->
                             <svg class="w-3.5 h-3.5 text-jako-text opacity-40 group-hover:opacity-100 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -191,14 +184,27 @@
                             <!-- Indicador de Idioma Dinámico -->
                             <span id="lang-indicator" class="font-mono text-[10px] font-black tracking-wider opacity-50 group-hover:opacity-100 transition-all duration-500 text-jako-text">ESP</span>
                         </button>
+
+                    </div>
+
+                    <!-- 2. IDIOMA / CONMUTADOR DE MATRIZ TRILÍNGÜE (Estructura de Red Compacta) -->
+                    <div class="flex items-center h-full">
+                        <button class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Back">
+                        </button>
                     </div>
                     
                     <!-- 3. IDENTIDAD CENTRAL (Eje de Gravedad) -->
                     <div class="text-center tracking-[0.28em] font-black drop-shadow-[0_0_12px_var(--jako-led)] text-jako-text text-[13px] sm:text-[15px] leading-none">
-                        <span>JAKO VAULT</span>
+                        <span>VAULT</span>
                     </div>
 
                     <!-- 4. INTERRUPTOR ACROMÁTICO (Cápsula Vectorial Interactiva) -->
+                    <div class="flex items-center h-full">
+                        <button class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Pace">
+                        </button>
+                    </div>
+                    
+                    <!-- 5. FLUJO BIOCINÉTICO (Extremo Derecho) -->
                     <div class="flex items-center h-full">
                         <button id="acromatic-toggle-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" title="Conmutar Matriz Visual" aria-label="Toggle acromatic theme">
                             <svg class="w-[38px] sm:w-[44px] h-auto object-contain text-jako-text fill-current opacity-70 group-hover:opacity-100 transition-all duration-300 distribution-gpu" viewBox="0 0 54 28" xmlns="http://www.w3.org/2000/svg">
@@ -210,13 +216,7 @@
                                 </g>
                             </svg>
                         </button>
-                    </div>
-                    
-                    <!-- 5. FLUJO BIOCINÉTICO (Extremo Derecho) -->
-                    <div class="flex items-center h-full">
-                        <button class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Pace">
-                            <img src="img/" alt="" class="h-[13px] sm:h-[15px] w-auto object-contain opacity-65 group-hover:opacity-100 transition-all duration-500 filter invert dark:invert-0" />
-                        </button>
+
                     </div>
 
                 </div>
@@ -369,7 +369,7 @@
 
                     <!-- 2. MARCADOR DE ESTADO INTERNO IZQUIERDO -->
                     <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px] min-w-[24px]">
-                        <span id="footer-chroma-indicator">STB</span>
+                        
                     </div>
                     
                     <!-- 3. IDENTIDAD CENTRAL DE FIRMA -->
@@ -379,7 +379,7 @@
 
                     <!-- 4. MARCADOR DE ESTADO INTERNO DERECHO -->
                     <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px]">
-                        <span class="font-mono">RAW</span>
+                        
                     </div>
 
                     <!-- 5. DISPARADOR INFERIOR DERECHO (Modo Inmersión Zenith con Ícono de Expansión HUD) -->
@@ -803,39 +803,6 @@
         }
     }
 
-    const TELEMETRY_MEANINGS = {
-        'telemetry-product-dim': "Conversion del dial en el espacio", 
-        'telemetry-product-dial': "Cantidad de ondas biocinéticas."
-    };
-    
-    const PULS_MEANINGS = {
-        'sub-sets-solar-trigger': "ONDA INTERNA DE FRECUENCIA COAXIAL TIERRA-LUNA-SOL.", 
-        'sub-reps-tension-trigger': "ONDA EXTERNA DE MAGNETISMO GRAVITACIONAL.", 
-        'z-dial-trigger': () => {
-            const coord = getCachedEl('z-dial-mirror')?.textContent || "1P1";
-            const match = coord.match(/^(\d+)([A-Z]+)(\d+)$/);
-            if (!match) return "MATRIZ BIOCINÉTICA ACTIVA.";
-            
-            const [_, sets, action, reps] = match;
-            let vectorText = "";
-            switch (action) {
-                case 'P':  vectorText = `PASOS X${sets}`; break;
-                case 'S':  vectorText = `SALTOS X${sets}`; break; 
-                case 'U':  vectorText = `PRESIONES X${sets}`; break; 
-                case 'L':  vectorText = `CARGAS X${sets}`; break;    
-                case 'PL': vectorText = `PASOS CON CARGA X${sets}`; break;
-                case 'PU': vectorText = `PASOS CON PRESIÓN X${sets}`; break;
-                case 'LU': vectorText = `CARGAS CON PRESIÓN X${sets}`; break;
-                case 'SU': vectorText = `SALTOS CON PRESIÓN X${sets}`; break;
-                case 'PUL': vectorText = `PASOS CON PRESIÓN Y CARGA X${sets}`; break;
-                case 'LPS': vectorText = `CARGAS CON PASO Y SALTO X${sets}`; break;
-                case 'SPU': vectorText = `SALTOS CON PASO Y PRESIÓN X${sets}`; break; 
-                case 'ULS': vectorText = `PRESIONES CON CARGA Y SALTO X${sets}`; break;
-                default: vectorText = "ONDA BIOCINÉTICA REGENERATIVA";
-            }
-            return `${reps} ${vectorText}`;
-        }
-    };
 
     function actualizarBioUI() {
         const itemConfig = ARTEPANEL_CATALOG[currentBioItem];
@@ -878,68 +845,106 @@
         });
     }
 
+    // ========================================================
+    // REGISTRO UNIFICADO DE TELEMETRÍAS (HUD MAP)
+    // ========================================================
+    const HUD_REGISTRY = {
+        // Telemetría Principal (Footer)
+        'telemetry-product-dim': { 
+            target: 'panel-telemetry-data', 
+            original: "Compras tu pieza y financias otra para la comunidad",
+            text: "Conversion del dial en el espacio" 
+        },
+        'telemetry-product-dial': { 
+            target: 'panel-telemetry-data', 
+            original: "Compras tu pieza y financias otra para la comunidad",
+            text: "Cantidad de ondas biocinéticas." 
+        },
+        // Telemetría Secundaria (Header)
+        'sub-sets-solar-trigger': { 
+            target: 'panel-telemetry-data-secondary', 
+            original: "ONDA BIOCINÉTICA REGENERATIVA",
+            text: "ONDA INTERNA DE FRECUENCIA COAXIAL TIERRA-LUNA-SOL." 
+        },
+        'sub-reps-tension-trigger': { 
+            target: 'panel-telemetry-data-secondary', 
+            original: "ONDA EXTERNA DE MAGNETISMO GRAVITACIONAL.",
+            text: "ONDA EXTERNA DE MAGNETISMO GRAVITACIONAL." 
+        },
+        'z-dial-trigger': { 
+            target: 'panel-telemetry-data-secondary', 
+            original: "ONDA BIOCINÉTICA REGENERATIVA",
+            text: () => {
+                const coord = getCachedEl('z-dial-mirror')?.textContent || "1P1";
+                const match = coord.match(/^(\d+)([A-Z]+)(\d+)$/);
+                if (!match) return "MATRIZ BIOCINÉTICA ACTIVA.";
+                
+                const [_, sets, action, reps] = match;
+                const vectores = { 
+                    P: 'PASOS', S: 'SALTOS', U: 'PRESIONES', L: 'CARGAS', 
+                    PL: 'PASOS CON CARGA', PU: 'PASOS CON PRESIÓN', LU: 'CARGAS CON PRESIÓN', SU: 'SALTOS CON PRESIÓN', 
+                    PUL: 'PASOS CON PRESIÓN Y CARGA', LPS: 'CARGAS CON PASO Y SALTO', SPU: 'SALTOS CON PASO Y PRESIÓN', ULS: 'PRESIONES CON CARGA Y SALTO' 
+                };
+                return `${reps} ${(vectores[action] || 'ONDA BIOCINÉTICA REGENERATIVA')} X${sets}`;
+            }
+        }
+    };
+
+    // Almacenamiento de temporizadores activos indexados por el ID del contenedor objetivo
+    const activeHudTimers = {};
+
     function habilitarReveladoTelemetria() {
-        const telemetryData = getCachedEl('panel-telemetry-data');
-        const txtOriginal = "Compras tu pieza y financias otra para la comunidad";
-        let timerComercial = null;
+        Object.keys(HUD_REGISTRY).forEach(id => {
+            const triggerEl = getCachedEl(id);
+            const config = HUD_REGISTRY[id];
+            const targetEl = getCachedEl(config.target);
+            
+            if (!triggerEl || !targetEl) return;
 
-        Object.keys(TELEMETRY_MEANINGS).forEach(id => {
-            const el = getCachedEl(id);
-            if (!el || !telemetryData) return;
-            el.addEventListener('click', () => {
-                clearTimeout(timerComercial);
-                el.parentElement.classList.remove('text-jako-text/50');
-                el.parentElement.classList.add('text-jako-text');
-                telemetryData.innerHTML = TELEMETRY_MEANINGS[id];
-                timerComercial = setTimeout(() => {
-                    telemetryData.innerHTML = txtOriginal;
-                    el.parentElement.classList.remove('text-jako-text');
-                    el.parentElement.classList.add('text-jako-text/50');
-                }, 8000);
-            });
-        });
+            const isHeaderPuro = id.startsWith('sub-');
+            const isDialTrigger = id === 'z-dial-trigger';
+            const contenedorLed = isHeaderPuro ? triggerEl.parentElement : triggerEl;
 
-        const telemetryDataSecondary = getCachedEl('panel-telemetry-data-secondary');
-        const txtOriginalSecondary = "ONDA BIOCINÉTICA REGENERATIVA";
-        let timerQuantum = null;
+            triggerEl.addEventListener('click', () => {
+                // Limpiar temporizador previo del contenedor objetivo para evitar colisiones
+                if (activeHudTimers[config.target]) clearTimeout(activeHudTimers[config.target]);
 
-        Object.keys(PULS_MEANINGS).forEach(id => {
-            const el = getCachedEl(id);
-            if (!el || !telemetryDataSecondary) return;
-            const esHeaderPuro = id.startsWith('sub-');
-            const contenedorLed = esHeaderPuro ? el.parentElement : el;
+                // Excepción del Dial: Congelar el motor cuántico
+                if (isDialTrigger) {
+                    window.isDialFrozen = true;
+                    triggerEl.style.filter = "drop-shadow(0 0 25px var(--jako-led))";
+                }
 
-            el.addEventListener('click', () => {
-                clearTimeout(timerQuantum);
-                if (id === 'z-dial-trigger') window.isDialFrozen = true;
-
-                // CONTROL SEGURO DE ESTADOS (Evitamos classList.replace inestable)
-                if (esHeaderPuro) {
+                // Aplicar estados visuales de activación
+                if (isHeaderPuro) {
                     contenedorLed.classList.remove('text-jako-text/60');
                     contenedorLed.classList.add('text-jako-text');
-                } else if (id === 'z-dial-trigger') {
-                    el.style.filter = "drop-shadow(0 0 25px var(--jako-led))";
-                }
-                
-                // BLINDAJE ANTI-FONDO NEGRO: Aseguramos que el contenedor de la telemetría permanezca transparente
-                const contenedorPadreTelemetria = telemetryDataSecondary.parentElement;
-                if (contenedorPadreTelemetria) {
-                    contenedorPadreTelemetria.classList.remove('glass', 'bg-black');
-                    contenedorPadreTelemetria.classList.add('bg-transparent');
+                } else if (!isDialTrigger) {
+                    contenedorLed.parentElement.classList.remove('text-jako-text/50');
+                    contenedorLed.parentElement.classList.add('text-jako-text');
                 }
 
-                const meaningValue = PULS_MEANINGS[id];
-                telemetryDataSecondary.innerHTML = typeof meaningValue === 'function' ? meaningValue() : meaningValue;
-                
-                timerQuantum = setTimeout(() => {
-                    telemetryDataSecondary.innerHTML = txtOriginalSecondary;
-                    if (id === 'z-dial-trigger') { 
-                        window.isDialFrozen = false; 
-                        el.style.filter = "none"; 
+                // Asegurar transparencia absoluta del contenedor de telemetría para blindar el fondo
+                targetEl.parentElement?.classList.remove('glass', 'bg-black');
+                targetEl.parentElement?.classList.add('bg-transparent');
+
+                // Renderizar contenido dinámico o estático
+                targetEl.innerHTML = typeof config.text === 'function' ? config.text() : config.text;
+
+                // Programar el reset unificado a los 8 segundos exactos
+                activeHudTimers[config.target] = setTimeout(() => {
+                    targetEl.innerHTML = config.original;
+
+                    if (isDialTrigger) {
+                        window.isDialFrozen = false;
+                        triggerEl.style.filter = "none";
                     }
-                    if (esHeaderPuro) {
+                    if (isHeaderPuro) {
                         contenedorLed.classList.remove('text-jako-text');
                         contenedorLed.classList.add('text-jako-text/60');
+                    } else if (!isDialTrigger) {
+                        contenedorLed.parentElement.classList.remove('text-jako-text');
+                        contenedorLed.parentElement.classList.add('text-jako-text/50');
                     }
                 }, 8000);
             });
