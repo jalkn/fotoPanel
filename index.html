@@ -243,8 +243,8 @@
 
                     </div>
 
-                    <!-- TELEMETRÍA HEADER HIPERREALISTA -->
-                    <div class="w-full flex items-center justify-center px-4 h-8 glass border-t border-jako-border from-jako-text/[0.01] to-transparent">
+                    <!-- TELEMETRÍA HEADER HIPERREALISTA (CORREGIDO SIN FONDO OPACO) -->
+                    <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border from-jako-text/[0.02] to-transparent">
                         <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
                             ONDA BIOCINÉTICA REGENERATIVA
                         </span>
@@ -296,18 +296,18 @@
     </div>
 </main>
 
-<footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-jako-text/5 transition-opacity duration-500 select-none transform translateZ(0)">
-        <div class="w-full flex flex-col font-mono uppercase text-xs">
-            <div class="w-full flex items-center justify-center px-4 h-8 bg-jako-text/[0.02]">
-                <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 whitespace-normal block leading-none uppercase select-none">
+<footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-jako-text/5 transition-opacity duration-500 select-none transform translateZ(0) overflow-hidden">
+    <div class="w-full flex flex-col h-full justify-start">
+            <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border from-jako-text/[0.02] to-transparent">
+                <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
                     Compras tu pieza y financias otra para la comunidad
                 </span>
             </div>
 
 
             <!-- TELEMETRÍA FOOTER HIPERREALISTA -->
-            <div class="w-full glass border-b border-jako-border bg-gradient-to-t from-jako-text/[0.01] to-transparent">
-                <div class="w-full grid grid-cols-5 items-center justify-between px-3 sm:px-8 h-12 gap-0.5 sm:gap-4 text-center select-none">
+            <div class="w-full flex flex-col bg-jako-text/[0.01]">
+                <div class="w-full grid grid-cols-5 items-center justify-between px-3 sm:px-8 h-12 gap-2 sm:gap-4 text-center select-none">
                     
                     <div id="telemetry-product-dim-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
                         <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">CMS</span>
@@ -335,23 +335,23 @@
             </div>
 
 <!-- FILA DE ACCIONES PRINCIPALES (SÍN LÍNEAS VERTICALES) -->
-            <div class="w-full h-12 relative z-10 border-jako-border bg-jako-text/[0.01]">
-                <div class="w-full grid grid-cols-3 items-center h-full text-center select-none">
-                    
-                    <button id="btn-reveal-raw" class="h-full w-full bg-transparent hover:bg-jako-text/[0.02] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Capas Visuales">
-                        VER
-                    </button>
-                    
-                    <button onclick="adquirirNodo()" class="h-full w-full bg-transparent hover:bg-jako-text/[0.04] text-jako-text/90 font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
-                        ACTIVAR
-                    </button>
-                    
-                    <button id="btn-reveal-dial" class="h-full w-full bg-transparent hover:bg-jako-text/[0.02] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
-                        DIAL
-                    </button>
-                    
-                </div>
-            </div>
+<div class="w-full h-12 relative z-10 border-jako-border bg-jako-text/[0.01]">
+    <div class="w-full grid grid-cols-3 items-center h-full text-center select-none">
+        
+        <button id="btn-reveal-raw" class="h-full w-full bg-transparent hover:bg-jako-text/[0.02] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Capas Visuales">
+            VER
+        </button>
+        
+        <button id="btn-adquirir-nodo" onclick="adquirirNodo()" class="h-full w-full bg-transparent hover:bg-jako-text/[0.04] text-jako-text/90 font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
+            ACTIVAR
+        </button>
+        
+        <button id="btn-reveal-dial" class="h-full w-full bg-transparent hover:bg-jako-text/[0.02] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
+            DIAL
+        </button>
+        
+    </div>
+</div>
 
             <!-- FILA DE FIRMA Y CONFIGURACIÓN (SELECTOR STB Y EXPANSIÓN ZENITH) -->
             <div class="w-full h-11 min-h-[44px] max-h-[44px] relative z-10 overflow-hidden border-t border-jako-border">
@@ -566,7 +566,7 @@
             const elSecondary = getCachedEl('panel-telemetry-data-secondary');
             const elPrimary = getCachedEl('panel-telemetry-data');
             const elBtnRaw = getCachedEl('btn-reveal-raw');
-            const elBtnActivar = document.querySelector('button[onclick="adquirirNodo()"]');
+            const elBtnActivar = getCachedEl('btn-adquirir-nodo');
 
             if (elIndicator) elIndicator.textContent = texts.indicator;
             if (elSecondary) elSecondary.textContent = texts.secondaryTelemetry;
@@ -677,7 +677,7 @@
         }
     }
 
-    let tipoVarianteActiva = 'STENCIL';
+    let tipoVarianteActiva = 'PANEL';
 
     function inicializarArtepanel() {
         const dynamicHolder = getCachedEl('menu-bio-DYNAMIC-holder');
@@ -692,7 +692,7 @@
                     </span>`;
             };
             dynamicHolder.addEventListener('click', () => {
-                tipoVarianteActiva = (tipoVarianteActiva === 'STENCIL') ? 'PANEL' : 'STENCIL';
+                tipoVarianteActiva = (tipoVarianteActiva === 'PANEL') ? 'STENCIL' : 'PANEL';
                 renderTextoCentral();
                 cambiarBioItem(tipoVarianteActiva);
                 triggerHaptic([10]);
@@ -913,16 +913,34 @@
                 clearTimeout(timerQuantum);
                 if (id === 'z-dial-trigger') window.isDialFrozen = true;
 
-                if (esHeaderPuro) contenedorLed.classList.replace('text-jako-text/60', 'text-jako-text');
-                else if (id === 'z-dial-trigger') el.style.filter = "drop-shadow(0 0 25px var(--jako-led))";
+                // CONTROL SEGURO DE ESTADOS (Evitamos classList.replace inestable)
+                if (esHeaderPuro) {
+                    contenedorLed.classList.remove('text-jako-text/60');
+                    contenedorLed.classList.add('text-jako-text');
+                } else if (id === 'z-dial-trigger') {
+                    el.style.filter = "drop-shadow(0 0 25px var(--jako-led))";
+                }
                 
+                // BLINDAJE ANTI-FONDO NEGRO: Aseguramos que el contenedor de la telemetría permanezca transparente
+                const contenedorPadreTelemetria = telemetryDataSecondary.parentElement;
+                if (contenedorPadreTelemetria) {
+                    contenedorPadreTelemetria.classList.remove('glass', 'bg-black');
+                    contenedorPadreTelemetria.classList.add('bg-transparent');
+                }
+
                 const meaningValue = PULS_MEANINGS[id];
                 telemetryDataSecondary.innerHTML = typeof meaningValue === 'function' ? meaningValue() : meaningValue;
                 
                 timerQuantum = setTimeout(() => {
                     telemetryDataSecondary.innerHTML = txtOriginalSecondary;
-                    if (id === 'z-dial-trigger') { window.isDialFrozen = false; el.style.filter = "none"; }
-                    if (esHeaderPuro) contenedorLed.classList.replace('text-jako-text', 'text-jako-text/60');
+                    if (id === 'z-dial-trigger') { 
+                        window.isDialFrozen = false; 
+                        el.style.filter = "none"; 
+                    }
+                    if (esHeaderPuro) {
+                        contenedorLed.classList.remove('text-jako-text');
+                        contenedorLed.classList.add('text-jako-text/60');
+                    }
                 }, 8000);
             });
         });
