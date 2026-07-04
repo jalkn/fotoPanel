@@ -32,7 +32,7 @@
     <style>
         /* VARIABLES ACROMÁTICAS DE ENTORNO MATRICIAL */
         :root[data-theme="dark"] {
-            --jako-bg: #050508;
+            --jako-bg: rgba(5, 5, 8, 0.92);
             --jako-text: #ffffff;
             --jako-border: rgba(255, 255, 255, 0.02);
             --jako-glass: rgba(0, 0, 0, 0.5);
@@ -66,11 +66,12 @@
         #page-bg-overlay {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at 50% 30%, var(--gradient-start) 0%, var(--gradient-mid) 65%, var(--gradient-end) 100%);
+            /* Mutación de variables dinámicas inyectadas por el motor STB */
+            background: radial-gradient(circle at 50% 30%, var(--chroma-start) 0%, var(--chroma-mid) 65%, var(--chroma-end) 100%);
             z-index: -1;
             transform: translateZ(0);
-            will-change: opacity, filter;
-            transition: background 0.5s ease;
+            will-change: background;
+            transition: background 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         /* VIDRIO HIPERREALISTA SIMÉTRICO */
@@ -129,6 +130,34 @@
         :root[data-theme="white"] {
             /* ... tus variables actuales ... */
             --toggle-handle-transform: translate(3px, 3px);
+        }
+
+        /* COMPORTAMIENTO MODO ZENITH (RAW) */
+        .zenith-active header,
+        .zenith-active footer {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: translateY(-10px);
+        }
+
+        .zenith-active footer {
+            transform: translateY(10px);
+        }
+
+        /* El contenedor principal se expande para devorar el espacio libre */
+        .zenith-active main {
+            padding: 0 !important;
+            transition: padding 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .zenith-active #artepanel-pack-container {
+            transform: scale(1.12);
+            filter: drop-shadow(0 35px 80px rgba(0,0,0,0.95));
+        }
+
+        /* Suavizado global de UI HUD */
+        header, footer, #artepanel-pack-container {
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease;
         }
     </style>
 </head>
@@ -215,7 +244,7 @@
                     </div>
 
                     <!-- TELEMETRÍA HEADER HIPERREALISTA -->
-                    <div class="w-full flex items-center justify-center px-4 h-8 glass border-t border-jako-border bg-gradient-to-b from-jako-text/[0.01] to-transparent">
+                    <div class="w-full flex items-center justify-center px-4 h-8 glass border-t border-jako-border from-jako-text/[0.01] to-transparent">
                         <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
                             ONDA BIOCINÉTICA REGENERATIVA
                         </span>
@@ -324,22 +353,22 @@
                 </div>
             </div>
 
-            <!-- FILA DE FIRMA Y CONFIGURACIÓN (SÍN ENLACES LATERALES, SUAVIZADO HUD) -->
+            <!-- FILA DE FIRMA Y CONFIGURACIÓN (SELECTOR STB Y EXPANSIÓN ZENITH) -->
             <div class="w-full h-11 min-h-[44px] max-h-[44px] relative z-10 overflow-hidden border-t border-jako-border">
                 <div class="w-full h-full px-4 sm:px-8 grid grid-cols-[auto_auto_1fr_auto_auto] items-center uppercase tracking-[0.3em] sm:tracking-[0.4em] font-mono text-[8px] text-jako-text/20 select-none gap-4 sm:gap-6">
                     
-                    <!-- 1. DISPARADOR INFERIOR IZQUIERDO (Preparado para Selector Cromático STB) -->
+                    <!-- 1. DISPARADOR INFERIOR IZQUIERDO (Selector Cromático STB) -->
                     <div class="flex items-center h-full">
-                        <button id="footer-fn-left-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Ajuste Matriz Inferior Izquierda">
-                            <svg class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-70 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                                <path d="M9 3v18"/>
+                        <button id="footer-fn-left-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Conmutar Espectro Cromático">
+                            <svg class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke-dasharray="3 3" />
+                                <circle cx="12" cy="12" r="4" class="fill-current opacity-30" />
                             </svg>
                         </button>
                     </div>
 
                     <!-- 2. MARCADOR DE ESTADO INTERNO IZQUIERDO -->
-                    <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px]">
+                    <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px] min-w-[24px]">
                         <span id="footer-chroma-indicator">STB</span>
                     </div>
                     
@@ -350,14 +379,14 @@
 
                     <!-- 4. MARCADOR DE ESTADO INTERNO DERECHO -->
                     <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px]">
-                        <span id="footer-raw-indicator">RAW</span>
+                        <span class="font-mono">RAW</span>
                     </div>
 
-                    <!-- 5. DISPARADOR INFERIOR DERECHO (Preparado para Modo Inmersión RAW) -->
+                    <!-- 5. DISPARADOR INFERIOR DERECHO (Modo Inmersión Zenith con Ícono de Expansión HUD) -->
                     <div class="flex items-center h-full">
-                        <button id="footer-fn-right-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Ajuste Matriz Inferior Derecha">
-                            <svg class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-70 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                        <button id="footer-fn-right-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Activar Modo Zenith">
+                            <svg id="footer-raw-indicator" class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75h4.5m-4.5 0v4.5m0-4.5L9 9M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9M3.75 20.25h4.5m-4.5 0v-4.5m0 4.5L9 15M20.25 20.25h-4.5m4.5 0v-4.5m0 4.5l-6-6" />
                             </svg>
                         </button>
                     </div>
@@ -924,6 +953,122 @@
         window.open(`https://api.whatsapp.com/send?phone=${numeroCelular}&text=${encodeURIComponent(mensaje)}`, '_blank');
     }
 
+    function inicializarModoZenith() {
+        const triggerZenith = getCachedEl('footer-fn-right-trigger');
+        const indicatorRaw = getCachedEl('footer-raw-indicator');
+        const mainVault = getCachedEl('main-vault');
+        let isZenithActive = false;
+
+        if (!triggerZenith) return;
+
+        const toggleZenith = (e) => {
+            if (e) e.stopPropagation();
+            isZenithActive = !isZenithActive;
+
+            if (isZenithActive) {
+                document.body.classList.add('zenith-active');
+                if (indicatorRaw) {
+                    indicatorRaw.classList.replace('text-jako-text/20', 'text-jako-text');
+                    indicatorRaw.classList.replace('opacity-20', 'opacity-100');
+                    indicatorRaw.style.filter = "drop-shadow(0 0 6px var(--jako-led))";
+                }
+                triggerHaptic([40, 15]);
+            } else {
+                document.body.classList.remove('zenith-active');
+                if (indicatorRaw) {
+                    indicatorRaw.classList.replace('text-jako-text', 'text-jako-text/20');
+                    indicatorRaw.classList.replace('opacity-100', 'opacity-20');
+                    indicatorRaw.style.filter = "none";
+                }
+                triggerHaptic([15]);
+            }
+        };
+
+        triggerZenith.addEventListener('click', toggleZenith);
+
+        mainVault.addEventListener('click', (e) => {
+            if (isZenithActive && e.target === mainVault) {
+                toggleZenith(e);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isZenithActive) {
+                toggleZenith();
+            }
+        });
+    }
+
+    // ========================================================
+    // PILAR 2: MOTOR DE ATMÓSFERA CROMÁTICA CÍCLICA (STB)
+    // ========================================================
+    const CHROMA_SPECTRUM = {
+        dark: {
+            STB: { label: 'STB', led: 'rgba(255, 255, 255, 0.65)', start: 'rgba(255, 255, 255, 0.03)', mid: 'rgba(5, 5, 8, 0.85)', end: '#000000' },
+            RED: { label: 'RED', led: 'rgba(239, 68, 68, 0.75)',   start: 'rgba(239, 68, 68, 0.06)',  mid: 'rgba(6, 2, 4, 0.92)',   end: '#020001' },
+            BLU: { label: 'BLU', led: 'rgba(59, 130, 246, 0.75)',  start: 'rgba(59, 130, 246, 0.06)', mid: 'rgba(2, 4, 10, 0.92)',  end: '#000103' },
+            YEL: { label: 'YEL', led: 'rgba(234, 179, 8, 0.75)',   start: 'rgba(234, 179, 8, 0.05)',  mid: 'rgba(6, 5, 2, 0.92)',   end: '#010100' },
+            GRN: { label: 'GRN', led: 'rgba(34, 197, 94, 0.75)',   start: 'rgba(34, 197, 94, 0.06)',  mid: 'rgba(2, 6, 3, 0.92)',   end: '#000201' },
+            ORN: { label: 'ORN', led: 'rgba(249, 115, 22, 0.75)',  start: 'rgba(249, 115, 22, 0.05)', mid: 'rgba(7, 4, 2, 0.92)',   end: '#020100' },
+            VIO: { label: 'VIO', led: 'rgba(168, 85, 247, 0.75)',  start: 'rgba(168, 85, 247, 0.06)', mid: 'rgba(5, 2, 8, 0.92)',   end: '#010002' }
+        },
+        white: {
+            STB: { label: 'STB', led: 'rgba(0, 0, 0, 0.75)',       start: 'rgba(0, 0, 0, 0.02)',      mid: 'rgba(248, 249, 250, 0.85)', end: '#ffffff' },
+            RED: { label: 'RED', led: 'rgba(220, 38, 38, 0.85)',   start: 'rgba(220, 38, 38, 0.04)',  mid: 'rgba(254, 242, 242, 0.85)', end: '#fff5f5' },
+            BLU: { label: 'BLU', led: 'rgba(25, 91, 212, 0.85)',   start: 'rgba(25, 91, 212, 0.04)',  mid: 'rgba(239, 246, 255, 0.85)', end: '#f0f7ff' },
+            YEL: { label: 'YEL', led: 'rgba(180, 120, 4, 0.85)',   start: 'rgba(180, 120, 4, 0.04)',  mid: 'rgba(254, 252, 232, 0.85)', end: '#fefefe' },
+            GRN: { label: 'GRN', led: 'rgba(22, 163, 74, 0.85)',   start: 'rgba(22, 163, 74, 0.04)',  mid: 'rgba(240, 253, 244, 0.85)', end: '#f5fff7' },
+            ORN: { label: 'ORN', led: 'rgba(217, 119, 6, 0.85)',   start: 'rgba(217, 119, 6, 0.04)',  mid: 'rgba(255, 247, 237, 0.85)', end: '#fffbf5' },
+            VIO: { label: 'VIO', led: 'rgba(147, 51, 234, 0.85)',  start: 'rgba(147, 51, 234, 0.04)', mid: 'rgba(250, 245, 255, 0.85)', end: '#faf5ff' }
+        }
+    };
+
+    const CHROMA_SEQUENCE = ['STB', 'RED', 'BLU', 'YEL', 'GRN', 'ORN', 'VIO'];
+    let currentChromaIndex = 0;
+
+    function inicializarSelectorCromaticoSTB() {
+        const triggerSTB = getCachedEl('footer-fn-left-trigger');
+        const indicatorSTB = getCachedEl('footer-chroma-indicator');
+        
+        if (!triggerSTB) return;
+
+        const aplicarEspectro = () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            const stateKey = CHROMA_SEQUENCE[currentChromaIndex];
+            const config = CHROMA_SPECTRUM[currentTheme][stateKey];
+
+            // 1. Mutación de variables lumínicas del HUD (Glow/Text Shadows)
+            document.documentElement.style.setProperty('--jako-led', config.led);
+            
+            // 2. Inyección de variables del gradiente trasero para mutar la atmósfera de fondo
+            document.documentElement.style.setProperty('--chroma-start', config.start);
+            document.documentElement.style.setProperty('--chroma-mid', config.mid);
+            document.documentElement.style.setProperty('--chroma-end', config.end);
+            
+            if (indicatorSTB) {
+                indicatorSTB.textContent = config.label;
+                indicatorSTB.style.color = 'var(--jako-text)';
+                setTimeout(() => { indicatorSTB.style.color = ''; }, 300);
+            }
+        };
+
+        triggerSTB.addEventListener('click', () => {
+            currentChromaIndex = (currentChromaIndex + 1) % CHROMA_SEQUENCE.length;
+            aplicarEspectro();
+            triggerHaptic([25]);
+        });
+
+        const acromaticTrigger = getCachedEl('acromatic-toggle-trigger');
+        if (acromaticTrigger) {
+            acromaticTrigger.addEventListener('click', () => {
+                setTimeout(aplicarEspectro, 50);
+            });
+        }
+
+        // Inicializar los valores por defecto del gradiente al cargar
+        aplicarEspectro();
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         inicializarAlternadorAcromatico();
         inicializarArtepanel();
@@ -931,6 +1076,8 @@
         setInterval(updateZ, 1000);
         habilitarReveladoTelemetria();
         inicializarAlternadorIdioma();
+        inicializarModoZenith();
+        inicializarSelectorCromaticoSTB();
 
         const laserSvg = getCachedEl('laser-vector-target');
         if (laserSvg) laserSvg.style.pointerEvents = 'none'; 
