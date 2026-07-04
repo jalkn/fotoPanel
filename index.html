@@ -34,7 +34,7 @@
         :root[data-theme="dark"] {
             --jako-bg: #050508;
             --jako-text: #ffffff;
-            --jako-border: rgba(255, 255, 255, 0.06);
+            --jako-border: rgba(255, 255, 255, 0.02);
             --jako-glass: rgba(0, 0, 0, 0.5);
             --jako-led: rgba(255, 255, 255, 0.65);
             --gradient-start: rgba(255, 255, 255, 0.03);
@@ -192,7 +192,7 @@
 
                 </div>
 
-                <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-jako-text/10 to-transparent"></div>
+
                 <div class="w-full flex flex-col bg-jako-text/[0.01]">
                     
                     <div class="w-full grid grid-cols-3 items-center justify-between px-3 sm:px-8 h-12 gap-2 sm:gap-4 text-center select-none">
@@ -214,7 +214,8 @@
 
                     </div>
 
-                    <div class="w-full flex items-center justify-center px-4 h-8 bg-jako-text/[0.02] border-t border-jako-text/[0.02]">
+                    <!-- TELEMETRÍA HEADER HIPERREALISTA -->
+                    <div class="w-full flex items-center justify-center px-4 h-8 glass border-t border-jako-border bg-gradient-to-b from-jako-text/[0.01] to-transparent">
                         <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
                             ONDA BIOCINÉTICA REGENERATIVA
                         </span>
@@ -274,9 +275,9 @@
                 </span>
             </div>
 
-            <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-jako-text/10 to-transparent"></div>
 
-            <div class="w-full bg-jako-text/[0.01] border-b border-jako-text/5">
+            <!-- TELEMETRÍA FOOTER HIPERREALISTA -->
+            <div class="w-full glass border-b border-jako-border bg-gradient-to-t from-jako-text/[0.01] to-transparent">
                 <div class="w-full grid grid-cols-5 items-center justify-between px-3 sm:px-8 h-12 gap-0.5 sm:gap-4 text-center select-none">
                     
                     <div id="telemetry-product-dim-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
@@ -304,68 +305,65 @@
                 </div>
             </div>
 
-            <div class="w-full h-[1px] bg-jako-text/5"></div>
-
-            <div class="w-full h-12 relative z-10 border-t border-jako-text/5 bg-jako-text/[0.02]">
+<!-- FILA DE ACCIONES PRINCIPALES (SÍN LÍNEAS VERTICALES) -->
+            <div class="w-full h-12 relative z-10 border-jako-border bg-jako-text/[0.01]">
                 <div class="w-full grid grid-cols-3 items-center h-full text-center select-none">
                     
-                    <button id="btn-reveal-raw" class="h-full w-full flex items-center justify-center bg-transparent border-r border-jako-text/5 hover:bg-jako-text/[0.03] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Capas Visuales">
+                    <button id="btn-reveal-raw" class="h-full w-full bg-transparent hover:bg-jako-text/[0.02] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Capas Visuales">
                         VER
                     </button>
                     
-                    <button onclick="adquirirNodo()" class="h-full w-full bg-transparent border-r border-jako-text/5 hover:bg-jako-text/[0.05] text-jako-text/90 font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
+                    <button onclick="adquirirNodo()" class="h-full w-full bg-transparent hover:bg-jako-text/[0.04] text-jako-text/90 font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
                         ACTIVAR
                     </button>
                     
-                    <button id="btn-reveal-dial" class="h-full w-full bg-transparent hover:bg-jako-text/[0.03] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
+                    <button id="btn-reveal-dial" class="h-full w-full bg-transparent hover:bg-jako-text/[0.02] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
                         DIAL
                     </button>
                     
                 </div>
             </div>
 
-            <div class="w-full h-[1px] bg-jako-text/5"></div>
-
-                <!-- CIERRE DEL FOOTER: Reconfiguración Matricial a 5 Columnas Asimétricas (Estilo Header) -->
-                <div class="w-full h-11 min-h-[44px] max-h-[44px] relative z-10 overflow-hidden border-t border-jako-text/5">
-                    <div class="w-full h-full px-4 sm:px-8 grid grid-cols-[auto_auto_1fr_auto_auto] items-center uppercase tracking-[0.3em] sm:tracking-[0.4em] font-mono text-[8px] text-jako-text/20 select-none gap-4 sm:gap-6">
-                        
-                        <!-- 1. DISPARADOR INFERIOR IZQUIERDO (Preparado para Función A) -->
-                        <div class="flex items-center h-full">
-                            <button id="footer-fn-left-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Ajuste Matriz Inferior Izquierda">
-                                <svg class="w-3.5 h-3.5 text-jako-text opacity-30 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                                    <path d="M9 3v18"/>
-                                </svg>
-                            </button>
-                        </div>
-
-                        <!-- 2. MARCADOR DE ESTADO INTERNO IZQUIERDO -->
-                        <div class="flex items-center h-full text-jako-text/40 font-black tracking-wider text-[9px]">
-                            <span>STB</span>
-                        </div>
-                        
-                        <!-- 3. IDENTIDAD CENTRAL DE FIRMA -->
-                        <div class="text-center font-bold tracking-[0.3em] sm:tracking-[0.4em] text-jako-text/20 hover:text-jako-text/60 hover:bg-jako-text/[0.005] transition-all duration-300 h-full flex items-center justify-center whitespace-nowrap">
-                            <a href="https://jako.world" class="h-full w-full flex items-center justify-center focus:outline-none">POWERED BY JAKO.WORLD</a>
-                        </div>
-
-                        <!-- 4. MARCADOR DE ESTADO INTERNO DERECHO -->
-                        <div class="flex items-center h-full text-jako-text/40 font-black tracking-wider text-[9px]">
-                            <span>RAW</span>
-                        </div>
-
-                        <!-- 5. DISPARADOR INFERIOR DERECHO (Preparado para Función B) -->
-                        <div class="flex items-center h-full">
-                            <button id="footer-fn-right-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Ajuste Matriz Inferior Derecha">
-                                <svg class="w-3.5 h-3.5 text-jako-text opacity-30 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-                                </svg>
-                            </button>
-                        </div>
-
+            <!-- FILA DE FIRMA Y CONFIGURACIÓN (SÍN ENLACES LATERALES, SUAVIZADO HUD) -->
+            <div class="w-full h-11 min-h-[44px] max-h-[44px] relative z-10 overflow-hidden border-t border-jako-border">
+                <div class="w-full h-full px-4 sm:px-8 grid grid-cols-[auto_auto_1fr_auto_auto] items-center uppercase tracking-[0.3em] sm:tracking-[0.4em] font-mono text-[8px] text-jako-text/20 select-none gap-4 sm:gap-6">
+                    
+                    <!-- 1. DISPARADOR INFERIOR IZQUIERDO (Preparado para Selector Cromático STB) -->
+                    <div class="flex items-center h-full">
+                        <button id="footer-fn-left-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Ajuste Matriz Inferior Izquierda">
+                            <svg class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-70 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M9 3v18"/>
+                            </svg>
+                        </button>
                     </div>
+
+                    <!-- 2. MARCADOR DE ESTADO INTERNO IZQUIERDO -->
+                    <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px]">
+                        <span id="footer-chroma-indicator">STB</span>
+                    </div>
+                    
+                    <!-- 3. IDENTIDAD CENTRAL DE FIRMA -->
+                    <div class="text-center font-bold tracking-[0.3em] sm:tracking-[0.4em] text-jako-text/15 hover:text-jako-text/50 transition-all duration-300 h-full flex items-center justify-center whitespace-nowrap">
+                        <a href="https://jako.world" class="h-full w-full flex items-center justify-center focus:outline-none">POWERED BY JAKO.WORLD</a>
+                    </div>
+
+                    <!-- 4. MARCADOR DE ESTADO INTERNO DERECHO -->
+                    <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px]">
+                        <span id="footer-raw-indicator">RAW</span>
+                    </div>
+
+                    <!-- 5. DISPARADOR INFERIOR DERECHO (Preparado para Modo Inmersión RAW) -->
+                    <div class="flex items-center h-full">
+                        <button id="footer-fn-right-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Ajuste Matriz Inferior Derecha">
+                            <svg class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-70 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                            </svg>
+                        </button>
+                    </div>
+
                 </div>
+            </div>
         </div>
     </footer>
 
@@ -845,8 +843,8 @@
                 const isSelected = (item === currentBioItem);
                 el.textContent = item;
                 el.className = isSelected 
-                    ? `cursor-pointer font-black h-full w-full flex items-center justify-center text-jako-bg bg-jako-text rounded-lg border border-jako-text/20 shadow-[inset_0_1px_3px_rgba(255,255,255,0.25)] ${textFluidClass}` 
-                    : `cursor-pointer font-medium h-full w-full flex items-center justify-center text-jako-text/20 bg-transparent rounded-lg hover:text-jako-text/50 hover:bg-jako-text/[0.02] ${textFluidClass}`;
+                    ? `cursor-pointer font-black h-8 px-4 flex items-center justify-center text-jako-bg bg-jako-text rounded border border-jako-text/20 shadow-[inset_0_1px_3px_rgba(255,255,255,0.25)] ${textFluidClass}` 
+                    : `cursor-pointer font-medium h-8 px-4 flex items-center justify-center text-jako-text/20 bg-transparent rounded hover:text-jako-text/50 hover:bg-jako-text/[0.02] ${textFluidClass}`;
             }
         });
     }
