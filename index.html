@@ -192,9 +192,17 @@
                         </button>
                     </div>
                     
-                    <!-- 3. IDENTIDAD CENTRAL (Eje de Gravedad) -->
-                    <div class="text-center tracking-[0.28em] font-black drop-shadow-[0_0_12px_var(--jako-led)] text-jako-text text-[13px] sm:text-[15px] leading-none">
-                        <span>VAULT</span>
+<!-- 3. MATRIZ DE CONTROL CENTRAL (Eje de Gravedad Unificado) -->
+                    <div class="col-span-1 grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center max-w-xs mx-auto">
+                        <button id="btn-header-variant-prev" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none cursor-pointer">
+                            <span class="text-[10px] font-bold">&lt;</span>
+                        </button>
+                        
+                        <div id="menu-bio-DYNAMIC-holder-header" class="h-full w-full flex items-center justify-center cursor-pointer group text-center tracking-[0.25em] sm:tracking-[0.35em] font-black text-jako-text text-[11px] leading-none"></div>
+                        
+                        <button id="btn-header-variant-next" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none cursor-pointer">
+                            <span class="text-[10px] font-bold">&gt;</span>
+                        </button>
                     </div>
 
                     <!-- 4. INTERRUPTOR ACROMÁTICO (Cápsula Vectorial Interactiva) -->
@@ -391,39 +399,14 @@
     </footer>
 
 <script>
-    const ARTEPANEL_CATALOG = {
-        'STENCIL': {
-            defaultVariant: '25X25',
-            variants: {
-                '25X25': { 
-                    label: 'STENCIL25X25', 
-                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
-                    spec: 'Tu compra financia otra pieza para la comunidad', 
-                    price: '$12USD', 
-                    id: 'ST-25X25',
-                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/stencil25B.png',
-                    telemetry: { DIM: '25x25', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
-                },
-                '40X40': { 
-                    label: 'MICROSTENCIL FOCUS', 
-                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
-                    spec: 'Tu compra financia otra pieza para la comunidad', 
-                    price: '$29USD', 
-                    id: 'ST-MICRO',
-                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/microB.png',
-                    telemetry: { DIM: '40x40', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
-                },
-                '80X80': { 
-                    label: 'MACROSTENCIL SURGE', 
-                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
-                    spec: 'Tu compra financia otra pieza para la comunidad', 
-                    price: '$125USD', 
-                    id: 'ST-MACRO',
-                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/macroB.png',
-                    telemetry: { DIM: '80x80', MEDIA: 'STENCIL', DIAL: '⧗2500', RATE: '$0.05USD' }
-                }
-            }
-        },
+    // =========================================================================
+    // SOURCE OF TRUTH: JAKO UNIFIED BIOMATRIC CATALOG (CHRONOLOGICAL EVOLUTION)
+    // =========================================================================
+    const JAKO_CATALOG = {
+
+        // ---------------------------------------------------------------------
+        // FASE 1: ARTE (DESPERTAR) - Resonancia en la sociedad, materialización de Dials
+        // ---------------------------------------------------------------------
         'PANEL': {
             defaultVariant: '40X40',
             variants: {
@@ -431,33 +414,246 @@
                     label: 'PANEL20X20', 
                     desc: 'INKJET ADH sobre ACM para montajes individuales o mosaicos.', 
                     spec: 'Tu compra financia otra pieza para la comunidad', 
-                    price: '$12USD', 
                     id: 'FP-20X20',
                     img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/panel20B.png',
-                    telemetry: { DIM: '20x20', MEDIA: 'ACM', DIAL: '⧗240', RATE: '$0.05USD' }
+                    telemetry: { DIM: '20x20', MEDIA: 'ACM', DIAL: '⧗240', RATE: '$0.05USD' },
+                    _metaPrice: '$12USD'
                 },
                 '30X30': { 
                     label: 'PANEL30X30', 
                     desc: 'INKJET ADH sobre ACM para montajes individuales o mosaicos.', 
                     spec: 'Tu compra financia otra pieza para la comunidad', 
-                    price: '$29USD', 
                     id: 'FP-30X30',
                     img: 'img/surface.png', imgBack: 'img/panel30W.png', imgRaw: 'img/panel30B.png',
-                    telemetry: { DIM: '30x30', MEDIA: 'ACM', DIAL: '⧗576', RATE: '$0.05USD' }
+                    telemetry: { DIM: '30x30', MEDIA: 'ACM', DIAL: '⧗576', RATE: '$0.05USD' },
+                    _metaPrice: '$29USD'
                 },
                 '40X40': { 
                     label: 'PANEL40X40', 
                     desc: 'INKJET ADH sobre ACM para montajes individuales o mosaicos.', 
                     spec: 'Tu compra financia otra pieza para la comunidad', 
-                    price: '$55USD', 
                     id: 'FP-40X40',
                     img: 'img/surface.png', imgBack: 'img/panel40W.png', imgRaw: 'img/panel40B.png',
-                    telemetry: { DIM: '40x40', MEDIA: 'ACM', DIAL: '⧗1100', RATE: '$0.05USD' }
+                    telemetry: { DIM: '40x40', MEDIA: 'ACM', DIAL: '⧗1100', RATE: '$0.05USD' },
+                    _metaPrice: '$55USD'
+                }
+            }
+        },
+        'STENCIL': {
+            defaultVariant: '25X25',
+            variants: {
+                '25X25': { 
+                    label: 'STENCIL25X25', 
+                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
+                    spec: 'Tu compra financia otra pieza para la comunidad', 
+                    id: 'ST-25X25',
+                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/stencil25B.png',
+                    telemetry: { DIM: '25x25', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' },
+                    _metaPrice: '$12USD'
+                },
+                '40X40': { 
+                    label: 'MICROSTENCIL FOCUS', 
+                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
+                    spec: 'Tu compra financia otra pieza para la comunidad', 
+                    id: 'ST-MICRO',
+                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/microB.png',
+                    telemetry: { DIM: '40x40', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' },
+                    _metaPrice: '$29USD'
+                },
+                '80X80': { 
+                    label: 'MACROSTENCIL SURGE', 
+                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
+                    spec: 'Tu compra financia otra pieza para la comunidad', 
+                    id: 'ST-MACRO',
+                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/macroB.png',
+                    telemetry: { DIM: '80x80', MEDIA: 'STENCIL', DIAL: '⧗2500', RATE: '$0.05USD' },
+                    _metaPrice: '$125USD'
+                }
+            }
+        },
+        'AERONEX': {
+            defaultVariant: '1_HOUR',
+            variants: {
+                '1_HOUR': {
+                    label: 'AERONEX CHRONOS 1H',
+                    desc: 'Captura aérea biocinética de alta resolución para terrenos o estructuras.',
+                    spec: 'DJI MAVIC TELEMETRY',
+                    id: 'AN-01H',
+                    img: 'img/drone-front.png', imgBack: 'img/drone-back.png', imgRaw: 'img/drone-raw.png',
+                    telemetry: { DIM: '1 HORA', MEDIA: 'DRONE FLY', DIAL: '⧗FLIGHT', RATE: '4K_60FPS' },
+                    benefits: ['FOTOGRAMETRÍA BÁSICA', 'RECONOCIMIENTO DE TERRENO', 'DINÁMICA CINEMÁTICA', 'ÓPTICA DE PRECISIÓN'],
+                    _metaPrice: '$180.000'
+                },
+                '2_HOURS': {
+                    label: 'AERONEX MATRIX 2H',
+                    desc: 'Mapeo y cinematografía aérea extendida orientada a bio-renovación y diseño.',
+                    spec: 'DJI MAVIC TELEMETRY',
+                    id: 'AN-02H',
+                    img: 'img/drone-front.png', imgBack: 'img/drone-back.png', imgRaw: 'img/drone-raw.png',
+                    telemetry: { DIM: '2 HORAS', MEDIA: 'DRONE FLY', DIAL: '⧗FLIGHT', RATE: '4K_RAW' },
+                    benefits: ['COBERTURA MULTI-ÁNGULO', 'SEGUIMIENTO BIOMÉTRICO', 'ANÁLISIS ESPACIAL ORTO', 'MONTAJE CRUDO INCLUIDO'],
+                    _metaPrice: '$320.000'
+                },
+                '4_HOURS': {
+                    label: 'AERONEX VECTOR 4H',
+                    desc: 'Bloque de media jornada para escaneo cinemático profundo y dirección de arte.',
+                    spec: 'DJI MAVIC TELEMETRY',
+                    id: 'AN-04H',
+                    img: 'img/drone-front.png', imgBack: 'img/drone-back.png', imgRaw: 'img/drone-raw.png',
+                    telemetry: { DIM: '4 HORAS', MEDIA: 'DRONE FLY', DIAL: '⧗VERTICAL', RATE: '5.1K_RAW' },
+                    benefits: ['SCANNING DE ALTA DENSIDAD', 'EDICIÓN CINEMÁTICA CORE', 'TELEMETRÍA DE PAISAJE', 'DIRECCIÓN DE ARTE COMPLETA'],
+                    _metaPrice: '$600.000'
+                },
+                '6_HOURS': {
+                    label: 'AERONEX QUANTUM 6H',
+                    desc: 'Inmersión total de captura aérea y mapeo masivo para proyectos macro de bio-diseño.',
+                    spec: 'DJI MAVIC TELEMETRY',
+                    id: 'AN-06H',
+                    img: 'img/drone-front.png', imgBack: 'img/drone-back.png', imgRaw: 'img/drone-raw.png',
+                    telemetry: { DIM: '6 HORAS', MEDIA: 'DRONE FLY', DIAL: '⧗QUANTUM', RATE: 'MAX_BITRATE' },
+                    benefits: ['MONITORIZACIÓN COMPLETA', 'ENTREGA DE ACTS RAW/LOG', 'ORTOMOSAICOS PREMIUM', 'SOPORTE POST-PRODUCCIÓN'],
+                    _metaPrice: '$850.000'
+                }
+            }
+        },
+
+        // ---------------------------------------------------------------------
+        // FASE 2: CUERPO (REFLEJAR) - Activación de la Pulsor App y educación kinética
+        // ---------------------------------------------------------------------
+        'PULSWARE': {
+            defaultVariant: 'HOODIE',
+            variants: {
+                'HOODIE': {
+                    label: 'JAKO CORE HOODIE',
+                    desc: 'Saco pesado premium estructurado para protección térmica y movilidad kinética.',
+                    spec: 'HEAVY COTTON ARMOR',
+                    id: 'JG-HD-BLK',
+                    img: 'img/hoodie-front.png', imgBack: 'img/hoodie-back.png', imgRaw: 'img/hoodie-raw.png',
+                    telemetry: { DIM: 'OVERSIZE', MEDIA: 'TEXTILE', DIAL: 'P.U.L.S.', RATE: '400GSM' },
+                    benefits: ['PROTECCIÓN TÉRMICA EFICIENTE', 'CORTE ERGONÓMICO RESISTENTE', 'ALTA DENSIDAD ESTRUCTURAL', 'RESISTENCIA MECÁNICA'],
+                    _metaPrice: '$160.000'
+                },
+                'CAPS': {
+                    label: 'JAKO KINETIC CAP',
+                    desc: 'Gorra táctica estructurada para blindaje solar durante entrenamientos de alta intensidad.',
+                    spec: 'RESPIRABLE MESH TECH',
+                    id: 'JG-CP-BLK',
+                    img: 'img/cap-front.png', imgBack: 'img/cap-back.png', imgRaw: 'img/cap-raw.png',
+                    telemetry: { DIM: 'ADJUSTABLE', MEDIA: 'GEAR', DIAL: 'P.U.L.S.', RATE: 'LIGHTWEIGHT' },
+                    benefits: ['VENTILACIÓN HIDRÓFOBA', 'AJUSTE ANATÓMICO EXACTO', 'PROYECCIÓN VISUAL ÓPTIMA', 'SECADO ULTRA RÁPIDO'],
+                    _metaPrice: '$65.000'
+                },
+                'STRAPS': {
+                    label: 'JAKO CALISTHENICS GRIPS',
+                    desc: 'Calleras/Straps de alta resistencia para protección palmar en tracciones críticas.',
+                    spec: 'CARBON FIBER GRIP LAYER',
+                    id: 'JG-ST-PAIR',
+                    img: 'img/straps-front.png', imgBack: 'img/straps-back.png', imgRaw: 'img/straps-raw.png',
+                    telemetry: { DIM: 'ONE SIZE', MEDIA: 'HARDWARE', DIAL: 'P.U.L.S.', RATE: 'MAX-FRICTION' },
+                    benefits: ['BLINDAJE PALMAR AVANZADO', 'CIERRE DE NEOPRENO ERGO', 'ADHERENCIA SOBRE ACERO', 'REDUCCIÓN DE FATIGA GRIP'],
+                    _metaPrice: '$75.000'
+                },
+                'SPEED_ROPES': {
+                    label: 'JAKO RESISTANCE ROPE',
+                    desc: 'Cuerda de alta velocidad con rodamientos fluidos optimizada para cadencia cinética.',
+                    spec: 'BEARING SYSTEM V4',
+                    id: 'JG-SR-KINETIC',
+                    img: 'img/rope-front.png', imgBack: 'img/rope-back.png', imgRaw: 'img/rope-raw.png',
+                    telemetry: { DIM: '3.0 METERS', MEDIA: 'HARDWARE', DIAL: 'P.U.L.S.', RATE: 'HIGH-VELOCITY' },
+                    benefits: ['RODAMIENTO DE FLUIDO ACELERADO', 'CABLE DE ACERO RECUBIERTO', 'AJUSTE DE LONGITUD EXPRESS', 'CADENCIA RÍTMICA PURA'],
+                    _metaPrice: '$55.000'
+                }
+            }
+        },
+
+        // ---------------------------------------------------------------------
+        // FASE 3: SYNERGY / ZENERGY (RESONANCIA) - Materialización del micelio y bioconstrucción
+        // ---------------------------------------------------------------------
+        'PULSOR': {
+            defaultVariant: 'FOCUS',
+            variants: {
+                'FOCUS': { 
+                    label: 'PULSOR FOCUS', 
+                    desc: 'Enfoque y claridad cognitiva', 
+                    spec: 'LION’S MANE', 
+                    id: 'PULS45F',
+                    img: 'img/45caps.png', imgBack: 'img/45mane.png', imgRaw: 'img/maneRaw.png',
+                    telemetry: { DIM: '45 CAPS', MEDIA: 'MUSHROOM', DIAL: 'P.U.L.S.', RATE: '500MGRS' },
+                    benefits: ['NEUROGÉNESIS', 'CLARIDAD COGNITIVA', 'MEMORIA FLUIDA', 'NIEBLA  (-)', 'OPTIMIZACIÓN SINÁPTICA', 'ENFOQUE PROFUNDO', 'AGUDEZA ', 'REPARACIÓN NEURONAL', 'ENFOQUE', 'PRODUCTIVIDAD SOSTENIDA'],
+                    _metaPrice: '$70.000'
+                },
+                'ZEN': { 
+                    label: 'PULSOR ZEN', 
+                    desc: 'Silencio mental óptimo', 
+                    spec: 'REISHI', 
+                    id: 'PULS45Z',
+                    img: 'img/45caps.png', imgBack: 'img/45reishi.png', imgRaw: 'img/reishiRaw.png',
+                    telemetry: { DIM: '45 CAPS', MEDIA: 'MUSHROOM', DIAL: 'P.U.L.S.', RATE: '500MGRS' },
+                    benefits: ['REDUCCIÓN CORTISOL', 'CALMA PROFUNDA', 'REGULACIÓN NERVIOSA', 'DESCANSO REPARADOR', 'EQUILIBRIO ', 'ADAPTACIÓN AL ESTRÉS', 'PAZ COGNITIVA', 'SUEÑO LÚCIDO', 'RELAJACIÓN MUSCULAR', 'CLARIDAD INTERNA'],
+                    _metaPrice: '$70.000'
+                },
+                'STAMINA': { 
+                    label: 'PULSOR STAMINA', 
+                    desc: 'Potencia celular óptima', 
+                    spec: 'CORDYCEPS', 
+                    id: 'PULS45S',
+                    img: 'img/45caps.png', imgBack: 'img/45cordy.png', imgRaw: 'img/cordyRaw.png',
+                    telemetry: { DIM: '45 CAPS', MEDIA: 'MUSHROOM', DIAL: 'P.U.L.S.', RATE: '500MGRS' },
+                    benefits: ['POTENCIA AERÓBICA', 'ENERGÍA CELULAR (ATP)', 'RESISTENCIA FÍSICA', 'OXIGENACIÓN SANGUÍNEA', 'RECUPERACIÓN RÁPIDA', 'VITALIDAD GENERAL', 'RENDIMIENTO ATLÉTICO', 'FUNCIÓN RESPIRATORIA', 'METABOLISMO ACTIVO', 'FATIGA (-)'],
+                    _metaPrice: '$70.000'
+                },
+                'CORE': { 
+                    label: 'PULSOR CORE', 
+                    desc: 'Respuesta inmune óptima', 
+                    spec: 'TURKEY TAIL', 
+                    id: 'PULS45C',
+                    img: 'img/45caps.png', imgBack: 'img/45turkey.png', imgRaw: 'img/turkeyRaw.png',
+                    telemetry: { DIM: '45 CAPS', MEDIA: 'MUSHROOM', DIAL: 'P.U.L.S.', RATE: '500MGRS' },
+                    benefits: ['RESPUESTA INMUNE', 'BIOMA INTESTINAL', 'DEFENSA CELULAR', 'ANTIOXIDANTE', 'SALUD DIGESTIVA', 'PROTECCIÓN SISTÉMICA', 'REDUCCIÓN INFLAMACIÓN', 'ESTABILIDAD INTERNA', 'SÍNTESIS NUTRITIVA', 'FORTALEZA INTEGRAL'],
+                    _metaPrice: '$70.000'
+                }
+            }
+        },
+        'BIOSTACK': {
+            defaultVariant: 'Z_BRICK',
+            variants: {
+                'Z_BRICK': { 
+                    label: 'BIOSTACK Z_BRICK', 
+                    desc: 'Matriz compacta de bioconstrucción y liberación nutricional masiva.', 
+                    spec: 'PURE MYCELIUM CORE', 
+                    id: 'BS-ZBRICK',
+                    img: 'img/brick-front.png', imgBack: 'img/brick-back.png', imgRaw: 'img/brick-raw.png',
+                    telemetry: { DIM: '1000 GR', MEDIA: 'BIOSTACK', DIAL: '⧗PHI', RATE: '100% PURE' },
+                    benefits: ['INTEGRACIÓN AMBIENTAL', 'ALTA DENSIDAD ADAPTÓGENA', 'BIOCONSTRUCCIÓN ACTIVA', 'REGENERACIÓN SISTÉMICA'],
+                    _metaPrice: '$180.000'
+                },
+                'ALPHA_STACK': { 
+                    label: 'ALPHA COGNITIVE STACK', 
+                    desc: 'Bloque biocinético optimizado para rendimiento ejecutivo y neuronal avanzada.', 
+                    spec: 'LION’S MANE FOCUS MATRIZ', 
+                    id: 'BS-ALPHA',
+                    img: 'img/alpha-front.png', imgBack: 'img/alpha-back.png', imgRaw: 'img/alpha-raw.png',
+                    telemetry: { DIM: '850 GR', MEDIA: 'BIOSTACK', DIAL: '⧗12:12', RATE: 'HIGH FOCUS' },
+                    benefits: ['POTENCIACIÓN SINÁPTICA', 'ENFOQUE EJECUTIVO', 'SÍNTESIS DE NGF', 'RESISTENCIA COGNITIVA'],
+                    _metaPrice: '$210.000'
+                },
+                'OMEGA_SHIELD': { 
+                    label: 'OMEGA IMMUNE STACK', 
+                    desc: 'Estructura de micelio denso para blindaje biológico celular profundo.', 
+                    spec: 'DEFENSE MULTI-MUSHROOM', 
+                    id: 'BS-OMEGA',
+                    img: 'img/omega-front.png', imgBack: 'img/omega-back.png', imgRaw: 'img/omega-raw.png',
+                    telemetry: { DIM: '1200 GR', MEDIA: 'BIOSTACK', DIAL: '⧗ULTRA', RATE: 'IMMUNE SHIELD' },
+                    benefits: ['PROTECCIÓN SISTÉMICA', 'RESPUESTA INMUNE ADAPTATIVA', 'BLINDAJE ANTE CORTISOL', 'DESINTOXICACIÓN CELULAR'],
+                    _metaPrice: '$220.000'
                 }
             }
         }
     };
 
+    // =========================================================================
+    // MUTABLE HUD STATE DEPENDENCIES (CHRONOLOGICAL PRESETS)
+    // =========================================================================
     let currentBioItem = 'PANEL';
     let currentBioVariant = '40X40';
     const numeroCelular = "573025333130";
@@ -674,28 +870,27 @@
     let tipoVarianteActiva = 'PANEL';
 
     function inicializarArtepanel() {
-        const dynamicHolder = getCachedEl('menu-bio-DYNAMIC-holder');
-        const btnPrev = getCachedEl('btn-variant-prev');
-        const btnNext = getCachedEl('btn-variant-next');
+        const dynamicHolderFooter = getCachedEl('menu-bio-DYNAMIC-holder');
+        const dynamicHolderHeader = getCachedEl('menu-bio-DYNAMIC-holder-header');
         
-        if (dynamicHolder) {
-            const renderTextoCentral = () => {
-                dynamicHolder.innerHTML = `
-                    <span id="menu-bio-${tipoVarianteActiva}" class="tracking-[0.15em] transition-all duration-300 h-full w-full flex items-center justify-center font-bold text-jako-text/40 group-hover:text-jako-text">
-                        ${tipoVarianteActiva}
-                    </span>`;
-            };
-            dynamicHolder.addEventListener('click', () => {
-                tipoVarianteActiva = (tipoVarianteActiva === 'PANEL') ? 'STENCIL' : 'PANEL';
-                renderTextoCentral();
-                cambiarBioItem(tipoVarianteActiva);
-                triggerHaptic([10]);
-            });
-            renderTextoCentral();
-        }
+        const btnPrevFooter = getCachedEl('btn-variant-prev');
+        const btnNextFooter = getCachedEl('btn-variant-next');
+        const btnPrevHeader = getCachedEl('btn-header-variant-prev');
+        const btnNextHeader = getCachedEl('btn-header-variant-next');
+        
+        const alternarEcosistema = () => {
+            tipoVarianteActiva = (tipoVarianteActiva === 'PANEL') ? 'STENCIL' : 'PANEL';
+            cambiarBioItem(tipoVarianteActiva);
+            triggerHaptic([10]);
+        };
 
-        if (btnPrev) btnPrev.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, -1); triggerHaptic([6]); });
-        if (btnNext) btnNext.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, 1); triggerHaptic([6]); });
+        if (dynamicHolderFooter) dynamicHolderFooter.addEventListener('click', alternarEcosistema);
+        if (dynamicHolderHeader) dynamicHolderHeader.addEventListener('click', alternarEcosistema);
+
+        if (btnPrevFooter) btnPrevFooter.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, -1); triggerHaptic([6]); });
+        if (btnNextFooter) btnNextFooter.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, 1); triggerHaptic([6]); });
+        if (btnPrevHeader) btnPrevHeader.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, -1); triggerHaptic([6]); });
+        if (btnNextHeader) btnNextHeader.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, 1); triggerHaptic([6]); });
         
         vincularBotones();
         actualizarBioUI();
@@ -703,7 +898,7 @@
 
     function cambiarBioItem(itemKey) {
         currentBioItem = itemKey;
-        currentBioVariant = ARTEPANEL_CATALOG[itemKey].defaultVariant;
+        currentBioVariant = JAKO_CATALOG[itemKey].defaultVariant;
         actualizarBioUI();
         triggerHaptic(15);
     }
@@ -711,9 +906,9 @@
     function ciclarVariante(tipo, direccion) {
         if (currentBioItem !== tipo) {
             currentBioItem = tipo;
-            currentBioVariant = ARTEPANEL_CATALOG[tipo].defaultVariant;
+            currentBioVariant = JAKO_CATALOG[tipo].defaultVariant;
         }
-        const variantes = Object.keys(ARTEPANEL_CATALOG[tipo].variants);
+        const variantes = Object.keys(JAKO_CATALOG[tipo].variants);
         let currentIndex = variantes.indexOf(currentBioVariant);
         if (currentIndex === -1) currentIndex = 0;
         let nextIndex = (currentIndex + direccion) % variantes.length;
@@ -832,7 +1027,7 @@
     };
 
     function actualizarBioUI() {
-        const itemConfig = ARTEPANEL_CATALOG[currentBioItem];
+        const itemConfig = JAKO_CATALOG[currentBioItem];
         const variantConfig = itemConfig.variants[currentBioVariant];
         
         const descEl = getCachedEl('artepanel-description');
@@ -947,7 +1142,7 @@
     }
 
     function adquirirNodo() {
-        const variantConfig = ARTEPANEL_CATALOG[currentBioItem].variants[currentBioVariant];
+        const variantConfig = JAKO_CATALOG[currentBioItem].variants[currentBioVariant];
         const currentCoord = getCachedEl('z-dial')?.textContent || "N/A";
         const currentSphere = calculateSphereIndex();
         const freqValue = getCachedEl('sub-sets-solar')?.textContent || "0.00";
