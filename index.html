@@ -163,115 +163,97 @@
 <body class="antialiased selection:bg-jako-text selection:text-jako-bg overflow-x-hidden min-h-screen">
 
     <div id="page-bg-overlay"></div>
-        
-<!-- HEADER CORREGIDO: Altura máxima controlada para prevenir estiramiento en producción -->
+
+<!-- HEADER OPTIMIZADO: Simetría matemática absoluta y estandarización de rejillas -->
 <header class="fixed top-0 left-0 w-full max-h-[155px] z-50 glass border-b border-jako-text/5 overflow-hidden">
     <div class="w-full flex flex-col h-full justify-start">
         
-        <!-- GRID DE 5 COLUMNAS: Forzado a alineación exacta sin depender del min-h externo -->
-        <div class="px-4 sm:px-8 grid grid-cols-[auto_auto_1fr_auto_auto] items-center uppercase tracking-widest font-mono text-[11px] text-jako-text/50 h-[65px] sm:h-[72px] min-h-[65px] sm:min-h-[72px] select-none gap-4 sm:gap-6">
+        <!-- BLOQUE 1: GRID PRINCIPAL DE CATEGORÍAS (H: 65px/72px) -->
+        <div class="px-4 sm:px-8 grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center uppercase tracking-widest font-mono text-[11px] text-jako-text/50 h-[65px] sm:h-[72px] min-h-[65px] sm:min-h-[72px] select-none">
                     
-                    <!-- 1. RETORNO (Extremo Izquierdo) -->
-                    <div class="flex items-center h-full">
-                        <button id="lang-toggle-trigger" class="group flex items-center gap-1.5 justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" title="Conmutar Idioma / Switch Language" aria-label="Toggle language">
-                            <!-- Ícono Global de Red (Inspirado en Screenshot 2026-07-03 at 6.02.03 PM.png) -->
-                            <svg class="w-3.5 h-3.5 text-jako-text opacity-40 group-hover:opacity-100 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="10"/>
-                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                                <path d="M2 12h20"/>
-                            </svg>
-                            <!-- Indicador de Idioma Dinámico -->
-                            <span id="lang-indicator" class="font-mono text-[10px] font-black tracking-wider opacity-50 group-hover:opacity-100 transition-all duration-500 text-jako-text">ESP</span>
-                        </button>
+            <!-- Izquierda: Idioma -->
+            <div class="flex items-center justify-start h-full">
+                <button id="lang-toggle-trigger" class="group flex items-center gap-1.5 h-full transition-all duration-300 focus:outline-none cursor-pointer" title="Conmutar Idioma / Switch Language" aria-label="Toggle language">
+                    <svg class="w-3.5 h-3.5 text-jako-text opacity-40 group-hover:opacity-100 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        <path d="M2 12h20"/>
+                    </svg>
+                    <span id="lang-indicator" class="font-mono text-[10px] font-black tracking-wider opacity-50 group-hover:opacity-100 transition-all duration-500 text-jako-text">ESP</span>
+                </button>
+            </div>
 
-                    </div>
+            <!-- Centro: Menú Global Dinámico (Estandarizado Exacto a Bloque 2) -->
+            <div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center max-w-[180px] sm:max-w-xs mx-auto">
+                <button id="btn-variant-prev" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/60 hover:bg-jako-text/[0.03] rounded transition-all focus:outline-none cursor-pointer">
+                    <span class="text-[11px] font-black">&lt;</span>
+                </button>
+                
+                <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center text-center select-none overflow-hidden group"></div>
+                
+                <button id="btn-variant-next" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/60 hover:bg-jako-text/[0.03] rounded transition-all focus:outline-none cursor-pointer">
+                    <span class="text-[11px] font-black">&gt;</span>
+                </button>
+            </div>
 
-                    <!-- 2. IDIOMA / CONMUTADOR DE MATRIZ TRILÍNGÜE (Estructura de Red Compacta) -->
-                    <div class="flex items-center h-full">
-                        <button class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Back">
-                        </button>
-                    </div>
-                    
-                    <!-- 3. MATRIZ DE CONTROL CENTRAL (Eje de Gravedad Unificado) -->
-                    <div class="col-span-1 grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center max-w-xs mx-auto">
-                        <button id="btn-header-variant-prev" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none cursor-pointer">
-                            <span class="text-[10px] font-bold">&lt;</span>
-                        </button>
-                        
-                        <div id="menu-bio-DYNAMIC-holder-header" class="h-full w-full flex items-center justify-center cursor-pointer group text-center tracking-[0.25em] sm:tracking-[0.35em] font-black text-jako-text text-[11px] leading-none"></div>
-                        
-                        <button id="btn-header-variant-next" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none cursor-pointer">
-                            <span class="text-[10px] font-bold">&gt;</span>
-                        </button>
-                    </div>
+            <!-- Derecha: Switch Acromático -->
+            <div class="flex items-center justify-end h-full">
+                <button id="acromatic-toggle-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" title="Conmutar Matriz Visual" aria-label="Toggle acromatic theme">
+                    <svg class="w-[38px] sm:w-[44px] h-auto object-contain text-jako-text fill-current opacity-70 group-hover:opacity-100 transition-all duration-300 distribution-gpu" viewBox="0 0 54 28" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="54" height="28" rx="14" />
+                        <g class="transition-transform duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]" style="transform: var(--toggle-handle-transform);">
+                            <circle cx="11" cy="11" r="11" class="fill-current text-jako-bg" />
+                        </g>
+                    </svg>
+                </button>
+            </div>
+        </div>
 
-                    <!-- 4. INTERRUPTOR ACROMÁTICO (Cápsula Vectorial Interactiva) -->
-                    <div class="flex items-center h-full">
-                        <button class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Pace">
-                        </button>
-                    </div>
-                    
-                    <!-- 5. FLUJO BIOCINÉTICO (Extremo Derecho) -->
-                    <div class="flex items-center h-full">
-                        <button id="acromatic-toggle-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" title="Conmutar Matriz Visual" aria-label="Toggle acromatic theme">
-                            <svg class="w-[38px] sm:w-[44px] h-auto object-contain text-jako-text fill-current opacity-70 group-hover:opacity-100 transition-all duration-300 distribution-gpu" viewBox="0 0 54 28" xmlns="http://www.w3.org/2000/svg">
-                                <!-- Cuerpo de la Cápsula -->
-                                <rect width="54" height="28" rx="14" />
-                                <!-- Contenedor Deslizable del Lente -->
-                                <g class="transition-transform duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]" style="transform: var(--toggle-handle-transform);">
-                                    <circle cx="11" cy="11" r="11" class="fill-current text-jako-bg" />
-                                </g>
-                            </svg>
-                        </button>
-
-                    </div>
-
+        <!-- BLOQUE 2: TELEMETRÍA DE SUB-VARIANTES INTEGRADA (H: 12 / 48px) -->
+        <div class="w-full flex flex-col bg-jako-text/[0.01] border-t border-jako-text/5">
+            <div class="w-full grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center justify-between px-4 sm:px-8 h-12 select-none">
+                
+                <!-- CMS (Izquierda - Botón HUD Interactivo) -->
+                <div class="flex items-center justify-start h-full py-1.5">
+                    <button id="telemetry-product-dim-trigger" class="group flex flex-col-reverse items-start text-left px-2 sm:px-3 h-full w-full justify-center bg-jako-text/[0.01] hover:bg-jako-text/[0.04] border border-jako-text/10 hover:border-jako-text/30 rounded transition-all duration-200 focus:outline-none cursor-pointer" title="Revelar Dimensión Analítica">
+                        <span class="text-[7px] sm:text-[8px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 group-hover:text-jako-text/50 mt-0.5 uppercase font-mono leading-none">CMS ↗</span>
+                        <span id="telemetry-product-dim" class="font-mono tracking-[0.05em] sm:tracking-[0.1em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text">--</span>
+                    </button>
                 </div>
 
-        <div class="w-full flex flex-col h-full justify-start">
-
-
-
-            <!-- TELEMETRÍA FOOTER HIPERREALISTA -->
-            <div class="w-full flex flex-col bg-jako-text/[0.01]">
-                <div class="w-full grid grid-cols-5 items-center justify-between px-3 sm:px-8 h-12 gap-2 sm:gap-4 text-center select-none">
+                <!-- Variantes Específicas del Item Seleccionado (Centro) -->
+                <div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center max-w-[180px] sm:max-w-xs mx-auto">
+                    <button id="btn-header-variant-prev" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/60 hover:bg-jako-text/[0.03] rounded transition-all focus:outline-none cursor-pointer">
+                        <span class="text-[11px] font-black">&lt;</span>
+                    </button>
                     
-                    <div id="telemetry-product-dim-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
-                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">CMS</span>
-                        <span id="telemetry-product-dim" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text/90">--</span>
-                    </div>
+                    <div id="menu-bio-DYNAMIC-holder-header" class="h-full w-full flex items-center justify-center text-center select-none overflow-hidden group"></div>
+                    
+                    <button id="btn-header-variant-next" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/60 hover:bg-jako-text/[0.03] rounded transition-all focus:outline-none cursor-pointer">
+                        <span class="text-[11px] font-black">&gt;</span>
+                    </button>
+                </div>
 
-                    <div class="col-span-3 grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center max-w-xs mx-auto">
-                        <button id="btn-variant-prev" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none">
-                            <span class="text-[10px] font-bold">&lt;</span>
-                        </button>
-                        
-                        <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center cursor-pointer group"></div>
-                        
-                        <button id="btn-variant-next" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none">
-                            <span class="text-[10px] font-bold">&gt;</span>
-                        </button>
-                    </div>
-
-                    <div id="telemetry-product-dial-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
-                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Dials</span>
-                        <span id="telemetry-product-dial" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text/90">--</span>
-                    </div>
-
+                <!-- DIALS (Derecha - Botón HUD Interactivo) -->
+                <div class="flex items-center justify-end h-full py-1.5">
+                    <button id="telemetry-product-dial-trigger" class="group flex flex-col-reverse items-end text-right px-2 sm:px-3 h-full w-full justify-center bg-jako-text/[0.01] hover:bg-jako-text/[0.04] border border-jako-text/10 hover:border-jako-text/30 rounded transition-all duration-200 focus:outline-none cursor-pointer" title="Revelar Métrica de Dial">
+                        <span class="text-[7px] sm:text-[8px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 group-hover:text-jako-text/50 mt-0.5 uppercase font-mono leading-none">↖ DIALS</span>
+                        <span id="telemetry-product-dial" class="font-mono tracking-[0.05em] sm:tracking-[0.1em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text">--</span>
+                    </button>
                 </div>
             </div>
+        </div>
 
-            <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border from-jako-text/[0.02] to-transparent">
-                <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
-                    Tu compra financia otra pieza para la comunidad
-                </span>
-            </div>
+        <!-- BARRA DE COMPRA COMUNIDAD -->
+        <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border from-jako-text/[0.02] to-transparent">
+            <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
+                Tu compra financia otra pieza para la comunidad
+            </span>
+        </div>
 
+    </div>
+</header>    
 
-
-
-            </div>
-        </header>
 
 <main id="main-vault" class="w-full flex-1 flex flex-col justify-center items-center pt-[155px] pb-[195px] min-h-screen relative overflow-hidden"> 
     <div class="w-full flex flex-col items-center justify-center p-4 sm:p-6 select-none relative z-10">
@@ -876,30 +858,34 @@
         }
     }
 
-    let tipoVarianteActiva = 'PANEL';
+let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializaciones
 
     function inicializarArtepanel() {
-        const dynamicHolderFooter = getCachedEl('menu-bio-DYNAMIC-holder');
-        const dynamicHolderHeader = getCachedEl('menu-bio-DYNAMIC-holder-header');
+        const btnPrevFooter = getCachedEl('btn-variant-prev'); // Ahora cambia ÍTEMS (Menú)
+        const btnNextFooter = getCachedEl('btn-variant-next'); // Ahora cambia ÍTEMS (Menú)
+        const btnPrevHeader = getCachedEl('btn-header-variant-prev'); // Ahora cambia VARIANTES del Ítem
+        const btnNextHeader = getCachedEl('btn-header-variant-next'); // Ahora cambia VARIANTES del Ítem
         
-        const btnPrevFooter = getCachedEl('btn-variant-prev');
-        const btnNextFooter = getCachedEl('btn-variant-next');
-        const btnPrevHeader = getCachedEl('btn-header-variant-prev');
-        const btnNextHeader = getCachedEl('btn-header-variant-next');
-        
-        const alternarEcosistema = () => {
-            tipoVarianteActiva = (tipoVarianteActiva === 'PANEL') ? 'STENCIL' : 'PANEL';
-            cambiarBioItem(tipoVarianteActiva);
-            triggerHaptic([10]);
+        // Obtener el array secuencial de categorías del ecosistema global
+        const itemsMenu = Object.keys(JAKO_CATALOG);
+
+        const ciclarItemMenu = (direccion) => {
+            let currentIndex = itemsMenu.indexOf(currentBioItem);
+            if (currentIndex === -1) currentIndex = 0;
+            let nextIndex = (currentIndex + direccion) % itemsMenu.length;
+            if (nextIndex < 0) nextIndex = itemsMenu.length - 1;
+
+            cambiarBioItem(itemsMenu[nextIndex]);
+            triggerHaptic([12]);
         };
 
-        if (dynamicHolderFooter) dynamicHolderFooter.addEventListener('click', alternarEcosistema);
-        if (dynamicHolderHeader) dynamicHolderHeader.addEventListener('click', alternarEcosistema);
+        // Asignar control de Menú/Categorías a los botones inferiores (bloque telemetría)
+        if (btnPrevFooter) btnPrevFooter.addEventListener('click', () => ciclarItemMenu(-1));
+        if (btnNextFooter) btnNextFooter.addEventListener('click', () => ciclarItemMenu(1));
 
-        if (btnPrevFooter) btnPrevFooter.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, -1); triggerHaptic([6]); });
-        if (btnNextFooter) btnNextFooter.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, 1); triggerHaptic([6]); });
-        if (btnPrevHeader) btnPrevHeader.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, -1); triggerHaptic([6]); });
-        if (btnNextHeader) btnNextHeader.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, 1); triggerHaptic([6]); });
+        // Asignar control de Variantes específicas a los botones superiores del header
+        if (btnPrevHeader) btnPrevHeader.addEventListener('click', () => { ciclarVariante(currentBioItem, -1); triggerHaptic([6]); });
+        if (btnNextHeader) btnNextHeader.addEventListener('click', () => { ciclarVariante(currentBioItem, 1); triggerHaptic([6]); });
         
         vincularBotones();
         actualizarBioUI();
@@ -1062,25 +1048,35 @@
         if (elDim) elDim.textContent = variantConfig.telemetry.DIM;
         if (elDial) elDial.textContent = variantConfig.telemetry.DIAL;
 
-        // --- ACTUALIZACIÓN INTEGRADA AL ECOSISTEMA HUD ESPEJADO ---
+        // --- PROCESAMIENTO LINGÜÍSTICO TRILÍNGÜE (MENÚ) ---
         const activeLang = typeof currentLang !== 'undefined' ? currentLang : 'esp';
-        const labelText = (typeof VAULT_DICTIONARY !== 'undefined' && VAULT_DICTIONARY[activeLang])
+        const labelTextItem = (typeof VAULT_DICTIONARY !== 'undefined' && VAULT_DICTIONARY[activeLang])
             ? (VAULT_DICTIONARY[activeLang][currentBioItem] || currentBioItem)
             : currentBioItem;
 
-        const templateHtml = `
-            <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[10px] sm:text-[11px] font-black transition-all duration-300">
-                ${labelText}
-            </span>`;
+        // --- SANITIZACIÓN DE TEXTO PARA EVITAR REPETICIONES (Ej: PANEL40X40 -> 40X40) ---
+        // Limpia el prefijo "PANEL" solo si existe al inicio del label de la variante
+        const cleanedVariantLabel = variantConfig.label.replace(/^PANEL/, '');
 
-        // Inyección controlada tanto en el header como en el footer manteniendo el comportamiento interactivo
-        const holders = [getCachedEl('menu-bio-DYNAMIC-holder'), getCachedEl('menu-bio-DYNAMIC-holder-header')];
-        holders.forEach(holder => {
-            if (holder) {
-                holder.innerHTML = templateHtml;
-                holder.className = "h-full w-full flex items-center justify-center cursor-pointer text-jako-text/90 select-none transition-all duration-300 mx-auto";
-            }
-        });
+        // --- INYECCIÓN RESPONDIDAS CON ESTILO SEGURO ---
+        
+        // 1. Selector Superior de Items (Menú Global)
+        const holderFooter = getCachedEl('menu-bio-DYNAMIC-holder');
+        if (holderFooter) {
+            holderFooter.innerHTML = `
+                <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[11px] font-black text-jako-text transition-all duration-300">
+                    ${labelTextItem}
+                </span>`;
+        }
+
+        // 2. Selector Inferior de Variantes (Matriz Central)
+        const holderHeader = getCachedEl('menu-bio-DYNAMIC-holder-header');
+        if (holderHeader) {
+            holderHeader.innerHTML = `
+                <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[11px] font-black text-jako-text transition-all duration-300">
+                    ${cleanedVariantLabel}
+                </span>`;
+        }
     }
 
     function habilitarReveladoTelemetria() {
