@@ -192,7 +192,7 @@
                         </button>
                     </div>
                     
-<!-- 3. MATRIZ DE CONTROL CENTRAL (Eje de Gravedad Unificado) -->
+                    <!-- 3. MATRIZ DE CONTROL CENTRAL (Eje de Gravedad Unificado) -->
                     <div class="col-span-1 grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center max-w-xs mx-auto">
                         <button id="btn-header-variant-prev" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none cursor-pointer">
                             <span class="text-[10px] font-bold">&lt;</span>
@@ -228,36 +228,47 @@
 
                 </div>
 
+        <div class="w-full flex flex-col h-full justify-start">
 
-                <div class="w-full flex flex-col bg-jako-text/[0.01]">
+
+
+            <!-- TELEMETRÍA FOOTER HIPERREALISTA -->
+            <div class="w-full flex flex-col bg-jako-text/[0.01]">
+                <div class="w-full grid grid-cols-5 items-center justify-between px-3 sm:px-8 h-12 gap-2 sm:gap-4 text-center select-none">
                     
-                    <div class="w-full grid grid-cols-3 items-center justify-between px-3 sm:px-8 h-12 gap-2 sm:gap-4 text-center select-none">
-                        
-                        <div id="sub-sets-solar-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Hz</span>
-                            <span id="sub-sets-solar" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text drop-shadow-[0_0_8px_var(--jako-led)] standard-num">0.00</span>
-                        </div>
-
-                        <div id="z-dial-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Dial</span>
-                            <span id="z-dial-mirror" class="font-mono tracking-[0.15em] text-[10px] sm:text-[12px] font-black text-jako-text drop-shadow-[0_0_10px_var(--jako-led)]">0PU0</span>
-                        </div>
-
-                        <div id="sub-reps-tension-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Tensión</span>
-                            <span id="sub-reps-tension" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text drop-shadow-[0_0_8px_var(--jako-led)] standard-num">0.0</span>
-                        </div>
-
+                    <div id="telemetry-product-dim-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">CMS</span>
+                        <span id="telemetry-product-dim" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text/90">--</span>
                     </div>
 
-                    <!-- TELEMETRÍA HEADER HIPERREALISTA (CORREGIDO SIN FONDO OPACO) -->
-                    <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border from-jako-text/[0.02] to-transparent">
-                        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
-                            ONDA BIOCINÉTICA REGENERATIVA
-                        </span>
+                    <div class="col-span-3 grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center max-w-xs mx-auto">
+                        <button id="btn-variant-prev" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none">
+                            <span class="text-[10px] font-bold">&lt;</span>
+                        </button>
+                        
+                        <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center cursor-pointer group"></div>
+                        
+                        <button id="btn-variant-next" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none">
+                            <span class="text-[10px] font-bold">&gt;</span>
+                        </button>
+                    </div>
+
+                    <div id="telemetry-product-dial-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Dials</span>
+                        <span id="telemetry-product-dial" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text/90">--</span>
                     </div>
 
                 </div>
+            </div>
+
+            <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border from-jako-text/[0.02] to-transparent">
+                <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
+                    Tu compra financia otra pieza para la comunidad
+                </span>
+            </div>
+
+
+
 
             </div>
         </header>
@@ -304,42 +315,40 @@
 </main>
 
 <footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-jako-text/5 transition-opacity duration-500 select-none transform translateZ(0) overflow-hidden">
-    <div class="w-full flex flex-col h-full justify-start">
-            <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border from-jako-text/[0.02] to-transparent">
-                <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
-                    Tu compra financia otra pieza para la comunidad
-                </span>
-            </div>
 
+                <div class="w-full flex flex-col bg-jako-text/[0.01]">
 
-            <!-- TELEMETRÍA FOOTER HIPERREALISTA -->
-            <div class="w-full flex flex-col bg-jako-text/[0.01]">
-                <div class="w-full grid grid-cols-5 items-center justify-between px-3 sm:px-8 h-12 gap-2 sm:gap-4 text-center select-none">
+                    <!-- TELEMETRÍA HEADER HIPERREALISTA (CORREGIDO SIN FONDO OPACO) -->
+                    <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border from-jako-text/[0.02] to-transparent">
+                        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
+                            ONDA BIOCINÉTICA REGENERATIVA
+                        </span>
+                    </div>
                     
-                    <div id="telemetry-product-dim-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
-                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">CMS</span>
-                        <span id="telemetry-product-dim" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text/90">--</span>
+                    <div class="w-full grid grid-cols-3 items-center justify-between px-3 sm:px-8 h-12 gap-2 sm:gap-4 text-center select-none">
+                        
+                        <div id="sub-sets-solar-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Hz</span>
+                            <span id="sub-sets-solar" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text drop-shadow-[0_0_8px_var(--jako-led)] standard-num">0.00</span>
+                        </div>
+
+                        <div id="z-dial-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Dial</span>
+                            <span id="z-dial-mirror" class="font-mono tracking-[0.15em] text-[10px] sm:text-[12px] font-black text-jako-text drop-shadow-[0_0_10px_var(--jako-led)]">0PU0</span>
+                        </div>
+
+                        <div id="sub-reps-tension-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Tensión</span>
+                            <span id="sub-reps-tension" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text drop-shadow-[0_0_8px_var(--jako-led)] standard-num">0.0</span>
+                        </div>
+
                     </div>
 
-                    <div class="col-span-3 grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center max-w-xs mx-auto">
-                        <button id="btn-variant-prev" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none">
-                            <span class="text-[10px] font-bold">&lt;</span>
-                        </button>
-                        
-                        <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center cursor-pointer group"></div>
-                        
-                        <button id="btn-variant-next" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none">
-                            <span class="text-[10px] font-bold">&gt;</span>
-                        </button>
-                    </div>
 
-                    <div id="telemetry-product-dial-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
-                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Dials</span>
-                        <span id="telemetry-product-dial" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text/90">--</span>
-                    </div>
 
                 </div>
-            </div>
+
+
 
 <!-- FILA DE ACCIONES PRINCIPALES (UNIFICADA / ESTÉTICA HUD) -->
 <div class="w-full h-12 relative z-10 border-jako-border bg-jako-text/[0.01]">
