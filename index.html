@@ -316,99 +316,83 @@
         </div>
     </div>
 </main>
+<!-- FOOTER OPTIMIZADO: Espejo simétrico HUD, transparencia absoluta y orden inverso -->
+<footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-jako-border transition-opacity duration-500 select-none transform translateZ(0) overflow-hidden bg-transparent">
+    <div class="w-full flex flex-col h-full justify-end bg-transparent">
 
-<footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-jako-text/5 transition-opacity duration-500 select-none transform translateZ(0) overflow-hidden">
-
-                <div class="w-full flex flex-col bg-jako-text/[0.01]">
-
-                    <!-- TELEMETRÍA HEADER HIPERREALISTA (CORREGIDO SIN FONDO OPACO) -->
-                    <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border from-jako-text/[0.02] to-transparent">
-                        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
-                            ONDA BIOCINÉTICA REGENERATIVA
-                        </span>
-                    </div>
-                    
-                    <div class="w-full grid grid-cols-3 items-center justify-between px-3 sm:px-8 h-12 gap-2 sm:gap-4 text-center select-none">
-                        
-                        <div id="sub-sets-solar-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Hz</span>
-                            <span id="sub-sets-solar" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text drop-shadow-[0_0_8px_var(--jako-led)] standard-num">0.00</span>
-                        </div>
-
-                        <div id="z-dial-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Dial</span>
-                            <span id="z-dial-mirror" class="font-mono tracking-[0.15em] text-[10px] sm:text-[12px] font-black text-jako-text drop-shadow-[0_0_10px_var(--jako-led)]">0PU0</span>
-                        </div>
-
-                        <div id="sub-reps-tension-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Tensión</span>
-                            <span id="sub-reps-tension" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text drop-shadow-[0_0_8px_var(--jako-led)] standard-num">0.0</span>
-                        </div>
-
-                    </div>
+        <!-- TELEMETRÍA SECUNDARIA (Barra Superior del Footer - HUD Esmerilado Estabilizado) -->
+        <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
+            <div class="hud-btn-glass rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl">
+                <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none">
+                    ONDA BIOCINÉTICA REGENERATIVA
+                </span>
+            </div>
+        </div>
 
 
-
+        <!-- BLOQUE 2: TELEMETRÍA DE COMPONENTES KINÉTICOS (H: 48px) -->
+        <div class="w-full flex flex-col bg-transparent border-t border-jako-text/5">
+            <div class="w-full grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center justify-between px-4 sm:px-8 h-12 select-none bg-transparent">
+                
+                <!-- Hz / Solar (Izquierda - Botón HUD Esmerilado) -->
+                <div class="flex items-center justify-start h-full py-1.5 bg-transparent">
+                    <button id="sub-sets-solar-trigger" class="group flex flex-col-reverse items-start text-left px-2 sm:px-3 h-full w-full justify-center hud-btn-glass rounded focus:outline-none cursor-pointer">
+                        <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">Hz ↗</span>
+                        <span id="sub-sets-solar" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text standard-num">0.00</span>
+                    </button>
                 </div>
 
-
-
-<!-- FILA DE ACCIONES PRINCIPALES (UNIFICADA / ESTÉTICA HUD) -->
-<div class="w-full h-12 relative z-10 border-jako-border bg-jako-text/[0.01]">
-    <div class="w-full grid grid-cols-3 items-center h-full text-center select-none">
-        
-        <button id="btn-reveal-raw" class="h-full w-full bg-transparent hover:bg-jako-text/[0.04] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Capas Visuales">
-            VER
-        </button>
-        
-        <button id="btn-adquirir-nodo" onclick="adquirirNodo()" class="h-full w-full bg-transparent hover:bg-jako-text/[0.04] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Activar Nodo">
-            ACTIVAR
-        </button>
-        
-        <button id="btn-reveal-dial" class="h-full w-full bg-transparent hover:bg-jako-text/[0.04] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Dial">
-            DIAL
-        </button>
-        
-    </div>
-</div>
-
-            <!-- FILA DE FIRMA Y CONFIGURACIÓN (SELECTOR STB Y EXPANSIÓN ZENITH) -->
-            <div class="w-full h-11 min-h-[44px] max-h-[44px] relative z-10 overflow-hidden border-t border-jako-border">
-                <div class="w-full h-full px-4 sm:px-8 grid grid-cols-[auto_auto_1fr_auto_auto] items-center uppercase tracking-[0.3em] sm:tracking-[0.4em] font-mono text-[8px] text-jako-text/20 select-none gap-4 sm:gap-6">
-                    
-                    <!-- 1. DISPARADOR INFERIOR IZQUIERDO (Selector Cromático STB) -->
-                    <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px] min-w-[24px]">
-                        
+                <!-- Dial Central Coaxial (Centro - Botón HUD Esmerilado) -->
+                <div id="z-dial-trigger" class="grid grid-cols-1 h-8 w-full items-center max-w-[180px] sm:max-w-xs mx-auto hud-btn-glass rounded px-1 cursor-pointer">
+                    <div class="flex flex-col-reverse items-center justify-center h-full w-full select-none text-center">
+                        <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Dial Matrix</span>
+                        <span id="z-dial-mirror" class="font-mono tracking-[0.15em] text-[10px] sm:text-[11px] font-black text-jako-text drop-shadow-[0_0_10px_var(--jako-led)]">0PU0</span>
                     </div>
+                </div>
 
-                    <!-- 2. MARCADOR DE ESTADO INTERNO IZQUIERDO -->
-                    <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px] min-w-[24px]">
-                        
-                    </div>
-                    
-                    <!-- 3. IDENTIDAD CENTRAL DE FIRMA -->
-                    <div class="text-center font-bold tracking-[0.3em] sm:tracking-[0.4em] text-jako-text/15 hover:text-jako-text/50 transition-all duration-300 h-full flex items-center justify-center whitespace-nowrap">
-                        <a href="https://jako.world" class="h-full w-full flex items-center justify-center focus:outline-none">POWERED BY JAKO.WORLD</a>
-                    </div>
-
-                    <!-- 4. MARCADOR DE ESTADO INTERNO DERECHO -->
-                    <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px]">
-                        
-                    </div>
-
-                    <!-- 5. DISPARADOR INFERIOR DERECHO (Modo Inmersión Zenith con Ícono de Expansión HUD) -->
-                    <div class="flex items-center h-full">
-                        <button id="footer-fn-right-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Activar Modo Zenith">
-                            <svg id="footer-raw-indicator" class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75h4.5m-4.5 0v4.5m0-4.5L9 9M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9M3.75 20.25h4.5m-4.5 0v-4.5m0 4.5L9 15M20.25 20.25h-4.5m4.5 0v-4.5m0 4.5l-6-6" />
-                            </svg>
-                        </button>
-                    </div>
-
+                <!-- Tensión / Magnetismo (Derecha - Botón HUD Esmerilado) -->
+                <div class="flex items-center justify-end h-full py-1.5 bg-transparent">
+                    <button id="sub-reps-tension-trigger" class="group flex flex-col-reverse items-end text-right px-2 sm:px-3 h-full w-full justify-center hud-btn-glass rounded focus:outline-none cursor-pointer">
+                        <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">↖ Tensión</span>
+                        <span id="sub-reps-tension" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text standard-num">0.0</span>
+                    </button>
                 </div>
             </div>
         </div>
-    </footer>
+
+        <!-- BLOQUE 1: FILA DE FIRMA Y CONFIGURACIÓN (H: 44px) -->
+        <div class="w-full h-11 min-h-[44px] max-h-[44px] relative z-10 overflow-hidden bg-transparent">
+            <div class="w-full h-full px-4 sm:px-8 grid grid-cols-[auto_auto_1fr_auto_auto] items-center uppercase tracking-[0.3em] sm:tracking-[0.4em] font-mono text-[8px] text-jako-text/20 select-none gap-4 sm:gap-6">
+                
+                <!-- 1. Marcador Izquierdo -->
+                <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px] min-w-[24px]"></div>
+
+                <!-- 2. Estado Interno Izquierdo -->
+                <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px] min-w-[24px]"></div>
+                
+                <!-- 3. Identidad Central de Firma (Powered by) -->
+                <div class="text-center font-bold tracking-[0.3em] sm:tracking-[0.4em] text-jako-text/15 hover:text-jako-text/50 transition-all duration-300 h-full flex items-center justify-center whitespace-nowrap">
+                    <a href="https://jako.world" class="h-full w-full flex items-center justify-center focus:outline-none">POWERED BY JAKO.WORLD</a>
+                </div>
+
+                <!-- 4. Estado Interno Derecho -->
+                <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px]"></div>
+
+                <!-- 5. Disparador Inferior Derecho (Modo Inmersión Zenith) -->
+                <div class="flex items-center h-full">
+                    <button id="footer-fn-right-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Activar Modo Zenith">
+                        <svg id="footer-raw-indicator" class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75h4.5m-4.5 0v4.5m0-4.5L9 9M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9M3.75 20.25h4.5m-4.5 0v-4.5m0 4.5L9 15M20.25 20.25h-4.5m4.5 0v-4.5m0 4.5l-6-6" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</footer>
 
 <script>
     // =========================================================================
