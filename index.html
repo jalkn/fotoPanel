@@ -77,9 +77,9 @@
         .glass { 
             background: var(--jako-glass);
             border: 1px solid var(--jako-border); 
-            backdrop-filter: blur(30px); 
-            -webkit-backdrop-filter: blur(30px);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05), inset 0 1px 0 var(--jako-border);
             transform: translateZ(0);
             transition: background 0.5s ease, border-color 0.5s ease;
         }
@@ -88,23 +88,23 @@
         header.glass { 
             background: transparent !important;
             border-bottom: 1px solid var(--jako-border); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(4px); 
+            -webkit-backdrop-filter: blur(4px);
             box-shadow: none;
         }
 
-        /* BOTONES CENTRALES / HUD INTERACTIVOS (Efecto Adhesivo Esmerilado sobre Vidrio) */
+        /* BOTONES CENTRALES / HUD INTERACTIVOS (Esmerilado Real sobre Vidrio) */
         .hud-btn-glass {
-            background: var(--jako-text) !important;
+            background: var(--jako-glass) !important;
             border: 1px solid var(--jako-border);
             backdrop-filter: blur(20px) saturate(120%);
             -webkit-backdrop-filter: blur(20px) saturate(120%);
-            box-shadow: inset 0 1px 1px var(--jako-text), 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: inset 0 1px 1px var(--jako-border), 0 4px 12px rgba(0,0,0,0.02);
             transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .hud-btn-glass:hover {
-            background: var(--jako-text) !important;
+            background: var(--jako-glass) !important;
             border-color: var(--jako-text);
         }
 
@@ -188,7 +188,7 @@
 
     <div id="page-bg-overlay"></div>
 <!-- HEADER OPTIMIZADO: Transparencia absoluta y estandarización HUD -->
-<header class="fixed top-0 left-0 w-full max-h-[155px] z-50 glass overflow-hidden">
+<header class="fixed top-0 left-0 w-full max-h-[155px] z-50 glass overflow-hidden bg-transparent">
     <div class="w-full flex flex-col h-full justify-start bg-transparent">
         
         <!-- BLOQUE 1: GRID PRINCIPAL DE CATEGORÍAS (H: 65px/72px) -->
