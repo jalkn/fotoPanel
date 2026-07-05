@@ -93,19 +93,37 @@
             box-shadow: none;
         }
 
-        /* BOTONES CENTRALES / HUD INTERACTIVOS (Esmerilado Real sobre Vidrio) */
+        /* =========================================================================
+        SISTEMA DE INTERFAZ HUD LINEAL (BORDES Y TEXTOS GRISES)
+        ========================================================================= */
+
+        /* Comportamiento Base (Gris Neutro para bordes, textos y flechas) */
         .hud-btn-glass {
-            background: var(--jako-glass) !important;
-            border: 1px solid var(--jako-border);
-            backdrop-filter: blur(20px) saturate(120%);
-            -webkit-backdrop-filter: blur(20px) saturate(120%);
-            box-shadow: inset 0 1px 1px var(--jako-border), 0 4px 12px rgba(0,0,0,0.02);
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            background: transparent !important;
+            border: 1px solid rgba(128, 128, 128, 0.4) !important;
+            color: rgba(128, 128, 128, 0.7) !important;
+            box-shadow: none !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: border-color 0.3s ease, color 0.3s ease;
         }
 
-        .hud-btn-glass:hover {
-            background: var(--jako-glass) !important;
-            border-color: var(--jako-text);
+        /* Comportamiento en HOVER según el tema activo */
+        :root[data-theme="dark"] .hud-btn-glass:hover {
+            border-color: #ffffff !important;
+            color: #ffffff !important;
+        }
+
+        :root[data-theme="white"] .hud-btn-glass:hover {
+            border-color: #000000 !important;
+            color: #000000 !important;
+        }
+
+        /* Forzar que las flechas y textos internos hereden el color del contenedor */
+        .hud-btn-glass span, 
+        .hud-btn-glass button span {
+            color: inherit !important;
+            transition: color 0.3s ease;
         }
 
         .border-custom { 
@@ -206,16 +224,16 @@
                 </button>
             </div>
 
-            <!-- Centro: Menú Global Dinámico (Tipo agua/esmerilado sobre vidrio) -->
-            <div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-8 w-full items-center max-w-[180px] sm:max-w-xs mx-auto hud-btn-glass rounded px-1">
-                <button id="btn-variant-prev" class="h-full flex items-center justify-center text-jako-text/30 hover:text-jako-text transition-all focus:outline-none cursor-pointer bg-transparent border-none">
-                    <span class="text-[11px] font-black">&lt;</span>
-                </button>
-                <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center text-center select-none overflow-hidden group bg-transparent"></div>
-                <button id="btn-variant-next" class="h-full flex items-center justify-center text-jako-text/30 hover:text-jako-text transition-all focus:outline-none cursor-pointer bg-transparent border-none">
-                    <span class="text-[11px] font-black">&gt;</span>
-                </button>
-            </div>
+<!-- Centro: Menú Global Dinámico (Limpio Sin Calado) -->
+<div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-8 w-full items-center max-w-[180px] sm:max-w-xs mx-auto hud-btn-glass rounded px-1">
+    <button id="btn-variant-prev" class="h-full flex items-center justify-center transition-all focus:outline-none cursor-pointer bg-transparent border-none">
+        <span class="text-[11px] font-black">&lt;</span>
+    </button>
+    <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center text-center select-none overflow-hidden group bg-transparent"></div>
+    <button id="btn-variant-next" class="h-full flex items-center justify-center transition-all focus:outline-none cursor-pointer bg-transparent border-none">
+        <span class="text-[11px] font-black">&gt;</span>
+    </button>
+</div>
 
             <!-- Derecha: Switch Acromático (Sin background, solo ícono toggle) -->
             <div class="flex items-center justify-end h-full bg-transparent">
@@ -242,16 +260,16 @@
                     </button>
                 </div>
 
-                <!-- Variantes Específicas del Item Seleccionado (Centro - Botón HUD Esmerilado) -->
-                <div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-8 w-full items-center max-w-[180px] sm:max-w-xs mx-auto hud-btn-glass rounded px-1">
-                    <button id="btn-header-variant-prev" class="h-full flex items-center justify-center text-jako-text/30 hover:text-jako-text transition-all focus:outline-none cursor-pointer bg-transparent border-none">
-                        <span class="text-[11px] font-black">&lt;</span>
-                    </button>
-                    <div id="menu-bio-DYNAMIC-holder-header" class="h-full w-full flex items-center justify-center text-center select-none overflow-hidden group bg-transparent"></div>
-                    <button id="btn-header-variant-next" class="h-full flex items-center justify-center text-jako-text/30 hover:text-jako-text transition-all focus:outline-none cursor-pointer bg-transparent border-none">
-                        <span class="text-[11px] font-black">&gt;</span>
-                    </button>
-                </div>
+<!-- Variantes Específicas del Item Seleccionado (Centro - Botón HUD Esmerilado) -->
+<div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-8 w-full items-center max-w-[180px] sm:max-w-xs mx-auto hud-btn-glass rounded px-1">
+    <button id="btn-header-variant-prev" class="h-full flex items-center justify-center text-jako-text/40 hover:text-jako-text transition-all focus:outline-none cursor-pointer bg-transparent border-none">
+        <span class="text-[11px] font-black">&lt;</span>
+    </button>
+    <div id="menu-bio-DYNAMIC-holder-header" class="h-full w-full flex items-center justify-center text-center select-none overflow-hidden group bg-transparent text-jako-text"></div>
+    <button id="btn-header-variant-next" class="h-full flex items-center justify-center text-jako-text/40 hover:text-jako-text transition-all focus:outline-none cursor-pointer bg-transparent border-none">
+        <span class="text-[11px] font-black">&gt;</span>
+    </button>
+</div>
 
                 <!-- DIALS (Derecha - Botón HUD Esmerilado) -->
                 <div class="flex items-center justify-end h-full py-1.5 bg-transparent">
@@ -1059,26 +1077,24 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
             ? (VAULT_DICTIONARY[activeLang][currentBioItem] || currentBioItem)
             : currentBioItem;
 
-        // --- SANITIZACIÓN DE TEXTO PARA EVITAR REPETICIONES (Ej: PANEL40X40 -> 40X40) ---
-        // Limpia el prefijo "PANEL" solo si existe al inicio del label de la variante
+        // --- SANITIZACIÓN DE TEXTO PARA EVITAR REPETICIONES ---
         const cleanedVariantLabel = variantConfig.label.replace(/^PANEL/, '');
 
-        // --- INYECCIÓN RESPONDIDAS CON ESTILO SEGURO ---
-        
-        // 1. Selector Superior de Items (Menú Global)
+// --- INYECCIÓN CON BLINDAJE DE CONTRASTE Y RESET DE TRANSPARENCIAS ---
         const holderFooter = getCachedEl('menu-bio-DYNAMIC-holder');
         if (holderFooter) {
+            holderFooter.className = "h-full w-full flex items-center justify-center text-center select-none overflow-hidden group bg-transparent";
             holderFooter.innerHTML = `
-                <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[11px] font-black text-jako-text transition-all duration-300">
+                <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[11px] font-black transition-all duration-300">
                     ${labelTextItem}
                 </span>`;
         }
 
-        // 2. Selector Inferior de Variantes (Matriz Central)
         const holderHeader = getCachedEl('menu-bio-DYNAMIC-holder-header');
         if (holderHeader) {
+            holderHeader.className = "h-full w-full flex items-center justify-center text-center select-none overflow-hidden group bg-transparent";
             holderHeader.innerHTML = `
-                <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[11px] font-black text-jako-text transition-all duration-300">
+                <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[11px] font-black transition-all duration-300">
                     ${cleanedVariantLabel}
                 </span>`;
         }
@@ -1185,7 +1201,7 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
         window.open(`https://api.whatsapp.com/send?phone=${numeroCelular}&text=${encodeURIComponent(mensaje)}`, '_blank');
     }
 
-    function inicializarModoZenith() {
+function inicializarModoZenith() {
         const triggerZenith = getCachedEl('footer-fn-right-trigger');
         const indicatorRaw = getCachedEl('footer-raw-indicator');
         const mainVault = getCachedEl('main-vault');
@@ -1199,22 +1215,30 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
 
             if (isZenithActive) {
                 document.body.classList.add('zenith-active');
+                
+                // Forzar scroll superior suave para una lectura e inmersión limpia
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
                 if (indicatorRaw) {
                     indicatorRaw.classList.replace('text-jako-text/20', 'text-jako-text');
                     indicatorRaw.classList.replace('opacity-20', 'opacity-100');
                     indicatorRaw.style.filter = "drop-shadow(0 0 6px var(--jako-led))";
                 }
+                
                 triggerHaptic([40, 15]);
             } else {
                 document.body.classList.remove('zenith-active');
+                
                 if (indicatorRaw) {
                     indicatorRaw.classList.replace('text-jako-text', 'text-jako-text/20');
                     indicatorRaw.classList.replace('opacity-100', 'opacity-20');
                     indicatorRaw.style.filter = "none";
                 }
+                
                 triggerHaptic([15]);
             }
         };
+
 
         triggerZenith.addEventListener('click', toggleZenith);
 
