@@ -1053,24 +1053,25 @@
         if (elDim) elDim.textContent = variantConfig.telemetry.DIM;
         if (elDial) elDial.textContent = variantConfig.telemetry.DIAL;
 
-        // --- ACTUALIZACIÓN INTEGRADA AL ECOSISTEMA HUD ---
-        const dynamicHolder = getCachedEl('menu-bio-DYNAMIC-holder');
-        if (dynamicHolder) {
-            // 1. Mapeamos a través del diccionario de idioma si existe, o usamos el fallback limpio.
-            const activeLang = typeof currentLang !== 'undefined' ? currentLang : 'ES';
-            const labelText = (typeof VAULT_DICTIONARY !== 'undefined' && VAULT_DICTIONARY[activeLang])
-                ? (VAULT_DICTIONARY[activeLang][currentBioItem] || currentBioItem)
-                : currentBioItem;
+        // --- ACTUALIZACIÓN INTEGRADA AL ECOSISTEMA HUD ESPEJADO ---
+        const activeLang = typeof currentLang !== 'undefined' ? currentLang : 'esp';
+        const labelText = (typeof VAULT_DICTIONARY !== 'undefined' && VAULT_DICTIONARY[activeLang])
+            ? (VAULT_DICTIONARY[activeLang][currentBioItem] || currentBioItem)
+            : currentBioItem;
 
-            // 2. Inyección de texto limpio con tracking HUD refinado
-            dynamicHolder.innerHTML = `
-                <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[10px] sm:text-[11px] font-black transition-all duration-300">
-                    ${labelText}
-                </span>`;
-            
-            // Respeta el comportamiento pasivo/activo del menú integrado.
-            dynamicHolder.className = "h-full w-full flex items-center justify-center cursor-default text-jako-text/90 select-none transition-all duration-300 mx-auto";
-        }
+        const templateHtml = `
+            <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[10px] sm:text-[11px] font-black transition-all duration-300">
+                ${labelText}
+            </span>`;
+
+        // Inyección controlada tanto en el header como en el footer manteniendo el comportamiento interactivo
+        const holders = [getCachedEl('menu-bio-DYNAMIC-holder'), getCachedEl('menu-bio-DYNAMIC-holder-header')];
+        holders.forEach(holder => {
+            if (holder) {
+                holder.innerHTML = templateHtml;
+                holder.className = "h-full w-full flex items-center justify-center cursor-pointer text-jako-text/90 select-none transition-all duration-300 mx-auto";
+            }
+        });
     }
 
     function habilitarReveladoTelemetria() {
