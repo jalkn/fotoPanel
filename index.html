@@ -94,36 +94,41 @@
         }
 
         /* =========================================================================
-        SISTEMA DE INTERFAZ HUD LINEAL (BORDES Y TEXTOS GRISES)
+        SISTEMA DE INTERFAZ HUD HIPERREALISTA (ASÉPTICO / SINOPSIS ÓPTICA)
         ========================================================================= */
 
-        /* Comportamiento Base (Gris Neutro para bordes, textos y flechas) */
-        .hud-btn-glass {
+        /* Eliminamos la caja contenedora física, el borde y el fondo plano */
+        .hud-btn-hyper {
             background: transparent !important;
-            border: 1px solid rgba(128, 128, 128, 0.4) !important;
-            color: rgba(128, 128, 128, 0.7) !important;
+            border: 1px solid transparent !important;
             box-shadow: none !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transition: border-color 0.3s ease, color 0.3s ease;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            color: var(--jako-text) !important;
         }
 
-        /* Comportamiento en HOVER según el tema activo */
-        :root[data-theme="dark"] .hud-btn-glass:hover {
-            border-color: #ffffff !important;
-            color: #ffffff !important;
+        /* Opacidad Base del Contenido en Reposo (Gris óptico por transparencia) */
+        .hud-btn-hyper span,
+        .hud-btn-hyper button span {
+            color: var(--jako-text) !important;
+            opacity: 0.35; /* Simula un LCD o grabado tenue */
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), text-shadow 0.3s ease;
         }
 
-        :root[data-theme="white"] .hud-btn-glass:hover {
-            border-color: #000000 !important;
-            color: #000000 !important;
+        /* Hover Selectivo: Solo se ilumina el elemento interactivo individual, NO la caja */
+        .hud-btn-hyper button:hover span {
+            opacity: 1 !important;
         }
 
-        /* Forzar que las flechas y textos internos hereden el color del contenedor */
-        .hud-btn-glass span, 
-        .hud-btn-glass button span {
-            color: inherit !important;
-            transition: color 0.3s ease;
+        /* El texto dinámico central reacciona levemente al pasar sobre el bloque entero */
+        .hud-btn-hyper:hover #menu-bio-DYNAMIC-holder span,
+        .hud-btn-hyper:hover #menu-bio-DYNAMIC-holder-header span {
+            opacity: 0.85;
+        }
+
+        /* Efecto Emisión sutil al hacer hover en las flechas de control (Modo Oscuro) */
+        :root[data-theme="dark"] .hud-btn-hyper button:hover span {
+            text-shadow: 0 0 8px var(--jako-led);
         }
 
         .border-custom { 
@@ -224,14 +229,14 @@
                 </button>
             </div>
 
-<!-- Centro: Menú Global Dinámico (Limpio Sin Calado) -->
-<div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-8 w-full items-center max-w-[180px] sm:max-w-xs mx-auto hud-btn-glass rounded px-1">
+<!-- Centro: Menú Global Dinámico (Hiperrealismo Aséptico) -->
+<div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-8 w-full items-center max-w-[180px] sm:max-w-xs mx-auto hud-btn-hyper rounded px-1 select-none">
     <button id="btn-variant-prev" class="h-full flex items-center justify-center transition-all focus:outline-none cursor-pointer bg-transparent border-none">
-        <span class="text-[11px] font-black">&lt;</span>
+        <span class="font-mono text-[11px] font-black">&lt;</span>
     </button>
-    <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center text-center select-none overflow-hidden group bg-transparent"></div>
+    <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center text-center overflow-hidden bg-transparent"></div>
     <button id="btn-variant-next" class="h-full flex items-center justify-center transition-all focus:outline-none cursor-pointer bg-transparent border-none">
-        <span class="text-[11px] font-black">&gt;</span>
+        <span class="font-mono text-[11px] font-black">&gt;</span>
     </button>
 </div>
 
