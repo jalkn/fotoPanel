@@ -317,8 +317,7 @@
                             <path id="textPath-bottom" d="M 65,200 A 135,135 0 0,0 335,200" />
                         </defs>
                         
-                        <g id="wave-quantum-container" class="origin-center -rotate-90">
-                            </g>
+                        <g id="wave-quantum-container" class="origin-center -rotate-90"></g>
 
                         <!-- RESTAURACIÓN DE SANDWATCH Y COORDINADA ALFANUMÉRICA -->
                         <g id="sandwatch-group" class="origin-center opacity-0 transition-all duration-500 pointer-events-none style-gpu" style="will-change: opacity;">
@@ -340,6 +339,15 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Lanzador de Modo Zenith posicionado en la esquina inferior derecha -->
+    <div class="absolute bottom-6 right-6 sm:right-8 z-50 flex items-center h-11">
+        <button id="footer-fn-right-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Activar Modo Zenith">
+            <svg id="footer-raw-indicator" class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75h4.5m-4.5 0v4.5m0-4.5L9 9M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9M3.75 20.25h4.5m-4.5 0v-4.5m0 4.5L9 15M20.25 20.25h-4.5m4.5 0v-4.5m0 4.5l-6-6" />
+            </svg>
+        </button>
     </div>
 </main>
 
@@ -404,26 +412,7 @@
     </div>
 </div>
 
-<!-- BLOQUE 7: FILA DE FIRMA Y CONFIGURACIÓN (H: 44px) -->
-<div class="w-full h-11 min-h-[44px] max-h-[44px] relative z-10 overflow-hidden bg-transparent border-t border-jako-border">
-    <div class="w-full h-full px-4 sm:px-8 grid grid-cols-[auto_auto_1fr_auto_auto] items-center uppercase tracking-[0.3em] sm:tracking-[0.4em] font-mono text-[8px] text-jako-text/20 select-none gap-4 sm:gap-6">
-        <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px] min-w-[24px]"></div>
-        <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px] min-w-[24px]"></div>
-        
-        <div class="text-center font-bold tracking-[0.3em] sm:tracking-[0.4em] text-jako-text/15 hover:text-jako-text/50 transition-all duration-300 h-full flex items-center justify-center whitespace-nowrap">
-            <a href="https://jako.world" class="h-full w-full flex items-center justify-center focus:outline-none">POWERED BY JAKO.WORLD</a>
-        </div>
 
-        <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px]"></div>
-        <div class="flex items-center h-full">
-            <button id="footer-fn-right-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Activar Modo Zenith">
-                <svg id="footer-raw-indicator" class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75h4.5m-4.5 0v4.5m0-4.5L9 9M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9M3.75 20.25h4.5m-4.5 0v-4.5m0 4.5L9 15M20.25 20.25h-4.5m4.5 0v-4.5m0 4.5l-6-6" />
-                </svg>
-            </button>
-        </div>
-    </div>
-</div>
 
     </div>
 </footer>
