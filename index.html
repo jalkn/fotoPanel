@@ -104,31 +104,35 @@
             box-shadow: none !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
-            color: var(--jako-text) !important;
         }
 
         /* Opacidad Base del Contenido en Reposo (Gris óptico por transparencia) */
         .hud-btn-hyper span,
-        .hud-btn-hyper button span {
+        .hud-btn-hyper button span,
+        #menu-bio-DYNAMIC-holder span,
+        #menu-bio-DYNAMIC-holder-header span {
             color: var(--jako-text) !important;
-            opacity: 0.35; /* Simula un LCD o grabado tenue */
-            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), text-shadow 0.3s ease;
+            opacity: 0.25; /* El gris puramente óptico en reposo */
+            text-shadow: none !important;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Hover Selectivo: Solo se ilumina el elemento interactivo individual, NO la caja */
-        .hud-btn-hyper button:hover span {
+        /* ESTADO ACTIVO SECO: Sólido, nítido y sin difuminados (Glow Cero) */
+        .hud-btn-hyper .active-led,
+        #menu-bio-DYNAMIC-holder .active-led,
+        #menu-bio-DYNAMIC-holder-header .active-led {
             opacity: 1 !important;
+            text-shadow: none !important;
         }
 
-        /* El texto dinámico central reacciona levemente al pasar sobre el bloque entero */
-        .hud-btn-hyper:hover #menu-bio-DYNAMIC-holder span,
-        .hud-btn-hyper:hover #menu-bio-DYNAMIC-holder-header span {
-            opacity: 0.85;
+        /* Emisión LED sutil según el data-theme activo */
+        :root[data-theme="dark"] .active-led {
+            text-shadow: 0 0 10px var(--jako-led), 0 0 4px var(--jako-led) !important;
         }
 
-        /* Efecto Emisión sutil al hacer hover en las flechas de control (Modo Oscuro) */
-        :root[data-theme="dark"] .hud-btn-hyper button:hover span {
-            text-shadow: 0 0 8px var(--jako-led);
+        :root[data-theme="white"] .active-led {
+            /* En modo claro, un negro nítido de alta densidad con un text-shadow oscuro sutil */
+            text-shadow: 0 0 6px var(--jako-led) !important;
         }
 
         .border-custom { 
@@ -253,33 +257,31 @@
             </div>
         </div>
 
-        <!-- BLOQUE 2: TELEMETRÍA DE SUB-VARIANTES INTEGRADA (H: 48px) -->
+<!-- BLOQUE 2: TELEMETRÍA DE SUB-VARIANTES INTEGRADA (H: 48px) -->
         <div class="w-full flex flex-col bg-transparent border-t border-jako-text/5">
             <div class="w-full grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center justify-between px-4 sm:px-8 h-12 select-none bg-transparent">
                 
-                <!-- CMS (Izquierda - Botón HUD Esmerilado) -->
+                <!-- CMS (Izquierda - Botón HUD Hiperrealista) -->
                 <div class="flex items-center justify-start h-full py-1.5 bg-transparent">
-                    <button id="telemetry-product-dim-trigger" class="group flex flex-col-reverse items-start text-left px-2 sm:px-3 h-full w-full justify-center hud-btn-glass rounded focus:outline-none cursor-pointer">
-                        <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">CMS ↗</span>
+                    <button id="telemetry-product-dim-trigger" class="group flex flex-col-reverse items-start text-left px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
                         <span id="telemetry-product-dim" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text">--</span>
                     </button>
                 </div>
 
-<!-- Variantes Específicas del Item Seleccionado (Centro - Botón HUD Esmerilado) -->
-<div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-8 w-full items-center max-w-[180px] sm:max-w-xs mx-auto hud-btn-glass rounded px-1">
-    <button id="btn-header-variant-prev" class="h-full flex items-center justify-center text-jako-text/40 hover:text-jako-text transition-all focus:outline-none cursor-pointer bg-transparent border-none">
-        <span class="text-[11px] font-black">&lt;</span>
-    </button>
-    <div id="menu-bio-DYNAMIC-holder-header" class="h-full w-full flex items-center justify-center text-center select-none overflow-hidden group bg-transparent text-jako-text"></div>
-    <button id="btn-header-variant-next" class="h-full flex items-center justify-center text-jako-text/40 hover:text-jako-text transition-all focus:outline-none cursor-pointer bg-transparent border-none">
-        <span class="text-[11px] font-black">&gt;</span>
-    </button>
-</div>
+                <!-- Variantes Específicas del Item Seleccionado (Centro - Botón HUD Hiperrealista) -->
+                <div class="grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-8 w-full items-center max-w-[180px] sm:max-w-xs mx-auto hud-btn-hyper rounded px-1">
+                    <button id="btn-header-variant-prev" class="h-full flex items-center justify-center text-jako-text/40 hover:text-jako-text transition-all focus:outline-none cursor-pointer bg-transparent border-none">
+                        <span class="text-[11px] font-black">&lt;</span>
+                    </button>
+                    <div id="menu-bio-DYNAMIC-holder-header" class="h-full w-full flex items-center justify-center text-center select-none overflow-hidden group bg-transparent text-jako-text"></div>
+                    <button id="btn-header-variant-next" class="h-full flex items-center justify-center text-jako-text/40 hover:text-jako-text transition-all focus:outline-none cursor-pointer bg-transparent border-none">
+                        <span class="text-[11px] font-black">&gt;</span>
+                    </button>
+                </div>
 
-                <!-- DIALS (Derecha - Botón HUD Esmerilado) -->
+                <!-- DIALS (Derecha - Botón HUD Hiperrealista) -->
                 <div class="flex items-center justify-end h-full py-1.5 bg-transparent">
-                    <button id="telemetry-product-dial-trigger" class="group flex flex-col-reverse items-end text-right px-2 sm:px-3 h-full w-full justify-center hud-btn-glass rounded focus:outline-none cursor-pointer">
-                        <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">↖ DIALS</span>
+                    <button id="telemetry-product-dial-trigger" class="group flex flex-col-reverse items-end text-right px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
                         <span id="telemetry-product-dial" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text">--</span>
                     </button>
                 </div>
@@ -1021,8 +1023,8 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
     };
     
     const PULS_MEANINGS = {
-        'sub-sets-solar-trigger': "ONDA INTERNA DE FRECUENCIA COAXIAL TIERRA-LUNA-SOL.", 
-        'sub-reps-tension-trigger': "ONDA EXTERNA DE MAGNETISMO GRAVITACIONAL.", 
+        'sub-sets-solar-trigger': "FRECUENCIA COAXIAL TIERRA-LUNA-SOL.", 
+        'sub-reps-tension-trigger': "MAGNETISMO GRAVITACIONAL.", 
         'z-dial-trigger': () => {
             const coord = getCachedEl('z-dial-mirror')?.textContent || "1P1";
             const match = coord.match(/^(\d+)([A-Z]+)(\d+)$/);
@@ -1085,21 +1087,21 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
         // --- SANITIZACIÓN DE TEXTO PARA EVITAR REPETICIONES ---
         const cleanedVariantLabel = variantConfig.label.replace(/^PANEL/, '');
 
-// --- INYECCIÓN CON BLINDAJE DE CONTRASTE Y RESET DE TRANSPARENCIAS ---
+        // --- INYECCIÓN CON CLASE ACTIVE-LED FIJA (SIN HOVER MOBILE) ---
         const holderFooter = getCachedEl('menu-bio-DYNAMIC-holder');
         if (holderFooter) {
-            holderFooter.className = "h-full w-full flex items-center justify-center text-center select-none overflow-hidden group bg-transparent";
+            holderFooter.className = "h-full w-full flex items-center justify-center text-center select-none overflow-hidden bg-transparent";
             holderFooter.innerHTML = `
-                <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[11px] font-black transition-all duration-300">
+                <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[11px] font-black active-led">
                     ${labelTextItem}
                 </span>`;
         }
 
         const holderHeader = getCachedEl('menu-bio-DYNAMIC-holder-header');
         if (holderHeader) {
-            holderHeader.className = "h-full w-full flex items-center justify-center text-center select-none overflow-hidden group bg-transparent";
+            holderHeader.className = "h-full w-full flex items-center justify-center text-center select-none overflow-hidden bg-transparent";
             holderHeader.innerHTML = `
-                <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[11px] font-black transition-all duration-300">
+                <span class="tracking-[0.25em] sm:tracking-[0.35em] uppercase font-sans text-[11px] font-black active-led">
                     ${cleanedVariantLabel}
                 </span>`;
         }
