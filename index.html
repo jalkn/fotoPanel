@@ -71,7 +71,7 @@
         background: radial-gradient(circle at 50% 50%, var(--gradient-start) 15%, var(--gradient-mid) 80%, var(--gradient-end) 100%);
         z-index: -1;
         transform: translateZ(0);
-        
+
         will-change: background;
         transition: background 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     }
@@ -208,7 +208,7 @@
 
     <div class="h-full w-full flex items-center justify-center text-center overflow-hidden">
         <span class="font-mono text-xs sm:text-sm font-black tracking-[0.25em] text-jako-text active-led">
-            JAKO VAULT
+            JAKO.DEV
         </span>
     </div>
 
@@ -336,25 +336,10 @@
             </button>
         </div>
 
-        <!-- Centro: Menú Global Unificado -->
-        <div class="grid grid-cols-[36px_1fr_36px] sm:grid-cols-[44px_1fr_44px] gap-1 h-9 w-full items-center max-w-[200px] sm:max-w-xs mx-auto hud-btn-hyper rounded px-1 select-none">
-            <!-- Izquierda: Prev Ítem (Click) / Prev Variante -->
-            <div class="h-full flex flex-col items-center justify-center text-jako-text/40 hover:text-jako-text transition-all">
-                <button id="btn-header-variant-prev" class="w-full text-[8px] leading-none focus:outline-none cursor-pointer bg-transparent border-none py-0.5" title="Variante Anterior">▲</button>
-                <button id="btn-variant-prev" class="w-full text-[11px] font-mono font-black leading-none focus:outline-none cursor-pointer bg-transparent border-none py-0.5" title="Ítem Anterior">&lt;</button>
-            </div>
-
-            <!-- Contenedor Dinámico de Texto (Pila Vertical Aséptica) -->
-            <div class="h-full w-full flex flex-col items-center justify-center text-center overflow-hidden bg-transparent py-0.5">
-                <div id="menu-bio-DYNAMIC-holder" class="h-4 w-full flex items-center justify-center overflow-hidden"></div>
-                <div id="menu-bio-DYNAMIC-holder-header" class="h-3 w-full flex items-center justify-center overflow-hidden text-[9px] opacity-40"></div>
-            </div>
-
-            <!-- Derecha: Next Ítem (Click) / Next Variante -->
-            <div class="h-full flex flex-col items-center justify-center text-jako-text/40 hover:text-jako-text transition-all">
-                <button id="btn-header-variant-next" class="w-full text-[8px] leading-none focus:outline-none cursor-pointer bg-transparent border-none py-0.5" title="Siguiente Variante">▼</button>
-                <button id="btn-variant-next" class="w-full text-[11px] font-mono font-black leading-none focus:outline-none cursor-pointer bg-transparent border-none py-0.5" title="Siguiente Ítem">&gt;</button>
-            </div>
+        <!-- Centro: Contenedor Dinámico de Texto (Pila Vertical Aséptica) -->
+        <div class="h-full w-full flex flex-col items-center justify-center text-center overflow-hidden bg-transparent py-0.5 max-w-[200px] sm:max-w-xs mx-auto select-none">
+            <div id="menu-bio-DYNAMIC-holder" class="h-4 w-full flex items-center justify-center overflow-hidden"></div>
+            <div id="menu-bio-DYNAMIC-holder-header" class="h-3 w-full flex items-center justify-center overflow-hidden text-[9px] opacity-40"></div>
         </div>
 
         <!-- DIALS (Derecha) -->
@@ -375,8 +360,11 @@
         </span>
     </div>
 </div>
-<div class="px-4 sm:px-8 grid grid-cols-2 items-center uppercase tracking-widest font-mono text-[11px] h-[65px] sm:h-[72px] min-h-[65px] sm:min-h-[72px] select-none bg-transparent">
+
+<!-- BLOQUE 7: CONFIGURACIÓN -->
+<div class="px-4 sm:px-8 grid grid-cols-[44px_1fr_44px] items-center uppercase tracking-widest font-mono text-[11px] h-[65px] sm:h-[72px] min-h-[65px] sm:min-h-[72px] select-none bg-transparent">
     
+    <!-- Izquierda: Conmutador Idioma -->
     <div class="flex items-center justify-start h-full bg-transparent">
         <button id="lang-toggle-trigger" class="group flex items-center h-full transition-all duration-300 focus:outline-none cursor-pointer bg-transparent border-none p-0" title="Conmutar Idioma">
             <svg class="w-3.5 h-3.5 text-jako-text opacity-40 group-hover:opacity-100 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24">
@@ -387,6 +375,22 @@
         </button>
     </div>
 
+    <!-- Centro: Fila Navegacional Unificada (Controles del Catálogo) -->
+    <div class="flex items-center justify-center gap-4 sm:gap-6 h-full bg-transparent text-jako-text font-mono">
+        <!-- Ítem Anterior (<) -->
+        <button id="btn-variant-prev" class="opacity-40 hover:opacity-100 transition-all duration-300 text-[12px] font-black focus:outline-none cursor-pointer bg-transparent border-none px-2 py-1" title="Ítem Anterior">&lt;</button>
+        
+        <!-- Variante Anterior (▲) -->
+        <button id="btn-header-variant-prev" class="opacity-40 hover:opacity-100 transition-all duration-300 text-[9px] focus:outline-none cursor-pointer bg-transparent border-none px-2 py-1" title="Variante Anterior">▲</button>
+        
+        <!-- Siguiente Variante (▼) -->
+        <button id="btn-header-variant-next" class="opacity-40 hover:opacity-100 transition-all duration-300 text-[9px] focus:outline-none cursor-pointer bg-transparent border-none px-2 py-1" title="Siguiente Variante">▼</button>
+        
+        <!-- Siguiente Ítem (>) -->
+        <button id="btn-variant-next" class="opacity-40 hover:opacity-100 transition-all duration-300 text-[12px] font-black focus:outline-none cursor-pointer bg-transparent border-none px-2 py-1" title="Siguiente Ítem">&gt;</button>
+    </div>
+
+    <!-- Derecha: Control Modo Zenith -->
     <div class="flex items-center justify-end h-full bg-transparent">
         <button id="footer-fn-right-trigger" class="group flex items-center h-full transition-all duration-300 focus:outline-none cursor-pointer bg-transparent border-none p-0" aria-label="Activar Modo Zenith" title="Activar Modo Zenith">
             <svg id="footer-raw-indicator" class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -403,7 +407,7 @@
 </footer>
 
 <script>
-    // =========================================================================
+// =========================================================================
     // SOURCE OF TRUTH: JAKO UNIFIED BIOMATRIC CATALOG (CHRONOLOGICAL EVOLUTION)
     // =========================================================================
     const JAKO_CATALOG = {
@@ -474,7 +478,7 @@
                     _metaPrice: '$125USD'
                 }
             }
-        },
+        }/*,
         'AERONEX': {
             defaultVariant: '1_HOUR',
             variants: {
@@ -643,7 +647,7 @@
                 },
                 'OMEGA_SHIELD': { 
                     label: 'OMEGA IMMUNE STACK', 
-                    desc: 'Estructura de micelio denso para blindaje biológico celular profundo.', 
+                    desc: 'Estructura de micelio denso para blindaje biological celular profundo.', 
                     spec: 'DEFENSE MULTI-MUSHROOM', 
                     id: 'BS-OMEGA',
                     img: 'img/omega-front.png', imgBack: 'img/omega-back.png', imgRaw: 'img/omega-raw.png',
@@ -653,7 +657,7 @@
                 }
             }
         }
-    };
+    */};
 
     // =========================================================================
     // MUTABLE HUD STATE DEPENDENCIES (CHRONOLOGICAL PRESETS)
