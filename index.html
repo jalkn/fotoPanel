@@ -29,7 +29,7 @@
         }
     </script>
 
-    <style>
+<style>
         /* VARIABLES ACROMÁTICAS DE ENTORNO MATRICIAL */
         :root[data-theme="dark"] {
             --jako-bg: rgba(5, 5, 8, 0.92);
@@ -40,6 +40,7 @@
             --gradient-start: rgba(255, 255, 255, 0.03);
             --gradient-mid: rgba(5, 5, 8, 0.85);
             --gradient-end: #000000;
+            --toggle-handle-transform: translate(28px, 3px);
         }
         :root[data-theme="white"] {
             --jako-bg: #f8f9fa;
@@ -50,6 +51,7 @@
             --gradient-start: rgba(0, 0, 0, 0.02);
             --gradient-mid: rgba(248, 249, 250, 0.85);
             --gradient-end: #ffffff;
+            --toggle-handle-transform: translate(3px, 3px);
         }
 
         /* MOTOR BASE DE LA INTERFAZ */
@@ -65,7 +67,6 @@
         #page-bg-overlay {
             position: fixed;
             inset: 0;
-            /* CAMBIAR ESTA LÍNEA: Usa los gradientes fijos del tema en lugar de --chroma */
             background: radial-gradient(circle at 50% 30%, var(--gradient-start) 0%, var(--gradient-mid) 65%, var(--gradient-end) 100%);
             z-index: -1;
             transform: translateZ(0);
@@ -73,7 +74,7 @@
             transition: background 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* VIDRIO HIPERREALISTA SIMÉTRICO */
+        /* VIDRIO HIPERREALISTA SIMÉTRICO Y ULTRA TRANSLÚCIDO */
         .glass { 
             background: var(--jako-glass);
             border: 1px solid var(--jako-border); 
@@ -84,7 +85,6 @@
             transition: background 0.5s ease, border-color 0.5s ease;
         }
 
-        /* VIDRIO HIPERREALISTA ULTRA TRANSLÚCIDO (HEADER SKELETON) */
         header.glass { 
             background: transparent !important;
             border-bottom: 1px solid var(--jako-border); 
@@ -93,11 +93,7 @@
             box-shadow: none;
         }
 
-        /* =========================================================================
-        SISTEMA DE INTERFAZ HUD HIPERREALISTA (ASÉPTICO / SINOPSIS ÓPTICA)
-        ========================================================================= */
-
-        /* Eliminamos la caja contenedora física, el borde y el fondo plano */
+        /* SISTEMA DE INTERFAZ HUD HIPERREALISTA (ASÉPTICO) */
         .hud-btn-hyper {
             background: transparent !important;
             border: 1px solid transparent !important;
@@ -106,7 +102,6 @@
             -webkit-backdrop-filter: none !important;
         }
 
-        /* Opacidad Base del Contenido en Reposo (Gris óptico por transparencia) */
         .hud-btn-hyper span,
         .hud-btn-hyper button span,
         #menu-bio-DYNAMIC-holder span,
@@ -116,7 +111,6 @@
             transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* ESTADO ACTIVO SECO: Sólido, nítido y sin difuminados (Glow Cero) */
         .hud-btn-hyper .active-led,
         #menu-bio-DYNAMIC-holder .active-led,
         #menu-bio-DYNAMIC-holder-header .active-led {
@@ -124,13 +118,12 @@
             text-shadow: none !important;
         }
 
-        /* Emisión LED sutil según el data-theme activo */
+        /* Emisión LED sutil según data-theme */
         :root[data-theme="dark"] .active-led {
             text-shadow: 0 0 10px var(--jako-led), 0 0 4px var(--jako-led) !important;
         }
 
         :root[data-theme="white"] .active-led {
-            /* En modo claro, un negro nítido de alta densidad con un text-shadow oscuro sutil */
             text-shadow: 0 0 6px var(--jako-led) !important;
         }
 
@@ -140,7 +133,6 @@
         }
         .border-custom:hover { border-color: var(--jako-text); }
 
-        /* EFECTO LED DINÁMICO (EMISIÓN NEUTRAL) */
         .tele-value { 
             color: var(--jako-text); 
             text-shadow: 0 0 14px var(--jako-led), 0 0 4px var(--jako-led);
@@ -148,7 +140,6 @@
             transition: color 0.5s ease, text-shadow 0.5s ease;
         } 
 
-        /* TRANSICIÓN DE GLOW SIN SALTOS OPTICOS */
         .img-glow-transition {
             transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             backface-visibility: hidden;
@@ -158,27 +149,18 @@
         }
 
         /* OCULTAMIENTO ASÉPTICO DE SCROLLS */
-        .custom-hud-scroll { 
-            -ms-overflow-style: none; 
-            scrollbar-width: none; 
-        }
         .custom-hud-scroll::-webkit-scrollbar { 
             display: none; 
             width: 0 !important;
             height: 0 !important;
         }
+        .custom-hud-scroll { 
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
+        }
 
         button, span, div {
             -webkit-tap-highlight-color: transparent;
-        }
-
-        :root[data-theme="dark"] {
-            /* ... tus variables actuales ... */
-            --toggle-handle-transform: translate(28px, 3px);
-        }
-        :root[data-theme="white"] {
-            /* ... tus variables actuales ... */
-            --toggle-handle-transform: translate(3px, 3px);
         }
 
         /* COMPORTAMIENTO MODO ZENITH (RAW) */
@@ -193,7 +175,6 @@
             transform: translateY(10px);
         }
 
-        /* El contenedor principal se expande para devorar el espacio libre */
         .zenith-active main {
             padding: 0 !important;
             transition: padding 0.6s cubic-bezier(0.25, 1, 0.5, 1);
@@ -223,7 +204,7 @@
      HEADER: BLOQUES 1, 6 & 5 OPTIMIZADOS (ORDEN INTERCAMBIADO)
      ========================================================================= -->
 
-<!-- BLOQUE 1 DUPLICADO: CENTRO ABSOLUTO (VAULT) -->
+<!-- BLOQUE 1: HEADER -->
 <div class="px-4 sm:px-8 grid grid-cols-1 items-center uppercase tracking-widest font-mono text-[11px] h-[65px] sm:h-[72px] min-h-[65px] sm:min-h-[72px] select-none bg-transparent">
     <!-- Centro Aséptico Absoluto: Texto VAULT -->
     <div class="h-full w-full flex items-center justify-center text-center overflow-hidden bg-transparent">
@@ -233,8 +214,17 @@
     </div>
 </div>
 
+<!-- BLOQUE 2: PULS MEANINGS -->
+<div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
+    <div class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl">
+        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none">
+            ONDA BIOCINÉTICA REGENERATIVA
+        </span>
+    </div>
+</div>
 
-<!-- ANTES BLOQUE 6: TELEMETRÍA DE COMPONENTES KINÉTICOS EVOLUCIONADO (H: 48px) - CORREGIDO STROKE -->
+
+<!-- BLOQUE 3: TELEMETRÍA DE COMPONENTES KINÉTICOS EVOLUCIONADO (H: 48px) - CORREGIDO STROKE -->
 <div class="w-full flex flex-col bg-transparent border-t border-jako-border">
     <div class="w-full grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center justify-between px-4 sm:px-8 h-12 select-none bg-transparent">
         
@@ -270,19 +260,12 @@
     </div>
 </div>
 
-<!-- ANTES BLOQUE 5: TELEMETRÍA SECUNDARIA (HUD Esmerilado Estabilizado) -->
-<div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
-    <div class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl">
-        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none">
-            ONDA BIOCINÉTICA REGENERATIVA
-        </span>
-    </div>
-</div>
+
 
     </div>
 </header>
 
-
+<!--BLOQUE 4: PULSE WATCH APP INTERFACE-->
 <main id="main-vault" class="w-full flex-1 flex flex-col justify-center items-center pt-[155px] pb-[195px] min-h-screen relative overflow-hidden"> 
     <div class="w-full flex flex-col items-center justify-center p-4 sm:p-6 select-none relative z-10">
         <div id="artepanel-pack-container" class="relative w-[65vw] h-[65vw] sm:w-[50vw] sm:h-[50vw] md:w-[38vh] md:h-[38vh] max-w-[340px] max-h-[340px] min-w-[200px] min-h-[200px] aspect-square shrink-0 drop-shadow-[0_25px_55px_rgba(0,0,0,0.85)] transition-all duration-300">
@@ -329,20 +312,10 @@
 <footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-jako-border transition-opacity duration-500 select-none transform translateZ(0) overflow-hidden bg-transparent">
     <div class="w-full flex flex-col h-full justify-end bg-transparent">
 
-<!-- =========================================================================
-     FOOTER: BLOQUES 3, 2 & 7 OPTIMIZADOS (ORDEN INTERCAMBIADO)
-     ========================================================================= -->
 
-<!-- ANTES BLOQUE 3: BARRA DE COMPRA COMUNIDAD (HUD Esmerilado Estabilizado) -->
-<div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
-    <div class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl">
-        <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none">
-            Tu compra financia un mural en espacio público
-        </span>
-    </div>
-</div>
 
-<!-- ANTES BLOQUE 2: TELEMETRÍA DE SUB-VARIANTES INTEGRADA + MENÚ GLOBAL (H: 48px) - CORREGIDO STROKE -->
+
+<!-- ANTES BLOQUE 5: TELEMETRÍA DE SUB-VARIANTES INTEGRADA + MENÚ GLOBAL (H: 48px) - CORREGIDO STROKE -->
 <div class="w-full flex flex-col bg-transparent border-t border-jako-border">
     <div class="w-full grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center justify-between px-4 sm:px-8 h-12 select-none bg-transparent">
         
@@ -385,7 +358,16 @@
     </div>
 </div>
 
-<!-- BLOQUE 1: GRID DE IDENTIDAD Y CONFIGURACIÓN (H: 65px/72px) -->
+<!-- BLOQUE 8: BARRA DE ATRIBUTOS DEL PRODUCTO -->
+<div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
+    <div class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl">
+        <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none">
+            Tu compra financia ondas a la comunidad
+        </span>
+    </div>
+</div>
+
+<!-- BLOQUE 7: CONFIGURACIÓN  -->
 <div class="px-4 sm:px-8 grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center uppercase tracking-widest font-mono text-[11px] h-[65px] sm:h-[72px] min-h-[65px] sm:min-h-[72px] select-none bg-transparent">
     <!-- Izquierda: Idioma Matrix -->
     <div class="flex items-center justify-start h-full bg-transparent">
@@ -407,7 +389,7 @@
             </button>
         </div>
 
-    <!-- Derecha: Switch Acromático -->
+    <!--Switch Acromático -->
     <div class="flex items-center justify-end h-full bg-transparent">
         <button id="acromatic-toggle-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer bg-transparent border-none p-0" title="Conmutar Matriz Visual">
             <svg class="w-[38px] sm:w-[44px] h-auto object-contain text-jako-text fill-current opacity-40 group-hover:opacity-100 transition-all duration-300" viewBox="0 0 54 28">
