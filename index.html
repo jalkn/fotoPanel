@@ -305,7 +305,7 @@
 
             <!-- Núcleo Visual: Artepanel -->
             <div id="artepanel-pack-container" class="relative w-[65vw] h-[65vw] sm:w-[50vw] sm:h-[50vw] md:w-[38vh] md:h-[38vh] max-w-[270px] max-h-[270px] min-w-[180px] min-h-[180px] aspect-square shrink-0 drop-shadow-[0_25px_55px_rgba(0,0,0,0.85)] transition-all duration-300">
-                <div class="w-full h-full relative overflow-hidden rounded-md bg-transparent">
+                <div id="artepanel-mask-wrapper" class="w-full h-full relative overflow-hidden rounded-md bg-transparent transition-all duration-500">
                     <img id="artepanel-pack-img-back" src="img/40x40W.png" alt="artepanel Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-0" />
                     <img id="artepanel-pack-img" src="img/40x40B.png" alt="artepanel Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-cover pointer-events-auto z-10" />
                     <img id="artepanel-pack-img-raw" src="img/20x20B.png" alt="Raw Content" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-[5]" />
@@ -319,7 +319,6 @@
                             
                             <g id="wave-quantum-container" class="origin-center -rotate-90"></g>
 
-                            <!-- RESTAURACIÓN DE SANDWATCH Y COORDINADA ALFANUMÉRICA -->
                             <g id="sandwatch-group" class="origin-center opacity-0 transition-all duration-500 pointer-events-none style-gpu" style="will-change: opacity;">
                                 <path d="M 90,90 L 310,90 L 90,310 L 310,310 Z" class="stroke-current opacity-20" />
                                 <path d="M 90,90 Q 200,125 310,90" class="stroke-current opacity-20" />
@@ -429,6 +428,42 @@
     // SOURCE OF TRUTH: JAKO UNIFIED BIOMATRIC CATALOG (CHRONOLOGICAL EVOLUTION)
     // =========================================================================
     const JAKO_CATALOG = {
+
+        // ---------------------------------------------------------------------
+        // FASE 0: DROP (NÚCLEO CIRCULAR) - Nodos concéntricos asépticos en ACM
+        // ---------------------------------------------------------------------
+        'DROP': {
+            defaultVariant: '40X40',
+            variants: {
+                '20X20': { 
+                    label: 'DROP20X20', 
+                    desc: 'Corte circular aséptico en ACM con matriz de alta resolución.', 
+                    spec: 'Tu compra financia ondas a la comunidad', 
+                    id: 'DR-20X20',
+                    img: 'CIRCULAR_RENDER', imgBack: 'CIRCULAR_RENDER', imgRaw: 'CIRCULAR_RENDER',
+                    telemetry: { DIM: 'Ø 20cm', MEDIA: 'ACM CIRCULAR', DIAL: '⧗240', RATE: '$0.05USD' },
+                    _metaPrice: '$15USD'
+                },
+                '30X30': { 
+                    label: 'DROP30X30', 
+                    desc: 'Corte circular aséptico en ACM con matriz de alta resolución.', 
+                    spec: 'Tu compra financia ondas a la comunidad', 
+                    id: 'DR-30X30',
+                    img: 'CIRCULAR_RENDER', imgBack: 'CIRCULAR_RENDER', imgRaw: 'CIRCULAR_RENDER',
+                    telemetry: { DIM: 'Ø 30cm', MEDIA: 'ACM CIRCULAR', DIAL: '⧗576', RATE: '$0.05USD' },
+                    _metaPrice: '$35USD'
+                },
+                '40X40': { 
+                    label: 'DROP40X40', 
+                    desc: 'Corte circular aséptico en ACM con matriz de alta resolución.', 
+                    spec: 'Tu compra financia ondas a la comunidad', 
+                    id: 'DR-40X40',
+                    img: 'CIRCULAR_RENDER', imgBack: 'CIRCULAR_RENDER', imgRaw: 'CIRCULAR_RENDER',
+                    telemetry: { DIM: 'Ø 40cm', MEDIA: 'ACM CIRCULAR', DIAL: '⧗1100', RATE: '$0.05USD' },
+                    _metaPrice: '$65USD'
+                }
+            }
+        },
 
         // ---------------------------------------------------------------------
         // FASE 1: ARTE (DESPERTAR) - Resonancia en la sociedad, materialización de Dials
@@ -680,7 +715,7 @@
     // =========================================================================
     // MUTABLE HUD STATE DEPENDENCIES (CHRONOLOGICAL PRESETS)
     // =========================================================================
-    let currentBioItem = 'PANEL';
+    let currentBioItem = 'DROP';
     let currentBioVariant = '40X40';
     const numeroCelular = "573025333130";
     
@@ -1058,7 +1093,7 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
         }
     };
 
-    function actualizarBioUI() {
+function actualizarBioUI() {
         // Protección estructural si el catálogo o el ítem actual no están inicializados
         if (typeof JAKO_CATALOG === 'undefined' || !JAKO_CATALOG[currentBioItem]) return;
         
@@ -1070,25 +1105,78 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
         const packImg = getCachedEl('artepanel-pack-img');
         const packImgBack = getCachedEl('artepanel-pack-img-back');
         const packImgRaw = getCachedEl('artepanel-pack-img-raw');
+        const packContainer = getCachedEl('artepanel-pack-container');
+        const maskWrapper = getCachedEl('artepanel-mask-wrapper');
+        const quantumContainer = getCachedEl('wave-quantum-container');
         
+        // --- CONTROL DE RENDERIZADO GEOMÉTRICO (CUADRADO VS CIRCULAR DROP) ---
+        if (variantConfig.img === 'CIRCULAR_RENDER') {
+            // Si es un DROP, ocultamos las imágenes tradicionales y convertimos el contenedor en un círculo puro
+            if (packImg) packImg.style.opacity = '0';
+            if (packImgBack) packImgBack.src = '';
+            if (packImgRaw) packImgRaw.src = '';
+            
+            // Forzar máscara geométrica circular estricta en el contenedor físico wrapper
+            if (maskWrapper) {
+                maskWrapper.classList.remove('rounded-md');
+                maskWrapper.classList.add('rounded-full');
+            }
+
+            // Adaptación geométrica del contenedor cuántico de ondas expansivas
+            if (quantumContainer) {
+                quantumContainer.classList.remove('rounded-none');
+                quantumContainer.classList.add('rounded-full');
+                quantumContainer.style.overflow = 'hidden';
+            }
+            
+            // Generamos o actualizamos el elemento circular vectorizado mediante CSS interno aséptico
+            let circleRender = getCachedEl('custom-circle-render');
+            if (!circleRender) {
+                circleRender = document.createElement('div');
+                circleRender.id = 'custom-circle-render';
+                circleRender.className = 'absolute inset-0 rounded-full border transition-all duration-500';
+                if (packImg && packImg.parentElement) {
+                    packImg.parentElement.appendChild(circleRender);
+                }
+            }
+            // Estilo hiperrealista acromático interactivo: usa la variable de texto del entorno
+            circleRender.style.backgroundColor = 'var(--jako-border)';
+            circleRender.style.borderColor = 'var(--jako-led)';
+            circleRender.style.opacity = '0.15';
+            circleRender.style.display = 'block';
+        } else {
+            // Si es un panel normal o stencil, removemos o apagamos el render circular y restauramos imágenes
+            const circleRender = getCachedEl('custom-circle-render');
+            if (circleRender) circleRender.style.display = 'none';
+            
+            // Restaurar límite cuadrado original del ACM tradicional (Panel / Stencil)
+            if (maskWrapper) {
+                maskWrapper.classList.remove('rounded-full');
+                maskWrapper.classList.add('rounded-md');
+            }
+
+            // Restauración al formato cuadrado estándar del entorno cuántico
+            if (quantumContainer) {
+                quantumContainer.classList.remove('rounded-full');
+                quantumContainer.classList.add('rounded-none');
+                quantumContainer.style.overflow = '';
+            }
+            
+            if (packImg) packImg.src = variantConfig.img;
+            if (packImgBack) packImgBack.src = variantConfig.imgBack;
+            if (packImgRaw) packImgRaw.src = variantConfig.imgRaw;
+            if (packImg) packImg.style.opacity = '1';
+        }
+
         // Transición fluida de opacidad para el contenedor de descripción
         if (descEl) {
             descEl.classList.add('opacity-0');
             setTimeout(() => {
                 descEl.textContent = variantConfig.desc;
-                if (packImg) packImg.src = variantConfig.img;
-                if (packImgBack) packImgBack.src = variantConfig.imgBack;
-                if (packImgRaw) packImgRaw.src = variantConfig.imgRaw;
-                
                 const labelTitle = getCachedEl('laser-variant-title');
                 if (labelTitle) labelTitle.textContent = variantConfig.label;
                 descEl.classList.remove('opacity-0');
             }, 120);
-        } else {
-            // Fallback inmediato de carga de assets si no existe contenedor de descripción
-            if (packImg) packImg.src = variantConfig.img;
-            if (packImgBack) packImgBack.src = variantConfig.imgBack;
-            if (packImgRaw) packImgRaw.src = variantConfig.imgRaw;
         }
 
         // --- ACTUALIZACIÓN DE DATOS TELEMÉTRICOS DEL PRODUCTO ---
@@ -1104,7 +1192,6 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
             : currentBioItem;
 
         // --- SANITIZACIÓN DE TEXTO ---
-        // Limpia prefijos repetidos de la variante para no saturar el espacio visual del HUD
         const cleanedVariantLabel = variantConfig.label 
             ? variantConfig.label.replace(new RegExp(`^${currentBioItem}`, 'i'), '').trim() 
             : '';
