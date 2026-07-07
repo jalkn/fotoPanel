@@ -232,7 +232,15 @@
 
 </div>
 
-
+<!-- BLOQUE 2: PULS MEANINGS -->
+<div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
+    <div id="telemetry-puls-meanings-trigger" class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl cursor-pointer select-none">
+        <!-- Restaurado el texto base para prevenir el vacío visual en el render inicial -->
+        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none active-led">
+            ONDA BIOCINÉTICA REGENERATIVA
+        </span>
+    </div>
+</div>
 
 
 
@@ -242,7 +250,7 @@
     </div>
 </header>
 
-<!--BLOQUE 4: PULSE WATCH APP INTERFACE-->
+<!--BLOQUE 3: PULSE WATCH APP INTERFACE-->
 <main id="main-vault" class="w-full flex-1 flex flex-col justify-center items-center pt-[155px] pb-[195px] min-h-screen relative overflow-hidden"> 
     <div class="w-full flex flex-col items-center justify-center p-4 sm:p-6 select-none relative z-10">
         
@@ -296,53 +304,73 @@
 <footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-jako-border transition-opacity duration-500 select-none transform translateZ(0) overflow-hidden bg-transparent">
     <div class="w-full flex flex-col h-full justify-end bg-transparent">
 
-<!-- BLOQUE 2: PULS MEANINGS -->
-<div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
-    <div id="telemetry-puls-meanings-trigger" class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl cursor-pointer select-none">
-        <!-- Restaurado el texto base para prevenir el vacío visual en el render inicial -->
-        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none active-led">
-            ONDA BIOCINÉTICA REGENERATIVA
-        </span>
-    </div>
-</div>
-
-<!-- BLOQUE 3: TELEMETRÍA DE COMPONENTES KINÉTICOS EVOLUCIONADO (H: 48px) - CORREGIDO STROKE -->
+<!-- BLOQUE 4: CALIBRADOR DE PULSO INTEGRADO (SCROLL HORIZONTAL DE 6 ELEMENTOS) -->
 <div class="w-full flex flex-col bg-transparent border-t border-jako-border">
-    <div class="w-full grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center justify-between px-4 sm:px-8 h-12 select-none bg-transparent">
-        
-        <!-- Hz / Solar (Izquierda) -->
-        <div class="flex items-center justify-start h-full py-1.5 bg-transparent">
-            <button id="sub-sets-solar-trigger" class="group flex flex-col-reverse items-start text-left px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
-                <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">Hz</span>
-                <span id="sub-sets-solar" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text standard-num">0.00</span>
-            </button>
-        </div>
+    <!-- Contenedor con scroll horizontal oculto de forma aséptica -->
+    <div class="w-full flex items-center overflow-x-auto snap-x snap-mandatory px-4 sm:px-8 h-14 select-none bg-transparent custom-hud-scroll">
+        <div class="flex flex-nowrap w-full gap-2 py-1.5">
 
-        <!-- Centro: Dial Central Coaxial Unificado -->
-        <div id="z-dial-trigger" class="grid grid-cols-1 h-9 w-full items-center max-w-[200px] sm:max-w-xs mx-auto hud-btn-hyper rounded px-1 cursor-pointer select-none">
-            <div class="h-full w-full flex flex-col items-center justify-center text-center overflow-hidden bg-transparent py-0.5">
-                <!-- Identificador Principal de Dial -->
-                <div class="h-4 w-full flex items-center justify-center overflow-hidden">
-                    <span id="z-dial-mirror" class="font-mono tracking-[0.15em] text-[10px] sm:text-[11px] font-black text-jako-text active-led drop-shadow-[0_0_10px_var(--jako-led)]">0PU0</span>
-                </div>
-                <!-- Tag Secundario Matrix -->
-                <div class="h-3 w-full flex items-center justify-center overflow-hidden text-[8px] sm:text-[9px] opacity-40">
-                    <span class="tracking-[0.1em] uppercase font-sans font-medium text-jako-text/60">Dial Matrix</span>
+            <!-- Elemento 1: CMS (Telemetría Dimensión) -->
+            <div class="w-[33.33%] min-w-[90px] sm:min-w-[130px] shrink-0 snap-center flex justify-start">
+                <button id="telemetry-product-dim-trigger" class="group flex flex-col-reverse items-start text-left px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
+                    <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">CMS</span>
+                    <span id="telemetry-product-dim" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text">--</span>
+                </button>
+            </div>
+
+            <!-- Elemento 2: Hz (Frecuencia Coaxial) -->
+            <div class="w-[33.33%] min-w-[90px] sm:min-w-[130px] shrink-0 snap-center flex justify-center">
+                <button id="sub-sets-solar-trigger" class="group flex flex-col-reverse items-center text-center px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
+                    <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">Hz</span>
+                    <span id="sub-sets-solar" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text standard-num">0.00</span>
+                </button>
+            </div>
+
+            <!-- Elemento 3: MENÚ GLOBAL (Identificador del Ítem de Catálogo) -->
+            <div class="w-[33.33%] min-w-[100px] sm:min-w-[140px] shrink-0 snap-center flex justify-center">
+                <div class="h-full w-full flex flex-col items-center justify-center text-center overflow-hidden bg-transparent max-w-[200px] mx-auto select-none">
+                    <div id="menu-bio-DYNAMIC-holder" class="h-4 w-full flex items-center justify-center overflow-hidden"></div>
+                    <div id="menu-bio-DYNAMIC-holder-header" class="h-3 w-full flex items-center justify-center overflow-hidden text-[8px] opacity-40"></div>
                 </div>
             </div>
-        </div>
 
-        <!-- Tensión / Magnetismo (Derecha) -->
-        <div class="flex items-center justify-end h-full py-1.5 bg-transparent">
-            <button id="sub-reps-tension-trigger" class="group flex flex-col-reverse items-end text-right px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
-                <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">Tensión</span>
-                <span id="sub-reps-tension" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text standard-num">0.0</span>
-            </button>
+            <!-- Elemento 4: DIAL COAXIAL (Espejo de Coordenada P.U.L.S.) -->
+            <div class="w-[33.33%] min-w-[100px] sm:min-w-[140px] shrink-0 snap-center flex justify-center">
+                <div id="z-dial-trigger" class="grid grid-cols-1 h-full w-full items-center max-w-[200px] mx-auto hud-btn-hyper rounded px-1 cursor-pointer select-none">
+                    <div class="h-full w-full flex flex-col items-center justify-center text-center overflow-hidden bg-transparent">
+                        <div class="h-4 w-full flex items-center justify-center overflow-hidden">
+                            <span id="z-dial-mirror" class="font-mono tracking-[0.15em] text-[9px] sm:text-[10px] font-black text-jako-text active-led drop-shadow-[0_0_10px_var(--jako-led)]">0PU0</span>
+                        </div>
+                        <div class="h-3 w-full flex items-center justify-center overflow-hidden text-[7px] sm:text-[8px] opacity-40">
+                            <span class="tracking-[0.1em] uppercase font-sans font-medium text-jako-text/60">Dial Matrix</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Elemento 5: TENSIÓN (Magnetismo Gravitacional) -->
+            <div class="w-[33.33%] min-w-[90px] sm:min-w-[130px] shrink-0 snap-center flex justify-center">
+                <button id="sub-reps-tension-trigger" class="group flex flex-col-reverse items-center text-center px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
+                    <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">Tensión</span>
+                    <span id="sub-reps-tension" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text standard-num">0.0</span>
+                </button>
+            </div>
+
+            <!-- Elemento 6: DIALS (Telemetría de Ondas Totales) -->
+            <div class="w-[33.33%] min-w-[90px] sm:min-w-[130px] shrink-0 snap-center flex justify-end">
+                <button id="telemetry-product-dial-trigger" class="group flex flex-col-reverse items-end text-right px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
+                    <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">DIALS</span>
+                    <span id="telemetry-product-dial" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text">--</span>
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
 
-<!-- BLOQUE 7: CONFIGURACIÓN (Altura expandida a 120px para mayor aire aséptico) -->
+
+
+<!-- BLOQUE 6: CONFIGURACIÓN (Altura expandida a 120px para mayor aire aséptico) -->
 <div class="px-4 sm:px-8 grid grid-cols-[44px_1fr_44px] items-center uppercase tracking-widest font-mono text-[11px] h-[120px] min-h-[120px] select-none bg-transparent relative z-20">
     
     <div class="flex items-center justify-start h-full bg-transparent">
@@ -383,45 +411,6 @@
     </div>
 
 </div>
-
-<!-- BLOQUE 5: TELEMETRÍA DE SUB-VARIANTES INTEGRADA + MENÚ GLOBAL (H: 48px) - CORREGIDO STROKE -->
-<div class="w-full flex flex-col bg-transparent border-t border-jako-border">
-    <div class="w-full grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center justify-between px-4 sm:px-8 h-12 select-none bg-transparent">
-        
-        <!-- CMS (Izquierda) -->
-        <div class="flex items-center justify-start h-full py-1.5 bg-transparent">
-            <button id="telemetry-product-dim-trigger" class="group flex flex-col-reverse items-start text-left px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
-                <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">CMS</span>
-                <span id="telemetry-product-dim" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text">--</span>
-            </button>
-        </div>
-
-        <!-- Centro: Contenedor Dinámico de Texto (Pila Vertical Aséptica) -->
-        <div class="h-full w-full flex flex-col items-center justify-center text-center overflow-hidden bg-transparent py-0.5 max-w-[200px] sm:max-w-xs mx-auto select-none">
-            <div id="menu-bio-DYNAMIC-holder" class="h-4 w-full flex items-center justify-center overflow-hidden"></div>
-            <div id="menu-bio-DYNAMIC-holder-header" class="h-3 w-full flex items-center justify-center overflow-hidden text-[9px] opacity-40"></div>
-        </div>
-
-        <!-- DIALS (Derecha) -->
-        <div class="flex items-center justify-end h-full py-1.5 bg-transparent">
-            <button id="telemetry-product-dial-trigger" class="group flex flex-col-reverse items-end text-right px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
-                <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">DIALS</span>
-                <span id="telemetry-product-dial" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text">--</span>
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- BLOQUE 6: BARRA DE ATRIBUTOS DEL PRODUCTO -->
-<div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
-    <div id="telemetry-product-attrs-trigger" class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl cursor-pointer select-none">
-        <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none active-led">
-            Tu compra financia ondas a la comunidad
-        </span>
-    </div>
-</div>
-
-
 
 
 
@@ -535,186 +524,8 @@
                     _metaPrice: '$125USD'
                 }
             }
-        }/*,
-        'AERONEX': {
-            defaultVariant: '1_HOUR',
-            variants: {
-                '1_HOUR': {
-                    label: 'AERONEX CHRONOS 1H',
-                    desc: 'Captura aérea biocinética de alta resolución para terrenos o estructuras.',
-                    spec: 'DJI MAVIC TELEMETRY',
-                    id: 'AN-01H',
-                    img: 'img/drone-front.png', imgBack: 'img/drone-back.png', imgRaw: 'img/drone-raw.png',
-                    telemetry: { DIM: '1 HORA', MEDIA: 'DRONE FLY', DIAL: '⧗FLIGHT', RATE: '4K_60FPS' },
-                    benefits: ['FOTOGRAMETRÍA BÁSICA', 'RECONOCIMIENTO DE TERRENO', 'DINÁMICA CINEMÁTICA', 'ÓPTICA DE PRECISIÓN'],
-                    _metaPrice: '$180.000'
-                },
-                '2_HOURS': {
-                    label: 'AERONEX MATRIX 2H',
-                    desc: 'Mapeo y cinematografía aérea extendida orientada a bio-renovación y diseño.',
-                    spec: 'DJI MAVIC TELEMETRY',
-                    id: 'AN-02H',
-                    img: 'img/drone-front.png', imgBack: 'img/drone-back.png', imgRaw: 'img/drone-raw.png',
-                    telemetry: { DIM: '2 HORAS', MEDIA: 'DRONE FLY', DIAL: '⧗FLIGHT', RATE: '4K_RAW' },
-                    benefits: ['COBERTURA MULTI-ÁNGULO', 'SEGUIMIENTO BIOMÉTRICO', 'ANÁLISIS ESPACIAL ORTO', 'MONTAJE CRUDO INCLUIDO'],
-                    _metaPrice: '$320.000'
-                },
-                '4_HOURS': {
-                    label: 'AERONEX VECTOR 4H',
-                    desc: 'Bloque de media jornada para escaneo cinemático profundo y dirección de arte.',
-                    spec: 'DJI MAVIC TELEMETRY',
-                    id: 'AN-04H',
-                    img: 'img/drone-front.png', imgBack: 'img/drone-back.png', imgRaw: 'img/drone-raw.png',
-                    telemetry: { DIM: '4 HORAS', MEDIA: 'DRONE FLY', DIAL: '⧗VERTICAL', RATE: '5.1K_RAW' },
-                    benefits: ['SCANNING DE ALTA DENSIDAD', 'EDICIÓN CINEMÁTICA CORE', 'TELEMETRÍA DE PAISAJE', 'DIRECCIÓN DE ARTE COMPLETA'],
-                    _metaPrice: '$600.000'
-                },
-                '6_HOURS': {
-                    label: 'AERONEX QUANTUM 6H',
-                    desc: 'Inmersión total de captura aérea y mapeo masivo para proyectos macro de bio-diseño.',
-                    spec: 'DJI MAVIC TELEMETRY',
-                    id: 'AN-06H',
-                    img: 'img/drone-front.png', imgBack: 'img/drone-back.png', imgRaw: 'img/drone-raw.png',
-                    telemetry: { DIM: '6 HORAS', MEDIA: 'DRONE FLY', DIAL: '⧗QUANTUM', RATE: 'MAX_BITRATE' },
-                    benefits: ['MONITORIZACIÓN COMPLETA', 'ENTREGA DE ACTS RAW/LOG', 'ORTOMOSAICOS PREMIUM', 'SOPORTE POST-PRODUCCIÓN'],
-                    _metaPrice: '$850.000'
-                }
-            }
-        },
-
-        // ---------------------------------------------------------------------
-        // FASE 2: CUERPO (REFLEJAR) - Activación de la Pulsor App y educación kinética
-        // ---------------------------------------------------------------------
-        'PULSWARE': {
-            defaultVariant: 'HOODIE',
-            variants: {
-                'HOODIE': {
-                    label: 'JAKO CORE HOODIE',
-                    desc: 'Saco pesado premium estructurado para protección térmica y movilidad kinética.',
-                    spec: 'HEAVY COTTON ARMOR',
-                    id: 'JG-HD-BLK',
-                    img: 'img/hoodie-front.png', imgBack: 'img/hoodie-back.png', imgRaw: 'img/hoodie-raw.png',
-                    telemetry: { DIM: 'OVERSIZE', MEDIA: 'TEXTILE', DIAL: 'P.U.L.S.', RATE: '400GSM' },
-                    benefits: ['PROTECCIÓN TÉRMICA EFICIENTE', 'CORTE ERGONÓMICO RESISTENTE', 'ALTA DENSIDAD ESTRUCTURAL', 'RESISTENCIA MECÁNICA'],
-                    _metaPrice: '$160.000'
-                },
-                'CAPS': {
-                    label: 'JAKO KINETIC CAP',
-                    desc: 'Gorra táctica estructurada para blindaje solar durante entrenamientos de alta intensidad.',
-                    spec: 'RESPIRABLE MESH TECH',
-                    id: 'JG-CP-BLK',
-                    img: 'img/cap-front.png', imgBack: 'img/cap-back.png', imgRaw: 'img/cap-raw.png',
-                    telemetry: { DIM: 'ADJUSTABLE', MEDIA: 'GEAR', DIAL: 'P.U.L.S.', RATE: 'LIGHTWEIGHT' },
-                    benefits: ['VENTILACIÓN HIDRÓFOBA', 'AJUSTE ANATÓMICO EXACTO', 'PROYECCIÓN VISUAL ÓPTIMA', 'SECADO ULTRA RÁPIDO'],
-                    _metaPrice: '$65.000'
-                },
-                'STRAPS': {
-                    label: 'JAKO CALISTHENICS GRIPS',
-                    desc: 'Calleras/Straps de alta resistencia para protección palmar en tracciones críticas.',
-                    spec: 'CARBON FIBER GRIP LAYER',
-                    id: 'JG-ST-PAIR',
-                    img: 'img/straps-front.png', imgBack: 'img/straps-back.png', imgRaw: 'img/straps-raw.png',
-                    telemetry: { DIM: 'ONE SIZE', MEDIA: 'HARDWARE', DIAL: 'P.U.L.S.', RATE: 'MAX-FRICTION' },
-                    benefits: ['BLINDAJE PALMAR AVANZADO', 'CIERRE DE NEOPRENO ERGO', 'ADHERENCIA SOBRE ACERO', 'REDUCCIÓN DE FATIGA GRIP'],
-                    _metaPrice: '$75.000'
-                },
-                'SPEED_ROPES': {
-                    label: 'JAKO RESISTANCE ROPE',
-                    desc: 'Cuerda de alta velocidad con rodamientos fluidos optimizada para cadencia cinética.',
-                    spec: 'BEARING SYSTEM V4',
-                    id: 'JG-SR-KINETIC',
-                    img: 'img/rope-front.png', imgBack: 'img/rope-back.png', imgRaw: 'img/rope-raw.png',
-                    telemetry: { DIM: '3.0 METERS', MEDIA: 'HARDWARE', DIAL: 'P.U.L.S.', RATE: 'HIGH-VELOCITY' },
-                    benefits: ['RODAMIENTO DE FLUIDO ACELERADO', 'CABLE DE ACERO RECUBIERTO', 'AJUSTE DE LONGITUD EXPRESS', 'CADENCIA RÍTMICA PURA'],
-                    _metaPrice: '$55.000'
-                }
-            }
-        },
-
-        // ---------------------------------------------------------------------
-        // FASE 3: SYNERGY / ZENERGY (RESONANCIA) - Materialización del micelio y bioconstrucción
-        // ---------------------------------------------------------------------
-        'PULSOR': {
-            defaultVariant: 'FOCUS',
-            variants: {
-                'FOCUS': { 
-                    label: 'PULSOR FOCUS', 
-                    desc: 'Enfoque y claridad cognitiva', 
-                    spec: 'LION’S MANE', 
-                    id: 'PULS45F',
-                    img: 'img/45caps.png', imgBack: 'img/45mane.png', imgRaw: 'img/maneRaw.png',
-                    telemetry: { DIM: '45 CAPS', MEDIA: 'MUSHROOM', DIAL: 'P.U.L.S.', RATE: '500MGRS' },
-                    benefits: ['NEUROGÉNESIS', 'CLARIDAD COGNITIVA', 'MEMORIA FLUIDA', 'NIEBLA  (-)', 'OPTIMIZACIÓN SINÁPTICA', 'ENFOQUE PROFUNDO', 'AGUDEZA ', 'REPARACIÓN NEURONAL', 'ENFOQUE', 'PRODUCTIVIDAD SOSTENIDA'],
-                    _metaPrice: '$70.000'
-                },
-                'ZEN': { 
-                    label: 'PULSOR ZEN', 
-                    desc: 'Silencio mental óptimo', 
-                    spec: 'REISHI', 
-                    id: 'PULS45Z',
-                    img: 'img/45caps.png', imgBack: 'img/45reishi.png', imgRaw: 'img/reishiRaw.png',
-                    telemetry: { DIM: '45 CAPS', MEDIA: 'MUSHROOM', DIAL: 'P.U.L.S.', RATE: '500MGRS' },
-                    benefits: ['REDUCCIÓN CORTISOL', 'CALMA PROFUNDA', 'REGULACIÓN NERVIOSA', 'DESCANSO REPARADOR', 'EQUILIBRIO ', 'ADAPTACIÓN AL ESTRÉS', 'PAZ COGNITIVA', 'SUEÑO LÚCIDO', 'RELAJACIÓN MUSCULAR', 'CLARIDAD INTERNA'],
-                    _metaPrice: '$70.000'
-                },
-                'STAMINA': { 
-                    label: 'PULSOR STAMINA', 
-                    desc: 'Potencia celular óptima', 
-                    spec: 'CORDYCEPS', 
-                    id: 'PULS45S',
-                    img: 'img/45caps.png', imgBack: 'img/45cordy.png', imgRaw: 'img/cordyRaw.png',
-                    telemetry: { DIM: '45 CAPS', MEDIA: 'MUSHROOM', DIAL: 'P.U.L.S.', RATE: '500MGRS' },
-                    benefits: ['POTENCIA AERÓBICA', 'ENERGÍA CELULAR (ATP)', 'RESISTENCIA FÍSICA', 'OXIGENACIÓN SANGUÍNEA', 'RECUPERACIÓN RÁPIDA', 'VITALIDAD GENERAL', 'RENDIMIENTO ATLÉTICO', 'FUNCIÓN RESPIRATORIA', 'METABOLISMO ACTIVO', 'FATIGA (-)'],
-                    _metaPrice: '$70.000'
-                },
-                'CORE': { 
-                    label: 'PULSOR CORE', 
-                    desc: 'Respuesta inmune óptima', 
-                    spec: 'TURKEY TAIL', 
-                    id: 'PULS45C',
-                    img: 'img/45caps.png', imgBack: 'img/45turkey.png', imgRaw: 'img/turkeyRaw.png',
-                    telemetry: { DIM: '45 CAPS', MEDIA: 'MUSHROOM', DIAL: 'P.U.L.S.', RATE: '500MGRS' },
-                    benefits: ['RESPUESTA INMUNE', 'BIOMA INTESTINAL', 'DEFENSA CELULAR', 'ANTIOXIDANTE', 'SALUD DIGESTIVA', 'PROTECCIÓN SISTÉMICA', 'REDUCCIÓN INFLAMACIÓN', 'ESTABILIDAD INTERNA', 'SÍNTESIS NUTRITIVA', 'FORTALEZA INTEGRAL'],
-                    _metaPrice: '$70.000'
-                }
-            }
-        },
-        'BIOSTACK': {
-            defaultVariant: 'Z_BRICK',
-            variants: {
-                'Z_BRICK': { 
-                    label: 'BIOSTACK Z_BRICK', 
-                    desc: 'Matriz compacta de bioconstrucción y liberación nutricional masiva.', 
-                    spec: 'PURE MYCELIUM CORE', 
-                    id: 'BS-ZBRICK',
-                    img: 'img/brick-front.png', imgBack: 'img/brick-back.png', imgRaw: 'img/brick-raw.png',
-                    telemetry: { DIM: '1000 GR', MEDIA: 'BIOSTACK', DIAL: '⧗PHI', RATE: '100% PURE' },
-                    benefits: ['INTEGRACIÓN AMBIENTAL', 'ALTA DENSIDAD ADAPTÓGENA', 'BIOCONSTRUCCIÓN ACTIVA', 'REGENERACIÓN SISTÉMICA'],
-                    _metaPrice: '$180.000'
-                },
-                'ALPHA_STACK': { 
-                    label: 'ALPHA COGNITIVE STACK', 
-                    desc: 'Bloque biocinético optimizado para rendimiento ejecutivo y neuronal avanzada.', 
-                    spec: 'LION’S MANE FOCUS MATRIZ', 
-                    id: 'BS-ALPHA',
-                    img: 'img/alpha-front.png', imgBack: 'img/alpha-back.png', imgRaw: 'img/alpha-raw.png',
-                    telemetry: { DIM: '850 GR', MEDIA: 'BIOSTACK', DIAL: '⧗12:12', RATE: 'HIGH FOCUS' },
-                    benefits: ['POTENCIACIÓN SINÁPTICA', 'ENFOQUE EJECUTIVO', 'SÍNTESIS DE NGF', 'RESISTENCIA COGNITIVA'],
-                    _metaPrice: '$210.000'
-                },
-                'OMEGA_SHIELD': { 
-                    label: 'OMEGA IMMUNE STACK', 
-                    desc: 'Estructura de micelio denso para blindaje biological celular profundo.', 
-                    spec: 'DEFENSE MULTI-MUSHROOM', 
-                    id: 'BS-OMEGA',
-                    img: 'img/omega-front.png', imgBack: 'img/omega-back.png', imgRaw: 'img/omega-raw.png',
-                    telemetry: { DIM: '1200 GR', MEDIA: 'BIOSTACK', DIAL: '⧗ULTRA', RATE: 'IMMUNE SHIELD' },
-                    benefits: ['PROTECCIÓN SISTÉMICA', 'RESPUESTA INMUNE ADAPTATIVA', 'BLINDAJE ANTE CORTISOL', 'DESINTOXICACIÓN CELULAR'],
-                    _metaPrice: '$220.000'
-                }
-            }
         }
-    */};
+    };
 
     // =========================================================================
     // MUTABLE HUD STATE DEPENDENCIES (CHRONOLOGICAL PRESETS)
@@ -819,7 +630,6 @@
             // 3. Reconfiguración de elementos estáticos en caliente
             const elIndicator = getCachedEl('lang-indicator');
             const elSecondary = getCachedEl('panel-telemetry-data-secondary');
-            const elPrimary = getCachedEl('panel-telemetry-data');
             const elBtnRaw = getCachedEl('btn-reveal-raw');
             const elBtnActivar = getCachedEl('btn-adquirir-nodo');
 
@@ -1206,30 +1016,36 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
     }
 
     function habilitarReveladoTelemetria() {
-        const telemetryData = getCachedEl('panel-telemetry-data');
-        let timerComercial = null;
+        // Único panel de destino para ambos grupos de significados
+        const telemetryContainer = getCachedEl('panel-telemetry-data-secondary');
+        let globalTimer = null;
 
+        if (!telemetryContainer) return;
+
+        // --- PROCESAMIENTO GRUPO 1: TELEMETRÍA COMERCIAL ---
         Object.keys(TELEMETRY_MEANINGS).forEach(id => {
             const el = getCachedEl(id);
-            if (!el || !telemetryData) return;
+            if (!el) return;
             
             el.addEventListener('click', () => {
-                clearTimeout(timerComercial);
+                clearTimeout(globalTimer);
                 
                 const activeLang = typeof currentLang !== 'undefined' ? currentLang : 'esp';
-                const txtOriginal = VAULT_DICTIONARY[activeLang]?.primaryTelemetry || "Tu compra financia ondas a la comunidad";
+                const txtOriginalSecondary = VAULT_DICTIONARY[activeLang]?.secondaryTelemetry || "ONDA BIOCINÉTICA REGENERATIVA";
 
-                // Añadir estado activo al span interno
+                // Feedback visual: Añadir estado activo al disparador
                 const targetSpan = el.id === 'telemetry-product-attrs-trigger' ? el.querySelector('span') : el.querySelector('span') || el;
                 if (targetSpan) {
                     targetSpan.classList.remove('text-jako-text/70', 'text-jako-text/50');
                     targetSpan.classList.add('text-jako-text');
                 }
 
-                telemetryData.innerHTML = TELEMETRY_MEANINGS[id];
+                // Inyectar el significado en el panel único central
+                telemetryContainer.innerHTML = TELEMETRY_MEANINGS[id];
                 
-                timerComercial = setTimeout(() => {
-                    telemetryData.innerHTML = txtOriginal;
+                // Temporizador de restauración simétrico (8 segundos)
+                globalTimer = setTimeout(() => {
+                    telemetryContainer.innerHTML = txtOriginalSecondary;
                     if (targetSpan) {
                         targetSpan.classList.remove('text-jako-text');
                         targetSpan.classList.add('text-jako-text/70');
@@ -1238,17 +1054,15 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
             });
         });
 
-        const telemetryDataSecondary = getCachedEl('panel-telemetry-data-secondary');
-        let timerQuantum = null;
-
+        // --- PROCESAMIENTO GRUPO 2: SIGNIFICADOS LENGUAJE BIOCINÉTICO ---
         Object.keys(PULS_MEANINGS).forEach(id => {
             const el = getCachedEl(id);
-            if (!el || !telemetryDataSecondary) return;
+            if (!el) return;
             const esHeaderPuro = id.startsWith('sub-');
             const contenedorLed = esHeaderPuro ? el.parentElement : el;
 
             el.addEventListener('click', () => {
-                clearTimeout(timerQuantum);
+                clearTimeout(globalTimer);
                 if (id === 'z-dial-trigger') window.isDialFrozen = true;
 
                 const activeLang = typeof currentLang !== 'undefined' ? currentLang : 'esp';
@@ -1266,17 +1080,18 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
                     el.style.filter = "drop-shadow(0 0 25px var(--jako-led))";
                 }
                 
-                const contenedorPadreTelemetria = telemetryDataSecondary.parentElement;
+                const contenedorPadreTelemetria = telemetryContainer.parentElement;
                 if (contenedorPadreTelemetria) {
                     contenedorPadreTelemetria.classList.remove('glass', 'bg-black');
                     contenedorPadreTelemetria.classList.add('bg-transparent');
                 }
 
+                // Inyectar el significado (función o string) en el mismo panel central
                 const meaningValue = PULS_MEANINGS[id];
-                telemetryDataSecondary.innerHTML = typeof meaningValue === 'function' ? meaningValue() : meaningValue;
+                telemetryContainer.innerHTML = typeof meaningValue === 'function' ? meaningValue() : meaningValue;
                 
-                timerQuantum = setTimeout(() => {
-                    telemetryDataSecondary.innerHTML = txtOriginalSecondary;
+                globalTimer = setTimeout(() => {
+                    telemetryContainer.innerHTML = txtOriginalSecondary;
                     if (id === 'z-dial-trigger') { 
                         window.isDialFrozen = false; 
                         el.style.filter = "none"; 
