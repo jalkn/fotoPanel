@@ -232,52 +232,10 @@
 
 </div>
 
-<!-- BLOQUE 2: PULS MEANINGS -->
-<div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
-    <div id="telemetry-puls-meanings-trigger" class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl cursor-pointer select-none">
-        <!-- Restaurado el texto base para prevenir el vacío visual en el render inicial -->
-        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none active-led">
-            ONDA BIOCINÉTICA REGENERATIVA
-        </span>
-    </div>
-</div>
 
 
-<!-- BLOQUE 3: TELEMETRÍA DE COMPONENTES KINÉTICOS EVOLUCIONADO (H: 48px) - CORREGIDO STROKE -->
-<div class="w-full flex flex-col bg-transparent border-t border-jako-border">
-    <div class="w-full grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center justify-between px-4 sm:px-8 h-12 select-none bg-transparent">
-        
-        <!-- Hz / Solar (Izquierda) -->
-        <div class="flex items-center justify-start h-full py-1.5 bg-transparent">
-            <button id="sub-sets-solar-trigger" class="group flex flex-col-reverse items-start text-left px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
-                <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">Hz</span>
-                <span id="sub-sets-solar" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text standard-num">0.00</span>
-            </button>
-        </div>
 
-        <!-- Centro: Dial Central Coaxial Unificado -->
-        <div id="z-dial-trigger" class="grid grid-cols-1 h-9 w-full items-center max-w-[200px] sm:max-w-xs mx-auto hud-btn-hyper rounded px-1 cursor-pointer select-none">
-            <div class="h-full w-full flex flex-col items-center justify-center text-center overflow-hidden bg-transparent py-0.5">
-                <!-- Identificador Principal de Dial -->
-                <div class="h-4 w-full flex items-center justify-center overflow-hidden">
-                    <span id="z-dial-mirror" class="font-mono tracking-[0.15em] text-[10px] sm:text-[11px] font-black text-jako-text active-led drop-shadow-[0_0_10px_var(--jako-led)]">0PU0</span>
-                </div>
-                <!-- Tag Secundario Matrix -->
-                <div class="h-3 w-full flex items-center justify-center overflow-hidden text-[8px] sm:text-[9px] opacity-40">
-                    <span class="tracking-[0.1em] uppercase font-sans font-medium text-jako-text/60">Dial Matrix</span>
-                </div>
-            </div>
-        </div>
 
-        <!-- Tensión / Magnetismo (Derecha) -->
-        <div class="flex items-center justify-end h-full py-1.5 bg-transparent">
-            <button id="sub-reps-tension-trigger" class="group flex flex-col-reverse items-end text-right px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
-                <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">Tensión</span>
-                <span id="sub-reps-tension" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text standard-num">0.0</span>
-            </button>
-        </div>
-    </div>
-</div>
 
 
 
@@ -338,40 +296,49 @@
 <footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-jako-border transition-opacity duration-500 select-none transform translateZ(0) overflow-hidden bg-transparent">
     <div class="w-full flex flex-col h-full justify-end bg-transparent">
 
-<!-- BLOQUE 5: TELEMETRÍA DE SUB-VARIANTES INTEGRADA + MENÚ GLOBAL (H: 48px) - CORREGIDO STROKE -->
-<div class="w-full flex flex-col bg-transparent border-t border-jako-border">
-    <div class="w-full grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center justify-between px-4 sm:px-8 h-12 select-none bg-transparent">
-        
-        <!-- CMS (Izquierda) -->
-        <div class="flex items-center justify-start h-full py-1.5 bg-transparent">
-            <button id="telemetry-product-dim-trigger" class="group flex flex-col-reverse items-start text-left px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
-                <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">CMS</span>
-                <span id="telemetry-product-dim" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text">--</span>
-            </button>
-        </div>
-
-        <!-- Centro: Contenedor Dinámico de Texto (Pila Vertical Aséptica) -->
-        <div class="h-full w-full flex flex-col items-center justify-center text-center overflow-hidden bg-transparent py-0.5 max-w-[200px] sm:max-w-xs mx-auto select-none">
-            <div id="menu-bio-DYNAMIC-holder" class="h-4 w-full flex items-center justify-center overflow-hidden"></div>
-            <div id="menu-bio-DYNAMIC-holder-header" class="h-3 w-full flex items-center justify-center overflow-hidden text-[9px] opacity-40"></div>
-        </div>
-
-        <!-- DIALS (Derecha) -->
-        <div class="flex items-center justify-end h-full py-1.5 bg-transparent">
-            <button id="telemetry-product-dial-trigger" class="group flex flex-col-reverse items-end text-right px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
-                <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">DIALS</span>
-                <span id="telemetry-product-dial" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text">--</span>
-            </button>
-        </div>
+<!-- BLOQUE 2: PULS MEANINGS -->
+<div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
+    <div id="telemetry-puls-meanings-trigger" class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl cursor-pointer select-none">
+        <!-- Restaurado el texto base para prevenir el vacío visual en el render inicial -->
+        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none active-led">
+            ONDA BIOCINÉTICA REGENERATIVA
+        </span>
     </div>
 </div>
 
-<!-- BLOQUE 6: BARRA DE ATRIBUTOS DEL PRODUCTO -->
-<div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
-    <div id="telemetry-product-attrs-trigger" class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl cursor-pointer select-none">
-        <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none active-led">
-            Tu compra financia ondas a la comunidad
-        </span>
+<!-- BLOQUE 3: TELEMETRÍA DE COMPONENTES KINÉTICOS EVOLUCIONADO (H: 48px) - CORREGIDO STROKE -->
+<div class="w-full flex flex-col bg-transparent border-t border-jako-border">
+    <div class="w-full grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center justify-between px-4 sm:px-8 h-12 select-none bg-transparent">
+        
+        <!-- Hz / Solar (Izquierda) -->
+        <div class="flex items-center justify-start h-full py-1.5 bg-transparent">
+            <button id="sub-sets-solar-trigger" class="group flex flex-col-reverse items-start text-left px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
+                <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">Hz</span>
+                <span id="sub-sets-solar" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text standard-num">0.00</span>
+            </button>
+        </div>
+
+        <!-- Centro: Dial Central Coaxial Unificado -->
+        <div id="z-dial-trigger" class="grid grid-cols-1 h-9 w-full items-center max-w-[200px] sm:max-w-xs mx-auto hud-btn-hyper rounded px-1 cursor-pointer select-none">
+            <div class="h-full w-full flex flex-col items-center justify-center text-center overflow-hidden bg-transparent py-0.5">
+                <!-- Identificador Principal de Dial -->
+                <div class="h-4 w-full flex items-center justify-center overflow-hidden">
+                    <span id="z-dial-mirror" class="font-mono tracking-[0.15em] text-[10px] sm:text-[11px] font-black text-jako-text active-led drop-shadow-[0_0_10px_var(--jako-led)]">0PU0</span>
+                </div>
+                <!-- Tag Secundario Matrix -->
+                <div class="h-3 w-full flex items-center justify-center overflow-hidden text-[8px] sm:text-[9px] opacity-40">
+                    <span class="tracking-[0.1em] uppercase font-sans font-medium text-jako-text/60">Dial Matrix</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tensión / Magnetismo (Derecha) -->
+        <div class="flex items-center justify-end h-full py-1.5 bg-transparent">
+            <button id="sub-reps-tension-trigger" class="group flex flex-col-reverse items-end text-right px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
+                <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">Tensión</span>
+                <span id="sub-reps-tension" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text standard-num">0.0</span>
+            </button>
+        </div>
     </div>
 </div>
 
@@ -416,6 +383,45 @@
     </div>
 
 </div>
+
+<!-- BLOQUE 5: TELEMETRÍA DE SUB-VARIANTES INTEGRADA + MENÚ GLOBAL (H: 48px) - CORREGIDO STROKE -->
+<div class="w-full flex flex-col bg-transparent border-t border-jako-border">
+    <div class="w-full grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center justify-between px-4 sm:px-8 h-12 select-none bg-transparent">
+        
+        <!-- CMS (Izquierda) -->
+        <div class="flex items-center justify-start h-full py-1.5 bg-transparent">
+            <button id="telemetry-product-dim-trigger" class="group flex flex-col-reverse items-start text-left px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
+                <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">CMS</span>
+                <span id="telemetry-product-dim" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text">--</span>
+            </button>
+        </div>
+
+        <!-- Centro: Contenedor Dinámico de Texto (Pila Vertical Aséptica) -->
+        <div class="h-full w-full flex flex-col items-center justify-center text-center overflow-hidden bg-transparent py-0.5 max-w-[200px] sm:max-w-xs mx-auto select-none">
+            <div id="menu-bio-DYNAMIC-holder" class="h-4 w-full flex items-center justify-center overflow-hidden"></div>
+            <div id="menu-bio-DYNAMIC-holder-header" class="h-3 w-full flex items-center justify-center overflow-hidden text-[9px] opacity-40"></div>
+        </div>
+
+        <!-- DIALS (Derecha) -->
+        <div class="flex items-center justify-end h-full py-1.5 bg-transparent">
+            <button id="telemetry-product-dial-trigger" class="group flex flex-col-reverse items-end text-right px-2 sm:px-3 h-full w-full justify-center hud-btn-hyper rounded focus:outline-none cursor-pointer">
+                <span class="text-[7px] sm:text-[8px] tracking-[0.15em] text-jako-text/30 group-hover:text-jako-text/60 mt-0.5 uppercase font-mono leading-none">DIALS</span>
+                <span id="telemetry-product-dial" class="font-mono tracking-[0.05em] text-[9px] sm:text-[10px] font-bold text-jako-text/80 group-hover:text-jako-text">--</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- BLOQUE 6: BARRA DE ATRIBUTOS DEL PRODUCTO -->
+<div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
+    <div id="telemetry-product-attrs-trigger" class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl cursor-pointer select-none">
+        <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none active-led">
+            Tu compra financia ondas a la comunidad
+        </span>
+    </div>
+</div>
+
+
 
 
 
