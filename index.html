@@ -214,9 +214,9 @@
 
 <!-- BLOQUE 2: PULS MEANINGS -->
 <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
-    <div class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl">
+    <div id="telemetry-puls-meanings-trigger" class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl cursor-pointer select-none">
         <!-- Restaurado el texto base para prevenir el vacío visual en el render inicial -->
-        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none">
+        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none active-led">
             ONDA BIOCINÉTICA REGENERATIVA
         </span>
     </div>
@@ -311,10 +311,7 @@
 <footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-jako-border transition-opacity duration-500 select-none transform translateZ(0) overflow-hidden bg-transparent">
     <div class="w-full flex flex-col h-full justify-end bg-transparent">
 
-
-
-
-<!-- ANTES BLOQUE 5: TELEMETRÍA DE SUB-VARIANTES INTEGRADA + MENÚ GLOBAL (H: 48px) - CORREGIDO STROKE -->
+<!-- BLOQUE 5: TELEMETRÍA DE SUB-VARIANTES INTEGRADA + MENÚ GLOBAL (H: 48px) - CORREGIDO STROKE -->
 <div class="w-full flex flex-col bg-transparent border-t border-jako-border">
     <div class="w-full grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center justify-between px-4 sm:px-8 h-12 select-none bg-transparent">
         
@@ -365,32 +362,12 @@
         </span>
     </div>
 </div>
-
-<!-- BLOQUE 7: CONFIGURACIÓN  -->
+<!-- BLOQUE 7: CONFIGURACIÓN -->
 <div class="px-4 sm:px-8 grid grid-cols-[85px_1fr_85px] sm:grid-cols-[130px_1fr_130px] items-center uppercase tracking-widest font-mono text-[11px] h-[65px] sm:h-[72px] min-h-[65px] sm:min-h-[72px] select-none bg-transparent">
-    <!-- Izquierda: Idioma Matrix -->
+    
+    <!-- COLUMNA 1: Switch Acromático (TRANSFORM) -> Alineado a la Izquierda -->
     <div class="flex items-center justify-start h-full bg-transparent">
-        <button id="lang-toggle-trigger" class="group flex items-center gap-1.5 h-full transition-all duration-300 focus:outline-none cursor-pointer bg-transparent border-none p-0" title="Conmutar Idioma">
-            <svg class="w-3.5 h-3.5 text-jako-text opacity-40 group-hover:opacity-100 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                <path d="M2 12h20"/>
-            </svg>
-            <span id="lang-indicator" class="font-mono text-[10px] font-black tracking-wider opacity-50 group-hover:opacity-100 transition-all duration-500 text-jako-text">ESP</span>
-        </button>
-    </div>
-
-        <div class="flex items-center h-full">
-            <button id="footer-fn-right-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Activar Modo Zenith">
-                <svg id="footer-raw-indicator" class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75h4.5m-4.5 0v4.5m0-4.5L9 9M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9M3.75 20.25h4.5m-4.5 0v-4.5m0 4.5L9 15M20.25 20.25h-4.5m4.5 0v-4.5m0 4.5l-6-6" />
-                </svg>
-            </button>
-        </div>
-
-    <!--Switch Acromático -->
-    <div class="flex items-center justify-end h-full bg-transparent">
-        <button id="acromatic-toggle-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer bg-transparent border-none p-0" title="Conmutar Matriz Visual">
+        <button id="acromatic-toggle-trigger" class="group flex items-center h-full transition-all duration-300 focus:outline-none cursor-pointer bg-transparent border-none p-0" title="Conmutar Matriz Visual">
             <svg class="w-[38px] sm:w-[44px] h-auto object-contain text-jako-text fill-current opacity-40 group-hover:opacity-100 transition-all duration-300" viewBox="0 0 54 28">
                 <rect width="54" height="28" rx="14" />
                 <g class="transition-transform duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]" style="transform: var(--toggle-handle-transform);">
@@ -399,6 +376,27 @@
             </svg>
         </button>
     </div>
+
+    <!-- COLUMNA 2: Idioma Matrix (ESP) -> Alineado al Centro -->
+    <div class="flex items-center justify-center h-full bg-transparent">
+        <button id="lang-toggle-trigger" class="group flex items-center h-full transition-all duration-300 focus:outline-none cursor-pointer bg-transparent border-none p-0" title="Conmutar Idioma">
+            <svg class="w-3.5 h-3.5 text-jako-text opacity-40 group-hover:opacity-100 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                <path d="M2 12h20"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- COLUMNA 3: Control de Modo (MODE) -> Alineado a la Derecha -->
+    <div class="flex items-center justify-end h-full bg-transparent">
+        <button id="footer-fn-right-trigger" class="group flex items-center h-full transition-all duration-300 focus:outline-none cursor-pointer bg-transparent border-none p-0" aria-label="Activar Modo Zenith" title="Activar Modo Zenith">
+            <svg id="footer-raw-indicator" class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75h4.5m-4.5 0v4.5m0-4.5L9 9M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9M3.75 20.25h4.5m-4.5 0v-4.5m0 4.5L9 15M20.25 20.25h-4.5m4.5 0v-4.5m0 4.5l-6-6" />
+            </svg>
+        </button>
+    </div>
+
 </div>
 
 
@@ -1007,10 +1005,11 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
     const TELEMETRY_MEANINGS = {
         'telemetry-product-dim': "Conversion del dial en el espacio", 
         'telemetry-product-dial': "Cantidad de ondas biocinéticas.",
-        'telemetry-product-attrs-trigger': "MODELO COMPARTIDO: REGENERACIÓN SOCIAL ECONÓMICA."
+        'telemetry-product-attrs-trigger': "MODELO 1:1 ARTE REGENERATIVO."
     };
     
     const PULS_MEANINGS = {
+        'telemetry-puls-meanings-trigger': "LENGUAJE BIOCINETICO P.U.L.S.",
         'sub-sets-solar-trigger': "FRECUENCIA COAXIAL TIERRA-LUNA-SOL.", 
         'sub-reps-tension-trigger': "MAGNETISMO GRAVITACIONAL.", 
         'z-dial-trigger': () => {
@@ -1157,7 +1156,12 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
                 const activeLang = typeof currentLang !== 'undefined' ? currentLang : 'esp';
                 const txtOriginalSecondary = VAULT_DICTIONARY[activeLang]?.secondaryTelemetry || "ONDA BIOCINÉTICA REGENERATIVA";
 
-                if (esHeaderPuro) {
+                // Manejo de estados de iluminación activa simétricos
+                const targetSpan = (id === 'telemetry-puls-meanings-trigger') ? el.querySelector('span') : null;
+                if (targetSpan) {
+                    targetSpan.classList.remove('text-jako-text/70');
+                    targetSpan.classList.add('text-jako-text');
+                } else if (esHeaderPuro) {
                     contenedorLed.classList.remove('text-jako-text/60');
                     contenedorLed.classList.add('text-jako-text');
                 } else if (id === 'z-dial-trigger') {
@@ -1179,7 +1183,10 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
                         window.isDialFrozen = false; 
                         el.style.filter = "none"; 
                     }
-                    if (esHeaderPuro) {
+                    if (targetSpan) {
+                        targetSpan.classList.remove('text-jako-text');
+                        targetSpan.classList.add('text-jako-text/70');
+                    } else if (esHeaderPuro) {
                         contenedorLed.classList.remove('text-jako-text');
                         contenedorLed.classList.add('text-jako-text/60');
                     }
