@@ -215,6 +215,7 @@
 <!-- BLOQUE 2: PULS MEANINGS -->
 <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
     <div class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl">
+        <!-- Restaurado el texto base para prevenir el vacío visual en el render inicial -->
         <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none">
             ONDA BIOCINÉTICA REGENERATIVA
         </span>
@@ -356,10 +357,10 @@
     </div>
 </div>
 
-<!-- BLOQUE 8: BARRA DE ATRIBUTOS DEL PRODUCTO -->
+<!-- BLOQUE 6: BARRA DE ATRIBUTOS DEL PRODUCTO -->
 <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border bg-transparent">
-    <div class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl">
-        <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none">
+    <div id="telemetry-product-attrs-trigger" class="hud-btn-hyper rounded-sm h-[20px] px-4 flex items-center justify-center max-w-[90%] md:max-w-xl cursor-pointer select-none">
+        <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] text-jako-text/70 font-medium truncate uppercase select-none leading-none active-led">
             Tu compra financia ondas a la comunidad
         </span>
     </div>
@@ -1005,7 +1006,8 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
 
     const TELEMETRY_MEANINGS = {
         'telemetry-product-dim': "Conversion del dial en el espacio", 
-        'telemetry-product-dial': "Cantidad de ondas biocinéticas."
+        'telemetry-product-dial': "Cantidad de ondas biocinéticas.",
+        'telemetry-product-attrs-trigger': "MODELO COMPARTIDO: REGENERACIÓN SOCIAL ECONÓMICA."
     };
     
     const PULS_MEANINGS = {
@@ -1037,59 +1039,74 @@ let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializacione
         }
     };
 
-function actualizarBioUI() {
-    const itemConfig = JAKO_CATALOG[currentBioItem];
-    const variantConfig = itemConfig.variants[currentBioVariant];
-    
-    const descEl = getCachedEl('artepanel-description');
-    const packImg = getCachedEl('artepanel-pack-img');
-    const packImgBack = getCachedEl('artepanel-pack-img-back');
-    
-    if (descEl && packImg && packImgBack) {
-        descEl.classList.add('opacity-0');
-        setTimeout(() => {
-            descEl.textContent = variantConfig.desc;
-            packImg.src = variantConfig.img;
-            packImgBack.src = variantConfig.imgBack;
-            getCachedEl('artepanel-pack-img-raw').src = variantConfig.imgRaw;
-            
-            const labelTitle = getCachedEl('laser-variant-title');
-            if (labelTitle) labelTitle.textContent = variantConfig.label;
-            descEl.classList.remove('opacity-0');
-        }, 120);
+    function actualizarBioUI() {
+        // Protección estructural si el catálogo o el ítem actual no están inicializados
+        if (typeof JAKO_CATALOG === 'undefined' || !JAKO_CATALOG[currentBioItem]) return;
+        
+        const itemConfig = JAKO_CATALOG[currentBioItem];
+        const variantConfig = itemConfig.variants?.[currentBioVariant];
+        if (!variantConfig) return;
+        
+        const descEl = getCachedEl('artepanel-description');
+        const packImg = getCachedEl('artepanel-pack-img');
+        const packImgBack = getCachedEl('artepanel-pack-img-back');
+        const packImgRaw = getCachedEl('artepanel-pack-img-raw');
+        
+        // Transición fluida de opacidad para el contenedor de descripción
+        if (descEl) {
+            descEl.classList.add('opacity-0');
+            setTimeout(() => {
+                descEl.textContent = variantConfig.desc;
+                if (packImg) packImg.src = variantConfig.img;
+                if (packImgBack) packImgBack.src = variantConfig.imgBack;
+                if (packImgRaw) packImgRaw.src = variantConfig.imgRaw;
+                
+                const labelTitle = getCachedEl('laser-variant-title');
+                if (labelTitle) labelTitle.textContent = variantConfig.label;
+                descEl.classList.remove('opacity-0');
+            }, 120);
+        } else {
+            // Fallback inmediato de carga de assets si no existe contenedor de descripción
+            if (packImg) packImg.src = variantConfig.img;
+            if (packImgBack) packImgBack.src = variantConfig.imgBack;
+            if (packImgRaw) packImgRaw.src = variantConfig.imgRaw;
+        }
+
+        // --- ACTUALIZACIÓN DE DATOS TELEMÉTRICOS DEL PRODUCTO ---
+        const elDim = getCachedEl('telemetry-product-dim');
+        const elDial = getCachedEl('telemetry-product-dial');
+        if (elDim && variantConfig.telemetry?.DIM) elDim.textContent = variantConfig.telemetry.DIM;
+        if (elDial && variantConfig.telemetry?.DIAL) elDial.textContent = variantConfig.telemetry.DIAL;
+
+        // --- PROCESAMIENTO LINGÜÍSTICO TRILÍNGÜE (MENÚ) ---
+        const activeLang = typeof currentLang !== 'undefined' ? currentLang : 'esp';
+        const labelTextItem = (typeof VAULT_DICTIONARY !== 'undefined' && VAULT_DICTIONARY[activeLang])
+            ? (VAULT_DICTIONARY[activeLang][currentBioItem] || currentBioItem)
+            : currentBioItem;
+
+        // --- SANITIZACIÓN DE TEXTO ---
+        // Limpia prefijos repetidos de la variante para no saturar el espacio visual del HUD
+        const cleanedVariantLabel = variantConfig.label 
+            ? variantConfig.label.replace(new RegExp(`^${currentBioItem}`, 'i'), '').trim() 
+            : '';
+
+        // --- INYECCIÓN EN MENÚ UNIFICADO ---
+        const holderFooter = getCachedEl('menu-bio-DYNAMIC-holder');
+        if (holderFooter) {
+            holderFooter.innerHTML = `
+                <span class="tracking-[0.15em] sm:tracking-[0.2em] uppercase font-sans text-[10px] sm:text-[11px] font-black active-led">
+                    ${labelTextItem}
+                </span>`;
+        }
+
+        const holderHeader = getCachedEl('menu-bio-DYNAMIC-holder-header');
+        if (holderHeader) {
+            holderHeader.innerHTML = `
+                <span class="tracking-[0.1em] uppercase font-sans text-[8px] sm:text-[9px] font-medium text-jako-text/60">
+                    ${cleanedVariantLabel || currentBioVariant}
+                </span>`;
+        }
     }
-
-    const elDim = getCachedEl('telemetry-product-dim');
-    const elDial = getCachedEl('telemetry-product-dial');
-    if (elDim) elDim.textContent = variantConfig.telemetry.DIM;
-    if (elDial) elDial.textContent = variantConfig.telemetry.DIAL;
-
-    // --- PROCESAMIENTO LINGÜÍSTICO TRILÍNGÜE (MENÚ) ---
-    const activeLang = typeof currentLang !== 'undefined' ? currentLang : 'esp';
-    const labelTextItem = (typeof VAULT_DICTIONARY !== 'undefined' && VAULT_DICTIONARY[activeLang])
-        ? (VAULT_DICTIONARY[activeLang][currentBioItem] || currentBioItem)
-        : currentBioItem;
-
-    // --- SANITIZACIÓN DE TEXTO ---
-    const cleanedVariantLabel = variantConfig.label.replace(new RegExp(`^${currentBioItem}`, 'i'), '').trim();
-
-    // --- INYECCIÓN EN MENÚ UNIFICADO ---
-    const holderFooter = getCachedEl('menu-bio-DYNAMIC-holder');
-    if (holderFooter) {
-        holderFooter.innerHTML = `
-            <span class="tracking-[0.15em] sm:tracking-[0.2em] uppercase font-sans text-[10px] sm:text-[11px] font-black active-led">
-                ${labelTextItem}
-            </span>`;
-    }
-
-    const holderHeader = getCachedEl('menu-bio-DYNAMIC-holder-header');
-    if (holderHeader) {
-        holderHeader.innerHTML = `
-            <span class="tracking-[0.1em] uppercase font-sans text-[8px] sm:text-[9px] font-medium text-jako-text/60">
-                ${cleanedVariantLabel || currentBioVariant}
-            </span>`;
-    }
-}
 
     function habilitarReveladoTelemetria() {
         const telemetryData = getCachedEl('panel-telemetry-data');
@@ -1098,21 +1115,28 @@ function actualizarBioUI() {
         Object.keys(TELEMETRY_MEANINGS).forEach(id => {
             const el = getCachedEl(id);
             if (!el || !telemetryData) return;
+            
             el.addEventListener('click', () => {
                 clearTimeout(timerComercial);
                 
-                // Obtener texto original dinámico según idioma activo
                 const activeLang = typeof currentLang !== 'undefined' ? currentLang : 'esp';
                 const txtOriginal = VAULT_DICTIONARY[activeLang]?.primaryTelemetry || "Tu compra financia ondas a la comunidad";
 
-                el.parentElement.classList.remove('text-jako-text/50');
-                el.parentElement.classList.add('text-jako-text');
+                // Añadir estado activo al span interno
+                const targetSpan = el.id === 'telemetry-product-attrs-trigger' ? el.querySelector('span') : el.querySelector('span') || el;
+                if (targetSpan) {
+                    targetSpan.classList.remove('text-jako-text/70', 'text-jako-text/50');
+                    targetSpan.classList.add('text-jako-text');
+                }
+
                 telemetryData.innerHTML = TELEMETRY_MEANINGS[id];
                 
                 timerComercial = setTimeout(() => {
                     telemetryData.innerHTML = txtOriginal;
-                    el.parentElement.classList.remove('text-jako-text');
-                    el.parentElement.classList.add('text-jako-text/50');
+                    if (targetSpan) {
+                        targetSpan.classList.remove('text-jako-text');
+                        targetSpan.classList.add('text-jako-text/70');
+                    }
                 }, 8000);
             });
         });
@@ -1130,11 +1154,9 @@ function actualizarBioUI() {
                 clearTimeout(timerQuantum);
                 if (id === 'z-dial-trigger') window.isDialFrozen = true;
 
-                // Obtener texto secundario original dinámico según idioma activo
                 const activeLang = typeof currentLang !== 'undefined' ? currentLang : 'esp';
                 const txtOriginalSecondary = VAULT_DICTIONARY[activeLang]?.secondaryTelemetry || "ONDA BIOCINÉTICA REGENERATIVA";
 
-                // CONTROL SEGURO DE ESTADOS (Evitamos classList.replace inestable)
                 if (esHeaderPuro) {
                     contenedorLed.classList.remove('text-jako-text/60');
                     contenedorLed.classList.add('text-jako-text');
@@ -1142,7 +1164,6 @@ function actualizarBioUI() {
                     el.style.filter = "drop-shadow(0 0 25px var(--jako-led))";
                 }
                 
-                // BLINDAJE ANTI-FONDO NEGRO: Aseguramos que el contenedor de la telemetría permanezca transparente
                 const contenedorPadreTelemetria = telemetryDataSecondary.parentElement;
                 if (contenedorPadreTelemetria) {
                     contenedorPadreTelemetria.classList.remove('glass', 'bg-black');
