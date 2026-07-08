@@ -214,7 +214,7 @@
     <!-- Centro: Identificador Core Central -->
     <div class="h-full w-full flex items-center justify-center text-center overflow-hidden">
         <span class="font-mono text-xs sm:text-sm font-black tracking-[0.25em] text-jako-text active-led">
-            JAKO.DEV
+            JAKO.ART
         </span>
     </div>
 
@@ -695,37 +695,37 @@
     let tipoVarianteActiva = 'PANEL'; // Mantiene compatibilidad con inicializaciones
 
     function inicializarArtepanel() {
-        const btnPrevFooter = getCachedEl('btn-variant-prev'); 
-        const btnNextFooter = getCachedEl('btn-variant-next'); 
-        const btnPrevHeader = getCachedEl('btn-header-variant-prev'); 
-        const btnNextHeader = getCachedEl('btn-header-variant-next'); 
-        
-        // 1. VINCULACIÓN DEL BOTÓN CENTRAL DE ADQUISICIÓN
-        const btnAdquirir = getCachedEl('btn-adquirir-nodo');
-        if (btnAdquirir) {
-            btnAdquirir.addEventListener('click', () => {
-                adquirirNodo();
-            });
+            const btnPrevFooter = getCachedEl('btn-variant-prev'); 
+            const btnNextFooter = getCachedEl('btn-variant-next'); 
+            const btnPrevHeader = getCachedEl('btn-header-variant-prev'); 
+            // Eliminada la referencia obsoleta a btnNextHeader aquí para sanear el motor
+            
+            const btnAdquirir = getCachedEl('btn-adquirir-nodo');
+            if (btnAdquirir) {
+                btnAdquirir.addEventListener('click', () => {
+                    adquirirNodo();
+                });
+            }
+
+            const itemsMenu = Object.keys(JAKO_CATALOG);
+            const ciclarItemMenu = (direccion) => {
+                let currentIndex = itemsMenu.indexOf(currentBioItem);
+                if (currentIndex === -1) currentIndex = 0;
+                let nextIndex = (currentIndex + direccion) % itemsMenu.length;
+                if (nextIndex < 0) nextIndex = itemsMenu.length - 1;
+                cambiarBioItem(itemsMenu[nextIndex]);
+                triggerHaptic([12]);
+            };
+
+            if (btnPrevFooter) btnPrevFooter.addEventListener('click', () => ciclarItemMenu(-1));
+            if (btnNextFooter) btnNextFooter.addEventListener('click', () => ciclarItemMenu(1));
+            
+            // El botón remanente absorbe la acción de loop infinito/cíclico hacia adelante
+            if (btnPrevHeader) btnPrevHeader.addEventListener('click', () => { ciclarVariante(currentBioItem, 1); triggerHaptic([6]); });
+            
+            vincularBotones();
+            actualizarBioUI();
         }
-
-        const itemsMenu = Object.keys(JAKO_CATALOG);
-        const ciclarItemMenu = (direccion) => {
-            let currentIndex = itemsMenu.indexOf(currentBioItem);
-            if (currentIndex === -1) currentIndex = 0;
-            let nextIndex = (currentIndex + direccion) % itemsMenu.length;
-            if (nextIndex < 0) nextIndex = itemsMenu.length - 1;
-            cambiarBioItem(itemsMenu[nextIndex]);
-            triggerHaptic([12]);
-        };
-
-        if (btnPrevFooter) btnPrevFooter.addEventListener('click', () => ciclarItemMenu(-1));
-        if (btnNextFooter) btnNextFooter.addEventListener('click', () => ciclarItemMenu(1));
-        if (btnPrevHeader) btnPrevHeader.addEventListener('click', () => { ciclarVariante(currentBioItem, -1); triggerHaptic([6]); });
-        if (btnNextHeader) btnNextHeader.addEventListener('click', () => { ciclarVariante(currentBioItem, 1); triggerHaptic([6]); });
-        
-        vincularBotones();
-        actualizarBioUI();
-    }
 
     function cambiarBioItem(itemKey) {
         currentBioItem = itemKey;
