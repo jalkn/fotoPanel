@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <link class="icon" type="image/png" href="img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JAKO VAULT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = { 
+            theme: { 
+                extend: { 
+                    screens: { 'xs': '400px' },
+                    colors: { 
+                        'jako-bg': 'var(--jako-bg)',
+                        'jako-text': 'var(--jako-text)',
+                        'jako-border': 'var(--jako-border)',
+                        'jako-glass': 'var(--jako-glass)',
+                        'jako-led': 'var(--jako-led)',
+                    },
+                    fontFamily: { 
+                        'sans': ['Orbitron', 'sans-serif'],
+                        'mono': ['Orbitron', 'monospace'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* VARIABLES ACROMÁTICAS DE ENTORNO MATRICIAL */
+        :root[data-theme="dark"] {
+            --jako-bg: rgba(5, 5, 8, 0.92);
+            --jako-text: #ffffff;
+            --jako-border: rgba(255, 255, 255, 0.02);
+            --jako-glass: rgba(0, 0, 0, 0.5);
+            --jako-led: rgba(255, 255, 255, 0.65);
+            --gradient-start: rgba(255, 255, 255, 0.03);
+            --gradient-mid: rgba(5, 5, 8, 0.85);
+            --gradient-end: #000000;
+        }
+        :root[data-theme="white"] {
+            --jako-bg: #f8f9fa;
+            --jako-text: #000000;
+            --jako-border: rgba(0, 0, 0, 0.08);
+            --jako-glass: rgba(255, 255, 255, 0.4);
+            --jako-led: rgba(0, 0, 0, 0.75);
+            --gradient-start: rgba(0, 0, 0, 0.02);
+            --gradient-mid: rgba(248, 249, 250, 0.85);
+            --gradient-end: #ffffff;
+        }
+
+        /* MOTOR BASE DE LA INTERFAZ */
+        body { 
+            scroll-behavior: smooth; 
+            letter-spacing: 0.05em;  
+            overscroll-behavior: none;
+            background-color: var(--jako-bg);
+            color: var(--jako-text);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* CÁMARA OSCURA / CLARA: Gradiente bio-lumínico optimizado por Hardware */
+        #page-bg-overlay {
+            position: fixed;
+            inset: 0;
+            /* Mutación de variables dinámicas inyectadas por el motor STB */
+            background: radial-gradient(circle at 50% 30%, var(--chroma-start) 0%, var(--chroma-mid) 65%, var(--chroma-end) 100%);
+            z-index: -1;
+            transform: translateZ(0);
+            will-change: background;
+            transition: background 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* VIDRIO HIPERREALISTA SIMÉTRICO */
+        .glass { 
+            background: var(--jako-glass);
+            border: 1px solid var(--jako-border); 
+            backdrop-filter: blur(30px); 
+            -webkit-backdrop-filter: blur(30px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+            transform: translateZ(0);
+            transition: background 0.5s ease, border-color 0.5s ease;
+        }
+
+        .border-custom { 
+            border-color: var(--jako-border); 
+            transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .border-custom:hover { border-color: var(--jako-text); }
+
+        /* EFECTO LED DINÁMICO (EMISIÓN NEUTRAL) */
+        .tele-value { 
+            color: var(--jako-text); 
+            text-shadow: 0 0 14px var(--jako-led), 0 0 4px var(--jako-led);
+            transform: translateZ(0);
+            transition: color 0.5s ease, text-shadow 0.5s ease;
+        } 
+
+        /* TRANSICIÓN DE GLOW SIN SALTOS OPTICOS */
+        .img-glow-transition {
+            transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translate3d(0, 0, 0);
+            will-change: filter, transform, opacity;
+        }
+
+        /* OCULTAMIENTO ASÉPTICO DE SCROLLS */
+        .custom-hud-scroll { 
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
+        }
+        .custom-hud-scroll::-webkit-scrollbar { 
+            display: none; 
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        button, span, div {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root[data-theme="dark"] {
+            /* ... tus variables actuales ... */
+            --toggle-handle-transform: translate(28px, 3px);
+        }
+        :root[data-theme="white"] {
+            /* ... tus variables actuales ... */
+            --toggle-handle-transform: translate(3px, 3px);
+        }
+
+        /* COMPORTAMIENTO MODO ZENITH (RAW) */
+        .zenith-active header,
+        .zenith-active footer {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: translateY(-10px);
+        }
+
+        .zenith-active footer {
+            transform: translateY(10px);
+        }
+
+        /* El contenedor principal se expande para devorar el espacio libre */
+        .zenith-active main {
+            padding: 0 !important;
+            transition: padding 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .zenith-active #artepanel-pack-container {
+            transform: scale(1.12);
+            filter: drop-shadow(0 35px 80px rgba(0,0,0,0.95));
+        }
+
+        /* Suavizado global de UI HUD */
+        header, footer, #artepanel-pack-container {
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-jako-text selection:text-jako-bg overflow-x-hidden min-h-screen">
+
+    <div id="page-bg-overlay"></div>
+        
+<!-- HEADER CORREGIDO: Altura máxima controlada para prevenir estiramiento en producción -->
+<header class="fixed top-0 left-0 w-full max-h-[155px] z-50 glass border-b border-jako-text/5 overflow-hidden">
+    <div class="w-full flex flex-col h-full justify-start">
+        
+        <!-- GRID DE 5 COLUMNAS: Forzado a alineación exacta sin depender del min-h externo -->
+        <div class="px-4 sm:px-8 grid grid-cols-[auto_auto_1fr_auto_auto] items-center uppercase tracking-widest font-mono text-[11px] text-jako-text/50 h-[65px] sm:h-[72px] min-h-[65px] sm:min-h-[72px] select-none gap-4 sm:gap-6">
+                    
+                    <!-- 1. RETORNO (Extremo Izquierdo) -->
+                    <div class="flex items-center h-full">
+                        <button class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Back">
+                            <img src="img/" alt="" class="h-[13px] sm:h-[15px] w-auto object-contain opacity-65 group-hover:opacity-100 transition-all duration-500 filter invert dark:invert-0" />
+                        </button>
+                    </div>
+
+                    <!-- 2. IDIOMA / CONMUTADOR DE MATRIZ TRILÍNGÜE (Estructura de Red Compacta) -->
+                    <div class="flex items-center h-full">
+                        <button id="lang-toggle-trigger" class="group flex items-center gap-1.5 justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" title="Conmutar Idioma / Switch Language" aria-label="Toggle language">
+                            <!-- Ícono Global de Red (Inspirado en Screenshot 2026-07-03 at 6.02.03 PM.png) -->
+                            <svg class="w-3.5 h-3.5 text-jako-text opacity-40 group-hover:opacity-100 transition-all duration-500 fill-none stroke-current stroke-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                <path d="M2 12h20"/>
+                            </svg>
+                            <!-- Indicador de Idioma Dinámico -->
+                            <span id="lang-indicator" class="font-mono text-[10px] font-black tracking-wider opacity-50 group-hover:opacity-100 transition-all duration-500 text-jako-text">ESP</span>
+                        </button>
+                    </div>
+                    
+                    <!-- 3. IDENTIDAD CENTRAL (Eje de Gravedad) -->
+                    <div class="text-center tracking-[0.28em] font-black drop-shadow-[0_0_12px_var(--jako-led)] text-jako-text text-[13px] sm:text-[15px] leading-none">
+                        <span>FOTOPANEL.ART</span>
+                    </div>
+
+                    <!-- 4. INTERRUPTOR ACROMÁTICO (Cápsula Vectorial Interactiva) -->
+                    <div class="flex items-center h-full">
+                        <button id="acromatic-toggle-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" title="Conmutar Matriz Visual" aria-label="Toggle acromatic theme">
+                            <svg class="w-[38px] sm:w-[44px] h-auto object-contain text-jako-text fill-current opacity-70 group-hover:opacity-100 transition-all duration-300 distribution-gpu" viewBox="0 0 54 28" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Cuerpo de la Cápsula -->
+                                <rect width="54" height="28" rx="14" />
+                                <!-- Contenedor Deslizable del Lente -->
+                                <g class="transition-transform duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]" style="transform: var(--toggle-handle-transform);">
+                                    <circle cx="11" cy="11" r="11" class="fill-current text-jako-bg" />
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- 5. FLUJO BIOCINÉTICO (Extremo Derecho) -->
+                    <div class="flex items-center h-full">
+                        <button class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Pace">
+                            <img src="img/" alt="" class="h-[13px] sm:h-[15px] w-auto object-contain opacity-65 group-hover:opacity-100 transition-all duration-500 filter invert dark:invert-0" />
+                        </button>
+                    </div>
+
+                </div>
+
+
+                <div class="w-full flex flex-col bg-jako-text/[0.01]">
+                    
+                    <div class="w-full grid grid-cols-3 items-center justify-between px-3 sm:px-8 h-12 gap-2 sm:gap-4 text-center select-none">
+                        
+                        <div id="sub-sets-solar-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Hz</span>
+                            <span id="sub-sets-solar" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text drop-shadow-[0_0_8px_var(--jako-led)] standard-num">0.00</span>
+                        </div>
+
+                        <div id="z-dial-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Dial</span>
+                            <span id="z-dial-mirror" class="font-mono tracking-[0.15em] text-[10px] sm:text-[12px] font-black text-jako-text drop-shadow-[0_0_10px_var(--jako-led)]">0PU0</span>
+                        </div>
+
+                        <div id="sub-reps-tension-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Tensión</span>
+                            <span id="sub-reps-tension" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text drop-shadow-[0_0_8px_var(--jako-led)] standard-num">0.0</span>
+                        </div>
+
+                    </div>
+
+                    <!-- TELEMETRÍA HEADER HIPERREALISTA (CORREGIDO SIN FONDO OPACO) -->
+                    <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border from-jako-text/[0.02] to-transparent">
+                        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
+                            ONDA BIOCINÉTICA REGENERATIVA
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+        </header>
+
+<main id="main-vault" class="w-full flex-1 flex flex-col justify-center items-center pt-[155px] pb-[195px] min-h-screen relative overflow-hidden"> 
+    <div class="w-full flex flex-col items-center justify-center p-4 sm:p-6 select-none relative z-10">
+        <div id="artepanel-pack-container" class="relative w-[65vw] h-[65vw] sm:w-[50vw] sm:h-[50vw] md:w-[38vh] md:h-[38vh] max-w-[340px] max-h-[340px] min-w-[200px] min-h-[200px] aspect-square shrink-0 drop-shadow-[0_25px_55px_rgba(0,0,0,0.85)] transition-all duration-300">
+            <div class="w-full h-full relative overflow-hidden rounded-md bg-transparent">
+                <img id="artepanel-pack-img-back" src="img/40x40W.png" alt="artepanel Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-0" />
+                <img id="artepanel-pack-img" src="img/40x40B.png" alt="artepanel Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-cover pointer-events-auto z-10" />
+                <img id="artepanel-pack-img-raw" src="img/20x20B.png" alt="Raw Content" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-[5]" />
+                
+                <div class="absolute inset-0 flex items-center justify-center p-0 z-20 pointer-events-none">
+                    <svg id="laser-vector-target" viewBox="0 0 400 400" class="w-full h-full fill-none stroke-current text-jako-text transition-all duration-500 origin-center">
+                        <defs>
+                            <path id="textPath-top" d="M 65,200 A 135,135 0 0,1 335,200" />
+                            <path id="textPath-bottom" d="M 65,200 A 135,135 0 0,0 335,200" />
+                        </defs>
+                        
+                        <g id="wave-quantum-container" class="origin-center -rotate-90">
+                            </g>
+
+                        <!-- RESTAURACIÓN DE SANDWATCH Y COORDINADA ALFANUMÉRICA -->
+                        <g id="sandwatch-group" class="origin-center opacity-0 transition-all duration-500 pointer-events-none style-gpu" style="will-change: opacity;">
+                            <path d="M 90,90 L 310,90 L 90,310 L 310,310 Z" class="stroke-current opacity-20" />
+                            <path d="M 90,90 Q 200,125 310,90" class="stroke-current opacity-20" />
+                            <path d="M 90,310 Q 200,275 310,310" stroke-dasharray="3 3" class="stroke-current opacity-20" />
+                            <text id="z-dial" x="200" y="218" text-anchor="middle" class="fill-current font-black text-[45px] tracking-[0.35em] font-sans pointer-events-auto select-none cursor-pointer">8PU10</text>
+                        </g>
+
+                        <g style="display: none;">
+                            <text class="fill-current font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
+                                <textPath id="laser-variant-title" href="#textPath-top" startOffset="50%" text-anchor="middle">MACROPULSOR FOCUS</textPath>
+                            </text>
+                            <text class="fill-current opacity-60 font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
+                                <textPath id="artepanel-description" href="#textPath-bottom" startOffset="50%" text-anchor="middle">Enfoque y claridad cognitive</textPath>
+                            </text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-jako-text/5 transition-opacity duration-500 select-none transform translateZ(0) overflow-hidden">
+    <div class="w-full flex flex-col h-full justify-start">
+            <div class="w-full flex items-center justify-center px-4 h-8 border-t border-jako-border from-jako-text/[0.02] to-transparent">
+                <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-jako-text/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
+                    Compras tu pieza y financias otra para la comunidad
+                </span>
+            </div>
+
+
+            <!-- TELEMETRÍA FOOTER HIPERREALISTA -->
+            <div class="w-full flex flex-col bg-jako-text/[0.01]">
+                <div class="w-full grid grid-cols-5 items-center justify-between px-3 sm:px-8 h-12 gap-2 sm:gap-4 text-center select-none">
+                    
+                    <div id="telemetry-product-dim-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">CMS</span>
+                        <span id="telemetry-product-dim" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text/90">--</span>
+                    </div>
+
+                    <div class="col-span-3 grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center max-w-xs mx-auto">
+                        <button id="btn-variant-prev" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none">
+                            <span class="text-[10px] font-bold">&lt;</span>
+                        </button>
+                        
+                        <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center cursor-pointer group"></div>
+                        
+                        <button id="btn-variant-next" class="h-8 flex items-center justify-center text-jako-text/20 hover:text-jako-text/50 hover:bg-jako-text/[0.02] rounded transition-all focus:outline-none">
+                            <span class="text-[10px] font-bold">&gt;</span>
+                        </button>
+                    </div>
+
+                    <div id="telemetry-product-dial-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-jako-text/60 hover:text-jako-text transition-colors duration-200 h-full justify-center">
+                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-jako-text/30 mt-0.5 uppercase font-mono leading-none">Dials</span>
+                        <span id="telemetry-product-dial" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-jako-text/90">--</span>
+                    </div>
+
+                </div>
+            </div>
+
+<!-- FILA DE ACCIONES PRINCIPALES (SÍN LÍNEAS VERTICALES) -->
+<div class="w-full h-12 relative z-10 border-jako-border bg-jako-text/[0.01]">
+    <div class="w-full grid grid-cols-3 items-center h-full text-center select-none">
+        
+        <button id="btn-reveal-raw" class="h-full w-full bg-transparent hover:bg-jako-text/[0.02] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Capas Visuales">
+            VER
+        </button>
+        
+        <button id="btn-adquirir-nodo" onclick="adquirirNodo()" class="h-full w-full bg-transparent hover:bg-jako-text/[0.04] text-jako-text/90 font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
+            ACTIVAR
+        </button>
+        
+        <button id="btn-reveal-dial" class="h-full w-full bg-transparent hover:bg-jako-text/[0.02] text-jako-text/40 hover:text-jako-text font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
+            DIAL
+        </button>
+        
+    </div>
+</div>
+
+            <!-- FILA DE FIRMA Y CONFIGURACIÓN (SELECTOR STB Y EXPANSIÓN ZENITH) -->
+            <div class="w-full h-11 min-h-[44px] max-h-[44px] relative z-10 overflow-hidden border-t border-jako-border">
+                <div class="w-full h-full px-4 sm:px-8 grid grid-cols-[auto_auto_1fr_auto_auto] items-center uppercase tracking-[0.3em] sm:tracking-[0.4em] font-mono text-[8px] text-jako-text/20 select-none gap-4 sm:gap-6">
+                    
+                    <!-- 1. DISPARADOR INFERIOR IZQUIERDO (Selector Cromático STB) -->
+                    <div class="flex items-center h-full">
+                        <button id="footer-fn-left-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Conmutar Espectro Cromático">
+                            <svg class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke-dasharray="3 3" />
+                                <circle cx="12" cy="12" r="4" class="fill-current opacity-30" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- 2. MARCADOR DE ESTADO INTERNO IZQUIERDO -->
+                    <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px] min-w-[24px]">
+                        <span id="footer-chroma-indicator">STB</span>
+                    </div>
+                    
+                    <!-- 3. IDENTIDAD CENTRAL DE FIRMA -->
+                    <div class="text-center font-bold tracking-[0.3em] sm:tracking-[0.4em] text-jako-text/15 hover:text-jako-text/50 transition-all duration-300 h-full flex items-center justify-center whitespace-nowrap">
+                        <a href="https://jako.world" class="h-full w-full flex items-center justify-center focus:outline-none">POWERED BY JAKO.WORLD</a>
+                    </div>
+
+                    <!-- 4. MARCADOR DE ESTADO INTERNO DERECHO -->
+                    <div class="flex items-center h-full text-jako-text/30 font-black tracking-wider text-[9px]">
+                        <span class="font-mono">RAW</span>
+                    </div>
+
+                    <!-- 5. DISPARADOR INFERIOR DERECHO (Modo Inmersión Zenith con Ícono de Expansión HUD) -->
+                    <div class="flex items-center h-full">
+                        <button id="footer-fn-right-trigger" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Activar Modo Zenith">
+                            <svg id="footer-raw-indicator" class="w-3.5 h-3.5 text-jako-text opacity-20 group-hover:opacity-80 transition-all duration-500 fill-none stroke-current stroke-1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75h4.5m-4.5 0v4.5m0-4.5L9 9M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9M3.75 20.25h4.5m-4.5 0v-4.5m0 4.5L9 15M20.25 20.25h-4.5m4.5 0v-4.5m0 4.5l-6-6" />
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+    const ARTEPANEL_CATALOG = {
+        'STENCIL': {
+            defaultVariant: '25X25',
+            variants: {
+                '25X25': { 
+                    label: 'STENCIL25X25', 
+                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
+                    spec: 'Compras tu pieza y financias otra para la comunidad', 
+                    price: '$12USD', 
+                    id: 'ST-25X25',
+                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/stencil25B.png',
+                    telemetry: { DIM: '25x25', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
+                },
+                '40X40': { 
+                    label: 'MICROSTENCIL FOCUS', 
+                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
+                    spec: 'Compras tu pieza y financias otra para la comunidad', 
+                    price: '$29USD', 
+                    id: 'ST-MICRO',
+                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/microB.png',
+                    telemetry: { DIM: '40x40', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
+                },
+                '80X80': { 
+                    label: 'MACROSTENCIL SURGE', 
+                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
+                    spec: 'Compras tu pieza y financias otra para la comunidad', 
+                    price: '$125USD', 
+                    id: 'ST-MACRO',
+                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/macroB.png',
+                    telemetry: { DIM: '80x80', MEDIA: 'STENCIL', DIAL: '⧗2500', RATE: '$0.05USD' }
+                }
+            }
+        },
+        'PANEL': {
+            defaultVariant: '40X40',
+            variants: {
+                '20X20': { 
+                    label: 'PANEL20X20', 
+                    desc: 'INKJET ADH sobre ACM para montajes individuales o mosaicos.', 
+                    spec: 'Compras tu pieza y financias otra para la comunidad', 
+                    price: '$12USD', 
+                    id: 'FP-20X20',
+                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/panel20B.png',
+                    telemetry: { DIM: '20x20', MEDIA: 'ACM', DIAL: '⧗240', RATE: '$0.05USD' }
+                },
+                '30X30': { 
+                    label: 'PANEL30X30', 
+                    desc: 'INKJET ADH sobre ACM para montajes individuales o mosaicos.', 
+                    spec: 'Compras tu pieza y financias otra para la comunidad', 
+                    price: '$29USD', 
+                    id: 'FP-30X30',
+                    img: 'img/surface.png', imgBack: 'img/panel30W.png', imgRaw: 'img/panel30B.png',
+                    telemetry: { DIM: '30x30', MEDIA: 'ACM', DIAL: '⧗576', RATE: '$0.05USD' }
+                },
+                '40X40': { 
+                    label: 'PANEL40X40', 
+                    desc: 'INKJET ADH sobre ACM para montajes individuales o mosaicos.', 
+                    spec: 'Compras tu pieza y financias otra para la comunidad', 
+                    price: '$55USD', 
+                    id: 'FP-40X40',
+                    img: 'img/surface.png', imgBack: 'img/panel40W.png', imgRaw: 'img/panel40B.png',
+                    telemetry: { DIM: '40x40', MEDIA: 'ACM', DIAL: '⧗1100', RATE: '$0.05USD' }
+                }
+            }
+        }
+    };
+
+    let currentBioItem = 'PANEL';
+    let currentBioVariant = '40X40';
+    const numeroCelular = "573025333130";
+    
+    window.isDialFrozen = false; 
+    let biokineticWaveHistory = []; 
+    let isDialTextRevealed = false;
+    let currentWaveSubStep = 0;
+
+    const VECTOR_TO_CLOCK_INDEX = {
+        'P': 1,  'U': 2,  'L': 3,  'S': 4,
+        'PL': 5, 'PU': 6, 'LU': 7, 'SU': 8,
+        'PUL': 9,'LPS': 10,'SPU': 11,'ULS': 12
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const cachedElements = {};
+    
+    function getCachedEl(id) {
+        if (!cachedElements[id]) cachedElements[id] = $(id);
+        return cachedElements[id];
+    }
+
+    const triggerHaptic = (ms) => { if (navigator.vibrate) navigator.vibrate(ms); };
+
+    // ==========================================
+    // INTERRUPTOR ACROMÁTICO (DARK / WHITE MODE)
+    // ==========================================
+    function inicializarAlternadorAcromatico() {
+        const trigger = getCachedEl('acromatic-toggle-trigger');
+        if (!trigger) return;
+
+        trigger.addEventListener('click', () => {
+            const htmlNode = document.documentElement;
+            const currentTheme = htmlNode.getAttribute('data-theme') || 'dark';
+            const nextTheme = currentTheme === 'dark' ? 'white' : 'dark';
+            
+            htmlNode.setAttribute('data-theme', nextTheme);
+            triggerHaptic([20, 10]);
+            renderBiokineticWaves();
+        });
+    }
+
+    // ==========================================
+    // DICCIONARIO ACROMÁTICO TRILÍNGÜE (HUD)
+    // ==========================================
+    const VAULT_DICTIONARY = {
+        esp: {
+            indicator: "ESP",
+            secondaryTelemetry: "ONDA BIOCINÉTICA REGENERATIVA",
+            primaryTelemetry: "Compras tu pieza y financias otra para la comunidad",
+            btnRevealRaw: "VER",
+            btnActivar: "ACTIVAR"
+        },
+        eng: {
+            indicator: "ENG",
+            secondaryTelemetry: "REGENERATIVE BIOKINETIC WAVE",
+            primaryTelemetry: "Buy your piece and finance another for the community",
+            btnRevealRaw: "VIEW",
+            btnActivar: "ACTIVATE"
+        },
+        ita: {
+            indicator: "ITA",
+            secondaryTelemetry: "ONDA BIOCINETICA RIGENERATIVA",
+            primaryTelemetry: "Acquisti un pezzo y ne finanzi un altro per la comunità",
+            btnRevealRaw: "VEDI",
+            btnActivar: "ATTIVARE"
+        }
+    };
+
+    // Estado global interno del idioma
+    let currentLang = 'esp';
+
+    // Secuencia matricial de ordenamiento cíclico
+    const NEXT_LANG_SEQUENCE = {
+        'esp': 'eng',
+        'eng': 'ita',
+        'ita': 'esp'
+    };
+
+    // ==========================================
+    // MOTOR DE IDIOMA Y RECONFIGURACIÓN DE TEXTOS
+    // ==========================================
+    function inicializarAlternadorIdioma() {
+        const trigger = getCachedEl('lang-toggle-trigger');
+        if (!trigger) return;
+
+        trigger.addEventListener('click', () => {
+            // Conmutación cíclica controlada por el mapa secuencial
+            currentLang = NEXT_LANG_SEQUENCE[currentLang] || 'esp';
+            
+            // 1. Inyectar atributo de idioma global en el DOM
+            document.documentElement.setAttribute('data-lang', currentLang);
+            
+            // 2. Obtener el sub-diccionario correspondiente
+            const texts = VAULT_DICTIONARY[currentLang];
+            
+            // 3. Reconfiguración de elementos estáticos en caliente
+            const elIndicator = getCachedEl('lang-indicator');
+            const elSecondary = getCachedEl('panel-telemetry-data-secondary');
+            const elPrimary = getCachedEl('panel-telemetry-data');
+            const elBtnRaw = getCachedEl('btn-reveal-raw');
+            const elBtnActivar = getCachedEl('btn-adquirir-nodo');
+
+            if (elIndicator) elIndicator.textContent = texts.indicator;
+            if (elSecondary) elSecondary.textContent = texts.secondaryTelemetry;
+            if (elPrimary) elPrimary.textContent = texts.primaryTelemetry;
+            if (elBtnRaw) elBtnRaw.textContent = texts.btnRevealRaw;
+            if (elBtnActivar) elBtnActivar.textContent = texts.btnActivar;
+
+            // Feedback háptico sincronizado con la interfaz
+            triggerHaptic([20, 10]);
+        });
+    }
+
+    function renderBiokineticWaves() {
+        const container = getCachedEl('wave-quantum-container');
+        if (!container || biokineticWaveHistory.length === 0) return;
+
+        let htmlContent = '';
+        biokineticWaveHistory.forEach((dial, tIndex) => {
+            const currentScale = tIndex * (3 / 3); 
+            const baseOpacity = isDialTextRevealed ? 0.05 : (1.0 - (tIndex * 0.08));
+            if (baseOpacity <= 0) return;
+
+            const viewFactor = 18; 
+            const layers = [
+                { id: 'internal',     r: (currentScale * 1.0) * viewFactor, opacity: baseOpacity * 0.70, value: dial.sets },
+                { id: 'intermediate', r: (currentScale * 1.4) * viewFactor, opacity: baseOpacity * 0.55, value: dial.vector },
+                { id: 'external',     r: (currentScale * 1.8) * viewFactor, opacity: baseOpacity * 0.40, value: dial.reps }
+            ];
+
+            layers.forEach(layer => {
+                if (layer.r <= 0) return;
+                const circumference = 2 * Math.PI * layer.r;
+                const angle = (layer.value - 1) * 30; 
+                const arcLength = (layer.value / 12) * circumference;
+                const dashArray = `${arcLength} ${circumference}`;
+
+                htmlContent += `
+                    <circle 
+                        id="wave-${layer.id}-t${tIndex}" 
+                        cx="200" 
+                        cy="200" 
+                        r="${layer.r}" 
+                        transform="rotate(${angle} 200 200)"
+                        class="stroke-current"
+                        stroke-width="${tIndex === 0 ? 1.5 : 1.0}"
+                        stroke-opacity="${layer.opacity}"
+                        stroke-dasharray="${dashArray}"
+                        stroke-linecap="round"
+                        fill="none"
+                        style="will-change: r, stroke-opacity, stroke-dasharray;"
+                    />`;
+            });
+        });
+        container.innerHTML = htmlContent;
+    }
+
+    function aplicarModoVisual(modo) {
+        const front = getCachedEl('artepanel-pack-img');
+        const back = getCachedEl('artepanel-pack-img-back');
+        const raw = getCachedEl('artepanel-pack-img-raw');
+        const svg = getCachedEl('laser-vector-target');
+
+        [front, back, raw].forEach(el => { if(el) el.style.opacity = '0'; });
+        
+        if (modo === 'front') {
+            front.style.opacity = '1'; front.style.zIndex = '10'; back.style.zIndex = '0';
+            if (svg) { svg.style.opacity = '1'; svg.style.pointerEvents = 'auto'; }
+        } else if (modo === 'back') {
+            back.style.opacity = '1'; back.style.zIndex = '10'; front.style.zIndex = '0';
+            if (svg) { svg.style.opacity = '0'; svg.style.pointerEvents = 'none'; }
+        } else if (modo === 'raw') {
+            raw.style.opacity = '1';
+            if (svg) { svg.style.opacity = '0'; svg.style.pointerEvents = 'none'; }
+        }
+    }
+
+    function vincularBotones() {
+        const btnRaw = getCachedEl('btn-reveal-raw');
+        const btnDial = getCachedEl('btn-reveal-dial'); 
+        let modoActual = 'front';
+
+        if (btnRaw) {
+            btnRaw.addEventListener('click', () => {
+                if (modoActual === 'front') { aplicarModoVisual('raw'); modoActual = 'raw'; triggerHaptic([10]); }
+                else if (modoActual === 'raw') { aplicarModoVisual('back'); modoActual = 'back'; triggerHaptic([12]); }
+                else { aplicarModoVisual('front'); modoActual = 'front'; triggerHaptic([8]); }
+            });
+        }
+
+        if (btnDial) {
+            btnDial.addEventListener('click', () => {
+                isDialTextRevealed = !isDialTextRevealed; 
+                if (isDialTextRevealed) {
+                    btnDial.classList.replace('text-jako-text/40', 'text-jako-text');
+                    btnDial.classList.add('bg-jako-text/[0.04]');
+                } else {
+                    btnDial.classList.replace('text-jako-text', 'text-jako-text/40');
+                    btnDial.classList.remove('bg-jako-text/[0.04]');
+                }
+                const sandwatchGroup = getCachedEl('sandwatch-group');
+                if (sandwatchGroup) {
+                    sandwatchGroup.style.opacity = isDialTextRevealed ? "1" : "0";
+                    sandwatchGroup.style.pointerEvents = isDialTextRevealed ? "auto" : "none";
+                }
+                renderBiokineticWaves(); 
+                triggerHaptic([10]);
+            });
+        }
+    }
+
+    let tipoVarianteActiva = 'PANEL';
+
+    function inicializarArtepanel() {
+        const dynamicHolder = getCachedEl('menu-bio-DYNAMIC-holder');
+        const btnPrev = getCachedEl('btn-variant-prev');
+        const btnNext = getCachedEl('btn-variant-next');
+        
+        if (dynamicHolder) {
+            const renderTextoCentral = () => {
+                dynamicHolder.innerHTML = `
+                    <span id="menu-bio-${tipoVarianteActiva}" class="tracking-[0.15em] transition-all duration-300 h-full w-full flex items-center justify-center font-bold text-jako-text/40 group-hover:text-jako-text">
+                        ${tipoVarianteActiva}
+                    </span>`;
+            };
+            dynamicHolder.addEventListener('click', () => {
+                tipoVarianteActiva = (tipoVarianteActiva === 'PANEL') ? 'STENCIL' : 'PANEL';
+                renderTextoCentral();
+                cambiarBioItem(tipoVarianteActiva);
+                triggerHaptic([10]);
+            });
+            renderTextoCentral();
+        }
+
+        if (btnPrev) btnPrev.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, -1); triggerHaptic([6]); });
+        if (btnNext) btnNext.addEventListener('click', () => { ciclarVariante(tipoVarianteActiva, 1); triggerHaptic([6]); });
+        
+        vincularBotones();
+        actualizarBioUI();
+    }
+
+    function cambiarBioItem(itemKey) {
+        currentBioItem = itemKey;
+        currentBioVariant = ARTEPANEL_CATALOG[itemKey].defaultVariant;
+        actualizarBioUI();
+        triggerHaptic(15);
+    }
+
+    function ciclarVariante(tipo, direccion) {
+        if (currentBioItem !== tipo) {
+            currentBioItem = tipo;
+            currentBioVariant = ARTEPANEL_CATALOG[tipo].defaultVariant;
+        }
+        const variantes = Object.keys(ARTEPANEL_CATALOG[tipo].variants);
+        let currentIndex = variantes.indexOf(currentBioVariant);
+        if (currentIndex === -1) currentIndex = 0;
+        let nextIndex = (currentIndex + direccion) % variantes.length;
+        if (nextIndex < 0) nextIndex = variantes.length - 1;
+
+        currentBioVariant = variantes[nextIndex];
+        actualizarBioUI();
+        triggerHaptic(12);
+    }
+
+    function calculateSphereIndex() {
+        const now = new Date();
+        const epoch = new Date('2012-12-21T00:00:00Z');
+        const daysSinceEpoch = Math.floor((now - epoch) / 86400000);
+        const currentHour = now.getHours();
+        const sphereQuadrant = Math.floor(currentHour / 6);
+        return `${String((daysSinceEpoch * 4) + sphereQuadrant).padStart(4, '0')}`;
+    }
+
+    function updateZ() {
+        const now = new Date();
+        const hours = now.getHours(); 
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+
+        if (!window.isDialFrozen) {
+            let setsStage = 1;  
+            let repsStage = 1;  
+            let currentAction = 'P'; 
+
+            if (seconds % 2 !== 0) {
+                const progress1s = now.getMilliseconds() / 1000; 
+                setsStage = Math.floor(progress1s * 12) + 1;
+                repsStage = 13 - setsStage; 
+                if (progress1s < 0.25) currentAction = 'P';
+                else if (progress1s < 0.5) currentAction = 'U';
+                else if (progress1s < 0.75) currentAction = 'L';
+                else currentAction = 'S';
+            } else {
+                setsStage = Math.floor((minutes % 12) + 1);
+                if (seconds < 30) {
+                    const subSlot = Math.floor((seconds % 30) / 7.5);
+                    currentAction = ["PL", "PU", "LU", "SU"][subSlot] || "PL";
+                    repsStage = Math.floor((seconds % 10) + 2);
+                } else {
+                    const subSlot = Math.floor(((seconds - 30) % 30) / 7.5);
+                    currentAction = ["PUL", "LPS", "SPU", "ULS"][subSlot] || "ULS";
+                    repsStage = Math.floor(((seconds - 30) % 10) + 3);
+                }
+            }
+            
+            setsStage = Math.max(1, Math.min(12, setsStage));
+            repsStage = Math.max(1, Math.min(12, repsStage));
+            const biokineticCoordinate = `${setsStage}${currentAction}${repsStage}`;
+            const vectorIndex = VECTOR_TO_CLOCK_INDEX[currentAction] || 1;
+
+            const lastSavedDial = biokineticWaveHistory[0];
+            if (!lastSavedDial || lastSavedDial.rawCoord !== biokineticCoordinate) {
+                biokineticWaveHistory.unshift({ sets: setsStage, vector: vectorIndex, reps: repsStage, rawCoord: biokineticCoordinate });
+                if (biokineticWaveHistory.length > 12) biokineticWaveHistory.pop();
+            }
+
+            renderBiokineticWaves();
+
+            const elDial = getCachedEl('z-dial');
+            if (elDial) elDial.textContent = biokineticCoordinate;
+            
+            const sandwatchGroup = getCachedEl('sandwatch-group');
+            if (sandwatchGroup) {
+                sandwatchGroup.style.opacity = isDialTextRevealed ? "1" : "0";
+                sandwatchGroup.style.pointerEvents = isDialTextRevealed ? "auto" : "none";
+            }
+                    
+            const subSetsSolar = getCachedEl('sub-sets-solar');
+            const subRepsTension = getCachedEl('sub-reps-tension');
+            if (subSetsSolar) subSetsSolar.textContent = `${(0.05 + (setsStage / 240)).toFixed(3)}`;
+            if (subRepsTension) subRepsTension.textContent = `${(14.2 + (repsStage * 0.8)).toFixed(1)}`;
+
+            const elDialMirror = getCachedEl('z-dial-mirror');
+            if (elDialMirror) elDialMirror.textContent = biokineticCoordinate;
+        }
+    }
+
+    const TELEMETRY_MEANINGS = {
+        'telemetry-product-dim': "Conversion del dial en el espacio", 
+        'telemetry-product-dial': "Cantidad de ondas biocinéticas."
+    };
+    
+    const PULS_MEANINGS = {
+        'sub-sets-solar-trigger': "ONDA INTERNA DE FRECUENCIA COAXIAL TIERRA-LUNA-SOL.", 
+        'sub-reps-tension-trigger': "ONDA EXTERNA DE MAGNETISMO GRAVITACIONAL.", 
+        'z-dial-trigger': () => {
+            const coord = getCachedEl('z-dial-mirror')?.textContent || "1P1";
+            const match = coord.match(/^(\d+)([A-Z]+)(\d+)$/);
+            if (!match) return "MATRIZ BIOCINÉTICA ACTIVA.";
+            
+            const [_, sets, action, reps] = match;
+            let vectorText = "";
+            switch (action) {
+                case 'P':  vectorText = `PASOS X${sets}`; break;
+                case 'S':  vectorText = `SALTOS X${sets}`; break; 
+                case 'U':  vectorText = `PRESIONES X${sets}`; break; 
+                case 'L':  vectorText = `CARGAS X${sets}`; break;    
+                case 'PL': vectorText = `PASOS CON CARGA X${sets}`; break;
+                case 'PU': vectorText = `PASOS CON PRESIÓN X${sets}`; break;
+                case 'LU': vectorText = `CARGAS CON PRESIÓN X${sets}`; break;
+                case 'SU': vectorText = `SALTOS CON PRESIÓN X${sets}`; break;
+                case 'PUL': vectorText = `PASOS CON PRESIÓN Y CARGA X${sets}`; break;
+                case 'LPS': vectorText = `CARGAS CON PASO Y SALTO X${sets}`; break;
+                case 'SPU': vectorText = `SALTOS CON PASO Y PRESIÓN X${sets}`; break; 
+                case 'ULS': vectorText = `PRESIONES CON CARGA Y SALTO X${sets}`; break;
+                default: vectorText = "ONDA BIOCINÉTICA REGENERATIVA";
+            }
+            return `${reps} ${vectorText}`;
+        }
+    };
+
+    function actualizarBioUI() {
+        const itemConfig = ARTEPANEL_CATALOG[currentBioItem];
+        const variantConfig = itemConfig.variants[currentBioVariant];
+        
+        const descEl = getCachedEl('artepanel-description');
+        const packImg = getCachedEl('artepanel-pack-img');
+        const packImgBack = getCachedEl('artepanel-pack-img-back');
+        
+        if (descEl && packImg && packImgBack) {
+            descEl.classList.add('opacity-0');
+            setTimeout(() => {
+                descEl.textContent = variantConfig.desc;
+                packImg.src = variantConfig.img;
+                packImgBack.src = variantConfig.imgBack;
+                getCachedEl('artepanel-pack-img-raw').src = variantConfig.imgRaw;
+                
+                const labelTitle = getCachedEl('laser-variant-title');
+                if (labelTitle) labelTitle.textContent = variantConfig.label;
+                descEl.classList.remove('opacity-0');
+            }, 120);
+        }
+
+        const elDim = getCachedEl('telemetry-product-dim');
+        const elDial = getCachedEl('telemetry-product-dial');
+        if (elDim) elDim.textContent = variantConfig.telemetry.DIM;
+        if (elDial) elDial.textContent = variantConfig.telemetry.DIAL;
+
+        const textFluidClass = "text-[8px] xs:text-[9.5px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.35em] uppercase font-sans transition-all duration-300";
+
+        Object.keys(ARTEPANEL_CATALOG).forEach(item => {
+            const el = getCachedEl(`menu-bio-${item}`);
+            if (el) {
+                const isSelected = (item === currentBioItem);
+                el.textContent = item;
+                el.className = isSelected 
+                    ? `cursor-pointer font-black h-8 px-4 flex items-center justify-center text-jako-bg bg-jako-text rounded border border-jako-text/20 shadow-[inset_0_1px_3px_rgba(255,255,255,0.25)] ${textFluidClass}` 
+                    : `cursor-pointer font-medium h-8 px-4 flex items-center justify-center text-jako-text/20 bg-transparent rounded hover:text-jako-text/50 hover:bg-jako-text/[0.02] ${textFluidClass}`;
+            }
+        });
+    }
+
+    function habilitarReveladoTelemetria() {
+        const telemetryData = getCachedEl('panel-telemetry-data');
+        const txtOriginal = "Compras tu pieza y financias otra para la comunidad";
+        let timerComercial = null;
+
+        Object.keys(TELEMETRY_MEANINGS).forEach(id => {
+            const el = getCachedEl(id);
+            if (!el || !telemetryData) return;
+            el.addEventListener('click', () => {
+                clearTimeout(timerComercial);
+                el.parentElement.classList.remove('text-jako-text/50');
+                el.parentElement.classList.add('text-jako-text');
+                telemetryData.innerHTML = TELEMETRY_MEANINGS[id];
+                timerComercial = setTimeout(() => {
+                    telemetryData.innerHTML = txtOriginal;
+                    el.parentElement.classList.remove('text-jako-text');
+                    el.parentElement.classList.add('text-jako-text/50');
+                }, 8000);
+            });
+        });
+
+        const telemetryDataSecondary = getCachedEl('panel-telemetry-data-secondary');
+        const txtOriginalSecondary = "ONDA BIOCINÉTICA REGENERATIVA";
+        let timerQuantum = null;
+
+        Object.keys(PULS_MEANINGS).forEach(id => {
+            const el = getCachedEl(id);
+            if (!el || !telemetryDataSecondary) return;
+            const esHeaderPuro = id.startsWith('sub-');
+            const contenedorLed = esHeaderPuro ? el.parentElement : el;
+
+            el.addEventListener('click', () => {
+                clearTimeout(timerQuantum);
+                if (id === 'z-dial-trigger') window.isDialFrozen = true;
+
+                // CONTROL SEGURO DE ESTADOS (Evitamos classList.replace inestable)
+                if (esHeaderPuro) {
+                    contenedorLed.classList.remove('text-jako-text/60');
+                    contenedorLed.classList.add('text-jako-text');
+                } else if (id === 'z-dial-trigger') {
+                    el.style.filter = "drop-shadow(0 0 25px var(--jako-led))";
+                }
+                
+                // BLINDAJE ANTI-FONDO NEGRO: Aseguramos que el contenedor de la telemetría permanezca transparente
+                const contenedorPadreTelemetria = telemetryDataSecondary.parentElement;
+                if (contenedorPadreTelemetria) {
+                    contenedorPadreTelemetria.classList.remove('glass', 'bg-black');
+                    contenedorPadreTelemetria.classList.add('bg-transparent');
+                }
+
+                const meaningValue = PULS_MEANINGS[id];
+                telemetryDataSecondary.innerHTML = typeof meaningValue === 'function' ? meaningValue() : meaningValue;
+                
+                timerQuantum = setTimeout(() => {
+                    telemetryDataSecondary.innerHTML = txtOriginalSecondary;
+                    if (id === 'z-dial-trigger') { 
+                        window.isDialFrozen = false; 
+                        el.style.filter = "none"; 
+                    }
+                    if (esHeaderPuro) {
+                        contenedorLed.classList.remove('text-jako-text');
+                        contenedorLed.classList.add('text-jako-text/60');
+                    }
+                }, 8000);
+            });
+        });
+    }
+
+    function adquirirNodo() {
+        const variantConfig = ARTEPANEL_CATALOG[currentBioItem].variants[currentBioVariant];
+        const currentCoord = getCachedEl('z-dial')?.textContent || "N/A";
+        const currentSphere = calculateSphereIndex();
+        const freqValue = getCachedEl('sub-sets-solar')?.textContent || "0.00";
+        const tensionValue = getCachedEl('sub-reps-tension')?.textContent || "0.0";
+        const dialInterpretation = currentCoord.replace(/(\d+)([A-Z]+)(\d+)/, "$1 FASES, $3 NODOS - ESTADO $2");
+        
+        const mensaje = `⚡ *ORDEN - ARTEPANEL* ⚡\n\n` +
+                        `• *Vector:* ${currentBioItem} ${currentBioVariant}\n` +
+                        `• *Carga:* ${variantConfig.spec}\n` +
+                        `• *ID:* \`${variantConfig.id}\`\n` +
+                        `• *Precio:* ${variantConfig.price}\n\n` +
+                        `--- *LENGUAJE P.U.L.S.* ---\n` +
+                        `• *Matriz de Configuración:* \`${currentCoord}\`\n` +
+                        `• *Análisis de Estado:* ${dialInterpretation}\n` +
+                        `• *Lote:* \`${currentSphere}\`\n` +
+                        `• *Resonancia:* \`${freqValue}\`\n` +
+                        `• *Cohesión:* \`${tensionValue}\`\n\n` +
+                        `Activar configuración actual.`;
+
+        triggerHaptic([15, 40, 15]);
+        window.open(`https://api.whatsapp.com/send?phone=${numeroCelular}&text=${encodeURIComponent(mensaje)}`, '_blank');
+    }
+
+    function inicializarModoZenith() {
+        const triggerZenith = getCachedEl('footer-fn-right-trigger');
+        const indicatorRaw = getCachedEl('footer-raw-indicator');
+        const mainVault = getCachedEl('main-vault');
+        let isZenithActive = false;
+
+        if (!triggerZenith) return;
+
+        const toggleZenith = (e) => {
+            if (e) e.stopPropagation();
+            isZenithActive = !isZenithActive;
+
+            if (isZenithActive) {
+                document.body.classList.add('zenith-active');
+                if (indicatorRaw) {
+                    indicatorRaw.classList.replace('text-jako-text/20', 'text-jako-text');
+                    indicatorRaw.classList.replace('opacity-20', 'opacity-100');
+                    indicatorRaw.style.filter = "drop-shadow(0 0 6px var(--jako-led))";
+                }
+                triggerHaptic([40, 15]);
+            } else {
+                document.body.classList.remove('zenith-active');
+                if (indicatorRaw) {
+                    indicatorRaw.classList.replace('text-jako-text', 'text-jako-text/20');
+                    indicatorRaw.classList.replace('opacity-100', 'opacity-20');
+                    indicatorRaw.style.filter = "none";
+                }
+                triggerHaptic([15]);
+            }
+        };
+
+        triggerZenith.addEventListener('click', toggleZenith);
+
+        mainVault.addEventListener('click', (e) => {
+            if (isZenithActive && e.target === mainVault) {
+                toggleZenith(e);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isZenithActive) {
+                toggleZenith();
+            }
+        });
+    }
+
+    // ========================================================
+    // PILAR 2: MOTOR DE ATMÓSFERA CROMÁTICA CÍCLICA (STB)
+    // ========================================================
+    const CHROMA_SPECTRUM = {
+        dark: {
+            STB: { label: 'STB', led: 'rgba(255, 255, 255, 0.65)', start: 'rgba(255, 255, 255, 0.03)', mid: 'rgba(5, 5, 8, 0.85)', end: '#000000' },
+            RED: { label: 'RED', led: 'rgba(239, 68, 68, 0.75)',   start: 'rgba(239, 68, 68, 0.06)',  mid: 'rgba(6, 2, 4, 0.92)',   end: '#020001' },
+            BLU: { label: 'BLU', led: 'rgba(59, 130, 246, 0.75)',  start: 'rgba(59, 130, 246, 0.06)', mid: 'rgba(2, 4, 10, 0.92)',  end: '#000103' },
+            YEL: { label: 'YEL', led: 'rgba(234, 179, 8, 0.75)',   start: 'rgba(234, 179, 8, 0.05)',  mid: 'rgba(6, 5, 2, 0.92)',   end: '#010100' },
+            GRN: { label: 'GRN', led: 'rgba(34, 197, 94, 0.75)',   start: 'rgba(34, 197, 94, 0.06)',  mid: 'rgba(2, 6, 3, 0.92)',   end: '#000201' },
+            ORN: { label: 'ORN', led: 'rgba(249, 115, 22, 0.75)',  start: 'rgba(249, 115, 22, 0.05)', mid: 'rgba(7, 4, 2, 0.92)',   end: '#020100' },
+            VIO: { label: 'VIO', led: 'rgba(168, 85, 247, 0.75)',  start: 'rgba(168, 85, 247, 0.06)', mid: 'rgba(5, 2, 8, 0.92)',   end: '#010002' }
+        },
+        white: {
+            STB: { label: 'STB', led: 'rgba(0, 0, 0, 0.75)',       start: 'rgba(0, 0, 0, 0.02)',      mid: 'rgba(248, 249, 250, 0.85)', end: '#ffffff' },
+            RED: { label: 'RED', led: 'rgba(220, 38, 38, 0.85)',   start: 'rgba(220, 38, 38, 0.04)',  mid: 'rgba(254, 242, 242, 0.85)', end: '#fff5f5' },
+            BLU: { label: 'BLU', led: 'rgba(25, 91, 212, 0.85)',   start: 'rgba(25, 91, 212, 0.04)',  mid: 'rgba(239, 246, 255, 0.85)', end: '#f0f7ff' },
+            YEL: { label: 'YEL', led: 'rgba(180, 120, 4, 0.85)',   start: 'rgba(180, 120, 4, 0.04)',  mid: 'rgba(254, 252, 232, 0.85)', end: '#fefefe' },
+            GRN: { label: 'GRN', led: 'rgba(22, 163, 74, 0.85)',   start: 'rgba(22, 163, 74, 0.04)',  mid: 'rgba(240, 253, 244, 0.85)', end: '#f5fff7' },
+            ORN: { label: 'ORN', led: 'rgba(217, 119, 6, 0.85)',   start: 'rgba(217, 119, 6, 0.04)',  mid: 'rgba(255, 247, 237, 0.85)', end: '#fffbf5' },
+            VIO: { label: 'VIO', led: 'rgba(147, 51, 234, 0.85)',  start: 'rgba(147, 51, 234, 0.04)', mid: 'rgba(250, 245, 255, 0.85)', end: '#faf5ff' }
+        }
+    };
+
+    const CHROMA_SEQUENCE = ['STB', 'RED', 'BLU', 'YEL', 'GRN', 'ORN', 'VIO'];
+    let currentChromaIndex = 0;
+
+    function inicializarSelectorCromaticoSTB() {
+        const triggerSTB = getCachedEl('footer-fn-left-trigger');
+        const indicatorSTB = getCachedEl('footer-chroma-indicator');
+        
+        if (!triggerSTB) return;
+
+        const aplicarEspectro = () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            const stateKey = CHROMA_SEQUENCE[currentChromaIndex];
+            const config = CHROMA_SPECTRUM[currentTheme][stateKey];
+
+            // 1. Mutación de variables lumínicas del HUD (Glow/Text Shadows)
+            document.documentElement.style.setProperty('--jako-led', config.led);
+            
+            // 2. Inyección de variables del gradiente trasero para mutar la atmósfera de fondo
+            document.documentElement.style.setProperty('--chroma-start', config.start);
+            document.documentElement.style.setProperty('--chroma-mid', config.mid);
+            document.documentElement.style.setProperty('--chroma-end', config.end);
+            
+            if (indicatorSTB) {
+                indicatorSTB.textContent = config.label;
+                indicatorSTB.style.color = 'var(--jako-text)';
+                setTimeout(() => { indicatorSTB.style.color = ''; }, 300);
+            }
+        };
+
+        triggerSTB.addEventListener('click', () => {
+            currentChromaIndex = (currentChromaIndex + 1) % CHROMA_SEQUENCE.length;
+            aplicarEspectro();
+            triggerHaptic([25]);
+        });
+
+        const acromaticTrigger = getCachedEl('acromatic-toggle-trigger');
+        if (acromaticTrigger) {
+            acromaticTrigger.addEventListener('click', () => {
+                setTimeout(aplicarEspectro, 50);
+            });
+        }
+
+        // Inicializar los valores por defecto del gradiente al cargar
+        aplicarEspectro();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        inicializarAlternadorAcromatico();
+        inicializarArtepanel();
+        updateZ(); 
+        setInterval(updateZ, 1000);
+        habilitarReveladoTelemetria();
+        inicializarAlternadorIdioma();
+        inicializarModoZenith();
+        inicializarSelectorCromaticoSTB();
+
+        const laserSvg = getCachedEl('laser-vector-target');
+        if (laserSvg) laserSvg.style.pointerEvents = 'none'; 
+
+        const zDialSvgText = getCachedEl('z-dial');
+        if (zDialSvgText) {
+            zDialSvgText.style.cursor = 'pointer';
+            zDialSvgText.style.pointerEvents = 'auto'; 
+            zDialSvgText.addEventListener('click', (e) => {
+                e.stopPropagation();
+                getCachedEl('z-dial-trigger')?.click();
+            });
+        }
+    });
+</script>
+</body>
+</html>
