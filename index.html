@@ -1,41 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <link class="icon" type="image/png" href="img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FOTOPANEL.ART</title>
     
-    <!-- External Fonts (Typography Engine) -->
+    <!-- External Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* =========================================================================
-           1. CORE DESIGN SYSTEM & NATIVE CSS VARIABLES
-           ========================================================================= */
-        :root {
-            --bg-base: #020617;
-            --jako-black: #0a0705;
-            --sky-glow: rgba(14, 165, 233, 0.1);
-            --sky-border: rgba(14, 165, 233, 0.3);
-            --sky-accent: #38bdf8;
-            --text-main: #f8fafc;
-            --text-muted: rgba(255, 255, 255, 0.6);
-            --font-tech: 'Orbitron', monospace, sans-serif;
-            --font-body: 'Plus Jakarta Sans', sans-serif;
+        /* VARIABLES ACROMÁTICAS DE ENTORNO MATRICIAL */
+        :root[data-theme="dark"] {
+            --jako-bg: #020617;
+            --jako-text: #ffffff;
+            --jako-border: rgba(255, 255, 255, 0.12);
+            --jako-glass: rgba(0, 0, 0, 0.5);
+            --jako-led: rgba(255, 255, 255, 0.65);
+            --gradient-start: rgba(30, 58, 138, 0.4);
+            --gradient-mid: #0f172a;
+            --gradient-end: #020617;
+            --icon-hover: #b6b8b9;
         }
 
-        /* Reset & Base Layout */
+        :root[data-theme="white"] {
+            --jako-bg: #f8f9fa;
+            --jako-text: #050508;
+            --jako-border: rgba(0, 0, 0, 0.12);
+            --jako-glass: rgba(255, 255, 255, 0.6);
+            --jako-led: rgba(0, 0, 0, 0.75);
+            --gradient-start: rgba(224, 242, 254, 0.8);
+            --gradient-mid: #e2e8f0;
+            --gradient-end: #f8f9fa;
+            --icon-hover: #b6b8b9;
+        }
+
         *, ::before, ::after { 
             box-sizing: border-box; 
             margin: 0;
             padding: 0;
         }
 
+        /* MOTOR BASE DE LA INTERFAZ */
         body { 
-            font-family: var(--font-tech); 
-            background-color: var(--bg-base); 
-            color: var(--text-main); 
+            font-family: 'Orbitron', monospace, sans-serif; 
+            background-color: var(--jako-bg); 
+            color: var(--jako-text); 
             min-height: 100vh;
             width: 100%;
             display: flex;
@@ -46,79 +56,81 @@
             -webkit-user-select: none;
             position: relative;
             -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth; 
+            letter-spacing: 0.05em;  
+            overscroll-behavior: none;
+            transition: background-color 0.5s ease, color 0.5s ease;
         } 
 
         ::selection {
-            background-color: #ffffff;
-            color: #000000;
+            background-color: var(--jako-text);
+            color: var(--jako-bg);
         }
 
-        /* Ambient Radial & Linear Overlays */
+        /* AMBIENT OVERLAYS */
         #page-bg-overlay {
-            position: fixed; 
-            inset: 0; 
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 30%, var(--gradient-start) 0%, var(--gradient-mid) 65%, var(--gradient-end) 100%);
             z-index: -1;
-            background: radial-gradient(circle at 50% 49%, #1e3a8a 0%, #0f172a 50%, #020617 100%);
+            transform: translateZ(0);
+            will-change: background;
+            transition: background 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .ambient-gradient {
             position: fixed;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent, rgba(0,0,0,0.4));
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent, rgba(0,0,0,0.2));
             z-index: 0;
             pointer-events: none;
         }
 
-        /* Transition Utilities */
-        .img-glow-transition { 
-            transition: opacity 0.5s ease-in-out; 
+        /* TRANSICIÓN DE GLOW SIN SALTOS ÓPTICOS */
+        .img-glow-transition {
+            transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translate3d(0, 0, 0);
+            will-change: filter, transform, opacity;
         }
 
-        /* Header Control Bar */
+        /* HEADER BAR & GLASS SYSTEM */
         .header-container {
             width: 100%;
             flex-shrink: 0;
             z-index: 50;
-            background-color: rgba(8, 47, 73, 0.2);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 4px 30px var(--sky-glow);
+            background: var(--jako-glass);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--jako-border);
             display: flex;
             flex-direction: column;
+            transition: background 0.5s ease, border-color 0.5s ease;
         }
 
-        .top-control-grid {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            width: 100%;
-            padding: 0 1rem;
-            height: 3rem;
-        }
-
+        /* CONTROLES TELESCOPICOS (BUTTONS) */
         .btn-tele-glass {
             background-color: transparent;
             border: none;
             display: flex;
             align-items: center;
-            color: #ffffff;
+            color: var(--jako-text);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-tele-glass:hover {
-            background-color: var(--sky-glow);
+            opacity: 0.8;
         }
 
         .btn-tele-glass:active {
-            transform: scale(0.95);
+            transform: scale(0.92);
         }
 
         .tele-btn-left {
             height: 100%;
-            padding-left: 0.5rem;
-            padding-right: 0.25rem;
-            gap: 0.375rem;
+            padding: 0 0.5rem;
             justify-content: flex-start;
         }
 
@@ -127,69 +139,38 @@
             height: 3rem;
             flex-shrink: 0;
             justify-content: center;
-            border-left: 1px solid var(--sky-border);
-            border-right: 1px solid var(--sky-border);
         }
 
         .tele-btn-right {
             height: 100%;
-            padding-right: 0.5rem;
-            padding-left: 0.25rem;
-            gap: 0.375rem;
+            padding: 0 0.5rem;
             justify-content: flex-end;
-        }
-
-        .tele-num-val {
-            font-family: var(--font-tech);
-            color: #ffffff;
-            letter-spacing: 0.1em;
-            font-size: 10px;
-            transition: color 0.3s ease;
-        }
-
-        .btn-tele-glass:hover .tele-num-val {
-            color: var(--sky-accent);
-        }
-
-        .tele-unit-label {
-            font-size: 9px;
-            letter-spacing: 0.15em;
-            color: #38bdf8;
-            font-weight: 700;
-            text-transform: uppercase;
         }
 
         .icon-tele {
             width: 1rem;
             height: 1rem;
-            fill: #ffffff;
+            fill: var(--jako-text);
             pointer-events: none;
             transition: fill 0.3s ease;
         }
 
+        .icon-stroke {
+            width: 1rem;
+            height: 1rem;
+            stroke: var(--jako-text);
+            transition: stroke 0.3s ease;
+        }
+
         .btn-tele-glass:hover .icon-tele {
-            fill: var(--sky-accent);
+            fill: var(--icon-hover);
         }
 
-        .sub-header-bar {
-            width: 100%;
-            border-top: 1px solid var(--sky-border);
-            padding: 0.375rem 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .btn-tele-glass:hover .icon-stroke {
+            stroke: var(--icon-hover);
         }
 
-        .telemetry-readout-text {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 8px;
-            letter-spacing: 0.25em;
-            font-family: var(--font-tech);
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-        }
-
-        /* Central Visualizer Layer */
+        /* VISUALIZER STAGE */
         .main-visualizer-container {
             flex: 1;
             width: 100%;
@@ -198,6 +179,7 @@
             align-items: center;
             justify-content: center;
             padding: 0.5rem 1rem;
+            transition: padding 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         #fotopanel-pack-container {
@@ -207,7 +189,8 @@
             aspect-ratio: 1 / 1;
             flex-shrink: 0;
             margin: 0 auto;
-            filter: drop-shadow(0 40px 60px rgba(0,0,0,0.9));
+            filter: drop-shadow(0 40px 60px rgba(0,0,0,0.6));
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease;
         }
 
         .pack-viewport {
@@ -227,53 +210,14 @@
             object-fit: contain;
         }
 
-        .vector-overlay-layer {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.5rem;
-            z-index: 20;
-            pointer-events: none;
-        }
-
-        .svg-target-reticle {
-            width: 100%;
-            height: 100%;
-            fill: none;
-            stroke: rgba(255, 255, 255, 0.5);
-            stroke-width: 1;
-            transition: all 0.5s ease;
-            transform-origin: center;
-            transform: scale(1.2);
-        }
-
-        .svg-text-title {
-            fill: #ffffff;
-            font-size: 11px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            transition: all 0.5s ease;
-        }
-
-        .svg-text-desc {
-            fill: var(--text-muted);
-            font-size: 9px;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            transition: all 0.5s ease;
-        }
-
-        /* Product Spec Strip & Controls Grid */
+        /* PRODUCT LABELS & STRIPS */
         .info-strip {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--jako-text);
             font-size: 8px;
             letter-spacing: 0.25em;
-            font-family: var(--font-tech);
             width: 100%;
             text-transform: uppercase;
             padding-top: 0.25rem;
@@ -282,7 +226,6 @@
 
         .info-strip-content {
             width: 100%;
-            border-bottom: 1px solid var(--sky-border);
             padding: 0.375rem 0;
             display: flex;
             align-items: center;
@@ -294,173 +237,184 @@
             text-overflow: ellipsis;
         }
 
+        /* EFECTO LED DINÁMICO DE TEXTO */
+        .tele-value { 
+            color: var(--jako-text); 
+            text-shadow: 0 0 14px var(--jako-led), 0 0 4px var(--jako-led);
+            transform: translateZ(0);
+            transition: color 0.5s ease, text-shadow 0.5s ease;
+        }
+
+        /* ACTION CONTROLS GRID */
         .action-controls-grid {
             display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            border-bottom: 1px solid var(--sky-border);
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1px solid var(--jako-border);
+            border-bottom: 1px solid var(--jako-border);
             align-items: center;
             width: 100%;
             padding: 0 1rem;
             height: 3rem;
+            background: var(--jako-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: background 0.5s ease, border-color 0.5s ease;
         }
 
-        .icon-stroke {
-            width: 1rem;
-            height: 1rem;
-            stroke: #ffffff;
-            transition: stroke 0.3s ease;
+        .action-controls-grid .btn-tele-glass {
+            justify-content: center;
+            width: 100%;
+            height: 100%;
         }
 
-        .btn-tele-glass:hover .icon-stroke {
-            stroke: var(--sky-accent);
-        }
-
-        /* Footer */
+        /* FOOTER */
         .footer-container {
             height: 50px;
             width: 100%;
             flex-shrink: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.3), transparent);
-            backdrop-filter: blur(4px);
+            background: var(--jako-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 50;
             padding: 0 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-top: 1px solid var(--jako-border);
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s ease;
         }
 
         .footer-brand-text {
             font-size: 6px;
             letter-spacing: 0.35em;
-            font-family: var(--font-tech);
             font-weight: 700;
-            color: rgba(186, 230, 253, 0.4);
+            color: var(--jako-text);
+            opacity: 0.5;
             text-transform: uppercase;
-            transition: color 0.3s ease;
+            transition: opacity 0.3s ease;
         }
 
         .footer-container:hover .footer-brand-text {
-            color: rgba(125, 211, 252, 0.8);
+            opacity: 0.9;
         }
 
-        /* Quantum Wave Helpers */
-        .rotate-neg-90 {
-            transform: rotate(-90deg);
-            transform-origin: 200px 200px;
+        .custom-hud-scroll { 
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
+        }
+        .custom-hud-scroll::-webkit-scrollbar { 
+            display: none; 
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        button, span, div {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .zenith-active header,
+        .zenith-active footer {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: translateY(-10px);
+        }
+
+        .zenith-active footer {
+            transform: translateY(10px);
+        }
+
+        .zenith-active main {
+            padding: 0 !important;
+        }
+
+        .zenith-active #fotopanel-pack-container {
+            transform: scale(1.12);
+            filter: drop-shadow(0 35px 80px rgba(0,0,0,0.95));
+        }
+
+        header, footer, #fotopanel-pack-container {
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease;
+        }
+
+        .header-controls-centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 3rem;
+            padding: 0 1rem;
+            background: var(--jako-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--jako-border);
+            border-bottom: 1px solid var(--jako-border);
+            transition: background 0.5s ease, border-color 0.5s ease;
+        }
+
+        .header-controls-centered .btn-tele-glass {
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 0 1rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- Ambient Overlays -->
     <div id="page-bg-overlay"></div>
     <div class="ambient-gradient"></div>
         
-<!-- ========================================================================= -->
-    <!-- 1. HEADER BLOCK (Biokinetic Telemetry & Controls)                         -->
-    <!-- ========================================================================= -->
-    <header class="header-container">
-        <div class="top-control-grid">
-            
-            <!-- Tension Trigger -->
-            <button id="btn-tele-tension" title="Cohesion / Tension" class="btn-tele-glass tele-btn-left">
-                <span id="sub-reps-tension" class="tele-num-val">0.0</span>
-                <span class="tele-unit-label">N</span>
-            </button>
+<!-- Header Controls Centered -->
+<header class="header-controls-centered">
+    <button class="btn-tele-glass">
+        <svg viewBox="0 0 100 100" class="icon-tele">
+            <polygon points="80,20 80,80 65,70 65,30" />
+            <polygon points="58,50 50,58 42,50 50,42" />
+            <polygon points="35,30 35,70 20,80 20,20" />
+        </svg>
+    </button>
+</header>
 
-            <!-- Center Dial Logo -->
-            <button class="btn-tele-glass tele-btn-center">
-            </button>
-
-            <!-- Resonate Frequency Trigger -->
-            <button id="btn-tele-hz" title="Resonant Frequency" class="btn-tele-glass tele-btn-right">
-                <span id="sub-sets-solar" class="tele-num-val">0.00</span>
-                <span class="tele-unit-label">Hz</span>
-            </button>
-
+    <div class="info-strip">
+        <div class="info-strip-content">
+            <span id="fotopanel-label" class="tele-value">PULSOR PANEL 40X40</span>
         </div>
+    </div>
 
-        <!-- Telemetry Data Sub-Bar -->
-        <div class="sub-header-bar">
-            <span id="panel-telemetry-data" class="telemetry-readout-text">
-                REGENERATIVE BIOKINETIC WAVES
-            </span>
-        </div>
-    </header>
-
-<!-- ========================================================================= -->
-    <!-- 2. CENTRAL VISUALIZER & GENERATOR ENGINE                                  -->
-    <!-- ========================================================================= -->
+    <!-- Visualizer Stage -->
     <main class="main-visualizer-container">
         <div id="fotopanel-pack-container">
             <div class="pack-viewport">
-                
-                <!-- Progressive Image Stack -->
                 <img id="fotopanel-pack-img-back" src="img/20x20B.png" alt="Pulsor Back" class="img-glow-transition" style="opacity: 0; pointer-events: none; z-index: 0;" />
                 <img id="fotopanel-pack-img" src="img/surface.png" alt="Pulsor Front" class="img-glow-transition" style="opacity: 1; pointer-events: auto; z-index: 10;" />
                 <img id="fotopanel-pack-img-raw" src="img/panel40B.png" alt="Raw View" class="img-glow-transition" style="opacity: 0; pointer-events: none; z-index: 5;" />
-                
-                <!-- Tactical Mesh and Vector Overlay -->
-                <div class="vector-overlay-layer">
-                    <svg id="laser-vector-target" viewBox="0 0 400 400" class="svg-target-reticle">
-                        <defs>
-                            <path id="textPath-top" d="M 65,200 A 135,135 0 0,1 335,200" />
-                            <path id="textPath-bottom" d="M 65,200 A 135,135 0 0,0 335,200" />
-                        </defs>
-                        
-                        <!-- Biokinetic Quantum Waves -->
-                        <g id="wave-quantum-container" class="rotate-neg-90"></g>
-
-                        <!-- Sandwatch Group Mode -->
-                        <g id="sandwatch-group" style="display: none; transform-origin: center; transform: scale(0.85); transition: all 0.5s ease;">
-                            <g id="sandwatch-lines">
-                                <path d="M 110,120 L 290,120 L 110,280 L 290,280 Z" stroke-width="1.9" opacity="0.5" />
-                                <path d="M 110,120 Q 200,150 290,120" stroke-width="1.9" opacity="0.5" />
-                                <path d="M 110,280 Q 200,250 290,280" stroke-width="1.9" opacity="0.5" stroke-dasharray="2 2" />
-                            </g>
-                            <text id="z-dial-pack" x="200" y="210" text-anchor="middle" fill="#ffffff" font-weight="900" font-size="28" letter-spacing="0.4em" font-family="'Orbitron', sans-serif">8UST11</text>
-                        </g>
-                    </svg>
-                </div>
-
             </div>
         </div>
     </main>
 
-    <!-- Product Label Strip -->
+    <!-- Pricing Strip -->
     <div class="info-strip">
         <div class="info-strip-content">
-            <span id="fotopanel-label">PULSOR PANEL 40X40</span>
-            <span style="opacity: 0.7;">|</span>
-            <span id="fotopanel-price">$55USD</span>
+            <span id="fotopanel-price" class="tele-value">$55USD</span>
         </div>
     </div>
 
-    <!-- ========================================================================= -->
-    <!-- 3. ACTIONS & DIRECT WHATSAPP DAILY CASHFLOW TRIGGER                       -->
-    <!-- ========================================================================= -->
-    <div class="action-controls-grid" style="grid-template-columns: repeat(4, 1fr);">
-
-        <!-- Inspect / Reveal Mode -->
-        <button id="btn-reveal-bio" title="Inspect" class="btn-tele-glass tele-btn-left">
+    <!-- Action Dispatcher Bar (Incluye Interruptor Acromático) -->
+    <div class="action-controls-grid">
+        <button id="btn-reveal-bio" title="Inspect" class="btn-tele-glass">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
             </svg>
-            
         </button>
 
-        <!-- Center Dial Logo -->
-        <button id="btn-tele-dial" title="Biokinetic Telemetry" class="btn-tele-glass tele-btn-center">
-            <span id="z-dial-telemetry" style="display: none;">8UST11</span>
-            <svg viewBox="0 0 100 100" class="icon-tele">
-                <polygon points="50,42 58,50 50,58 42,50" />
-                <polygon points="30,65 70,65 80,80 20,80" />
+        <button id="acromatic-toggle-trigger" title="Toggle Theme" class="btn-tele-glass">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21m8.966-8.966h-2.25M4.284 12h-2.25m15.356-6.364l-1.591 1.591M6.364 17.636l-1.591 1.591m12.728 0l-1.591-1.591M6.364 6.364L4.773 4.773M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" />
             </svg>
         </button>
 
-        <!-- Node Cashflow Dispatcher -->
-        <button id="btn-activate-node" title="Acquire Node" onclick="acquireNodeCashflow()" class="btn-tele-glass tele-btn-center">
+        <button id="btn-activate-node" title="Acquire Node" onclick="acquireNodeCashflow()" class="btn-tele-glass">
             <svg viewBox="0 0 100 100" class="icon-tele">
                 <polygon points="20,20 80,20 70,35 30,35" />
                 <polygon points="50,42 58,50 50,58 42,50" />
@@ -468,551 +422,172 @@
             </svg>
         </button>
 
-        <!-- Next Product Variant -->
-        <button id="btn-next-variant" title="Next Variant" onclick="rotateFotoVariant('next')" class="btn-tele-glass tele-btn-right">
+        <button id="btn-next-variant" title="Next Variant" onclick="rotateFotoVariant('next')" class="btn-tele-glass">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" class="icon-stroke">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
         </button>
-
     </div>
 
-    <!-- Footer Credit -->
+    <!-- Footer -->
     <footer class="footer-container">
         <span class="footer-brand-text">POWERED BY JAKO.DEV</span>
     </footer>
 
-    <!-- ========================================================================= -->
-    <!-- 4. CORE ENGINE & WHATSAPP BACKEND INTERACTION SCRIPT                      -->
-    <!-- ========================================================================= -->
+    <!-- Core Logic Engine -->
     <script>
-/**
-         * ARTEPANEL Commercial Catalog Configuration (Single PULSOR Flow)
-         */
+        // Catalog Configuration Schema
         const ARTEPANEL_CATALOG = {
             'PULSOR': {
                 defaultVariant: 'PANEL 40X40',
                 variants: {
-                    'STENCIL 25X25': { 
-                        label: 'PULSOR STENCIL 25X25', 
-                        desc: 'Stencil para murales participativos', 
-                        spec: 'Financia 1 pieza para la comunidad', 
-                        media: 'STENCIL POLYESTER',
-                        finish: 'Laser Cut Out',
-                        price: '$12USD', 
-                        id: 'ST-25X25',
-                        img: 'img/surface.png', 
-                        imgBack: 'img/20x20B.png', 
-                        imgRaw: 'img/stencil25B.png',
-                        telemetry: { DIM: '25x25', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
-                    },
-                    'STENCIL 35X35': { 
-                        label: 'PULSOR STENCIL 35X35', 
-                        desc: 'Stencil para murales de formato medio', 
-                        spec: 'Financia 1 pieza para la comunidad', 
-                        media: 'STENCIL POLYESTER',
-                        finish: 'Laser Cut Out',
-                        price: '$29USD', 
-                        id: 'ST-MICRO',
-                        img: 'img/surface.png', 
-                        imgBack: 'img/20x20B.png', 
-                        imgRaw: 'img/microB.png',
-                        telemetry: { DIM: '40x40', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
-                    },
-                    'STENCIL 45X45': { 
-                        label: 'PULSOR STENCIL 45X45', 
-                        desc: 'Stencil macro para muralismo de gran escala', 
-                        spec: 'Financia 1 pieza para la comunidad', 
-                        media: 'STENCIL POLYESTER',
-                        finish: 'Laser Cut Out',
-                        price: '$125USD', 
-                        id: 'ST-MACRO',
-                        img: 'img/surface.png', 
-                        imgBack: 'img/20x20B.png', 
-                        imgRaw: 'img/macroB.png',
-                        telemetry: { DIM: '80x80', MEDIA: 'STENCIL', DIAL: '⧗2500', RATE: '$0.05USD' }
-                    },
                     'PANEL 20X20': { 
-                        label: 'PULSOR PANEL 20X20', 
-                        desc: 'INKJET ADH sobre ACM para mosaicos', 
-                        spec: 'Financia 1 pieza para la comunidad', 
+                        label: 'FOTOPANEL 20X20', 
+                        spec: 'Community Mural Funding', 
                         media: 'ACM 3mm',
                         finish: 'Matte Lamination Inkjet',
-                        price: '$12USD', 
+                        price: '$20MIL', 
                         id: 'FP-20X20',
                         img: 'img/surface.png', 
                         imgBack: 'img/20x20B.png', 
-                        imgRaw: 'img/panel20B.png',
-                        telemetry: { DIM: '20x20', MEDIA: 'ACM', DIAL: '⧗240', RATE: '$0.05USD' }
+                        imgRaw: 'img/panel20B.png'
                     },
                     'PANEL 30X30': { 
-                        label: 'PULSOR PANEL 30X30', 
-                        desc: 'INKJET ADH sobre ACM para montajes', 
-                        spec: 'Financia 1 pieza para la comunidad', 
+                        label: 'FOTOPANEL 30X30', 
+                        spec: 'Community Mural Funding', 
                         media: 'ACM 3mm',
                         finish: 'Matte Lamination Inkjet',
-                        price: '$29USD', 
+                        price: '$30MIL', 
                         id: 'FP-30X30',
                         img: 'img/surface.png', 
                         imgBack: 'img/panel30W.png', 
-                        imgRaw: 'img/panel30B.png',
-                        telemetry: { DIM: '30x30', MEDIA: 'ACM', DIAL: '⧗576', RATE: '$0.05USD' }
+                        imgRaw: 'img/panel30B.png'
                     },
                     'PANEL 40X40': { 
-                        label: 'PULSOR PANEL 40X40', 
-                        desc: 'INKJET ADH sobre ACM formato pro', 
-                        spec: 'Financia 1 pieza para la comunidad', 
+                        label: 'FOTOPANEL 40X40', 
+                        spec: 'Community Mural Funding', 
                         media: 'ACM 3mm',
                         finish: 'Matte Lamination Inkjet',
-                        price: '$55USD', 
+                        price: '$40MIL', 
                         id: 'FP-40X40',
                         img: 'img/surface.png', 
                         imgBack: 'img/panel40W.png', 
-                        imgRaw: 'img/panel40B.png',
-                        telemetry: { DIM: '40x40', MEDIA: 'ACM', DIAL: '⧗1100', RATE: '$0.05USD' }
+                        imgRaw: 'img/panel40B.png'
                     }
                 }
             }
         };
 
-        // State Machine Globals
+        // Core Application State
         let currentFotoItem = 'PULSOR';
         let currentFotoVariant = 'PANEL 40X40';
-
+        let inspectModeIndex = 0;
         const targetPhoneNumber = "573128707083";
-        let currentSphereIdx = "0000";
-        let activeNodeVal = "0000";
-        let biokineticWaveHistory = [];
-        let waveDisplayState = 0; 
-        let inspectModeIndex = 0; 
 
-        // Element Cache Map
+        // Element Cache Registry
         const $ = (id) => document.getElementById(id);
         const cachedElements = {};
-        
-        function getCachedEl(id) {
-            if (!cachedElements[id]) {
-                cachedElements[id] = $(id);
-            }
-            return cachedElements[id];
-        }
+        const getCachedEl = (id) => cachedElements[id] || (cachedElements[id] = $(id));
 
-        /**
-         * Trigger haptic feedbacks on compatible mobile devices
-         * @param {number|Array} ms Pattern duration
-         */
-        const triggerHaptic = (ms) => { 
-            if (navigator.vibrate) navigator.vibrate(ms); 
+        // Haptic Feedback Trigger
+        const triggerHaptic = (pattern) => { 
+            if (navigator.vibrate) navigator.vibrate(pattern); 
         };
 
-        const VECTOR_TO_CLOCK_INDEX = {
-            'P': 1,  'U': 2,  'L': 3,  'S': 4,
-            'PL': 5, 'PU': 6, 'LU': 7, 'SU': 8,
-            'PUL': 9,'LPS': 10,'SPU': 11,'ULS': 12
-        };
-
-        /**
-         * Visual Inspector Switching (Front, Back, Raw)
-         * @param {string} mode Mode identifier
-         */
+        // Visual Inspector Switcher (Front, Back, Raw)
         function applyVisualMode(mode) {
-            const front = getCachedEl('fotopanel-pack-img');
-            const back = getCachedEl('fotopanel-pack-img-back');
-            const raw = getCachedEl('fotopanel-pack-img-raw');
-            const svg = getCachedEl('laser-vector-target');
+            const layers = [
+                { el: getCachedEl('fotopanel-pack-img'), mode: 'front', index: 0 },
+                { el: getCachedEl('fotopanel-pack-img-back'), mode: 'back', index: 1 },
+                { el: getCachedEl('fotopanel-pack-img-raw'), mode: 'raw', index: 2 }
+            ];
 
-            [front, back, raw].forEach(el => { if(el) el.style.opacity = '0'; });
-            
-            if (mode === 'front') {
-                inspectModeIndex = 0;
-                front.style.opacity = '1';
-                front.style.zIndex = '10';
-                back.style.zIndex = '0';
-                if (svg) { 
-                    svg.style.opacity = '1'; 
-                    svg.style.pointerEvents = 'auto'; 
-                }
-            } else if (mode === 'back') {
-                inspectModeIndex = 1;
-                back.style.opacity = '1';
-                back.style.zIndex = '10';
-                front.style.zIndex = '0';
-                if (svg) { 
-                    svg.style.opacity = '0'; 
-                    svg.style.pointerEvents = 'none'; 
-                }
-            } else if (mode === 'raw') {
-                inspectModeIndex = 2;
-                raw.style.opacity = '1';
-                if (svg) { 
-                    svg.style.opacity = '0'; 
-                    svg.style.pointerEvents = 'none'; 
-                }
-            }
+            layers.forEach(({ el, mode: m, index }) => {
+                if (!el) return;
+                const isActive = (m === mode);
+                el.style.opacity = isActive ? '1' : '0';
+                el.style.zIndex = isActive ? '10' : '0';
+                if (isActive) inspectModeIndex = index;
+            });
         }
 
-        /**
-         * Bind UI Controls
-         */
-        function bindControls() {
-            const btnBio = getCachedEl('btn-reveal-bio');
-            const modes = ['front', 'back', 'raw'];
-
-            if (btnBio && !btnBio.dataset.bound) {
-                btnBio.dataset.bound = "true";
-                btnBio.addEventListener('click', () => {
-                    inspectModeIndex = (inspectModeIndex + 1) % modes.length;
-                    applyVisualMode(modes[inspectModeIndex]);
-                    triggerHaptic(12);
-                });
-            }
-        }
-
-        /**
-         * Initialize FotoPanel UI Component
-         */
-        function initFotoPanel() {
-            bindControls();
-            updateFotoUI();
-        }
-
-        /**
-         * Rotate Active Product Variant
-         * @param {string} direction Direction 'next' or 'prev'
-         */
+        // Rotate Active Catalog Variant
         function rotateFotoVariant(direction = 'next') {
-            const itemConfig = ARTEPANEL_CATALOG[currentFotoItem];
-            const variantsKeys = Object.keys(itemConfig.variants);
-            const currentIndex = variantsKeys.indexOf(currentFotoVariant);
+            const variants = Object.keys(ARTEPANEL_CATALOG[currentFotoItem].variants);
+            const currIdx = variants.indexOf(currentFotoVariant);
+            const nextIdx = (direction === 'next') 
+                ? (currIdx + 1) % variants.length 
+                : (currIdx - 1 + variants.length) % variants.length;
             
-            let nextIndex = (direction === 'next') 
-                ? (currentIndex + 1) % variantsKeys.length 
-                : (currentIndex - 1 + variantsKeys.length) % variantsKeys.length;
-            
-            currentFotoVariant = variantsKeys[nextIndex];
+            currentFotoVariant = variants[nextIdx];
             updateFotoUI();
             triggerHaptic(12);
         }
 
-/**
-         * Update UI Elements based on current catalog selection
-         */
+        // Sync UI Elements with Active Variant Data
         function updateFotoUI() {
-            const itemConfig = ARTEPANEL_CATALOG[currentFotoItem];
-            const variantConfig = itemConfig.variants[currentFotoVariant];
+            const config = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
             
-            const packImg = getCachedEl('fotopanel-pack-img');
-            const packImgBack = getCachedEl('fotopanel-pack-img-back');
-            const fotopanelLabel = getCachedEl('fotopanel-label');
-            const fotopanelPrice = getCachedEl('fotopanel-price');
+            const front = getCachedEl('fotopanel-pack-img');
+            const back = getCachedEl('fotopanel-pack-img-back');
+            const raw = getCachedEl('fotopanel-pack-img-raw');
+            const label = getCachedEl('fotopanel-label');
+            const price = getCachedEl('fotopanel-price');
             
-            if (packImg && packImgBack) {
-                packImg.src = variantConfig.img;
-                packImgBack.src = variantConfig.imgBack;
-                
-                const packImgRaw = getCachedEl('fotopanel-pack-img-raw');
-                if (packImgRaw) packImgRaw.src = variantConfig.imgRaw;
-                
-                if (fotopanelLabel) fotopanelLabel.textContent = variantConfig.label;
-                if (fotopanelPrice) fotopanelPrice.textContent = variantConfig.price;
-            }
+            if (front) front.src = config.img;
+            if (back) back.src = config.imgBack;
+            if (raw) raw.src = config.imgRaw;
+            if (label) label.textContent = config.label;
+            if (price) price.textContent = config.price;
         }
 
-        /**
-         * Calculate Current Sphere Epoch Index
-         */
-        function calculateSphereIndex() {
-            const now = new Date();
-            const epoch = new Date('2012-12-21T00:00:00Z');
-            const daysSinceEpoch = Math.floor((now - epoch) / 86400000);
-            const currentHour = now.getHours();
-            const sphereQuadrant = Math.floor(currentHour / 6);
-            return `${String((daysSinceEpoch * 4) + sphereQuadrant).padStart(4, '0')}`;
-        }
-
-        /**
-         * Main PULS Telemetry Engine Loop
-         */
-        function updateZ() {
-            let biokineticCoordinate = "";
-            const now = new Date();
-            const hours = now.getHours(); 
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-
-            currentSphereIdx = calculateSphereIndex();
-
-            let setsStage = 1;  
-            let repsStage = 1;  
-            let currentAction = 'P'; 
-
-            if (seconds % 2 !== 0) {
-                const progress1s = now.getMilliseconds() / 1000; 
-                setsStage = Math.floor(progress1s * 12) + 1;
-                repsStage = 13 - setsStage; 
-
-                if (progress1s < 0.25) currentAction = 'P';
-                else if (progress1s < 0.5) currentAction = 'U';
-                else if (progress1s < 0.75) currentAction = 'L';
-                else currentAction = 'S';
-            } else {
-                setsStage = Math.floor((minutes % 12) + 1);
-                
-                if (seconds < 30) {
-                    const subSlot = Math.floor((seconds % 30) / 7.5);
-                    currentAction = ["PL", "PU", "LU", "SU"][subSlot] || "PL";
-                    repsStage = Math.floor((seconds % 10) + 2);
-                } else {
-                    const subSlot = Math.floor(((seconds - 30) % 30) / 7.5);
-                    currentAction = ["PUL", "LPS", "SPU", "ULS"][subSlot] || "ULS";
-                    repsStage = Math.floor(((seconds - 30) % 10) + 3);
-                }
-            }
-
-            setsStage = Math.max(1, Math.min(12, setsStage));
-            repsStage = Math.max(1, Math.min(12, repsStage));
-            biokineticCoordinate = `${setsStage}${currentAction}${repsStage}`;
-
-            const vectorIndex = VECTOR_TO_CLOCK_INDEX[currentAction] || 1;
-
-            biokineticWaveHistory.unshift({
-                sets: setsStage,
-                vector: vectorIndex,
-                reps: repsStage
-            });
-            if (biokineticWaveHistory.length > 12) biokineticWaveHistory.pop();
-
-            renderBiokineticWaves();
-
-            const elDialPack = getCachedEl('z-dial-pack');
-            const elDialTele = getCachedEl('z-dial-telemetry');
-
-            if (elDialPack) elDialPack.textContent = biokineticCoordinate;
-            if (elDialTele) elDialTele.textContent = biokineticCoordinate;
-                    
-            const totalSecondsSinceMidnight = (hours * 3600) + (minutes * 60) + seconds;
-            activeNodeVal = `${String(totalSecondsSinceMidnight + 1).padStart(4, '0')}`;
-
-            const subSetsSolar = getCachedEl('sub-sets-solar');
-            const subRepsTension = getCachedEl('sub-reps-tension');
-            if (subSetsSolar) subSetsSolar.textContent = `${(0.05 + (setsStage / 240)).toFixed(3)}`;
-            if (subRepsTension) subRepsTension.textContent = `${(14.2 + (repsStage * 0.8)).toFixed(1)}`;
-
-            if (window.activeTelemetryBtnId && TELEMETRY_CONFIG[window.activeTelemetryBtnId]) {
-                const telemetryData = getCachedEl('panel-telemetry-data');
-                
-                if (telemetryData) {
-                    if (window.activeTelemetryBtnId === 'btn-tele-dial') {
-                        if (waveDisplayState === 0) {
-                            telemetryData.innerHTML = biokineticCoordinate;
-                        } else {
-                            const meaningConfig = TELEMETRY_CONFIG['btn-tele-dial'].meaning;
-                            const evaluatedMeaning = typeof meaningConfig === 'function' ? meaningConfig() : meaningConfig;
-                            telemetryData.innerHTML = evaluatedMeaning.toUpperCase();
-                        }
-                    } else {
-                        const meaningConfig = TELEMETRY_CONFIG[window.activeTelemetryBtnId].meaning;
-                        const evaluatedMeaning = typeof meaningConfig === 'function' ? meaningConfig() : meaningConfig;
-                        telemetryData.innerHTML = evaluatedMeaning.toUpperCase();
-                    }
-                }
-            }
-        }
-
-        const TELEMETRY_CONFIG = {
-            'btn-tele-hz': {
-                meaning: "RESONANT FREQUENCY",
-                targetElId: 'sub-sets-solar'
-            },
-            'btn-tele-dial': {
-                meaning: () => {
-                    const coord = getCachedEl('z-dial-telemetry')?.textContent || "1P1";
-                    const match = coord.match(/^(\d+)([A-Z]+)(\d+)$/);
-                    if (!match) return "ACTIVE BIOKINETIC MATRIX.";
-                    
-                    const [_, sets, action, reps] = match;
-                    
-                    const pulsMeanings = {
-                        'P':   'STEP',
-                        'U':   'PRESS',
-                        'L':   'LOAD',
-                        'S':   'JUMP',
-                        'PL':  'STEP WITH LOAD',
-                        'PU':  'STEP WITH PRESS',
-                        'LU':  'SPRINT',
-                        'SU':  'PRESS JUMP',
-                        'PUL': 'TRIGGER STEP',
-                        'LPS': 'LOADED JUMP STEP',
-                        'SPU': 'PRESSED JUMP STEP',
-                        'ULS': 'TRIGGER JUMP'
-                    };
-
-                    const actionLabel = pulsMeanings[action] || "REGENERATIVE BIOKINETIC WAVES";
-                    return `${sets} ${actionLabel} X ${reps}`;
-                },
-                targetElId: null
-            },
-            'btn-tele-tension': {
-                meaning: "GRAVITATIONAL MAGNETISM",
-                targetElId: 'sub-reps-tension'
-            }
-        };
-
-        /**
-         * Render Biokinetic Wave Vector Layers into SVG Container
-         */
-        function renderBiokineticWaves() {
-            const container = $('wave-quantum-container');
-            if (!container) return;
-
-            if (waveDisplayState === 1) {
-                container.innerHTML = '';
-                return;
-            }
-
-            if (biokineticWaveHistory.length === 0) return;
-
-            let htmlContent = '';
-            biokineticWaveHistory.forEach((dial, tIndex) => {
-                const currentScale = (tIndex + 5) * 0.85;
-                const baseOpacity = 1.0 - (tIndex * 0.12);
-                if (baseOpacity <= 0) return;
-
-                const viewFactor = 8.5; 
-                const layers = [
-                    { id: 'internal',     r: (currentScale * 1.0) * viewFactor, opacity: baseOpacity * 0.80, value: dial.sets },
-                    { id: 'intermediate', r: (currentScale * 1.4) * viewFactor, opacity: baseOpacity * 0.60, value: dial.vector },
-                    { id: 'external',     r: (currentScale * 1.8) * viewFactor, opacity: baseOpacity * 0.40, value: dial.reps }
-                ];
-
-                layers.forEach(layer => {
-                    if (layer.r <= 0) return;
-                    const circumference = 2 * Math.PI * layer.r;
-                    const angle = (layer.value - 1) * 30; 
-                    const arcLength = (layer.value / 12) * circumference;
-                    const dashArray = `${arcLength} ${circumference}`;
-
-                    htmlContent += `
-                        <circle 
-                            cx="200" 
-                            cy="200" 
-                            r="${layer.r}" 
-                            transform="rotate(${angle} 200 200)"
-                            style="stroke: #ffffff; transition: all 0.3s ease; stroke-width: ${tIndex === 0 ? 1.5 : 1.0}; stroke-opacity: ${layer.opacity}; stroke-dasharray: ${dashArray}; stroke-linecap: round; fill: none;"
-                        />`;
-                });
-            });
-            container.innerHTML = htmlContent;
-        }
-
-        /**
-         * Enable Telemetry Interactive Triggers
-         */
-        function enableTelemetryReveal() {
-            const telemetryData = getCachedEl('panel-telemetry-data');
-            const sandwatchGroup = getCachedEl('sandwatch-group');
-            let lastActiveData = null;
-
-            Object.keys(TELEMETRY_CONFIG).forEach(btnId => {
-                const btn = getCachedEl(btnId);
-                if (!btn || btn.dataset.bound) return;
-                btn.dataset.bound = "true";
-
-                btn.addEventListener('click', () => {
-                    triggerHaptic(12);
-
-                    if (btnId === 'btn-tele-dial') {
-                        if (inspectModeIndex !== 0) {
-                            applyVisualMode('front');
-                            const fotopanelLabel = getCachedEl('fotopanel-label');
-                            if (fotopanelLabel) {
-                                fotopanelLabel.textContent = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant].label;
-                            }
-                        }
-
-                        if (window.activeTelemetryBtnId === 'btn-tele-dial') {
-                            waveDisplayState = (waveDisplayState === 0) ? 1 : 0;
-                        } else {
-                            waveDisplayState = 0;
-                        }
-
-                        if (sandwatchGroup) {
-                            sandwatchGroup.style.display = (waveDisplayState === 1) ? 'block' : 'none';
-                        }
-                        renderBiokineticWaves();
-                    } else {
-                        inspectModeIndex = 0; 
-                        applyVisualMode('front');
-                    }
-
-                    if (lastActiveData) {
-                        lastActiveData.classList.remove('is-active');
-                    }
-
-                    const targetDataEl = TELEMETRY_CONFIG[btnId].targetElId ? getCachedEl(TELEMETRY_CONFIG[btnId].targetElId) : null;
-                    if (targetDataEl) {
-                        targetDataEl.classList.add('is-active');
-                        lastActiveData = targetDataEl;
-                    }
-
-                    window.activeTelemetryBtnId = btnId;
-
-                    let evaluatedMeaning = "";
-                    if (btnId === 'btn-tele-dial') {
-                        if (waveDisplayState === 0) {
-                            evaluatedMeaning = getCachedEl('z-dial-telemetry')?.textContent || "8UST11";
-                        } else {
-                            const meaningConfig = TELEMETRY_CONFIG[btnId].meaning;
-                            evaluatedMeaning = typeof meaningConfig === 'function' ? meaningConfig() : meaningConfig;
-                        }
-                    } else {
-                        const meaningConfig = TELEMETRY_CONFIG[btnId].meaning;
-                        evaluatedMeaning = typeof meaningConfig === 'function' ? meaningConfig() : meaningConfig;
-                    }
-                    
-                    telemetryData.innerHTML = evaluatedMeaning.toUpperCase();
-                });
-            });
-        }
-
-        /**
-         * Direct Cashflow WhatsApp Node Dispatcher
-         */
+        // WhatsApp Order Dispatcher
         function acquireNodeCashflow() {
-            const variantConfig = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
-            const currentCoord = getCachedEl('z-dial-telemetry')?.textContent || getCachedEl('z-dial-pack')?.textContent || "N/A";
-            
-            const currentSphere = currentSphereIdx;
-            const currentNode = activeNodeVal;
-            
-            const freqValue = getCachedEl('sub-sets-solar')?.textContent || "0.00 Hz";
-            const tensionValue = getCachedEl('sub-reps-tension')?.textContent || "0.0 N";
-
+            const variant = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
             const message = [
-                `ORDER: ${variantConfig.label}`,
+                `ORDER: ${variant.label}`,
                 `VARIANT: ${currentFotoVariant}`,
-                `SPEC: ${variantConfig.spec}`,
-                `MEDIA: ${variantConfig.media}`,
-                `FINISH: ${variantConfig.finish}`,
-                `ID: ${variantConfig.id}`,
-                `PRICE: ${variantConfig.price}`,
-                `DIAL: ${currentCoord}`,
-                `CYCLE: ${currentSphere}`,
-                `SATURATION: ${currentNode}`,
-                `RESONANCE: ${freqValue}`,
-                `TENSION: ${tensionValue}`
+                `SPEC: ${variant.spec}`,
+                `MEDIA: ${variant.media}`,
+                `FINISH: ${variant.finish}`,
+                `ID: ${variant.id}`,
+                `PRICE: ${variant.price}`
             ].join('\n');
 
             triggerHaptic([15, 40, 15]);
             window.open(`https://api.whatsapp.com/send?phone=${targetPhoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        // DOM Ready Execution
+        // Interruptor Acromático (Dark / White Mode)
+        function inicializarAlternadorAcromatico() {
+            const trigger = getCachedEl('acromatic-toggle-trigger');
+            if (!trigger) return;
+
+            trigger.addEventListener('click', () => {
+                const htmlNode = document.documentElement;
+                const currentTheme = htmlNode.getAttribute('data-theme') || 'dark';
+                const nextTheme = currentTheme === 'dark' ? 'white' : 'dark';
+                
+                htmlNode.setAttribute('data-theme', nextTheme);
+                triggerHaptic([20, 10]);
+            });
+        }
+
+        // Initialize Application Controls
         document.addEventListener('DOMContentLoaded', () => {
-            initFotoPanel();
-            updateZ(); 
-            setInterval(updateZ, 1000);
-            enableTelemetryReveal();
+            const btnReveal = getCachedEl('btn-reveal-bio');
+            const modes = ['front', 'back', 'raw'];
+
+            if (btnReveal) {
+                btnReveal.addEventListener('click', () => {
+                    inspectModeIndex = (inspectModeIndex + 1) % modes.length;
+                    applyVisualMode(modes[inspectModeIndex]);
+                    triggerHaptic(12);
+                });
+            }
+
+            inicializarAlternadorAcromatico();
+            updateFotoUI();
         });
     </script>
 </body>
