@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <link class="icon" type="image/png" href="img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FOTOPANEL</title>
+    <title>FOTOPANEL.ART</title>
     
     <!-- External Fonts (Typography Engine) -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -246,20 +246,20 @@
             stroke-width: 1;
             transition: all 0.5s ease;
             transform-origin: center;
-            transform: scale(1.0);
+            transform: scale(1.2);
         }
 
         .svg-text-title {
             fill: #ffffff;
-            font-size: 13px;
-            letter-spacing: 0.25em;
+            font-size: 11px;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             transition: all 0.5s ease;
         }
 
         .svg-text-desc {
             fill: var(--text-muted);
-            font-size: 10px;
+            font-size: 9px;
             letter-spacing: 0.25em;
             text-transform: uppercase;
             transition: all 0.5s ease;
@@ -357,15 +357,15 @@
     <div class="ambient-gradient"></div>
         
     <!-- ========================================================================= -->
-    <!-- 1. HEADER BLOCK (Native CSS Glass Panel & Telemetry Header)               -->
+    <!-- 1. HEADER BLOCK (Biokinetic Telemetry & Controls)                         -->
     <!-- ========================================================================= -->
     <header class="header-container">
         <div class="top-control-grid">
             
-            <!-- Category Toggle (STENCIL / PANEL) -->
-            <button id="btn-tele-category" title="Toggle Category" onclick="toggleCatalogCategory()" class="btn-tele-glass tele-btn-left">
-                <span id="sub-category-label" class="tele-num-val">PANEL</span>
-                <span class="tele-unit-label">CAT</span>
+            <!-- Tension Trigger -->
+            <button id="btn-tele-tension" title="Cohesion / Tension" class="btn-tele-glass tele-btn-left">
+                <span id="sub-reps-tension" class="tele-num-val">0.0</span>
+                <span class="tele-unit-label">N</span>
             </button>
 
             <!-- Center Dial Logo -->
@@ -377,10 +377,10 @@
                 </svg>
             </button>
 
-            <!-- Dimension Telemetry Indicator -->
-            <button id="btn-tele-dim" title="Panel Dimension" class="btn-tele-glass tele-btn-right">
-                <span id="sub-dim-val" class="tele-num-val">40X40</span>
-                <span class="tele-unit-label">DIM</span>
+            <!-- Resonate Frequency Trigger -->
+            <button id="btn-tele-hz" title="Resonant Frequency" class="btn-tele-glass tele-btn-right">
+                <span id="sub-sets-solar" class="tele-num-val">0.00</span>
+                <span class="tele-unit-label">Hz</span>
             </button>
 
         </div>
@@ -388,7 +388,7 @@
         <!-- Telemetry Data Sub-Bar -->
         <div class="sub-header-bar">
             <span id="panel-telemetry-data" class="telemetry-readout-text">
-                FOTOPANEL ART DISPATCH ENGINE
+                REGENERATIVE BIOKINETIC WAVES
             </span>
         </div>
     </header>
@@ -401,9 +401,9 @@
             <div class="pack-viewport">
                 
                 <!-- Progressive Image Stack -->
-                <img id="fotopanel-pack-img-back" src="img/panel40W.png" alt="Panel Backing" class="img-glow-transition" style="opacity: 0; pointer-events: none; z-index: 0;" />
-                <img id="fotopanel-pack-img" src="img/surface.png" alt="Panel Surface" class="img-glow-transition" style="opacity: 1; pointer-events: auto; z-index: 10;" />
-                <img id="fotopanel-pack-img-raw" src="img/panel40B.png" alt="Raw Substrate" class="img-glow-transition" style="opacity: 0; pointer-events: none; z-index: 5;" />
+                <img id="fotopanel-pack-img-back" src="img/20x20B.png" alt="Pulsor Back" class="img-glow-transition" style="opacity: 0; pointer-events: none; z-index: 0;" />
+                <img id="fotopanel-pack-img" src="img/surface.png" alt="Pulsor Front" class="img-glow-transition" style="opacity: 1; pointer-events: auto; z-index: 10;" />
+                <img id="fotopanel-pack-img-raw" src="img/panel40B.png" alt="Raw View" class="img-glow-transition" style="opacity: 0; pointer-events: none; z-index: 5;" />
                 
                 <!-- Tactical Mesh and Vector Overlay -->
                 <div class="vector-overlay-layer">
@@ -416,7 +416,7 @@
                         <!-- Curved Top Title -->
                         <text class="svg-text-title">
                             <textPath id="laser-variant-title" href="#textPath-top" startOffset="50%" text-anchor="middle">
-                                PANEL40X40
+                                PULSOR PANEL 40X40
                             </textPath>
                         </text>
                         
@@ -436,7 +436,7 @@
                         <!-- Curved Bottom Descriptor -->
                         <text class="svg-text-desc">
                             <textPath id="fotopanel-description" href="#textPath-bottom" startOffset="50%" text-anchor="middle">
-                                INKJET ADH SOBRE ACM PARA MONTAJES
+                                INKJET ADH SOBRE ACM FORMATO PRO
                             </textPath>
                         </text>
                     </svg>
@@ -449,19 +449,19 @@
     <!-- Product Label Strip -->
     <div class="info-strip">
         <div class="info-strip-content">
-            <span id="fotopanel-label">PANEL40X40</span>
+            <span id="fotopanel-label">PULSOR PANEL 40X40</span>
             <span style="opacity: 0.7;">|</span>
             <span id="fotopanel-price">$55USD</span>
         </div>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 3. ACTIONS & DIRECT WHATSAPP CASHFLOW TRIGGER                             -->
+    <!-- 3. ACTIONS & DIRECT WHATSAPP DAILY CASHFLOW TRIGGER                       -->
     <!-- ========================================================================= -->
     <div class="action-controls-grid">
 
         <!-- Inspect / Reveal Mode -->
-        <button id="btn-reveal-bio" title="Inspect Layer" class="btn-tele-glass tele-btn-left">
+        <button id="btn-reveal-bio" title="Inspect" class="btn-tele-glass tele-btn-left">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -469,7 +469,7 @@
         </button>
 
         <!-- Node Cashflow Dispatcher -->
-        <button id="btn-activate-node" title="Acquire Panel" onclick="acquireNodeCashflow()" class="btn-tele-glass tele-btn-center">
+        <button id="btn-activate-node" title="Acquire Node" onclick="acquireNodeCashflow()" class="btn-tele-glass tele-btn-center">
             <svg viewBox="0 0 100 100" class="icon-tele">
                 <polygon points="20,20 80,20 70,35 30,35" />
                 <polygon points="50,42 58,50 50,58 42,50" />
@@ -478,7 +478,7 @@
         </button>
 
         <!-- Next Product Variant -->
-        <button id="btn-next-variant" title="Next Size/Variant" onclick="rotateFotoVariant('next')" class="btn-tele-glass tele-btn-right">
+        <button id="btn-next-variant" title="Next Variant" onclick="rotateFotoVariant('next')" class="btn-tele-glass tele-btn-right">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" class="icon-stroke">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
@@ -496,15 +496,14 @@
     <!-- ========================================================================= -->
     <script>
         /**
-         * Consolidated Commercial Catalog Configuration
-         * Unified dictionary retaining BioRush schema with expanded FotoPanel telemetry.
+         * ARTEPANEL Commercial Catalog Configuration (PULSORES System)
          */
         const ARTEPANEL_CATALOG = {
             'STENCIL': {
                 defaultVariant: '25X25',
                 variants: {
                     '25X25': { 
-                        label: 'STENCIL 25X25', 
+                        label: 'PULSOR STENCIL 25X25', 
                         desc: 'Stencil para murales participativos', 
                         spec: 'Financia 1 pieza para la comunidad', 
                         media: 'STENCIL POLYESTER',
@@ -517,7 +516,7 @@
                         telemetry: { DIM: '25x25', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
                     },
                     '40X40': { 
-                        label: 'MICROSTENCIL FOCUS', 
+                        label: 'PULSOR STENCIL 40X40', 
                         desc: 'Stencil para murales de formato medio', 
                         spec: 'Financia 1 pieza para la comunidad', 
                         media: 'STENCIL POLYESTER',
@@ -530,7 +529,7 @@
                         telemetry: { DIM: '40x40', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
                     },
                     '80X80': { 
-                        label: 'MACROSTENCIL SURGE', 
+                        label: 'PULSOR STENCIL 80X80', 
                         desc: 'Stencil macro para muralismo de gran escala', 
                         spec: 'Financia 1 pieza para la comunidad', 
                         media: 'STENCIL POLYESTER',
@@ -548,7 +547,7 @@
                 defaultVariant: '40X40',
                 variants: {
                     '20X20': { 
-                        label: 'PANEL 20X20', 
+                        label: 'PULSOR PANEL 20X20', 
                         desc: 'INKJET ADH sobre ACM para mosaicos', 
                         spec: 'Financia 1 pieza para la comunidad', 
                         media: 'ACM 3mm',
@@ -561,7 +560,7 @@
                         telemetry: { DIM: '20x20', MEDIA: 'ACM', DIAL: '⧗240', RATE: '$0.05USD' }
                     },
                     '30X30': { 
-                        label: 'PANEL 30X30', 
+                        label: 'PULSOR PANEL 30X30', 
                         desc: 'INKJET ADH sobre ACM para montajes', 
                         spec: 'Financia 1 pieza para la comunidad', 
                         media: 'ACM 3mm',
@@ -574,7 +573,7 @@
                         telemetry: { DIM: '30x30', MEDIA: 'ACM', DIAL: '⧗576', RATE: '$0.05USD' }
                     },
                     '40X40': { 
-                        label: 'PANEL 40X40', 
+                        label: 'PULSOR PANEL 40X40', 
                         desc: 'INKJET ADH sobre ACM formato pro', 
                         spec: 'Financia 1 pieza para la comunidad', 
                         media: 'ACM 3mm',
@@ -591,7 +590,7 @@
         };
 
         // State Machine Globals
-        let currentCatalogCategory = 'PANEL';
+        let currentFotoItem = 'PANEL';
         let currentFotoVariant = '40X40';
         const targetPhoneNumber = "573025333130";
         let currentSphereIdx = "0000";
@@ -624,20 +623,6 @@
             'PL': 5, 'PU': 6, 'LU': 7, 'SU': 8,
             'PUL': 9,'LPS': 10,'SPU': 11,'ULS': 12
         };
-
-        /**
-         * Toggle active product category between PANEL and STENCIL
-         */
-        function toggleCatalogCategory() {
-            currentCatalogCategory = (currentCatalogCategory === 'PANEL') ? 'STENCIL' : 'PANEL';
-            currentFotoVariant = ARTEPANEL_CATALOG[currentCatalogCategory].defaultVariant;
-            
-            const categoryLabel = getCachedEl('sub-category-label');
-            if (categoryLabel) categoryLabel.textContent = currentCatalogCategory;
-
-            updateFotoUI();
-            triggerHaptic(15);
-        }
 
         /**
          * Visual Inspector Switching (Front, Back, Raw)
@@ -709,8 +694,8 @@
          * @param {string} direction Direction 'next' or 'prev'
          */
         function rotateFotoVariant(direction = 'next') {
-            const categoryConfig = ARTEPANEL_CATALOG[currentCatalogCategory];
-            const variantsKeys = Object.keys(categoryConfig.variants);
+            const itemConfig = ARTEPANEL_CATALOG[currentFotoItem];
+            const variantsKeys = Object.keys(itemConfig.variants);
             const currentIndex = variantsKeys.indexOf(currentFotoVariant);
             
             let nextIndex = (direction === 'next') 
@@ -726,14 +711,13 @@
          * Update UI Elements based on current catalog selection
          */
         function updateFotoUI() {
-            const categoryConfig = ARTEPANEL_CATALOG[currentCatalogCategory];
-            const variantConfig = categoryConfig.variants[currentFotoVariant];
+            const itemConfig = ARTEPANEL_CATALOG[currentFotoItem];
+            const variantConfig = itemConfig.variants[currentFotoVariant];
             
             const descEl = getCachedEl('fotopanel-description');
             const packImg = getCachedEl('fotopanel-pack-img');
             const packImgBack = getCachedEl('fotopanel-pack-img-back');
-            const packLabel = getCachedEl('fotopanel-label');
-            const dimVal = getCachedEl('sub-dim-val');
+            const fotopanelLabel = getCachedEl('fotopanel-label');
             
             if (descEl && packImg && packImgBack) {
                 descEl.style.opacity = '0';
@@ -747,9 +731,7 @@
                     const labelTitle = getCachedEl('laser-variant-title');
                     if (labelTitle) labelTitle.textContent = variantConfig.label;
                     
-                    if (packLabel) packLabel.textContent = variantConfig.label;
-                    if (dimVal) dimVal.textContent = variantConfig.telemetry.DIM;
-                    
+                    if (fotopanelLabel) fotopanelLabel.textContent = variantConfig.label;
                     getCachedEl('fotopanel-price').textContent = variantConfig.price;
 
                     descEl.style.opacity = '1';
@@ -770,7 +752,7 @@
         }
 
         /**
-         * Main Telemetry Engine Loop
+         * Main PULS Telemetry Engine Loop
          */
         function updateZ() {
             let biokineticCoordinate = "";
@@ -832,6 +814,11 @@
             const totalSecondsSinceMidnight = (hours * 3600) + (minutes * 60) + seconds;
             activeNodeVal = `${String(totalSecondsSinceMidnight + 1).padStart(4, '0')}`;
 
+            const subSetsSolar = getCachedEl('sub-sets-solar');
+            const subRepsTension = getCachedEl('sub-reps-tension');
+            if (subSetsSolar) subSetsSolar.textContent = `${(0.05 + (setsStage / 240)).toFixed(3)}`;
+            if (subRepsTension) subRepsTension.textContent = `${(14.2 + (repsStage * 0.8)).toFixed(1)}`;
+
             if (window.activeTelemetryBtnId && TELEMETRY_CONFIG[window.activeTelemetryBtnId]) {
                 const telemetryData = getCachedEl('panel-telemetry-data');
                 
@@ -854,20 +841,41 @@
         }
 
         const TELEMETRY_CONFIG = {
-            'btn-tele-dim': {
-                meaning: "Formato y dimensión física",
-                targetElId: 'sub-dim-val'
+            'btn-tele-hz': {
+                meaning: "RESONANT FREQUENCY",
+                targetElId: 'sub-sets-solar'
             },
             'btn-tele-dial': {
                 meaning: () => {
                     const coord = getCachedEl('z-dial-telemetry')?.textContent || "1P1";
-                    return `COORDINADA MATRIZ: ${coord}`;
+                    const match = coord.match(/^(\d+)([A-Z]+)(\d+)$/);
+                    if (!match) return "ACTIVE BIOKINETIC MATRIX.";
+                    
+                    const [_, sets, action, reps] = match;
+                    
+                    const pulsMeanings = {
+                        'P':   'PACE',
+                        'U':   'PUSH',
+                        'L':   'PULL',
+                        'S':   'SURGE',
+                        'PL':  'PACE WITH PULL',
+                        'PU':  'PACE WITH PUSH',
+                        'LU':  'PULL WITH PUSH',
+                        'SU':  'SURGE WITH PUSH',
+                        'PUL': 'PACE WITH PUSH AND PULL',
+                        'LPS': 'PULL WITH PACE AND SURGE',
+                        'SPU': 'SURGE WITH PACE AND PUSH',
+                        'ULS': 'PUSH WITH PULL AND SURGE'
+                    };
+
+                    const actionLabel = pulsMeanings[action] || "REGENERATIVE BIOKINETIC WAVES";
+                    return `${sets} SETS ${actionLabel} ${reps} REPS`;
                 },
                 targetElId: null
             },
-            'btn-tele-category': {
-                meaning: "Línea de catálogo activa",
-                targetElId: 'sub-category-label'
+            'btn-tele-tension': {
+                meaning: "GRAVITATIONAL MAGNETISM",
+                targetElId: 'sub-reps-tension'
             }
         };
 
@@ -937,9 +945,9 @@
                     if (btnId === 'btn-tele-dial') {
                         if (inspectModeIndex !== 0) {
                             applyVisualMode('front');
-                            const packLabel = getCachedEl('fotopanel-label');
-                            if (packLabel) {
-                                packLabel.textContent = ARTEPANEL_CATALOG[currentCatalogCategory].variants[currentFotoVariant].label;
+                            const fotopanelLabel = getCachedEl('fotopanel-label');
+                            if (fotopanelLabel) {
+                                fotopanelLabel.textContent = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant].label;
                             }
                         }
 
@@ -989,28 +997,31 @@
         }
 
         /**
-         * Direct Cashflow WhatsApp Node Dispatcher for FotoPanel / Stencil
+         * Direct Cashflow WhatsApp Node Dispatcher
          */
         function acquireNodeCashflow() {
-            const variantConfig = ARTEPANEL_CATALOG[currentCatalogCategory].variants[currentFotoVariant];
+            const variantConfig = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
             const currentCoord = getCachedEl('z-dial-telemetry')?.textContent || getCachedEl('z-dial-pack')?.textContent || "N/A";
             
             const currentSphere = currentSphereIdx;
             const currentNode = activeNodeVal;
+            
+            const freqValue = getCachedEl('sub-sets-solar')?.textContent || "0.00 Hz";
+            const tensionValue = getCachedEl('sub-reps-tension')?.textContent || "0.0 N";
 
             const message = [
-                `ORDEN: FOTOPANEL`,
-                `LINEA: ${currentCatalogCategory}`,
-                `PIEZA: ${variantConfig.label}`,
-                `MEDIDA: ${variantConfig.telemetry.DIM}`,
-                `SUSTRATO: ${variantConfig.media}`,
-                `ACABADO: ${variantConfig.finish}`,
-                `SKU ID: ${variantConfig.id}`,
-                `PRECIO: ${variantConfig.price}`,
-                `IMPACTO: ${variantConfig.spec}`,
+                `ORDER: ${variantConfig.label}`,
+                `VARIANT: ${currentFotoVariant}`,
+                `SPEC: ${variantConfig.spec}`,
+                `MEDIA: ${variantConfig.media}`,
+                `FINISH: ${variantConfig.finish}`,
+                `ID: ${variantConfig.id}`,
+                `PRICE: ${variantConfig.price}`,
                 `DIAL: ${currentCoord}`,
-                `CICLO: ${currentSphere}`,
-                `SATURACION: ${currentNode}`
+                `CYCLE: ${currentSphere}`,
+                `SATURATION: ${currentNode}`,
+                `RESONANCE: ${freqValue}`,
+                `TENSION: ${tensionValue}`
             ].join('\n');
 
             triggerHaptic([15, 40, 15]);
