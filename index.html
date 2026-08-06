@@ -1,645 +1,786 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <link class="icon" type="image/png" href="img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JAKO VAULT</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>FOTOPANEL</title>
+    
+    <!-- External Fonts (Typography Engine) -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = { 
-            theme: { 
-                extend: { 
-                    screens: { 'xs': '400px' },
-                    colors: { 
-                        'jako-black': '#050508',
-                        'jako-darkblue': '#030712'
-                    },
-                    fontFamily: { 
-                        'sans': ['Orbitron', 'sans-serif'],
-                        'mono': ['Orbitron', 'monospace'],
-                        'body': ['Plus Jakarta Sans', 'sans-serif']
-                    }
-                }
-            }
+    
+    <style>
+        /* =========================================================================
+           1. CORE DESIGN SYSTEM & NATIVE CSS VARIABLES
+           ========================================================================= */
+        :root {
+            --bg-base: #020617;
+            --jako-black: #0a0705;
+            --sky-glow: rgba(14, 165, 233, 0.1);
+            --sky-border: rgba(14, 165, 233, 0.3);
+            --sky-accent: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --font-tech: 'Orbitron', monospace, sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
         }
-    </script>
 
-<style>
-        /* MOTOR BASE DE LA INTERFAZ */
+        /* Reset & Base Layout */
+        *, ::before, ::after { 
+            box-sizing: border-box; 
+            margin: 0;
+            padding: 0;
+        }
+
         body { 
-            font-family: 'Orbitron', sans-serif; 
-            scroll-behavior: smooth; 
-            letter-spacing: 0.05em; 
-            background-color: #000000; 
-            color: #f8fafc;
-            /* Prevención de sobre-desplazamiento elástico en móviles */
-            overscroll-behavior: none;
+            font-family: var(--font-tech); 
+            background-color: var(--bg-base); 
+            color: var(--text-main); 
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            position: relative;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         } 
 
-        /* CÁMARA OSCURA: Optimización de hardware para el gradiente bio-lumínico */
+        ::selection {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        /* Ambient Radial & Linear Overlays */
         #page-bg-overlay {
+            position: fixed; 
+            inset: 0; 
+            z-index: -1;
+            background: radial-gradient(circle at 50% 49%, #1e3a8a 0%, #0f172a 50%, #020617 100%);
+        }
+
+        .ambient-gradient {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at 50% 30%, rgba(60, 66, 79, 0.22) 0%, rgba(80, 96, 136, 0.75) 60%, #000000 100%);
-            z-index: -1;
-            /* transform y will-change aíslan el renderizado en su propia capa de la GPU */
-            transform: translateZ(0);
-            will-change: opacity, filter;
-            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.6s ease;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent, rgba(0,0,0,0.4));
+            z-index: 0;
+            pointer-events: none;
         }
 
-        /* TELEMETRÍA PURISTA: Escala neutral */
-        .tele-label { color: #94a3b8; } 
-        
-        /* EFECTO LED BLANCO: Ajuste de subpíxel para evitar bordes dentados al escalar */
-        .tele-value { 
-            color: #ffffff; 
-            text-shadow: 0 0 14px rgba(255, 255, 255, 0.65), 0 0 4px rgba(255, 255, 255, 0.3);
-            transform: translateZ(0);
-        } 
-        
-        .border-custom { 
-            border-color: rgba(255, 255, 255, 0.15); 
-            transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .border-custom:hover { border-color: rgba(255, 255, 255, 0.6); }
-
-        /* VIDRIO HIPERREALISTA SIMÉTRICO */
-        .glass { 
-            background: rgba(5, 5, 8, 0.5); /* Unificado para Header y Footer */
-            border: 1px solid rgba(255, 255, 255, 0.06); 
-            backdrop-filter: blur(30px); 
-            -webkit-backdrop-filter: blur(30px);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.03);
-            transform: translateZ(0);
+        /* Transition Utilities */
+        .img-glow-transition { 
+            transition: opacity 0.5s ease-in-out; 
         }
 
-        /* TRANSICIÓN DE GLOW: Eliminación total de saltos ópticos mediante hardware-acceleration */
-        .img-glow-transition {
-            transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            /* backface-visibility elimina parpadeos blancos en iOS y navegadores basados en WebKit */
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            transform: translate3d(0, 0, 0);
-            will-change: filter, transform, opacity;
+        /* Header Control Bar */
+        .header-container {
+            width: 100%;
+            flex-shrink: 0;
+            z-index: 50;
+            background-color: rgba(8, 47, 73, 0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 30px var(--sky-glow);
+            display: flex;
+            flex-direction: column;
         }
 
-        /* OCULTAMIENTO ASÉPTICO DE SCROLLS */
-        .custom-hud-scroll { 
-            -ms-overflow-style: none; 
-            scrollbar-width: none; 
-        }
-        .custom-hud-scroll::-webkit-scrollbar { 
-            display: none; 
-            width: 0 !important;
-            height: 0 !important;
+        .top-control-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            width: 100%;
+            padding: 0 1rem;
+            height: 3rem;
         }
 
-        button, span, div {
-            -webkit-tap-highlight-color: transparent;
+        .btn-tele-glass {
+            background-color: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-tele-glass:hover {
+            background-color: var(--sky-glow);
+        }
+
+        .btn-tele-glass:active {
+            transform: scale(0.95);
+        }
+
+        .tele-btn-left {
+            height: 100%;
+            padding-left: 0.5rem;
+            padding-right: 0.25rem;
+            gap: 0.375rem;
+            justify-content: flex-start;
+        }
+
+        .tele-btn-center {
+            width: 3rem;
+            height: 3rem;
+            flex-shrink: 0;
+            justify-content: center;
+            border-left: 1px solid var(--sky-border);
+            border-right: 1px solid var(--sky-border);
+        }
+
+        .tele-btn-right {
+            height: 100%;
+            padding-right: 0.5rem;
+            padding-left: 0.25rem;
+            gap: 0.375rem;
+            justify-content: flex-end;
+        }
+
+        .tele-num-val {
+            font-family: var(--font-tech);
+            color: #ffffff;
+            letter-spacing: 0.1em;
+            font-size: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .btn-tele-glass:hover .tele-num-val {
+            color: var(--sky-accent);
+        }
+
+        .tele-unit-label {
+            font-size: 9px;
+            letter-spacing: 0.15em;
+            color: #38bdf8;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .icon-tele {
+            width: 1rem;
+            height: 1rem;
+            fill: #ffffff;
+            pointer-events: none;
+            transition: fill 0.3s ease;
+        }
+
+        .btn-tele-glass:hover .icon-tele {
+            fill: var(--sky-accent);
+        }
+
+        .sub-header-bar {
+            width: 100%;
+            border-top: 1px solid var(--sky-border);
+            padding: 0.375rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .telemetry-readout-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 8px;
+            letter-spacing: 0.25em;
+            font-family: var(--font-tech);
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        /* Central Visualizer Layer */
+        .main-visualizer-container {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+        }
+
+        #fotopanel-pack-container {
+            position: relative;
+            width: 100%;
+            max-width: 240px;
+            aspect-ratio: 1 / 1;
+            flex-shrink: 0;
+            margin: 0 auto;
+            filter: drop-shadow(0 40px 60px rgba(0,0,0,0.9));
+        }
+
+        .pack-viewport {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        #fotopanel-pack-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .vector-overlay-layer {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .svg-target-reticle {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.5);
+            stroke-width: 1;
+            transition: all 0.5s ease;
+            transform-origin: center;
+            transform: scale(1.0);
+        }
+
+        .svg-text-title {
+            fill: #ffffff;
+            font-size: 13px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            transition: all 0.5s ease;
+        }
+
+        .svg-text-desc {
+            fill: var(--text-muted);
+            font-size: 10px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            transition: all 0.5s ease;
+        }
+
+        /* Product Spec Strip & Controls Grid */
+        .info-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 8px;
+            letter-spacing: 0.25em;
+            font-family: var(--font-tech);
+            width: 100%;
+            text-transform: uppercase;
+            padding-top: 0.25rem;
+            gap: 0.5rem;
+        }
+
+        .info-strip-content {
+            width: 100%;
+            border-bottom: 1px solid var(--sky-border);
+            padding: 0.375rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .action-controls-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            border-bottom: 1px solid var(--sky-border);
+            align-items: center;
+            width: 100%;
+            padding: 0 1rem;
+            height: 3rem;
+        }
+
+        .icon-stroke {
+            width: 1rem;
+            height: 1rem;
+            stroke: #ffffff;
+            transition: stroke 0.3s ease;
+        }
+
+        .btn-tele-glass:hover .icon-stroke {
+            stroke: var(--sky-accent);
+        }
+
+        /* Footer */
+        .footer-container {
+            height: 50px;
+            width: 100%;
+            flex-shrink: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.3), transparent);
+            backdrop-filter: blur(4px);
+            z-index: 50;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-brand-text {
+            font-size: 6px;
+            letter-spacing: 0.35em;
+            font-family: var(--font-tech);
+            font-weight: 700;
+            color: rgba(186, 230, 253, 0.4);
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .footer-container:hover .footer-brand-text {
+            color: rgba(125, 211, 252, 0.8);
+        }
+
+        /* Quantum Wave Helpers */
+        .rotate-neg-90 {
+            transform: rotate(-90deg);
+            transform-origin: 200px 200px;
         }
     </style>
 </head>
-<body class="antialiased selection:bg-white selection:text-black overflow-x-hidden text-white min-h-screen">
+<body>
 
+    <!-- Ambient Overlays -->
     <div id="page-bg-overlay"></div>
+    <div class="ambient-gradient"></div>
         
-        <header class="fixed top-0 left-0 w-full z-50 glass border-b border-white/5">
-            <div class="w-full flex flex-col">
+    <!-- ========================================================================= -->
+    <!-- 1. HEADER BLOCK (Native CSS Glass Panel & Telemetry Header)               -->
+    <!-- ========================================================================= -->
+    <header class="header-container">
+        <div class="top-control-grid">
+            
+            <!-- Category Toggle (STENCIL / PANEL) -->
+            <button id="btn-tele-category" title="Toggle Category" onclick="toggleCatalogCategory()" class="btn-tele-glass tele-btn-left">
+                <span id="sub-category-label" class="tele-num-val">PANEL</span>
+                <span class="tele-unit-label">CAT</span>
+            </button>
+
+            <!-- Center Dial Logo -->
+            <button id="btn-tele-dial" title="Biokinetic Telemetry" class="btn-tele-glass tele-btn-center">
+                <span id="z-dial-telemetry" style="display: none;">8UST11</span>
+                <svg viewBox="0 0 100 100" class="icon-tele">
+                    <polygon points="50,42 58,50 50,58 42,50" />
+                    <polygon points="30,65 70,65 80,80 20,80" />
+                </svg>
+            </button>
+
+            <!-- Dimension Telemetry Indicator -->
+            <button id="btn-tele-dim" title="Panel Dimension" class="btn-tele-glass tele-btn-right">
+                <span id="sub-dim-val" class="tele-num-val">40X40</span>
+                <span class="tele-unit-label">DIM</span>
+            </button>
+
+        </div>
+
+        <!-- Telemetry Data Sub-Bar -->
+        <div class="sub-header-bar">
+            <span id="panel-telemetry-data" class="telemetry-readout-text">
+                FOTOPANEL ART DISPATCH ENGINE
+            </span>
+        </div>
+    </header>
+
+    <!-- ========================================================================= -->
+    <!-- 2. CENTRAL VISUALIZER & GENERATOR ENGINE                                  -->
+    <!-- ========================================================================= -->
+    <main class="main-visualizer-container">
+        <div id="fotopanel-pack-container">
+            <div class="pack-viewport">
                 
-                <div class="px-4 sm:px-8 grid grid-cols-3 items-center uppercase tracking-widest font-mono text-[11px] text-white/50 min-h-[65px] sm:min-h-[72px] select-none">
-                    
-                    <div class="justify-self-start flex items-center h-full">
-                        <a href="https://jako.world" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Back to jako.world">
-                            <img src="img/back.png" alt="" class="h-[13px] sm:h-[15px] w-auto object-contain opacity-65 group-hover:opacity-100 transition-all duration-500 filter drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" />
-                        </a>
-                    </div>
-                    
-                    <div class="justify-self-center text-center tracking-[0.28em] font-black drop-shadow-[0_0_12px_rgba(255,255,255,0.45)] text-white text-[13px] sm:text-[15px] leading-none">
-                        <span>JAKO VAULT</span>
-                    </div>
-                    
-                    <div class="justify-self-end flex items-center h-full">
-                        <a href="https://biorush.shop" class="group flex items-center justify-center h-full transition-all duration-300 focus:outline-none cursor-pointer" aria-label="To biorush.shop">
-                            <img src="img/pace.png" alt="" class="h-[13px] sm:h-[15px] w-auto object-contain opacity-65 group-hover:opacity-100 transition-all duration-500 filter drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" />
-                        </a>
-                    </div>
-                </div>
-
-                <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
-                <div class="w-full flex flex-col bg-white/[0.01]">
-                    
-                    <div class="w-full grid grid-cols-3 items-center justify-between px-3 sm:px-8 h-12 gap-2 sm:gap-4 text-center select-none">
-                        
-                        <div id="sub-sets-solar-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Hz</span>
-                            <span id="sub-sets-solar" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] standard-num">0.00</span>
-                        </div>
-
-                        <div id="z-dial-trigger" class="flex flex-col-reverse items-center text-center cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Dial</span>
-                            <span id="z-dial-mirror" class="font-mono tracking-[0.15em] text-[10px] sm:text-[12px] font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">0PU0</span>
-                        </div>
-
-                        <div id="sub-reps-tension-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
-                            <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Tensión</span>
-                            <span id="sub-reps-tension" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] standard-num">0.0</span>
-                        </div>
-
-                    </div>
-
-                    <div class="w-full flex items-center justify-center px-4 h-8 bg-black/20 border-t border-white/[0.02]">
-                        <span id="panel-telemetry-data-secondary" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-white/70 font-medium transition-all duration-300 truncate max-w-full leading-none uppercase select-none">
-                            ONDA BIOCINÉTICA REGENERATIVA
-                        </span>
-                    </div>
-
-                </div>
-
-            </div>
-        </header>
-
-<main id="main-vault" class="w-full flex-1 flex flex-col justify-center items-center pt-[155px] pb-[195px] min-h-screen relative overflow-hidden"> 
-    <div class="w-full flex flex-col items-center justify-center p-4 sm:p-6 select-none relative z-10">
-        <div id="artepanel-pack-container" class="relative w-[65vw] h-[65vw] sm:w-[50vw] sm:h-[50vw] md:w-[38vh] md:h-[38vh] max-w-[340px] max-h-[340px] min-w-[200px] min-h-[200px] aspect-square shrink-0 drop-shadow-[0_25px_55px_rgba(0,0,0,0.95)] transition-all duration-300">
-            <div class="w-full h-full relative overflow-hidden rounded-md bg-transparent">
-                <img id="artepanel-pack-img-back" src="img/40x40W.png" alt="artepanel Pack Back" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-0" />
-                <img id="artepanel-pack-img" src="img/40x40B.png" alt="artepanel Pack Front" class="img-glow-transition absolute inset-0 w-full h-full object-cover pointer-events-auto z-10" />
-                <img id="artepanel-pack-img-raw" src="img/20x20B.png" alt="Raw Content" class="img-glow-transition absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none z-[5]" />
+                <!-- Progressive Image Stack -->
+                <img id="fotopanel-pack-img-back" src="img/panel40W.png" alt="Panel Backing" class="img-glow-transition" style="opacity: 0; pointer-events: none; z-index: 0;" />
+                <img id="fotopanel-pack-img" src="img/surface.png" alt="Panel Surface" class="img-glow-transition" style="opacity: 1; pointer-events: auto; z-index: 10;" />
+                <img id="fotopanel-pack-img-raw" src="img/panel40B.png" alt="Raw Substrate" class="img-glow-transition" style="opacity: 0; pointer-events: none; z-index: 5;" />
                 
-                <div class="absolute inset-0 flex items-center justify-center p-0 z-20 pointer-events-none">
-                    <svg id="laser-vector-target" viewBox="0 0 400 400" class="w-full h-full fill-none stroke-white transition-all duration-500 origin-center">
+                <!-- Tactical Mesh and Vector Overlay -->
+                <div class="vector-overlay-layer">
+                    <svg id="laser-vector-target" viewBox="0 0 400 400" class="svg-target-reticle">
                         <defs>
                             <path id="textPath-top" d="M 65,200 A 135,135 0 0,1 335,200" />
                             <path id="textPath-bottom" d="M 65,200 A 135,135 0 0,0 335,200" />
                         </defs>
                         
-                        <g id="wave-quantum-container" class="origin-center -rotate-90">
+                        <!-- Curved Top Title -->
+                        <text class="svg-text-title">
+                            <textPath id="laser-variant-title" href="#textPath-top" startOffset="50%" text-anchor="middle">
+                                PANEL40X40
+                            </textPath>
+                        </text>
+                        
+                        <!-- Biokinetic Quantum Waves -->
+                        <g id="wave-quantum-container" class="rotate-neg-90"></g>
+
+                        <!-- Sandwatch Group Mode -->
+                        <g id="sandwatch-group" style="display: none; transform-origin: center; transform: scale(0.85); transition: all 0.5s ease;">
+                            <g id="sandwatch-lines">
+                                <path d="M 110,120 L 290,120 L 110,280 L 290,280 Z" stroke-width="1.9" opacity="0.5" />
+                                <path d="M 110,120 Q 200,150 290,120" stroke-width="1.9" opacity="0.5" />
+                                <path d="M 110,280 Q 200,250 290,280" stroke-width="1.9" opacity="0.5" stroke-dasharray="2 2" />
                             </g>
-
-                        <!-- RESTAURACIÓN DE SANDWATCH Y COORDINADA ALFANUMÉRICA (SINCRONIZADOS) -->
-                        <g id="sandwatch-group" class="origin-center opacity-0 transition-all duration-500 pointer-events-none style-gpu" style="will-change: opacity;">
-                            <path d="M 90,90 L 310,90 L 90,310 L 310,310 Z" class="stroke-white stroke-[1] opacity-20" />
-                            <path d="M 90,90 Q 200,125 310,90" class="stroke-white stroke-[1] opacity-20" />
-                            <path d="M 90,310 Q 200,275 310,310" stroke-dasharray="3 3" class="stroke-white stroke-[1] opacity-20" />
-                            <text id="z-dial" x="200" y="218" text-anchor="middle" class="fill-white font-black text-[45px] tracking-[0.35em] font-sans pointer-events-auto select-none cursor-pointer">8PU10</text>
+                            <text id="z-dial-pack" x="200" y="210" text-anchor="middle" fill="#ffffff" font-weight="900" font-size="28" letter-spacing="0.4em" font-family="'Orbitron', sans-serif">8UST11</text>
                         </g>
-
-                        <g style="display: none;">
-                            <text class="fill-white font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
-                                <textPath id="laser-variant-title" href="#textPath-top" startOffset="50%" text-anchor="middle">MACROPULSOR FOCUS</textPath>
-                            </text>
-                            <text class="fill-white/60 font-black text-[10px] tracking-[0.25em] uppercase transition-all duration-500">
-                                <textPath id="artepanel-description" href="#textPath-bottom" startOffset="50%" text-anchor="middle">Enfoque y claridad cognitive</textPath>
-                            </text>
-                        </g>
+                        
+                        <!-- Curved Bottom Descriptor -->
+                        <text class="svg-text-desc">
+                            <textPath id="fotopanel-description" href="#textPath-bottom" startOffset="50%" text-anchor="middle">
+                                INKJET ADH SOBRE ACM PARA MONTAJES
+                            </textPath>
+                        </text>
                     </svg>
                 </div>
+
             </div>
+        </div>
+    </main>
+
+    <!-- Product Label Strip -->
+    <div class="info-strip">
+        <div class="info-strip-content">
+            <span id="fotopanel-label">PANEL40X40</span>
+            <span style="opacity: 0.7;">|</span>
+            <span id="fotopanel-price">$55USD</span>
         </div>
     </div>
-</main>
 
-<footer id="dynamic-footer" class="fixed bottom-0 left-0 w-full z-30 glass border-t border-white/5 transition-opacity duration-500 select-none transform translateZ(0)">
-        <div class="w-full flex flex-col font-mono uppercase text-xs">
-            <div class="w-full flex items-center justify-center px-4 h-8 bg-black/20">
-                <span id="panel-telemetry-data" class="text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-center tracking-[0.18em] xs:tracking-[0.25em] sm:tracking-[0.35em] text-white/70 font-medium transition-all duration-300 whitespace-normal block leading-none uppercase select-none">
-                    Compras tu pieza y financias otra para la comunidad
-                </span>
-            </div>
+    <!-- ========================================================================= -->
+    <!-- 3. ACTIONS & DIRECT WHATSAPP CASHFLOW TRIGGER                             -->
+    <!-- ========================================================================= -->
+    <div class="action-controls-grid">
 
-            <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <!-- Inspect / Reveal Mode -->
+        <button id="btn-reveal-bio" title="Inspect Layer" class="btn-tele-glass tele-btn-left">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+        </button>
 
-            <div class="w-full bg-white/[0.01] border-b border-white/5">
-                <div class="w-full grid grid-cols-5 items-center justify-between px-3 sm:px-8 h-12 gap-0.5 sm:gap-4 text-center select-none">
-                    
-                    <div id="telemetry-product-dim-trigger" class="flex flex-col-reverse items-start text-left cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
-                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">CMS</span>
-                        <span id="telemetry-product-dim" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white/90">--</span>
-                    </div>
+        <!-- Node Cashflow Dispatcher -->
+        <button id="btn-activate-node" title="Acquire Panel" onclick="acquireNodeCashflow()" class="btn-tele-glass tele-btn-center">
+            <svg viewBox="0 0 100 100" class="icon-tele">
+                <polygon points="20,20 80,20 70,35 30,35" />
+                <polygon points="50,42 58,50 50,58 42,50" />
+                <polygon points="30,65 70,65 80,80 20,80" />
+            </svg>
+        </button>
 
-                    <div class="col-span-3 grid grid-cols-[24px_1fr_24px] sm:grid-cols-[32px_1fr_32px] gap-1 h-full w-full items-center max-w-xs mx-auto">
-                        <button id="btn-variant-prev" class="h-8 flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded transition-all focus:outline-none">
-                            <span class="text-[10px] font-bold">&lt;</span>
-                        </button>
-                        
-                        <div id="menu-bio-DYNAMIC-holder" class="h-full w-full flex items-center justify-center cursor-pointer group">
-                            </div>
-                        
-                        <button id="btn-variant-next" class="h-8 flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.02] rounded transition-all focus:outline-none">
-                            <span class="text-[10px] font-bold">&gt;</span>
-                        </button>
-                    </div>
+        <!-- Next Product Variant -->
+        <button id="btn-next-variant" title="Next Size/Variant" onclick="rotateFotoVariant('next')" class="btn-tele-glass tele-btn-right">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" class="icon-stroke">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+        </button>
 
-                    <div id="telemetry-product-dial-trigger" class="flex flex-col-reverse items-end text-right cursor-pointer text-white/60 hover:text-white transition-colors duration-200 h-full justify-center">
-                        <span class="text-[7.5px] sm:text-[8.5px] tracking-[0.15em] sm:tracking-[0.2em] text-white/30 mt-0.5 uppercase font-mono leading-none">Dials</span>
-                        <span id="telemetry-product-dial" class="font-mono tracking-[0.1em] sm:tracking-[0.15em] text-[10px] sm:text-[12px] font-bold text-white/90">--</span>
-                    </div>
+    </div>
 
-                </div>
-            </div>
-
-            <div class="w-full h-[1px] bg-white/5"></div>
-
-            <!-- REEMPLAZAR ESTE BLOQUE EN TU HTML (Líneas de los botones de control inferior) -->
-            <div class="w-full h-12 relative z-10 border-t border-white/5 bg-black/20">
-                <div class="w-full grid grid-cols-3 items-center h-full text-center select-none">
-                    
-                    <button id="btn-reveal-raw" class="h-full w-full flex items-center justify-center bg-transparent border-r border-white/5 hover:bg-white/[0.03] text-white/40 hover:text-white font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none" aria-label="Alternar Capas Visuales">
-                        VER
-                    </button>
-                    
-                    <button onclick="adquirirNodo()" class="h-full w-full bg-transparent border-r border-white/5 hover:bg-white/[0.05] text-white/90 font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
-                        ACTIVAR
-                    </button>
-                    
-                    <button id="btn-reveal-dial" class="h-full w-full bg-transparent hover:bg-white/[0.03] text-white/40 hover:text-white font-black text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-300 focus:outline-none">
-                        DIAL
-                    </button>
-                    
-                </div>
-            </div>
-
-
-            <div class="w-full h-[1px] bg-white/5"></div>
-
-            <div class="w-full h-11 relative z-10">
-                <div class="w-full grid grid-cols-[40px_1fr_40px] sm:grid-cols-[54px_1fr_54px] items-center h-full px-4 sm:px-8 text-[8px] tracking-[0.3em] sm:tracking-[0.4em]">
-                    <div class="h-full w-full flex items-center justify-start border-r border-white/5">
-                        <a href="https://jako.world" class="group w-full h-full flex items-center justify-start hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Link to jako.world">
-                            <img src="img/back.png" alt="" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500" />
-                        </a>
-                    </div>    
-                    <div class="h-full w-full flex items-center justify-center text-center font-bold text-white/20">
-                        <a href="https://jako.world" class="h-full w-full flex items-center justify-center hover:text-white/60 hover:bg-white/[0.005] transition-all duration-300 focus:outline-none whitespace-nowrap">POWERED BY JAKO.WORLD</a>
-                    </div>
-                    <div class="h-full w-full flex items-center justify-end border-l border-white/5">
-                        <a href="https://biorush.shop" class="group w-full h-full flex items-center justify-end hover:bg-white/[0.02] transition-all duration-300 focus:outline-none cursor-pointer" aria-label="Link to biorush.shop">
-                            <img src="img/pace.png" alt="" class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-80 transition-all duration-500" />
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Footer Credit -->
+    <footer class="footer-container">
+        <span class="footer-brand-text">POWERED BY JAKO.DEV</span>
     </footer>
 
-<script>
-    // =========================================================================
-    // 1. CONFIGURACIÓN DE CATÁLOGOS COMERCIALES (MODELO SIMBIÓTICO 1:1)
-    // =========================================================================
-    const ARTEPANEL_CATALOG = {
-        'STENCIL': {
-            defaultVariant: '25X25',
-            variants: {
-                '25X25': { 
-                    label: 'STENCIL25X25', 
-                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
-                    spec: 'Compras tu pieza y financias otra para la comunidad', 
-                    price: '$12USD', 
-                    id: 'ST-25X25',
-                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/stencil25B.png',
-                    telemetry: { DIM: '25x25', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
-                },
-                '40X40': { 
-                    label: 'MICROSTENCIL FOCUS', 
-                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
-                    spec: 'Compras tu pieza y financias otra para la comunidad', 
-                    price: '$29USD', 
-                    id: 'ST-MICRO',
-                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/microB.png',
-                    telemetry: { DIM: '40x40', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
-                },
-                '80X80': { 
-                    label: 'MACROSTENCIL SURGE', 
-                    desc: 'Stencil para murales participativos en interiores y exteriores.', 
-                    spec: 'Compras tu pieza y financias otra para la comunidad', 
-                    price: '$125USD', 
-                    id: 'ST-MACRO',
-                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/macroB.png',
-                    telemetry: { DIM: '80x80', MEDIA: 'STENCIL', DIAL: '⧗2500', RATE: '$0.05USD' }
+    <!-- ========================================================================= -->
+    <!-- 4. CORE ENGINE & WHATSAPP BACKEND INTERACTION SCRIPT                      -->
+    <!-- ========================================================================= -->
+    <script>
+        /**
+         * Consolidated Commercial Catalog Configuration
+         * Unified dictionary retaining BioRush schema with expanded FotoPanel telemetry.
+         */
+        const ARTEPANEL_CATALOG = {
+            'STENCIL': {
+                defaultVariant: '25X25',
+                variants: {
+                    '25X25': { 
+                        label: 'STENCIL 25X25', 
+                        desc: 'Stencil para murales participativos', 
+                        spec: 'Financia 1 pieza para la comunidad', 
+                        media: 'STENCIL POLYESTER',
+                        finish: 'Laser Cut Out',
+                        price: '$12USD', 
+                        id: 'ST-25X25',
+                        img: 'img/surface.png', 
+                        imgBack: 'img/20x20B.png', 
+                        imgRaw: 'img/stencil25B.png',
+                        telemetry: { DIM: '25x25', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
+                    },
+                    '40X40': { 
+                        label: 'MICROSTENCIL FOCUS', 
+                        desc: 'Stencil para murales de formato medio', 
+                        spec: 'Financia 1 pieza para la comunidad', 
+                        media: 'STENCIL POLYESTER',
+                        finish: 'Laser Cut Out',
+                        price: '$29USD', 
+                        id: 'ST-MICRO',
+                        img: 'img/surface.png', 
+                        imgBack: 'img/20x20B.png', 
+                        imgRaw: 'img/microB.png',
+                        telemetry: { DIM: '40x40', MEDIA: 'STENCIL', DIAL: '⧗240', RATE: '$0.05USD' }
+                    },
+                    '80X80': { 
+                        label: 'MACROSTENCIL SURGE', 
+                        desc: 'Stencil macro para muralismo de gran escala', 
+                        spec: 'Financia 1 pieza para la comunidad', 
+                        media: 'STENCIL POLYESTER',
+                        finish: 'Laser Cut Out',
+                        price: '$125USD', 
+                        id: 'ST-MACRO',
+                        img: 'img/surface.png', 
+                        imgBack: 'img/20x20B.png', 
+                        imgRaw: 'img/macroB.png',
+                        telemetry: { DIM: '80x80', MEDIA: 'STENCIL', DIAL: '⧗2500', RATE: '$0.05USD' }
+                    }
+                }
+            },
+            'PANEL': {
+                defaultVariant: '40X40',
+                variants: {
+                    '20X20': { 
+                        label: 'PANEL 20X20', 
+                        desc: 'INKJET ADH sobre ACM para mosaicos', 
+                        spec: 'Financia 1 pieza para la comunidad', 
+                        media: 'ACM 3mm',
+                        finish: 'Matte Lamination Inkjet',
+                        price: '$12USD', 
+                        id: 'FP-20X20',
+                        img: 'img/surface.png', 
+                        imgBack: 'img/20x20B.png', 
+                        imgRaw: 'img/panel20B.png',
+                        telemetry: { DIM: '20x20', MEDIA: 'ACM', DIAL: '⧗240', RATE: '$0.05USD' }
+                    },
+                    '30X30': { 
+                        label: 'PANEL 30X30', 
+                        desc: 'INKJET ADH sobre ACM para montajes', 
+                        spec: 'Financia 1 pieza para la comunidad', 
+                        media: 'ACM 3mm',
+                        finish: 'Matte Lamination Inkjet',
+                        price: '$29USD', 
+                        id: 'FP-30X30',
+                        img: 'img/surface.png', 
+                        imgBack: 'img/panel30W.png', 
+                        imgRaw: 'img/panel30B.png',
+                        telemetry: { DIM: '30x30', MEDIA: 'ACM', DIAL: '⧗576', RATE: '$0.05USD' }
+                    },
+                    '40X40': { 
+                        label: 'PANEL 40X40', 
+                        desc: 'INKJET ADH sobre ACM formato pro', 
+                        spec: 'Financia 1 pieza para la comunidad', 
+                        media: 'ACM 3mm',
+                        finish: 'Matte Lamination Inkjet',
+                        price: '$55USD', 
+                        id: 'FP-40X40',
+                        img: 'img/surface.png', 
+                        imgBack: 'img/panel40W.png', 
+                        imgRaw: 'img/panel40B.png',
+                        telemetry: { DIM: '40x40', MEDIA: 'ACM', DIAL: '⧗1100', RATE: '$0.05USD' }
+                    }
                 }
             }
-        },
-        'PANEL': {
-            defaultVariant: '40X40',
-            variants: {
-                '20X20': { 
-                    label: 'PANEL20X20', 
-                    desc: 'INKJET ADH sobre ACM para montajes individuales o mosaicos.', 
-                    spec: 'Compras tu pieza y financias otra para la comunidad', 
-                    price: '$12USD', 
-                    id: 'FP-20X20',
-                    img: 'img/surface.png', imgBack: 'img/20x20B.png', imgRaw: 'img/panel20B.png',
-                    telemetry: { DIM: '20x20', MEDIA: 'ACM', DIAL: '⧗240', RATE: '$0.05USD' }
-                },
-                '30X30': { 
-                    label: 'PANEL30X30', 
-                    desc: 'INKJET ADH sobre ACM para montajes individuales o mosaicos.', 
-                    spec: 'Compras tu pieza y financias otra para la comunidad', 
-                    price: '$29USD', 
-                    id: 'FP-30X30',
-                    img: 'img/surface.png', imgBack: 'img/panel30W.png', imgRaw: 'img/panel30B.png',
-                    telemetry: { DIM: '30x30', MEDIA: 'ACM', DIAL: '⧗576', RATE: '$0.05USD' }
-                },
-                '40X40': { 
-                    label: 'PANEL40X40', 
-                    desc: 'INKJET ADH sobre ACM para montajes individuales o mosaicos.', 
-                    spec: 'Compras tu pieza y financias otra para la comunidad', 
-                    price: '$55USD', 
-                    id: 'FP-40X40',
-                    img: 'img/surface.png', imgBack: 'img/panel40W.png', imgRaw: 'img/panel40B.png',
-                    telemetry: { DIM: '40x40', MEDIA: 'ACM', DIAL: '⧗1100', RATE: '$0.05USD' }
+        };
+
+        // State Machine Globals
+        let currentCatalogCategory = 'PANEL';
+        let currentFotoVariant = '40X40';
+        const targetPhoneNumber = "573025333130";
+        let currentSphereIdx = "0000";
+        let activeNodeVal = "0000";
+        let biokineticWaveHistory = [];
+        let waveDisplayState = 0; 
+        let inspectModeIndex = 0; 
+
+        // Element Cache Map
+        const $ = (id) => document.getElementById(id);
+        const cachedElements = {};
+        
+        function getCachedEl(id) {
+            if (!cachedElements[id]) {
+                cachedElements[id] = $(id);
+            }
+            return cachedElements[id];
+        }
+
+        /**
+         * Trigger haptic feedbacks on compatible mobile devices
+         * @param {number|Array} ms Pattern duration
+         */
+        const triggerHaptic = (ms) => { 
+            if (navigator.vibrate) navigator.vibrate(ms); 
+        };
+
+        const VECTOR_TO_CLOCK_INDEX = {
+            'P': 1,  'U': 2,  'L': 3,  'S': 4,
+            'PL': 5, 'PU': 6, 'LU': 7, 'SU': 8,
+            'PUL': 9,'LPS': 10,'SPU': 11,'ULS': 12
+        };
+
+        /**
+         * Toggle active product category between PANEL and STENCIL
+         */
+        function toggleCatalogCategory() {
+            currentCatalogCategory = (currentCatalogCategory === 'PANEL') ? 'STENCIL' : 'PANEL';
+            currentFotoVariant = ARTEPANEL_CATALOG[currentCatalogCategory].defaultVariant;
+            
+            const categoryLabel = getCachedEl('sub-category-label');
+            if (categoryLabel) categoryLabel.textContent = currentCatalogCategory;
+
+            updateFotoUI();
+            triggerHaptic(15);
+        }
+
+        /**
+         * Visual Inspector Switching (Front, Back, Raw)
+         * @param {string} mode Mode identifier
+         */
+        function applyVisualMode(mode) {
+            const front = getCachedEl('fotopanel-pack-img');
+            const back = getCachedEl('fotopanel-pack-img-back');
+            const raw = getCachedEl('fotopanel-pack-img-raw');
+            const svg = getCachedEl('laser-vector-target');
+
+            [front, back, raw].forEach(el => { if(el) el.style.opacity = '0'; });
+            
+            if (mode === 'front') {
+                inspectModeIndex = 0;
+                front.style.opacity = '1';
+                front.style.zIndex = '10';
+                back.style.zIndex = '0';
+                if (svg) { 
+                    svg.style.opacity = '1'; 
+                    svg.style.pointerEvents = 'auto'; 
+                }
+            } else if (mode === 'back') {
+                inspectModeIndex = 1;
+                back.style.opacity = '1';
+                back.style.zIndex = '10';
+                front.style.zIndex = '0';
+                if (svg) { 
+                    svg.style.opacity = '0'; 
+                    svg.style.pointerEvents = 'none'; 
+                }
+            } else if (mode === 'raw') {
+                inspectModeIndex = 2;
+                raw.style.opacity = '1';
+                if (svg) { 
+                    svg.style.opacity = '0'; 
+                    svg.style.pointerEvents = 'none'; 
                 }
             }
         }
-    };
-    let currentBioItem = 'PANEL';
-    let currentBioVariant = '40X40';
-    const numeroCelular = "573025333130";
-    
-    // --- NUEVO: ESTADO GLOBAL DE FLUJO BIOCINÉTICO ---
-    window.isDialFrozen = false; 
-    
-    // Historial dinámico para sostener el Eco de 4 Dials (Máximo de 4 elementos)
-    let biokineticWaveHistory = []; 
-    // Control de colapso visual del observador (false = ondas por defecto, true = texto alfanumérico)
-    let isDialTextRevealed = false;
 
-    // --- NUEVO: CONTROL DE SUB-PASOS E INDEPENDIZACIÓN DE CAPAS ---
-    let currentWaveSubStep = 0; // Cambia de 0 a 2 cada tercio de segundo (internal, intermediate, external)
+        /**
+         * Bind UI Controls
+         */
+        function bindControls() {
+            const btnBio = getCachedEl('btn-reveal-bio');
+            const modes = ['front', 'back', 'raw'];
 
-    // Diccionario de Vectores: Mapea de forma aséptica tus 12 variantes de acción a posiciones del reloj
-    const VECTOR_TO_CLOCK_INDEX = {
-        'P': 1,  'U': 2,  'L': 3,  'S': 4,
-        'PL': 5, 'PU': 6, 'LU': 7, 'SU': 8,
-        'PUL': 9,'LPS': 10,'SPU': 11,'ULS': 12
-    };
-
-    // ==========================================
-    // 2. CACHÉ DE ELEMENTOS DE UI (OPTIMIZADO)
-    // ==========================================
-    const $ = (id) => document.getElementById(id);
-    const cachedElements = {};
-    
-    function getCachedEl(id) {
-        if (!cachedElements[id]) {
-            cachedElements[id] = $(id);
-        }
-        return cachedElements[id];
-    }
-
-    const triggerHaptic = (ms) => { if (navigator.vibrate) navigator.vibrate(ms); };// // // // // =========================================================================
-    // MOTOR GRÁFICO: TRIPLE ESTRUCTURA DE ONDAS CONSTRUIDAS (SISTEMA INDEX_10)
-    // =========================================================================
-    function renderBiokineticWaves() {
-        const container = getCachedEl('wave-quantum-container');
-        if (!container || biokineticWaveHistory.length === 0) return;
-
-        let htmlContent = '';
-
-        biokineticWaveHistory.forEach((dial, tIndex) => {
-            const currentScale = tIndex * (3 / 3); 
-            const baseOpacity = isDialTextRevealed ? 0.05 : (1.0 - (tIndex * 0.08));
-            if (baseOpacity <= 0) return;
-
-            const viewFactor = 18; 
-
-            const layers = [
-                { id: 'internal',     r: (currentScale * 1.0) * viewFactor, opacity: baseOpacity * 0.70, value: dial.sets },
-                { id: 'intermediate', r: (currentScale * 1.4) * viewFactor, opacity: baseOpacity * 0.55, value: dial.vector },
-                { id: 'external',     r: (currentScale * 1.8) * viewFactor, opacity: baseOpacity * 0.40, value: dial.reps }
-            ];
-
-            layers.forEach(layer => {
-                if (layer.r <= 0) return;
-
-                const circumference = 2 * Math.PI * layer.r;
-                const angle = (layer.value - 1) * 30; 
-                const arcLength = (layer.value / 12) * circumference;
-                const dashArray = `${arcLength} ${circumference}`;
-
-                // OPTIMIZACIÓN: Remoción de transiciones CSS para renderizado síncrono cuadro por cuadro (GPU)
-                htmlContent += `
-                    <circle 
-                        id="wave-${layer.id}-t${tIndex}" 
-                        cx="200" 
-                        cy="200" 
-                        r="${layer.r}" 
-                        transform="rotate(${angle} 200 200)"
-                        class="stroke-white"
-                        stroke-width="${tIndex === 0 ? 1.5 : 1.0}"
-                        stroke-opacity="${layer.opacity}"
-                        stroke-dasharray="${dashArray}"
-                        stroke-linecap="round"
-                        fill="none"
-                        style="will-change: r, stroke-opacity, stroke-dasharray;"
-                    />`;
-            });
-        });
-
-        container.innerHTML = htmlContent;
-    }
-
-// ==========================================
-    // 3. MOTOR DE ESTADO VISUAL (Centralizado)
-    // ==========================================
-    function aplicarModoVisual(modo) {
-        const front = getCachedEl('artepanel-pack-img');
-        const back = getCachedEl('artepanel-pack-img-back');
-        const raw = getCachedEl('artepanel-pack-img-raw');
-        const svg = getCachedEl('laser-vector-target');
-
-        // Reset general
-        [front, back, raw].forEach(el => { if(el) el.style.opacity = '0'; });
-        
-        // Aplicar estado
-        if (modo === 'front') {
-            front.style.opacity = '1';
-            front.style.zIndex = '10';
-            back.style.zIndex = '0';
-            if (svg) { svg.style.opacity = '1'; svg.style.pointerEvents = 'auto'; }
-        } else if (modo === 'back') {
-            back.style.opacity = '1';
-            back.style.zIndex = '10';
-            front.style.zIndex = '0';
-            if (svg) { svg.style.opacity = '0'; svg.style.pointerEvents = 'none'; }
-        } else if (modo === 'raw') {
-            raw.style.opacity = '1';
-            if (svg) { svg.style.opacity = '0'; svg.style.pointerEvents = 'none'; }
-        }
-    }
-
-    function vincularBotones() {
-        const btnRaw = getCachedEl('btn-reveal-raw');
-        const btnDial = getCachedEl('btn-reveal-dial'); // <-- Capturar el botón DIAL
-        
-        let modoActual = 'front';
-
-        if (btnRaw) {
-            btnRaw.addEventListener('click', () => {
-                if (modoActual === 'front') {
-                    aplicarModoVisual('raw');
-                    modoActual = 'raw';
-                    triggerHaptic([10]);
-                } else if (modoActual === 'raw') {
-                    aplicarModoVisual('back');
-                    modoActual = 'back';
-                    triggerHaptic([12]);
-                } else {
-                    aplicarModoVisual('front');
-                    modoActual = 'front';
-                    triggerHaptic([8]);
-                }
-            });
+            if (btnBio && !btnBio.dataset.bound) {
+                btnBio.dataset.bound = "true";
+                btnBio.addEventListener('click', () => {
+                    inspectModeIndex = (inspectModeIndex + 1) % modes.length;
+                    applyVisualMode(modes[inspectModeIndex]);
+                    triggerHaptic(12);
+                });
+            }
         }
 
-        // --- VINCULACIÓN DEL BOTÓN DIAL RECTIFICADO ---
-        if (btnDial) {
-            btnDial.addEventListener('click', () => {
-                isDialTextRevealed = !isDialTextRevealed; 
+        /**
+         * Initialize FotoPanel UI Component
+         */
+        function initFotoPanel() {
+            bindControls();
+            updateFotoUI();
+        }
+
+        /**
+         * Rotate Active Product Variant
+         * @param {string} direction Direction 'next' or 'prev'
+         */
+        function rotateFotoVariant(direction = 'next') {
+            const categoryConfig = ARTEPANEL_CATALOG[currentCatalogCategory];
+            const variantsKeys = Object.keys(categoryConfig.variants);
+            const currentIndex = variantsKeys.indexOf(currentFotoVariant);
+            
+            let nextIndex = (direction === 'next') 
+                ? (currentIndex + 1) % variantsKeys.length 
+                : (currentIndex - 1 + variantsKeys.length) % variantsKeys.length;
+            
+            currentFotoVariant = variantsKeys[nextIndex];
+            updateFotoUI();
+            triggerHaptic(12);
+        }
+
+        /**
+         * Update UI Elements based on current catalog selection
+         */
+        function updateFotoUI() {
+            const categoryConfig = ARTEPANEL_CATALOG[currentCatalogCategory];
+            const variantConfig = categoryConfig.variants[currentFotoVariant];
+            
+            const descEl = getCachedEl('fotopanel-description');
+            const packImg = getCachedEl('fotopanel-pack-img');
+            const packImgBack = getCachedEl('fotopanel-pack-img-back');
+            const packLabel = getCachedEl('fotopanel-label');
+            const dimVal = getCachedEl('sub-dim-val');
+            
+            if (descEl && packImg && packImgBack) {
+                descEl.style.opacity = '0';
                 
-                if (isDialTextRevealed) {
-                    btnDial.classList.replace('text-white/40', 'text-white');
-                    btnDial.classList.add('bg-white/[0.04]');
-                } else {
-                    btnDial.classList.replace('text-white', 'text-white/40');
-                    btnDial.classList.remove('bg-white/[0.04]');
-                }
-                
-                // Forzar revelado síncrono del grupo completo (Reloj + Texto)
-                const sandwatchGroup = getCachedEl('sandwatch-group');
-                if (sandwatchGroup) {
-                    sandwatchGroup.style.opacity = isDialTextRevealed ? "1" : "0";
-                    sandwatchGroup.style.pointerEvents = isDialTextRevealed ? "auto" : "none";
-                }
-                
-                renderBiokineticWaves(); 
-                triggerHaptic([10]);
-            });
-        }
-    }
-    // ==========================================
-    // 4. CONTROLADORES DE INTERFAZ DE USUARIO
-    // ==========================================
-// Variable global o de entorno para saber qué tipo de vista está seleccionada ('STENCIL' o 'PANEL')
-    let tipoVarianteActiva = 'STENCIL';
+                setTimeout(() => {
+                    descEl.textContent = variantConfig.desc;
+                    packImg.src = variantConfig.img;
+                    packImgBack.src = variantConfig.imgBack;
+                    getCachedEl('fotopanel-pack-img-raw').src = variantConfig.imgRaw;
+                    
+                    const labelTitle = getCachedEl('laser-variant-title');
+                    if (labelTitle) labelTitle.textContent = variantConfig.label;
+                    
+                    if (packLabel) packLabel.textContent = variantConfig.label;
+                    if (dimVal) dimVal.textContent = variantConfig.telemetry.DIM;
+                    
+                    getCachedEl('fotopanel-price').textContent = variantConfig.price;
 
-    function inicializarArtepanel() {
-        const dynamicHolder = getCachedEl('menu-bio-DYNAMIC-holder');
-        const btnPrev = getCachedEl('btn-variant-prev');
-        const btnNext = getCachedEl('btn-variant-next');
-        
-        if (dynamicHolder) {
-            // Función interna para refrescar el renderizado del texto dinámico central
-            const renderTextoCentral = () => {
-                dynamicHolder.innerHTML = `
-                    <span id="menu-bio-${tipoVarianteActiva}" class="tracking-[0.15em] transition-all duration-300 h-full w-full flex items-center justify-center font-bold text-white/40 group-hover:text-white">
-                        ${tipoVarianteActiva}
-                    </span>`;
-            };
-
-            // Evento Clic Central: Alterna de forma cíclica entre STENCIL y PANEL
-            dynamicHolder.addEventListener('click', () => {
-                tipoVarianteActiva = (tipoVarianteActiva === 'STENCIL') ? 'PANEL' : 'STENCIL';
-                
-                renderTextoCentral();
-                cambiarBioItem(tipoVarianteActiva); // Ejecuta tu lógica nativa de cambio de tipo
-                triggerHaptic([10]);
-            });
-
-            // Inicialización del texto al cargar
-            renderTextoCentral();
+                    descEl.style.opacity = '1';
+                }, 120);
+            }
         }
 
-        // Vincular flechas laterales a la variante activa en tiempo real
-        if (btnPrev) {
-            btnPrev.addEventListener('click', () => {
-                ciclarVariante(tipoVarianteActiva, -1);
-                triggerHaptic([6]);
-            });
-        }
-        if (btnNext) {
-            btnNext.addEventListener('click', () => {
-                ciclarVariante(tipoVarianteActiva, 1);
-                triggerHaptic([6]);
-            });
-        }
-        
-        vincularBotones();
-        actualizarBioUI();
-    }
-
-    function cambiarBioItem(itemKey) {
-        currentBioItem = itemKey;
-        currentBioVariant = ARTEPANEL_CATALOG[itemKey].defaultVariant;
-        actualizarBioUI();
-        triggerHaptic(15);
-    }
-
-    function cambiarBioVariant(variantKey) {
-        currentBioVariant = variantKey;
-        actualizarBioUI();
-        triggerHaptic(10);
-    }
-
-    // Cicla perfectamente respetando las llaves únicas de cada catálogo
-    function ciclarVariante(tipo, direccion) {
-        // Si el usuario clickea flechas de un grupo que no está activo, lo activamos
-        if (currentBioItem !== tipo) {
-            currentBioItem = tipo;
-            currentBioVariant = ARTEPANEL_CATALOG[tipo].defaultVariant;
+        /**
+         * Calculate Current Sphere Epoch Index
+         */
+        function calculateSphereIndex() {
+            const now = new Date();
+            const epoch = new Date('2012-12-21T00:00:00Z');
+            const daysSinceEpoch = Math.floor((now - epoch) / 86400000);
+            const currentHour = now.getHours();
+            const sphereQuadrant = Math.floor(currentHour / 6);
+            return `${String((daysSinceEpoch * 4) + sphereQuadrant).padStart(4, '0')}`;
         }
 
-        const variantes = Object.keys(ARTEPANEL_CATALOG[tipo].variants);
-        let currentIndex = variantes.indexOf(currentBioVariant);
+        /**
+         * Main Telemetry Engine Loop
+         */
+        function updateZ() {
+            let biokineticCoordinate = "";
+            const now = new Date();
+            const hours = now.getHours(); 
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
 
-        // Fail-safe por si los estados globales se cruzaron
-        if (currentIndex === -1) currentIndex = 0;
+            currentSphereIdx = calculateSphereIndex();
 
-        // Navegación cíclica pura basada en el catálogo específico
-        let nextIndex = (currentIndex + direccion) % variantes.length;
-        if (nextIndex < 0) nextIndex = variantes.length - 1;
-
-        currentBioVariant = variantes[nextIndex];
-        actualizarBioUI();
-        triggerHaptic(12);
-    }
-
-    // =========================================================================
-    // 5. MOTOR DE TELEMETRÍA (LENGUAJE PULS)
-    // =========================================================================
-    function calculateSphereIndex() {
-        const now = new Date();
-        const epoch = new Date('2012-12-21T00:00:00Z');
-        const daysSinceEpoch = Math.floor((now - epoch) / 86400000);
-        
-        // Calculamos qué parte del día es (0 a 3, representando los 4 bloques de 6 horas)
-        const currentHour = now.getHours();
-        const sphereQuadrant = Math.floor(currentHour / 6);
-        
-        // El índice total será (Días * 4) + el cuadrante actual
-        const totalSpheres = (daysSinceEpoch * 4) + sphereQuadrant;
-        
-        return `${String(totalSpheres).padStart(4, '0')}`;
-    }
-
-    function updateZ() {
-        const now = new Date();
-        const hours = now.getHours(); 
-        const minutes = now.getMinutes();
-        const seconds = now.getSeconds();
-
-        const currentSphereIdx = calculateSphereIndex();
-        const elIdx = getCachedEl('telemetry-sphere-idx');
-        if (elIdx && elIdx.textContent !== currentSphereIdx) elIdx.textContent = currentSphereIdx;
-
-        // --- MÁSCARA DE CONTROL: SISTEMA DE CONGELACIÓN TEMPORAL P.U.L.S. ---
-        if (!window.isDialFrozen) {
             let setsStage = 1;  
             let repsStage = 1;  
             let currentAction = 'P'; 
@@ -666,302 +807,223 @@
                     repsStage = Math.floor(((seconds - 30) % 10) + 3);
                 }
             }
-            
+
             setsStage = Math.max(1, Math.min(12, setsStage));
             repsStage = Math.max(1, Math.min(12, repsStage));
-            const biokineticCoordinate = `${setsStage}${currentAction}${repsStage}`;
+            biokineticCoordinate = `${setsStage}${currentAction}${repsStage}`;
 
-            // --- CAPTURA DE ONDA PARA HISTORIAL FIFO ---
             const vectorIndex = VECTOR_TO_CLOCK_INDEX[currentAction] || 1;
 
-            const lastSavedDial = biokineticWaveHistory[0];
-            if (!lastSavedDial || lastSavedDial.rawCoord !== biokineticCoordinate) {
-                // Insertar nuevo dial completo en el epicentro (t0)
-                biokineticWaveHistory.unshift({
-                    sets: setsStage,
-                    vector: vectorIndex,
-                    reps: repsStage,
-                    rawCoord: biokineticCoordinate
-                });
-                
-                // CAMBIO: Elevamos el pool de ondas a 12 para que tengan tiempo de viajar al exterior
-                if (biokineticWaveHistory.length > 12) {
-                    biokineticWaveHistory.pop();
-                }
-            }
+            biokineticWaveHistory.unshift({
+                sets: setsStage,
+                vector: vectorIndex,
+                reps: repsStage
+            });
+            if (biokineticWaveHistory.length > 12) biokineticWaveHistory.pop();
 
-            // Invocar renderizado unificado
             renderBiokineticWaves();
 
-// Sincronizar texto alfanumérico gigante y su entorno geométrico
-            const elDial = getCachedEl('z-dial');
-            if (elDial) elDial.textContent = biokineticCoordinate;
-            
-            const sandwatchGroup = getCachedEl('sandwatch-group');
-            if (sandwatchGroup) {
-                sandwatchGroup.style.opacity = isDialTextRevealed ? "1" : "0";
-                sandwatchGroup.style.pointerEvents = isDialTextRevealed ? "auto" : "none";
-            }
+            const elDialPack = getCachedEl('z-dial-pack');
+            const elDialTele = getCachedEl('z-dial-telemetry');
+
+            if (elDialPack) elDialPack.textContent = biokineticCoordinate;
+            if (elDialTele) elDialTele.textContent = biokineticCoordinate;
                     
-            // Actualizar sub-métricas del HUD superior
-            const subSetsSolar = getCachedEl('sub-sets-solar');
-            const subRepsTension = getCachedEl('sub-reps-tension');
-            if (subSetsSolar) subSetsSolar.textContent = `${(0.05 + (setsStage / 240)).toFixed(3)}`;
-            if (subRepsTension) subRepsTension.textContent = `${(14.2 + (repsStage * 0.8)).toFixed(1)}`;
+            const totalSecondsSinceMidnight = (hours * 3600) + (minutes * 60) + seconds;
+            activeNodeVal = `${String(totalSecondsSinceMidnight + 1).padStart(4, '0')}`;
 
-            // Actualizar Dial Espejo (HUD superior centro)
-            const elDialMirror = getCachedEl('z-dial-mirror');
-            if (elDialMirror) elDialMirror.textContent = biokineticCoordinate;
-        }
+            if (window.activeTelemetryBtnId && TELEMETRY_CONFIG[window.activeTelemetryBtnId]) {
+                const telemetryData = getCachedEl('panel-telemetry-data');
                 
-        // Nodos (Saturación) sigue fluyendo en tiempo real de forma aséptica
-        const totalSecondsSinceMidnight = (hours * 3600) + (minutes * 60) + seconds;
-        const activeNodeText = `${String(totalSecondsSinceMidnight + 1).padStart(4, '0')}`;
-        const elActiveNode = getCachedEl('telemetry-active-node');
-        if (elActiveNode) elActiveNode.textContent = activeNodeText;
-    }
-
-    // TELEMETRY: Panel material de transferencia física e intercambio.
-    const TELEMETRY_MEANINGS = {
-        'telemetry-product-dim': "Conversion del dial en el espacio", 
-        'telemetry-product-dial': "Cantidad de ondas biocinéticas."
-    };
-    
-    // PULS_MEANINGS: Nomenclatura Biocinética Orientada a Geometría de Cristal
-    const PULS_MEANINGS = {
-        'sub-sets-solar-trigger': "ONDA INTERNA DE FRECUENCIA COAXIAL TIERRA-LUNA-SOL.", 
-        'sub-reps-tension-trigger': "ONDA EXTERNA DE MAGNETISMO GRAVITACIONAL.", 
-        'z-dial-trigger': () => {
-            const coord = getCachedEl('z-dial-mirror')?.textContent || "1P1";
-            const match = coord.match(/^(\d+)([A-Z]+)(\d+)$/);
-            if (!match) return "MATRIZ BIOCINÉTICA ACTIVA.";
-            
-            const [_, sets, action, reps] = match;
-            let vectorText = "";
-
-            // Mapeo sintáctico definitivo: Integración técnico-militar de magnitudes físicas
-            switch (action) {
-                // --- FUERZAS PURAS Y ABSOLUTAS ---
-                case 'P':  vectorText = `PASOS X${sets}`; break; // El multiplicador final ahora son los Sets (sets)
-                case 'S':  vectorText = `SALTOS X${sets}`; break; 
-                case 'U':  vectorText = `PRESIONES X${sets}`; break; 
-                case 'L':  vectorText = `CARGAS X${sets}`; break;    
-                
-                // --- FUERZAS DUALES DE BALANCE ---
-                case 'PL': vectorText = `PASOS CON CARGA X${sets}`; break;
-                case 'PU': vectorText = `PASOS CON PRESIÓN X${sets}`; break;
-                case 'LU': vectorText = `CARGAS CON PRESIÓN X${sets}`; break;
-                case 'SU': vectorText = `SALTOS CON PRESIÓN X${sets}`; break;
-                
-                // --- VÓRTICES COMPLEJOS DE ILUMINACIÓN (Sincronizados al Motor Analógico) ---
-                case 'PUL': vectorText = `PASOS CON PRESIÓN Y CARGA X${sets}`; break;
-                case 'LPS': vectorText = `CARGAS CON PASO Y SALTO X${sets}`; break;
-                case 'SPU': vectorText = `SALTOS CON PASO Y PRESIÓN X${sets}`; break; 
-                case 'ULS': vectorText = `PRESIONES CON CARGA Y SALTO X${sets}`; break;
-                
-                default: vectorText = "ONDA BIOCINÉTICA REGENERATIVA";
-            }
-
-            // Entrega continua aséptica: Las Reps (reps) van al inicio, seguidas del vector y sus Sets (vectorText)
-            return `${reps} ${vectorText}`;
-
-        }, 
-        'telemetry-sphere-idx-trigger': "NUMERO DE LOTE, CICLO O MATRIZ CUÁNTICA", 
-        'telemetry-active-node-trigger': "NODOS ACUMULADOS REALES." 
-    };
-
-    function actualizarBioUI() {
-        const itemConfig = ARTEPANEL_CATALOG[currentBioItem];
-        const variantConfig = itemConfig.variants[currentBioVariant];
-        
-        const descEl = getCachedEl('artepanel-description');
-        const packImg = getCachedEl('artepanel-pack-img');
-        const packImgBack = getCachedEl('artepanel-pack-img-back');
-        
-        if (descEl && packImg && packImgBack) {
-            descEl.classList.add('opacity-0');
-            
-            setTimeout(() => {
-                descEl.textContent = variantConfig.desc;
-                packImg.src = variantConfig.img;
-                packImgBack.src = variantConfig.imgBack;
-                getCachedEl('artepanel-pack-img-raw').src = variantConfig.imgRaw;
-                
-                const labelTitle = getCachedEl('laser-variant-title');
-                if (labelTitle) labelTitle.textContent = variantConfig.label;
-                
-                descEl.classList.remove('opacity-0');
-            }, 120);
-        }
-
-        // Sincronización milimétrica con la Telemetría del Footer Comercial
-        const elDim = getCachedEl('telemetry-product-dim');
-        const elDial = getCachedEl('telemetry-product-dial');
-
-        if (elDim) elDim.textContent = variantConfig.telemetry.DIM;
-        if (elDial) elDial.textContent = variantConfig.telemetry.DIAL;
-
-        const textFluidClass = "text-[8px] xs:text-[9.5px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.35em] uppercase font-sans transition-all duration-300";
-
-        Object.keys(ARTEPANEL_CATALOG).forEach(item => {
-            const el = getCachedEl(`menu-bio-${item}`);
-            if (el) {
-                const isSelected = (item === currentBioItem);
-                el.textContent = item;
-                el.className = isSelected 
-                    ? `cursor-pointer font-black h-full w-full flex items-center justify-center text-white bg-white/[0.07] rounded-lg border border-white/20 shadow-[inset_0_1px_3px_rgba(255,255,255,0.25),_0_2px_8px_rgba(255,255,255,0.05)] ${textFluidClass}` 
-                    : `cursor-pointer font-medium h-full w-full flex items-center justify-center text-white/20 bg-transparent rounded-lg hover:text-white/50 hover:bg-white/[0.02] ${textFluidClass}`;
-            }
-        });
-    }
-
-    function habilitarReveladoTelemetria() {
-        
-        //---------------------------------------------------------
-        // MOTOR 1: PANEL COMERCIAL (Inyección en Footer Centro)
-        //---------------------------------------------------------
-        const setupBloqueComercial = () => {
-            const telemetryData = getCachedEl('panel-telemetry-data');
-            const txtOriginal = "Compras tu pieza y financias otra para la comunidad";
-            let timerComercial = null;
-
-            Object.keys(TELEMETRY_MEANINGS).forEach(id => {
-                const el = getCachedEl(id);
-                if (!el || !telemetryData) return;
-
-                el.addEventListener('click', () => {
-                    clearTimeout(timerComercial);
-                    
-                    el.parentElement.classList.remove('text-white/50');
-                    el.parentElement.classList.add('text-white');
-                    telemetryData.innerHTML = TELEMETRY_MEANINGS[id];
-                    
-                    timerComercial = setTimeout(() => {
-                        telemetryData.innerHTML = txtOriginal;
-                        el.parentElement.classList.remove('text-white');
-                        el.parentElement.classList.add('text-white/50');
-                    }, 8000);
-                });
-            });
-        };
-
-        //---------------------------------------------------------
-        // MOTOR 2: UNIVERSO ONDULATORIO (Inyección en Header Centro)
-        //---------------------------------------------------------
-        const setupBloqueQuantum = () => {
-            const telemetryDataSecondary = getCachedEl('panel-telemetry-data-secondary');
-            const txtOriginalSecondary = "ONDA BIOCINÉTICA REGENERATIVA";
-            let timerQuantum = null;
-
-            Object.keys(PULS_MEANINGS).forEach(id => {
-                const el = getCachedEl(id);
-                if (!el || !telemetryDataSecondary) return;
-
-                const esHeaderPuro = id.startsWith('sub-');
-                const contenedorLed = esHeaderPuro ? el.parentElement : el;
-
-                el.addEventListener('click', () => {
-                    clearTimeout(timerQuantum);
-                    
-                    if (id === 'z-dial-trigger') {
-                        window.isDialFrozen = true;
-                    }
-
-                    if (esHeaderPuro) {
-                        contenedorLed.classList.replace('text-white/60', 'text-white');
-                    } else if (id === 'z-dial-trigger') {
-                        el.style.filter = "drop-shadow(0 0 25px rgba(255,255,255,0.95))";
+                if (telemetryData) {
+                    if (window.activeTelemetryBtnId === 'btn-tele-dial') {
+                        if (waveDisplayState === 0) {
+                            telemetryData.innerHTML = biokineticCoordinate;
+                        } else {
+                            const meaningConfig = TELEMETRY_CONFIG['btn-tele-dial'].meaning;
+                            const evaluatedMeaning = typeof meaningConfig === 'function' ? meaningConfig() : meaningConfig;
+                            telemetryData.innerHTML = evaluatedMeaning.toUpperCase();
+                        }
                     } else {
-                        contenedorLed.classList.replace('text-white/40', 'text-white');
-                        contenedorLed.querySelector('span:last-child').classList.replace('text-white', 'text-white/60');
+                        const meaningConfig = TELEMETRY_CONFIG[window.activeTelemetryBtnId].meaning;
+                        const evaluatedMeaning = typeof meaningConfig === 'function' ? meaningConfig() : meaningConfig;
+                        telemetryData.innerHTML = evaluatedMeaning.toUpperCase();
                     }
-                    
-                    const meaningValue = PULS_MEANINGS[id];
-                    telemetryDataSecondary.innerHTML = typeof meaningValue === 'function' ? meaningValue() : meaningValue;
-                    
-                    timerQuantum = setTimeout(() => {
-                        telemetryDataSecondary.innerHTML = txtOriginalSecondary;
-                        
-                        if (id === 'z-dial-trigger') {
-                            window.isDialFrozen = false;
-                            el.style.filter = "none";
-                        }
+                }
+            }
+        }
 
-                        if (esHeaderPuro) {
-                            contenedorLed.classList.replace('text-white', 'text-white/60');
-                        } else if (id !== 'z-dial-trigger') {
-                            contenedorLed.classList.replace('text-white', 'text-white/40');
-                            contenedorLed.querySelector('span:last-child').classList.replace('text-white', 'text-white/60');
-                        }
-                    }, 8000);
-                });
-            });
+        const TELEMETRY_CONFIG = {
+            'btn-tele-dim': {
+                meaning: "Formato y dimensión física",
+                targetElId: 'sub-dim-val'
+            },
+            'btn-tele-dial': {
+                meaning: () => {
+                    const coord = getCachedEl('z-dial-telemetry')?.textContent || "1P1";
+                    return `COORDINADA MATRIZ: ${coord}`;
+                },
+                targetElId: null
+            },
+            'btn-tele-category': {
+                meaning: "Línea de catálogo activa",
+                targetElId: 'sub-category-label'
+            }
         };
 
-        setupBloqueComercial();
-        setupBloqueQuantum();
-    }
+        /**
+         * Render Biokinetic Wave Vector Layers into SVG Container
+         */
+        function renderBiokineticWaves() {
+            const container = $('wave-quantum-container');
+            if (!container) return;
 
-    // =========================================================================
-    // 6. CAPTURA DE TELEMETRÍA DE COMPRA (GENERACIÓN DE PAYLOAD)
-    // =========================================================================
-    function adquirirNodo() {
-        const variantConfig = ARTEPANEL_CATALOG[currentBioItem].variants[currentBioVariant];
-        const currentCoord = getCachedEl('z-dial')?.textContent || "N/A";
-        const currentSphere = getCachedEl('telemetry-sphere-idx')?.textContent || "N/A";
-        const currentNode = getCachedEl('telemetry-active-node')?.textContent || "N/A";
-        
-        // Captura de valores calculados en el DOM
-        const freqValue = getCachedEl('sub-sets-solar')?.textContent || "0.00";
-        const tensionValue = getCachedEl('sub-reps-tension')?.textContent || "0.0";
-        
-        // Traducción técnica bajo Sinergia Molecular Óptima
-        const dialInterpretation = currentCoord.replace(/(\d+)([A-Z]+)(\d+)/, "$1 FASES, $3 NODOS - ESTADO $2");
-        
-        const mensaje = `⚡ *ORDEN - ARTEPANEL* ⚡\n\n` +
-                        `• *Vector:* ${currentBioItem} ${currentBioVariant}\n` +
-                        `• *Carga:* ${variantConfig.spec}\n` +
-                        `• *ID:* \`${variantConfig.id}\`\n` +
-                        `• *Precio:* ${variantConfig.price}\n\n` +
-                        `--- *LENGUAJE P.U.L.S.* ---\n` +
-                        `• *Matriz de Configuración:* \`${currentCoord}\`\n` +
-                        `• *Análisis de Estado:* ${dialInterpretation}\n` +
-                        `• *Lote:* \`${currentSphere}\`\n` +
-                        `• *Saturación:* \`${currentNode}\`\n` +
-                        `• *Resonancia:* \`${freqValue}\`\n` +
-                        `• *Cohesión:* \`${tensionValue}\`\n\n` +
-                        `Activar configuración actual.`;
+            if (waveDisplayState === 1) {
+                container.innerHTML = '';
+                return;
+            }
 
-        triggerHaptic([15, 40, 15]);
-        window.open(`https://api.whatsapp.com/send?phone=${numeroCelular}&text=${encodeURIComponent(mensaje)}`, '_blank');
-    }
+            if (biokineticWaveHistory.length === 0) return;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        inicializarArtepanel();
-        updateZ(); 
-        
-        // MOTOR DE TELEMETRÍA Y ONDAS UNIFICADO (1 segundo estricto)
-        setInterval(updateZ, 1000);
+            let htmlContent = '';
+            biokineticWaveHistory.forEach((dial, tIndex) => {
+                const currentScale = (tIndex + 5) * 0.85;
+                const baseOpacity = 1.0 - (tIndex * 0.12);
+                if (baseOpacity <= 0) return;
 
-        habilitarReveladoTelemetria();
+                const viewFactor = 8.5; 
+                const layers = [
+                    { id: 'internal',     r: (currentScale * 1.0) * viewFactor, opacity: baseOpacity * 0.80, value: dial.sets },
+                    { id: 'intermediate', r: (currentScale * 1.4) * viewFactor, opacity: baseOpacity * 0.60, value: dial.vector },
+                    { id: 'external',     r: (currentScale * 1.8) * viewFactor, opacity: baseOpacity * 0.40, value: dial.reps }
+                ];
 
-        // Desactivar bloqueo de puntero sobre el SVG general para liberar interacciones traseras
-        const laserSvg = getCachedEl('laser-vector-target');
-        if (laserSvg) {
-            laserSvg.style.pointerEvents = 'none'; 
+                layers.forEach(layer => {
+                    if (layer.r <= 0) return;
+                    const circumference = 2 * Math.PI * layer.r;
+                    const angle = (layer.value - 1) * 30; 
+                    const arcLength = (layer.value / 12) * circumference;
+                    const dashArray = `${arcLength} ${circumference}`;
+
+                    htmlContent += `
+                        <circle 
+                            cx="200" 
+                            cy="200" 
+                            r="${layer.r}" 
+                            transform="rotate(${angle} 200 200)"
+                            style="stroke: #ffffff; transition: all 0.3s ease; stroke-width: ${tIndex === 0 ? 1.5 : 1.0}; stroke-opacity: ${layer.opacity}; stroke-dasharray: ${dashArray}; stroke-linecap: round; fill: none;"
+                        />`;
+                });
+            });
+            container.innerHTML = htmlContent;
         }
 
-        // Reconexión y escucha independiente sobre el texto reactivo del Dial
-        const zDialSvgText = getCachedEl('z-dial');
-        if (zDialSvgText) {
-            zDialSvgText.style.cursor = 'pointer';
-            zDialSvgText.style.pointerEvents = 'auto'; 
-            zDialSvgText.addEventListener('click', (e) => {
-                e.stopPropagation();
-                getCachedEl('z-dial-trigger')?.click();
+        /**
+         * Enable Telemetry Interactive Triggers
+         */
+        function enableTelemetryReveal() {
+            const telemetryData = getCachedEl('panel-telemetry-data');
+            const sandwatchGroup = getCachedEl('sandwatch-group');
+            let lastActiveData = null;
+
+            Object.keys(TELEMETRY_CONFIG).forEach(btnId => {
+                const btn = getCachedEl(btnId);
+                if (!btn || btn.dataset.bound) return;
+                btn.dataset.bound = "true";
+
+                btn.addEventListener('click', () => {
+                    triggerHaptic(12);
+
+                    if (btnId === 'btn-tele-dial') {
+                        if (inspectModeIndex !== 0) {
+                            applyVisualMode('front');
+                            const packLabel = getCachedEl('fotopanel-label');
+                            if (packLabel) {
+                                packLabel.textContent = ARTEPANEL_CATALOG[currentCatalogCategory].variants[currentFotoVariant].label;
+                            }
+                        }
+
+                        if (window.activeTelemetryBtnId === 'btn-tele-dial') {
+                            waveDisplayState = (waveDisplayState === 0) ? 1 : 0;
+                        } else {
+                            waveDisplayState = 0;
+                        }
+
+                        if (sandwatchGroup) {
+                            sandwatchGroup.style.display = (waveDisplayState === 1) ? 'block' : 'none';
+                        }
+                        renderBiokineticWaves();
+                    } else {
+                        inspectModeIndex = 0; 
+                        applyVisualMode('front');
+                    }
+
+                    if (lastActiveData) {
+                        lastActiveData.classList.remove('is-active');
+                    }
+
+                    const targetDataEl = TELEMETRY_CONFIG[btnId].targetElId ? getCachedEl(TELEMETRY_CONFIG[btnId].targetElId) : null;
+                    if (targetDataEl) {
+                        targetDataEl.classList.add('is-active');
+                        lastActiveData = targetDataEl;
+                    }
+
+                    window.activeTelemetryBtnId = btnId;
+
+                    let evaluatedMeaning = "";
+                    if (btnId === 'btn-tele-dial') {
+                        if (waveDisplayState === 0) {
+                            evaluatedMeaning = getCachedEl('z-dial-telemetry')?.textContent || "8UST11";
+                        } else {
+                            const meaningConfig = TELEMETRY_CONFIG[btnId].meaning;
+                            evaluatedMeaning = typeof meaningConfig === 'function' ? meaningConfig() : meaningConfig;
+                        }
+                    } else {
+                        const meaningConfig = TELEMETRY_CONFIG[btnId].meaning;
+                        evaluatedMeaning = typeof meaningConfig === 'function' ? meaningConfig() : meaningConfig;
+                    }
+                    
+                    telemetryData.innerHTML = evaluatedMeaning.toUpperCase();
+                });
             });
         }
-    });
-</script>
+
+        /**
+         * Direct Cashflow WhatsApp Node Dispatcher for FotoPanel / Stencil
+         */
+        function acquireNodeCashflow() {
+            const variantConfig = ARTEPANEL_CATALOG[currentCatalogCategory].variants[currentFotoVariant];
+            const currentCoord = getCachedEl('z-dial-telemetry')?.textContent || getCachedEl('z-dial-pack')?.textContent || "N/A";
+            
+            const currentSphere = currentSphereIdx;
+            const currentNode = activeNodeVal;
+
+            const message = [
+                `ORDEN: FOTOPANEL`,
+                `LINEA: ${currentCatalogCategory}`,
+                `PIEZA: ${variantConfig.label}`,
+                `MEDIDA: ${variantConfig.telemetry.DIM}`,
+                `SUSTRATO: ${variantConfig.media}`,
+                `ACABADO: ${variantConfig.finish}`,
+                `SKU ID: ${variantConfig.id}`,
+                `PRECIO: ${variantConfig.price}`,
+                `IMPACTO: ${variantConfig.spec}`,
+                `DIAL: ${currentCoord}`,
+                `CICLO: ${currentSphere}`,
+                `SATURACION: ${currentNode}`
+            ].join('\n');
+
+            triggerHaptic([15, 40, 15]);
+            window.open(`https://api.whatsapp.com/send?phone=${targetPhoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // DOM Ready Execution
+        document.addEventListener('DOMContentLoaded', () => {
+            initFotoPanel();
+            updateZ(); 
+            setInterval(updateZ, 1000);
+            enableTelemetryReveal();
+        });
+    </script>
 </body>
 </html>
