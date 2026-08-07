@@ -10,9 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* VARIABLES ACROMÁTICAS DE ENTORNO MATRICIAL */
+        /* ACHROMATIC ENVIRONMENT VARIABLES */
         :root[data-theme="dark"] {
-            --jako-bg:rgba(5, 5, 8, 0.92);
+            --jako-bg: rgba(5, 5, 8, 0.92);
             --jako-text: #ffffff;
             --jako-border: rgba(255, 255, 255, 0.094);
             --jako-glass: rgba(0, 0, 0, 0.5);
@@ -41,7 +41,7 @@
             padding: 0;
         }
 
-        /* MOTOR BASE DE LA INTERFAZ */
+        /* BASE INTERFACE ENGINE */
         body { 
             font-family: 'Orbitron', monospace, sans-serif; 
             background-color: var(--jako-bg); 
@@ -86,7 +86,7 @@
             pointer-events: none;
         }
 
-        /* TRANSICIÓN DE GLOW SIN SALTOS ÓPTICOS */
+        /* OPTICAL GLOW TRANSITION */
         .img-glow-transition {
             transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             backface-visibility: hidden;
@@ -95,26 +95,13 @@
             will-change: filter, transform, opacity;
         }
 
-        /* HEADER BAR & GLASS SYSTEM */
-        .header-container {
-            width: 100%;
-            flex-shrink: 0;
-            z-index: 50;
-            background: var(--jako-glass);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-bottom: 1px solid var(--jako-border);
-            display: flex;
-            flex-direction: column;
-            transition: background 0.5s ease, border-color 0.5s ease;
-        }
-
-        /* CONTROLES TELESCOPICOS (BUTTONS) */
+        /* TELESCOPIC CONTROLS (BUTTONS) */
         .btn-tele-glass {
             background-color: transparent;
             border: none;
             display: flex;
             align-items: center;
+            justify-content: center;
             color: var(--jako-text);
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -126,25 +113,6 @@
 
         .btn-tele-glass:active {
             transform: scale(0.92);
-        }
-
-        .tele-btn-left {
-            height: 100%;
-            padding: 0 0.5rem;
-            justify-content: flex-start;
-        }
-
-        .tele-btn-center {
-            width: 3rem;
-            height: 3rem;
-            flex-shrink: 0;
-            justify-content: center;
-        }
-
-        .tele-btn-right {
-            height: 100%;
-            padding: 0 0.5rem;
-            justify-content: flex-end;
         }
 
         .icon-tele {
@@ -189,6 +157,7 @@
             aspect-ratio: 1 / 1;
             flex-shrink: 0;
             margin: 0 auto;
+            cursor: pointer;
             filter: drop-shadow(0 40px 60px rgba(0,0,0,0.6));
             transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease;
         }
@@ -222,6 +191,7 @@
             text-transform: uppercase;
             padding-top: 0.25rem;
             gap: 0.5rem;
+            transition: opacity 0.5s ease;
         }
 
         .info-strip-content {
@@ -237,7 +207,7 @@
             text-overflow: ellipsis;
         }
 
-        /* EFECTO LED DINÁMICO DE TEXTO */
+        /* DYNAMIC LED TEXT EFFECT */
         .tele-value { 
             color: var(--jako-text); 
             text-shadow: var(--jako-led), var(--jako-led);
@@ -245,10 +215,15 @@
             transition: color 0.5s ease, text-shadow 0.5s ease;
         }
 
-        /* ACTION CONTROLS GRID */
+        /* ACTION CONTROLS WRAPPER & DRAWERS */
+        .action-controls-wrapper {
+            position: relative;
+            width: 100%;
+            z-index: 100;
+        }
+
         .action-controls-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
             border-top: 1px solid var(--jako-border);
             border-bottom: 1px solid var(--jako-border);
             align-items: center;
@@ -258,13 +233,33 @@
             background: var(--jako-glass);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            transition: background 0.5s ease, border-color 0.5s ease;
+            transition: background 0.5s ease, border-color 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
         }
 
         .action-controls-grid .btn-tele-glass {
             justify-content: center;
             width: 100%;
             height: 100%;
+        }
+
+        /* OVERLAY DRAWER SYSTEM */
+        .drawer-overlay {
+            position: absolute;
+            bottom: 3rem;
+            left: 0;
+            width: 100%;
+            z-index: 40;
+            background: var(--jako-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-top: 1px solid var(--jako-border);
+            border-bottom: none;
+            animation: drawerSlideUp 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        @keyframes drawerSlideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* FOOTER */
@@ -298,29 +293,22 @@
             opacity: 0.9;
         }
 
-        .custom-hud-scroll { 
-            -ms-overflow-style: none; 
-            scrollbar-width: none; 
-        }
-        .custom-hud-scroll::-webkit-scrollbar { 
-            display: none; 
-            width: 0 !important;
-            height: 0 !important;
-        }
-
         button, span, div {
             -webkit-tap-highlight-color: transparent;
         }
 
-        .zenith-active header,
+        /* ZENITH MODE (IMMERSIVE FULLSCREEN) */
+        .zenith-active .top-nav-bar,
+        .zenith-active .info-strip,
+        .zenith-active .action-controls-wrapper,
         .zenith-active footer {
             opacity: 0 !important;
             pointer-events: none !important;
-            transform: translateY(-10px);
+            transform: translateY(15px);
         }
 
-        .zenith-active footer {
-            transform: translateY(10px);
+        .zenith-active .top-nav-bar {
+            transform: translateY(-15px);
         }
 
         .zenith-active main {
@@ -328,34 +316,12 @@
         }
 
         .zenith-active #fotopanel-pack-container {
-            transform: scale(1.12);
+            transform: scale(1.15);
             filter: drop-shadow(0 35px 80px rgba(0,0,0,0.95));
         }
 
-        header, footer, #fotopanel-pack-container {
+        .top-nav-bar, .info-strip, .action-controls-wrapper, footer, #fotopanel-pack-container {
             transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease;
-        }
-
-        .header-controls-centered {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 3rem;
-            padding: 0 1rem;
-            background: var(--jako-glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid var(--jako-border);
-            border-bottom: 1px solid var(--jako-border);
-            transition: background 0.5s ease, border-color 0.5s ease;
-        }
-
-        .header-controls-centered .btn-tele-glass {
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            padding: 0 1rem;
         }
     </style>
 </head>
@@ -364,117 +330,104 @@
     <div id="page-bg-overlay"></div>
     <div class="ambient-gradient"></div>
         
-<!-- Header Controls Centered -->
-<header class="header-controls-centered">
-    <button class="btn-tele-glass">
-        <svg viewBox="0 0 100 100" class="icon-tele">
-            <polygon points="80,20 80,80 65,70 65,30" />
-            <polygon points="58,50 50,58 42,50 50,42" />
-            <polygon points="35,30 35,70 20,80 20,20" />
-        </svg>
-    </button>
-</header>
+    <!-- Top Action Dispatcher Bar (Single Centered Reset Control) -->
+    <div class="action-controls-grid top-nav-bar" style="display: flex; justify-content: center; padding: 0; height: 3rem;">
+        <!-- Home / Reset Button (Centered) -->
+        <button class="btn-tele-glass" title="Home / Reset" onclick="resetView()">
+            <svg viewBox="0 0 100 100" class="icon-tele">
+                <polygon points="80,20 80,80 65,70 65,30" />
+                <polygon points="58,50 50,58 42,50 50,42" />
+                <polygon points="35,30 35,70 20,80 20,20" />
+            </svg>
+        </button>
+    </div>
 
+    <!-- Product Spec Strip -->
     <div class="info-strip">
         <div class="info-strip-content">
             <span id="fotopanel-label" class="tele-value">PULSOR PANEL 40X40</span>
+            <span id="fotopanel-price" class="tele-value">$40MIL</span>
         </div>
     </div>
 
     <!-- Visualizer Stage -->
-    <main class="main-visualizer-container">
-        <div id="fotopanel-pack-container">
+    <main class="main-visualizer-container" onclick="handleStageClick(event)">
+        <div id="fotopanel-pack-container" onclick="handlePanelClick(event)">
             <div class="pack-viewport">
                 <img id="fotopanel-pack-img-back" src="img/20x20B.png" alt="Pulsor Back" class="img-glow-transition" style="opacity: 0; pointer-events: none; z-index: 0;" />
                 <img id="fotopanel-pack-img" src="img/surface.png" alt="Pulsor Front" class="img-glow-transition" style="opacity: 1; pointer-events: auto; z-index: 10;" />
-                <img id="fotopanel-pack-img-raw" src="img/panel40B.png" alt="Raw View" class="img-glow-transition" style="opacity: 0; pointer-events: none; z-index: 5;" />
             </div>
         </div>
     </main>
 
-    <!-- Pricing Strip -->
-    <div class="info-strip">
-        <div class="info-strip-content">
-            <span id="fotopanel-price" class="tele-value">$55USD</span>
+    <!-- Control Wrapper & Drawers -->
+    <div class="action-controls-wrapper">
+
+        <!-- GROUP 2: Halftone Engine & Style (Next Variant + Toggle Theme) -->
+        <div id="drawer-group-2" class="action-controls-grid drawer-overlay" style="display: none; grid-template-columns: repeat(5, 1fr);">
+            
+            <!-- Next Variant Button -->
+            <button id="btn-next-variant" title="Next Variant" onclick="rotateFotoVariant('next')" class="btn-tele-glass">
+                <svg viewBox="0 0 100 100" class="icon-tele">
+                    <g transform="rotate(90 50 50)">
+                        <polygon points="50,42 58,50 50,58 42,50" />
+                        <polygon points="30,65 70,65 80,80 20,80" />
+                    </g>
+                </svg>
+            </button>
+
+            <!-- Toggle Theme Button -->
+            <button id="acromatic-toggle-trigger" title="Toggle Theme" class="btn-tele-glass">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21m8.966-8.966h-2.25M4.284 12h-2.25m15.356-6.364l-1.591 1.591M6.364 17.636l-1.591 1.591m12.728 0l-1.591-1.591M6.364 6.364L4.773 4.773M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" />
+                </svg>
+            </button>
+
+            <button id="btn-dot-color" title="Dot Color" class="btn-tele-glass">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                    <circle cx="12" cy="12" r="7" />
+                </svg>
+            </button>
+            <button id="btn-color-substrate" title="Panel Color Gradient" class="btn-tele-glass">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                    <rect x="4" y="4" width="16" height="16" rx="1" />
+                </svg>
+            </button>
+            <button id="btn-invert-halftone" title="Invert Halftone" class="btn-tele-glass">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- MAIN DISPATCHER BAR (3 Column Centered Layout) -->
+        <div class="action-controls-grid" style="grid-template-columns: repeat(3, 1fr);">
+
+            <!-- Button 2: Halftone Engine & Technical Style (Set Square / Drafting Triangle Icon) -->
+            <button id="btn-trigger-group-2" title="Halftone Engine & Design" class="btn-tele-glass" onclick="toggleDrawer(2)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 19L5 5v14h14zM8 16h2m-2-3h4" />
+                </svg>
+            </button>
+
+            <!-- Cashflow / Order Dispatcher (Centered) -->
+            <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-tele-glass btn-highlight-action">
+                <svg viewBox="0 0 100 100" class="icon-tele">
+                    <rect x="25" y="30" width="50" height="30" rx="2" />
+                    <circle cx="38" cy="72" r="7" />
+                    <circle cx="62" cy="72" r="7" />
+                </svg>
+            </button>
+
+            <!-- Button 4: Zenith Mode / Immersive Fullscreen (Right Edge) -->
+            <button id="btn-zenith-toggle" title="Zenith Mode" class="btn-tele-glass" onclick="toggleZenithMode()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+                </svg>
+            </button>
+
         </div>
     </div>
-
-<!-- Action Dispatcher Bar (10 Navigation, Customization & Inspection Controls) -->
-<div class="action-controls-grid" style="grid-template-columns: repeat(10, 1fr);">
-    <!-- 1. Inspect Mode (Front, Back, Raw) -->
-    <button id="btn-reveal-bio" title="Inspect" class="btn-tele-glass">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-        </svg>
-    </button>
-
-    <!-- 2. Toggle Theme (Dark / White) -->
-    <button id="acromatic-toggle-trigger" title="Toggle Theme" class="btn-tele-glass">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21m8.966-8.966h-2.25M4.284 12h-2.25m15.356-6.364l-1.591 1.591M6.364 17.636l-1.591 1.591m12.728 0l-1.591-1.591M6.364 6.364L4.773 4.773M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" />
-        </svg>
-    </button>
-
-    <!-- 3. Zenith Mode / Fullscreen Focus -->
-    <button id="btn-zenith-toggle" title="Zenith Mode" class="btn-tele-glass">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
-        </svg>
-    </button>
-
-    <!-- 4. Panel Substrate / Base Color Gradient Picker -->
-    <button id="btn-color-substrate" title="Panel Color Gradient" class="btn-tele-glass">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4.098 19.902a3.75 3.75 0 0 0 5.304 0l6.401-6.402M16.5 6.5 12 11m0 0-4.5 4.5M12 11l4.5-4.5M16.5 6.5a2.121 2.121 0 0 1 3 3l-6.402 6.401M16.5 6.5 15 5" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 19.5h-3.75m3.75 0v-3.75" />
-        </svg>
-    </button>
-
-    <!-- 5. Halftone Ink Color / Swatch Gradient Picker -->
-    <button id="btn-color-halftone" title="Halftone Ink Color Gradient" class="btn-tele-glass">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 0 0 5.94 0l.512-3.07a3 3 0 0 0-.84-2.527l-2.03-2.03a3 3 0 0 0-4.242 0l-2.03 2.03a3 3 0 0 0-.84 2.527l.512 3.07Z" />
-            <circle cx="12" cy="12" r="1" fill="currentColor" />
-        </svg>
-    </button>
-
-    <!-- 6. Wall Environment Background -->
-    <button id="btn-wall-texture" title="Wall Texture" class="btn-tele-glass">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h17.25c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125H3.375A1.125 1.125 0 0 1 2.25 16.875V7.125Z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 9h12v6H6V9z" />
-        </svg>
-    </button>
-
-    <!-- 7. Custom Image Uploader -->
-    <button id="btn-upload-custom" title="Upload Photo" class="btn-tele-glass">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-        </svg>
-    </button>
-
-    <!-- 8. Augmented Reality Projection Mode -->
-    <button id="btn-ar-view" title="AR View" class="btn-tele-glass">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
-        </svg>
-    </button>
-
-    <!-- 9. Primary Checkout / WhatsApp Direct Dispatcher -->
-    <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-tele-glass btn-highlight-action">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a.75.75 0 0 1-.816-.957 6.136 6.136 0 0 0 .584-1.936c-1.802-1.57-2.928-3.692-2.928-6.077C2.25 7.444 6.28 3.75 11.25 3.75S21 7.444 21 12Z" />
-        </svg>
-    </button>
-
-    <!-- 10. Rotate Catalog Variant -->
-    <button id="btn-next-variant" title="Next Variant" onclick="rotateFotoVariant('next')" class="btn-tele-glass">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" class="icon-stroke">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-        </svg>
-    </button>
-</div>
 
     <!-- Footer -->
     <footer class="footer-container">
@@ -496,8 +449,7 @@
                         price: '$20MIL', 
                         id: 'FP-20X20',
                         img: 'img/surface.png', 
-                        imgBack: 'img/20x20B.png', 
-                        imgRaw: 'img/panel20B.png'
+                        imgBack: 'img/20x20B.png'
                     },
                     'PANEL 30X30': { 
                         label: 'FOTOPANEL 30X30', 
@@ -507,8 +459,7 @@
                         price: '$30MIL', 
                         id: 'FP-30X30',
                         img: 'img/surface.png', 
-                        imgBack: 'img/30x30B.png', 
-                        imgRaw: 'img/panel30B.png'
+                        imgBack: 'img/30x30B.png'
                     },
                     'PANEL 40X40': { 
                         label: 'FOTOPANEL 40X40', 
@@ -518,8 +469,7 @@
                         price: '$40MIL', 
                         id: 'FP-40X40',
                         img: 'img/surface.png', 
-                        imgBack: 'img/40x40B.png', 
-                        imgRaw: 'img/panel40B.png'
+                        imgBack: 'img/40x40B.png'
                     }
                 }
             }
@@ -528,7 +478,8 @@
         // Core Application State
         let currentFotoItem = 'PULSOR';
         let currentFotoVariant = 'PANEL 40X40';
-        let inspectModeIndex = 0;
+        let inspectModeIndex = 0; // 0: Front, 1: Back
+        let isZenithActive = false;
         const targetPhoneNumber = "573128707083";
 
         // Element Cache Registry
@@ -541,12 +492,74 @@
             if (navigator.vibrate) navigator.vibrate(pattern); 
         };
 
-        // Visual Inspector Switcher (Front, Back, Raw)
+        // Dynamic Drawer Toggle Engine
+        function toggleDrawer(groupNum) {
+            const targetId = `drawer-group-${groupNum}`;
+            
+            // Hide non-selected drawers
+            [2].forEach(n => {
+                if (n !== groupNum) {
+                    const el = getCachedEl(`drawer-group-${n}`);
+                    if (el) el.style.display = 'none';
+                }
+            });
+
+            const targetEl = getCachedEl(targetId);
+            if (!targetEl) return;
+
+            const isOpening = targetEl.style.display !== 'grid';
+            targetEl.style.display = isOpening ? 'grid' : 'none';
+            triggerHaptic(isOpening ? 12 : 8);
+        }
+
+        // Close Drawers Helper
+        function closeAllDrawers() {
+            [2].forEach(n => {
+                const el = getCachedEl(`drawer-group-${n}`);
+                if (el) el.style.display = 'none';
+            });
+        }
+
+        // Zenith Mode Toggle Engine
+        function toggleZenithMode() {
+            isZenithActive = !isZenithActive;
+            document.body.classList.toggle('zenith-active', isZenithActive);
+            closeAllDrawers();
+            triggerHaptic([15, 30, 15]);
+        }
+
+        // Stage Touch Handler (Exits Zenith Mode or Closes Drawers)
+        function handleStageClick(event) {
+            if (isZenithActive) {
+                toggleZenithMode();
+            } else {
+                closeAllDrawers();
+            }
+        }
+
+        // Panel Direct Touch Handler (Triggers Inspect View)
+        function handlePanelClick(event) {
+            event.stopPropagation();
+            if (isZenithActive) {
+                toggleZenithMode();
+                return;
+            }
+            toggleInspectView();
+        }
+
+        // Visual Inspector Switcher (Front <-> Back)
+        function toggleInspectView() {
+            inspectModeIndex = (inspectModeIndex + 1) % 2;
+            const modes = ['front', 'back'];
+            applyVisualMode(modes[inspectModeIndex]);
+            triggerHaptic(10);
+        }
+
+        // Apply Layer Opacity Based on Selected Visual Mode
         function applyVisualMode(mode) {
             const layers = [
                 { el: getCachedEl('fotopanel-pack-img'), mode: 'front', index: 0 },
-                { el: getCachedEl('fotopanel-pack-img-back'), mode: 'back', index: 1 },
-                { el: getCachedEl('fotopanel-pack-img-raw'), mode: 'raw', index: 2 }
+                { el: getCachedEl('fotopanel-pack-img-back'), mode: 'back', index: 1 }
             ];
 
             layers.forEach(({ el, mode: m, index }) => {
@@ -558,17 +571,28 @@
             });
         }
 
-        // Rotate Active Catalog Variant
+        // Rotate Through Catalog Variants (20X20 -> 30X30 -> 40X40)
         function rotateFotoVariant(direction = 'next') {
             const variants = Object.keys(ARTEPANEL_CATALOG[currentFotoItem].variants);
-            const currIdx = variants.indexOf(currentFotoVariant);
-            const nextIdx = (direction === 'next') 
-                ? (currIdx + 1) % variants.length 
-                : (currIdx - 1 + variants.length) % variants.length;
+            let currentIndex = variants.indexOf(currentFotoVariant);
             
-            currentFotoVariant = variants[nextIdx];
+            if (direction === 'next') {
+                currentIndex = (currentIndex + 1) % variants.length;
+            } else {
+                currentIndex = (currentIndex - 1 + variants.length) % variants.length;
+            }
+            
+            currentFotoVariant = variants[currentIndex];
             updateFotoUI();
-            triggerHaptic(12);
+            triggerHaptic(15);
+        }
+
+        // Reset View to Default Front Layer & Variant
+        function resetView() {
+            currentFotoVariant = 'PANEL 40X40';
+            applyVisualMode('front');
+            updateFotoUI();
+            triggerHaptic([10, 10]);
         }
 
         // Sync UI Elements with Active Variant Data
@@ -577,13 +601,11 @@
             
             const front = getCachedEl('fotopanel-pack-img');
             const back = getCachedEl('fotopanel-pack-img-back');
-            const raw = getCachedEl('fotopanel-pack-img-raw');
             const label = getCachedEl('fotopanel-label');
             const price = getCachedEl('fotopanel-price');
             
             if (front) front.src = config.img;
             if (back) back.src = config.imgBack;
-            if (raw) raw.src = config.imgRaw;
             if (label) label.textContent = config.label;
             if (price) price.textContent = config.price;
         }
@@ -605,12 +627,13 @@
             window.open(`https://api.whatsapp.com/send?phone=${targetPhoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        // Interruptor Acromático (Dark / White Mode)
-        function inicializarAlternadorAcromatico() {
+        // Achromatic Theme Switcher (Dark / White Mode)
+        function initAchromaticToggle() {
             const trigger = getCachedEl('acromatic-toggle-trigger');
             if (!trigger) return;
 
-            trigger.addEventListener('click', () => {
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const htmlNode = document.documentElement;
                 const currentTheme = htmlNode.getAttribute('data-theme') || 'dark';
                 const nextTheme = currentTheme === 'dark' ? 'white' : 'dark';
@@ -622,19 +645,15 @@
 
         // Initialize Application Controls
         document.addEventListener('DOMContentLoaded', () => {
-            const btnReveal = getCachedEl('btn-reveal-bio');
-            const modes = ['front', 'back', 'raw'];
-
-            if (btnReveal) {
-                btnReveal.addEventListener('click', () => {
-                    inspectModeIndex = (inspectModeIndex + 1) % modes.length;
-                    applyVisualMode(modes[inspectModeIndex]);
-                    triggerHaptic(12);
-                });
-            }
-
-            inicializarAlternadorAcromatico();
+            initAchromaticToggle();
             updateFotoUI();
+
+            // Auto-close drawers when clicking outside control wrapper
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.action-controls-wrapper') && !e.target.closest('.top-nav-bar')) {
+                    closeAllDrawers();
+                }
+            });
         });
     </script>
 </body>
