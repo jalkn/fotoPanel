@@ -224,6 +224,7 @@
 
         .action-controls-grid {
             display: grid;
+            grid-template-columns: repeat(5, 1fr);
             border-top: 1px solid var(--jako-border);
             border-bottom: 1px solid var(--jako-border);
             align-items: center;
@@ -330,37 +331,37 @@
     <div id="page-bg-overlay"></div>
     <div class="ambient-gradient"></div>
         
-<!-- Top Action Dispatcher Bar -->
-<div class="top-nav-bar" style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 1rem; height: 3rem; border-bottom: 1px solid var(--jako-border); background: var(--jako-glass); backdrop-filter: blur(20px);">
-    
-    <!-- Columna 1: Toggle Theme (Extremo Izquierdo) -->
-    <div style="display: flex; justify-content: flex-start;">
-        <button id="acromatic-toggle-trigger" title="Toggle Theme" class="btn-tele-glass" style="width: auto; padding: 0.5rem;">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21m8.966-8.966h-2.25M4.284 12h-2.25m15.356-6.364l-1.591 1.591M6.364 17.636l-1.591 1.591m12.728 0l-1.591-1.591M6.364 6.364L4.773 4.773M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" />
+    <!-- Top Action Dispatcher Bar -->
+    <div class="top-nav-bar" style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 1rem; height: 3rem; border-bottom: 1px solid var(--jako-border); background: var(--jako-glass); backdrop-filter: blur(20px);">
+        
+        <!-- Columna 1: Toggle Theme (Extremo Izquierdo) -->
+        <div style="display: flex; justify-content: flex-start;">
+            <button id="acromatic-toggle-trigger" title="Toggle Theme" class="btn-tele-glass" style="width: auto; padding: 0.5rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21m8.966-8.966h-2.25M4.284 12h-2.25m15.356-6.364l-1.591 1.591M6.364 17.636l-1.591 1.591m12.728 0l-1.591-1.591M6.364 6.364L4.773 4.773M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Columna 2: Home / Reset (Centro Exacto) -->
+        <button class="btn-tele-glass" title="Home / Reset" onclick="resetView()" style="width: auto; padding: 0 1rem;">
+            <svg viewBox="0 0 100 100" class="icon-tele">
+                <polygon points="80,20 80,80 65,70 65,30" />
+                <polygon points="58,50 50,58 42,50 50,42" />
+                <polygon points="35,30 35,70 20,80 20,20" />
             </svg>
         </button>
+
+        <!-- Columna 3: Zenith Mode (Extremo Derecho) -->
+        <div style="display: flex; justify-content: flex-end;">
+            <button id="btn-zenith-toggle" title="Zenith Mode" class="btn-tele-glass" onclick="toggleZenithMode()" style="width: auto; padding: 0.5rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+                </svg>
+            </button>
+        </div>
+
     </div>
-
-    <!-- Columna 2: Home / Reset (Centro Exacto) -->
-    <button class="btn-tele-glass" title="Home / Reset" onclick="resetView()" style="width: auto; padding: 0 1rem;">
-        <svg viewBox="0 0 100 100" class="icon-tele">
-            <polygon points="80,20 80,80 65,70 65,30" />
-            <polygon points="58,50 50,58 42,50 50,42" />
-            <polygon points="35,30 35,70 20,80 20,20" />
-        </svg>
-    </button>
-
-    <!-- Columna 3: Zenith Mode (Extremo Derecho) -->
-    <div style="display: flex; justify-content: flex-end;">
-        <button id="btn-zenith-toggle" title="Zenith Mode" class="btn-tele-glass" onclick="toggleZenithMode()" style="width: auto; padding: 0.5rem;">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
-            </svg>
-        </button>
-    </div>
-
-</div>
 
     <!-- Product Spec Strip -->
     <div class="info-strip">
@@ -380,7 +381,7 @@
         </div>
     </main>
 
-<!-- Control Wrapper (Barra Única de 5 Controles Directos) -->
+    <!-- Control Wrapper (Barra Única de 5 Controles Directos) -->
     <div class="action-controls-wrapper">
 
         <!-- SUBSTRATE COLOR SELECTOR DRAWER (Opcional para selección de color) -->
@@ -396,7 +397,7 @@
         </div>
 
         <!-- MAIN DISPATCHER BAR (5 Column Layout Direct Controls) -->
-        <div class="action-controls-grid" style="grid-template-columns: repeat(5, 1fr);">
+        <div class="action-controls-grid">
 
             <!-- 1. Next Variant Button -->
             <button id="btn-next-variant" title="Next Variant Scale" onclick="rotateFotoVariant('next')" class="btn-tele-glass">
@@ -487,6 +488,8 @@
         // Core Application State
         let currentFotoItem = 'PULSOR';
         let currentFotoVariant = 'PANEL 40X40';
+        let currentSubstrateColor = '#09090b';
+        let currentDotColor = '#ffffff';
         let inspectModeIndex = 0; // 0: Front, 1: Back
         let isZenithActive = false;
         const targetPhoneNumber = "573128707083";
