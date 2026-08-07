@@ -324,6 +324,10 @@
         .top-nav-bar, .info-strip, .action-controls-wrapper, footer, #fotopanel-pack-container {
             transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease;
         }
+
+        button, input, select, textarea {
+            font-family: inherit;
+        }
     </style>
 </head>
 <body>
@@ -344,12 +348,13 @@
         </div>
 
         <!-- Columna 2: Home / Reset (Centro Exacto) -->
-        <button class="btn-tele-glass" title="Home / Reset" onclick="resetView()" style="width: auto; padding: 0 1rem;">
-            <svg viewBox="0 0 100 100" class="icon-tele">
+        <button class="btn-tele-glass" title="Home / Reset" onclick="resetView()" style="width: auto; padding: 0 1rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em;">
+            <svg viewBox="0 0 100 100" class="icon-tele" style="width: 0.85rem; height: 0.85rem;">
                 <polygon points="80,20 80,80 65,70 65,30" />
                 <polygon points="58,50 50,58 42,50 50,42" />
                 <polygon points="35,30 35,70 20,80 20,20" />
             </svg>
+            <span>FOTOPANEL</span>
         </button>
 
         <!-- Columna 3: Zenith Mode (Extremo Derecho) -->
@@ -450,7 +455,7 @@
                 defaultVariant: 'PANEL 40X40',
                 variants: {
                     'PANEL 20X20': { 
-                        label: 'FOTOPANEL 20X20', 
+                        label: '20X20CMS', 
                         spec: 'Community Mural Funding', 
                         media: 'ACM 3mm',
                         finish: 'Matte Lamination Inkjet',
@@ -460,7 +465,7 @@
                         imgBack: 'img/20x20B.png'
                     },
                     'PANEL 30X30': { 
-                        label: 'FOTOPANEL 30X30', 
+                        label: '30X30CMS', 
                         spec: 'Community Mural Funding', 
                         media: 'ACM 3mm',
                         finish: 'Matte Lamination Inkjet',
@@ -470,7 +475,7 @@
                         imgBack: 'img/30x30B.png'
                     },
                     'PANEL 40X40': { 
-                        label: 'FOTOPANEL 40X40', 
+                        label: '40X40CMS', 
                         spec: 'Community Mural Funding', 
                         media: 'ACM 3mm',
                         finish: 'Matte Lamination Inkjet',
