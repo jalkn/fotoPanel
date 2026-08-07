@@ -14,7 +14,7 @@
         :root[data-theme="dark"] {
             --jako-bg:rgba(5, 5, 8, 0.92);
             --jako-text: #ffffff;
-            --jako-border: rgba(255, 255, 255, 0.02);
+            --jako-border: rgba(255, 255, 255, 0.094);
             --jako-glass: rgba(0, 0, 0, 0.5);
             --jako-led: rgba(255, 255, 255, 0.65);
             --gradient-start: rgba(255, 255, 255, 0.03);
@@ -26,9 +26,9 @@
         :root[data-theme="white"] {
             --jako-bg: #f8f9fa;
             --jako-text: #000000;
-            --jako-border: rgba(0, 0, 0, 0.08);
+            --jako-border: rgba(0, 0, 0, 0.12);
             --jako-glass: rgba(255, 255, 255, 0.4);
-            --jako-led: rgba(0, 0, 0, 0.75);
+            --jako-led: rgba(233, 227, 227, 0.455);
             --gradient-start: rgba(0, 0, 0, 0.02);
             --gradient-mid: rgba(248, 249, 250, 0.85);
             --gradient-end: #ffffff;
@@ -240,7 +240,7 @@
         /* EFECTO LED DINÁMICO DE TEXTO */
         .tele-value { 
             color: var(--jako-text); 
-            text-shadow: 0 0 14px var(--jako-led), 0 0 4px var(--jako-led);
+            text-shadow: var(--jako-led), var(--jako-led);
             transform: translateZ(0);
             transition: color 0.5s ease, text-shadow 0.5s ease;
         }
@@ -399,35 +399,81 @@
         </div>
     </div>
 
-    <!-- Action Dispatcher Bar (Incluye Interruptor Acromático) -->
-    <div class="action-controls-grid">
-        <button id="btn-reveal-bio" title="Inspect" class="btn-tele-glass">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-            </svg>
-        </button>
+<!-- Action Dispatcher Bar (10 Navigation, Customization & Inspection Controls) -->
+<div class="action-controls-grid" style="grid-template-columns: repeat(10, 1fr);">
+    <!-- 1. Inspect Mode (Front, Back, Raw) -->
+    <button id="btn-reveal-bio" title="Inspect" class="btn-tele-glass">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+        </svg>
+    </button>
 
-        <button id="acromatic-toggle-trigger" title="Toggle Theme" class="btn-tele-glass">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21m8.966-8.966h-2.25M4.284 12h-2.25m15.356-6.364l-1.591 1.591M6.364 17.636l-1.591 1.591m12.728 0l-1.591-1.591M6.364 6.364L4.773 4.773M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" />
-            </svg>
-        </button>
+    <!-- 2. Toggle Theme (Dark / White) -->
+    <button id="acromatic-toggle-trigger" title="Toggle Theme" class="btn-tele-glass">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21m8.966-8.966h-2.25M4.284 12h-2.25m15.356-6.364l-1.591 1.591M6.364 17.636l-1.591 1.591m12.728 0l-1.591-1.591M6.364 6.364L4.773 4.773M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" />
+        </svg>
+    </button>
 
-        <button id="btn-activate-node" title="Acquire Node" onclick="acquireNodeCashflow()" class="btn-tele-glass">
-            <svg viewBox="0 0 100 100" class="icon-tele">
-                <polygon points="20,20 80,20 70,35 30,35" />
-                <polygon points="50,42 58,50 50,58 42,50" />
-                <polygon points="30,65 70,65 80,80 20,80" />
-            </svg>
-        </button>
+    <!-- 3. Zenith Mode / Fullscreen Focus -->
+    <button id="btn-zenith-toggle" title="Zenith Mode" class="btn-tele-glass">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+        </svg>
+    </button>
 
-        <button id="btn-next-variant" title="Next Variant" onclick="rotateFotoVariant('next')" class="btn-tele-glass">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" class="icon-stroke">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-            </svg>
-        </button>
-    </div>
+    <!-- 4. Panel Substrate / Material Selector -->
+    <button id="btn-color-substrate" title="Panel Substrate" class="btn-tele-glass">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.429 9.75 2.25 12l4.179 2.25m0-4.5 4.179 2.25m-4.179-2.25 4.179-2.25m0 0 4.179 2.25m-4.179-2.25v4.5m8.358-2.25L21.75 12l-4.179 2.25m0-4.5 4.179-2.25m-4.179 2.25-4.179 2.25m4.179-2.25v4.5" />
+        </svg>
+    </button>
+
+    <!-- 5. Halftone Ink Color Picker -->
+    <button id="btn-color-halftone" title="Ink Color" class="btn-tele-glass">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.098 19.902a3.75 3.75 0 0 0 5.304 0l6.401-6.402M16.5 6.5 12 11m0 0-4.5 4.5M12 11l4.5-4.5M16.5 6.5a2.121 2.121 0 0 1 3 3l-6.402 6.401M16.5 6.5 15 5" />
+        </svg>
+    </button>
+
+    <!-- 6. Wall Environment Background -->
+    <button id="btn-wall-texture" title="Wall Texture" class="btn-tele-glass">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h17.25c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125H3.375A1.125 1.125 0 0 1 2.25 16.875V7.125Z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 9h12v6H6V9z" />
+        </svg>
+    </button>
+
+    <!-- 7. Custom Image Uploader -->
+    <button id="btn-upload-custom" title="Upload Photo" class="btn-tele-glass">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+        </svg>
+    </button>
+
+    <!-- 8. Augmented Reality Projection Mode -->
+    <button id="btn-ar-view" title="AR View" class="btn-tele-glass">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316A2.192 2.192 0 0 0 14.53 4a18.905 18.905 0 0 0-5.06 0 2.192 2.192 0 0 0-1.821 1.056l-.822 1.316Z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
+        </svg>
+    </button>
+
+    <!-- 9. Primary Checkout / WhatsApp Dispatcher -->
+    <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-tele-glass btn-highlight-action">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+        </svg>
+    </button>
+
+    <!-- 10. Rotate Catalog Variant -->
+    <button id="btn-next-variant" title="Next Variant" onclick="rotateFotoVariant('next')" class="btn-tele-glass">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" class="icon-stroke">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+    </button>
+</div>
 
     <!-- Footer -->
     <footer class="footer-container">
@@ -460,7 +506,7 @@
                         price: '$30MIL', 
                         id: 'FP-30X30',
                         img: 'img/surface.png', 
-                        imgBack: 'img/panel30W.png', 
+                        imgBack: 'img/30x30B.png', 
                         imgRaw: 'img/panel30B.png'
                     },
                     'PANEL 40X40': { 
@@ -471,7 +517,7 @@
                         price: '$40MIL', 
                         id: 'FP-40X40',
                         img: 'img/surface.png', 
-                        imgBack: 'img/panel40W.png', 
+                        imgBack: 'img/40x40B.png', 
                         imgRaw: 'img/panel40B.png'
                     }
                 }
