@@ -291,14 +291,23 @@
             opacity: 0.9;
         }
 
-        /* ZENITH MODE (FULLSCREEN IMMERSION) */
         .zenith-active .top-nav-bar,
-        .zenith-active .info-strip,
         .zenith-active .action-controls-wrapper,
         .zenith-active footer {
             opacity: 0 !important;
             pointer-events: none !important;
             transform: translateY(15px);
+        }
+
+        .zenith-active .info-strip {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            pointer-events: auto;
+            transform: translateY(0) !important;
+            opacity: 1 !important;
         }
 
         .zenith-active .top-nav-bar {
@@ -400,17 +409,17 @@
         <!-- MAIN DISPATCHER BAR (5 Controls) -->
         <div class="action-controls-grid">
 
-            <!-- 1. Next Variant Button -->
-            <button id="btn-next-variant" title="Next Variant Scale" onclick="rotateFotoVariant('next')" class="btn-tele-glass">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4M9 9h6v6H9z" />
-                </svg>
-            </button>
-
-            <!-- 2. Dot Color Button -->
+            <!-- 1. Dot Color Button -->
             <button id="btn-dot-color" title="Dot Color" onclick="toggleDotColor()" class="btn-tele-glass">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                     <circle cx="12" cy="12" r="7" />
+                </svg>
+            </button>
+
+            <!-- 2. Theme Toggle Button (Achromatic) -->
+            <button id="acromatic-toggle-trigger" title="Toggle Theme" class="btn-tele-glass">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21m8.966-8.966h-2.25M4.284 12h-2.25m15.356-6.364l-1.591 1.591M6.364 17.636l-1.591 1.591m12.728 0l-1.591-1.591M6.364 6.364L4.773 4.773M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" />
                 </svg>
             </button>
 
@@ -421,10 +430,10 @@
                 </svg>
             </button>
 
-            <!-- 4. Theme Toggle Button (Achromatic) -->
-            <button id="acromatic-toggle-trigger" title="Toggle Theme" class="btn-tele-glass">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21m8.966-8.966h-2.25M4.284 12h-2.25m15.356-6.364l-1.591 1.591M6.364 17.636l-1.591 1.591m12.728 0l-1.591-1.591M6.364 6.364L4.773 4.773M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" />
+            <!-- 4. Next Variant Button -->
+            <button id="btn-next-variant" title="Next Variant Scale" onclick="rotateFotoVariant('next')" class="btn-tele-glass">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4M9 9h6v6H9z" />
                 </svg>
             </button>
 
