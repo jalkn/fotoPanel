@@ -21,6 +21,10 @@
             --gradient-mid: rgba(5, 5, 8, 0.85);
             --gradient-end: #000000;
             --icon-hover: #b6b8b9;
+
+            /* Dynamic Panel Gradient Defaults */
+            --panel-grad-1: #1a1a24;
+            --panel-grad-2: #09090e;
         }
 
         :root[data-theme="white"] {
@@ -33,6 +37,10 @@
             --gradient-mid: rgba(248, 249, 250, 0.85);
             --gradient-end: #ffffff;
             --icon-hover: #b6b8b9;
+
+            /* Dynamic Panel Gradient Defaults */
+            --panel-grad-1: #e2e8f0;
+            --panel-grad-2: #cbd5e1;
         }
 
         /* GLOBAL RESET & BASE STYLES */
@@ -167,12 +175,32 @@
             overflow: hidden;
         }
 
+        /* DYNAMIC PANEL SVG */
+        .panel-svg-surface {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+        }
+
+        .panel-grad-stop-1 {
+            stop-color: var(--panel-grad-1);
+            transition: stop-color 0.4s ease;
+        }
+
+        .panel-grad-stop-2 {
+            stop-color: var(--panel-grad-2);
+            transition: stop-color 0.4s ease;
+        }
+
         #fotopanel-pack-container img {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
             object-fit: contain;
+            z-index: 10;
         }
 
         /* PRODUCT SPEC STRIP */
@@ -311,7 +339,7 @@
                     <polygon points="30,65 70,65 80,80 20,80" />
                 </g>
             </svg>
-            <span style="letter-spacing: 0.25em; font-weight: 700;">JAKO</span>
+            <span style="letter-spacing: 0.25em; font-weight: 700;">FOTOPANEL</span>
         </button>
 
         <div style="display: flex; justify-content: flex-end; align-items: center;"></div>
@@ -321,8 +349,21 @@
     <main class="main-visualizer-container" onclick="handleStageClick(event)">
         <div id="fotopanel-pack-container" onclick="handlePanelClick(event)">
             <div class="pack-viewport">
-                <img id="fotopanel-pack-img-back" src="img/20x20B.png" alt="Pulsor Back" class="img-glow-transition" style="opacity: 0; pointer-events: none; z-index: 0;" />
-                <img id="fotopanel-pack-img" src="img/surface.png" alt="Pulsor Front" class="img-glow-transition" style="opacity: 1; pointer-events: auto; z-index: 10;" />
+                <!-- Vector SVG Background Surface -->
+                <svg class="panel-svg-surface" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="panelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" class="panel-grad-stop-1" />
+                            <stop offset="100%" class="panel-grad-stop-2" />
+                        </linearGradient>
+                    </defs>
+                    <rect width="100" height="100" fill="url(#panelGrad)" />
+                </svg>
+
+                <!-- Dynamic Vector Dot Matrix Overlay -->
+                <svg id="pulsor-grid-svg" viewBox="0 0 100 100" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none;" class="img-glow-transition">
+                    <!-- Dynamic points rendered via JS -->
+                </svg>
             </div>
         </div>
 
@@ -352,8 +393,8 @@
             </svg>
         </button>
 
-        <!-- 2. Panel Color Button -->
-        <button id="btn-color-Panel" title="Panel Color Gradient" class="btn-tele-glass">
+        <!-- 2. Panel Color Gradient Button -->
+        <button id="btn-color-Panel" title="Panel Color Gradient" onclick="rotatePanelGradient()" class="btn-tele-glass">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <rect x="4" y="4" width="16" height="16" rx="1" />
             </svg>
@@ -401,8 +442,7 @@
                         finish: 'Matte Lamination Inkjet',
                         price: '$20USD', 
                         id: 'FP-20X20',
-                        img: 'img/surface.png', 
-                        imgBack: 'img/20x20B.png'
+                        dotsCount: 400
                     },
                     'PANEL 30X30': { 
                         label: 'FOTOPANEL 30X30CMS', 
@@ -411,8 +451,7 @@
                         finish: 'Matte Lamination Inkjet',
                         price: '$30USD', 
                         id: 'FP-30X30',
-                        img: 'img/surface.png', 
-                        imgBack: 'img/30x30B.png'
+                        dotsCount: 900
                     },
                     'PANEL 40X40': { 
                         label: 'FOTOPANEL 40X40CMS', 
@@ -421,17 +460,25 @@
                         finish: 'Matte Lamination Inkjet',
                         price: '$40USD', 
                         id: 'FP-40X40',
-                        img: 'img/surface.png', 
-                        imgBack: 'img/40x40B.png'
+                        dotsCount: 1600
                     }
                 }
             }
         };
 
+        // Presets para el degradado dinámico del SVG
+        const PANEL_GRADIENTS = [
+            { start: '#1a1a24', end: '#09090e' }, // Mono Dark
+            { start: '#2a0845', end: '#6441a5' }, // Deep Purple
+            { start: '#0f2027', end: '#2c5364' }, // Cyber Cyan
+            { start: '#11998e', end: '#38ef7d' }, // Emerald
+            { start: '#8a2387', end: '#e94057' }  // Neon Sunset
+        ];
+
         // Core Application State
         let currentFotoItem = 'PULSOR';
         let currentFotoVariant = 'PANEL 20X20';
-        let inspectModeIndex = 0; // 0: Front, 1: Back
+        let currentGradientIndex = 0;
         let isZenithActive = false;
         const targetPhoneNumber = "573128707083";
 
@@ -444,6 +491,17 @@
         const triggerHaptic = (pattern) => { 
             if (navigator.vibrate) navigator.vibrate(pattern); 
         };
+
+        // Rotate SVG Panel Gradient Color
+        function rotatePanelGradient() {
+            currentGradientIndex = (currentGradientIndex + 1) % PANEL_GRADIENTS.length;
+            const grad = PANEL_GRADIENTS[currentGradientIndex];
+            
+            document.documentElement.style.setProperty('--panel-grad-1', grad.start);
+            document.documentElement.style.setProperty('--panel-grad-2', grad.end);
+            
+            triggerHaptic(12);
+        }
 
         // Zenith Mode Toggle Engine
         function toggleZenithMode() {
@@ -464,33 +522,7 @@
             event.stopPropagation();
             if (isZenithActive) {
                 toggleZenithMode();
-                return;
             }
-            toggleInspectView();
-        }
-
-        // Visual Inspector Switcher (Front <-> Back)
-        function toggleInspectView() {
-            inspectModeIndex = (inspectModeIndex + 1) % 2;
-            const modes = ['front', 'back'];
-            applyVisualMode(modes[inspectModeIndex]);
-            triggerHaptic(10);
-        }
-
-        // Apply Layer Opacity Based on Selected Visual Mode
-        function applyVisualMode(mode) {
-            const layers = [
-                { el: getCachedEl('fotopanel-pack-img'), mode: 'front', index: 0 },
-                { el: getCachedEl('fotopanel-pack-img-back'), mode: 'back', index: 1 }
-            ];
-
-            layers.forEach(({ el, mode: m, index }) => {
-                if (!el) return;
-                const isActive = (m === mode);
-                el.style.opacity = isActive ? '1' : '0';
-                el.style.zIndex = isActive ? '10' : '0';
-                if (isActive) inspectModeIndex = index;
-            });
         }
 
         // Rotate Through Catalog Variants
@@ -512,24 +544,52 @@
         // Reset View to Default
         function resetView() {
             currentFotoVariant = 'PANEL 40X40';
-            applyVisualMode('front');
+            currentGradientIndex = 0;
+            const grad = PANEL_GRADIENTS[0];
+            document.documentElement.style.setProperty('--panel-grad-1', grad.start);
+            document.documentElement.style.setProperty('--panel-grad-2', grad.end);
             updateFotoUI();
             triggerHaptic([10, 10]);
+        }
+
+        // Render Vector Dot Matrix Grid
+        function renderDotGrid(totalDots) {
+            const svgContainer = getCachedEl('pulsor-grid-svg');
+            if (!svgContainer) return;
+
+            const cols = Math.ceil(Math.sqrt(totalDots));
+            const rows = Math.ceil(totalDots / cols);
+            
+            const stepX = 100 / (cols + 1);
+            const stepY = 100 / (rows + 1);
+            const radius = Math.max(0.6, 1.8 - (cols * 0.03));
+
+            let dotsHTML = '';
+            let count = 0;
+
+            for (let r = 1; r <= rows && count < totalDots; r++) {
+                for (let c = 1; c <= cols && count < totalDots; c++) {
+                    const cx = (c * stepX).toFixed(2);
+                    const cy = (r * stepY).toFixed(2);
+                    dotsHTML += `<circle cx="${cx}" cy="${cy}" r="${radius}" fill="var(--jako-text)" opacity="0.85" />`;
+                    count++;
+                }
+            }
+
+            svgContainer.innerHTML = dotsHTML;
         }
 
         // Sync UI Elements
         function updateFotoUI() {
             const config = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
             
-            const front = getCachedEl('fotopanel-pack-img');
-            const back = getCachedEl('fotopanel-pack-img-back');
             const label = getCachedEl('fotopanel-label');
             const price = getCachedEl('fotopanel-price');
             
-            if (front) front.src = config.img;
-            if (back) back.src = config.imgBack;
             if (label) label.textContent = config.label;
             if (price) price.textContent = config.price;
+
+            renderDotGrid(config.dotsCount);
         }
 
         // WhatsApp Order Dispatcher
