@@ -9,8 +9,8 @@
     <!-- External Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     
- <style>
-        /* ACHROMATIC ENVIRONMENT VARIABLES */
+    <style>
+        /* CSS VARIABLES & THEMES */
         :root[data-theme="dark"] {
             --jako-bg: rgba(5, 5, 8, 0.92);
             --jako-text: #ffffff;
@@ -35,15 +35,14 @@
             --icon-hover: #b6b8b9;
         }
 
+        /* GLOBAL RESET & BASE STYLES */
         *, ::before, ::after { 
             box-sizing: border-box; 
             margin: 0;
             padding: 0;
         }
 
-        /* BASE VIEWPORT & LAYOUT ENGINE */
         html, body {
-            height: 100%;
             height: 100dvh;
             overflow: hidden;
         }
@@ -70,10 +69,16 @@
             color: var(--jako-bg);
         }
 
+        button, span, div { -webkit-tap-highlight-color: transparent; }
+        button, input, select, textarea { font-family: inherit; }
+
         /* AMBIENT OVERLAYS */
-        #page-bg-overlay {
+        #page-bg-overlay, .ambient-gradient {
             position: fixed;
             inset: 0;
+        }
+
+        #page-bg-overlay {
             background: radial-gradient(circle at 50% 30%, var(--gradient-start) 0%, var(--gradient-mid) 65%, var(--gradient-end) 100%);
             z-index: -1;
             transform: translateZ(0);
@@ -82,14 +87,12 @@
         }
 
         .ambient-gradient {
-            position: fixed;
-            inset: 0;
             background: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent, rgba(0,0,0,0.2));
             z-index: 0;
             pointer-events: none;
         }
 
-        /* OPTICAL GLOW TRANSITION */
+        /* TRANSITIONS */
         .img-glow-transition {
             transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             backface-visibility: hidden;
@@ -98,7 +101,11 @@
             will-change: filter, transform, opacity;
         }
 
-        /* BUTTONS & CONTROLS */
+        .top-nav-bar, .info-strip, .action-controls-grid, footer, #fotopanel-pack-container {
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease, border-color 0.5s ease;
+        }
+
+        /* BUTTONS & ICONS */
         .btn-tele-glass {
             background-color: transparent;
             border: none;
@@ -110,13 +117,8 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .btn-tele-glass:hover {
-            opacity: 0.8;
-        }
-
-        .btn-tele-glass:active {
-            transform: scale(0.92);
-        }
+        .btn-tele-glass:hover { opacity: 0.8; }
+        .btn-tele-glass:active { transform: scale(0.92); }
 
         .icon-tele, .icon-stroke {
             width: 1rem;
@@ -129,14 +131,11 @@
             pointer-events: none;
         }
 
-        .icon-stroke {
-            stroke: var(--jako-text);
-        }
-
+        .icon-stroke { stroke: var(--jako-text); }
         .btn-tele-glass:hover .icon-tele { fill: var(--icon-hover); }
         .btn-tele-glass:hover .icon-stroke { stroke: var(--icon-hover); }
 
-        /* VISUALIZER STAGE */
+        /* VISUALIZER STAGE & CONTAINERS */
         .main-visualizer-container {
             flex: 1;
             width: 100%;
@@ -166,7 +165,6 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: transparent;
         }
 
         #fotopanel-pack-container img {
@@ -177,18 +175,18 @@
             object-fit: contain;
         }
 
-        /* PRODUCT SPEC STRIP (PINNED TO BOTTOM WITHOUT DISPLACING STAGE CENTER) */
+        /* PRODUCT SPEC STRIP */
         .info-strip {
             position: absolute;
             bottom: 0;
             left: 0;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: flex-end;
             color: var(--jako-text);
             font-size: 8px;
             letter-spacing: 0.25em;
-            width: 100%;
             text-transform: uppercase;
             padding: 0.5rem 1rem;
             gap: 0.5rem;
@@ -215,22 +213,18 @@
             transition: color 0.5s ease, text-shadow 0.5s ease;
         }
 
-        /* ACTION CONTROLS & DRAWERS */
-        .action-controls-wrapper {
-            position: relative;
-            width: 100%;
-            z-index: 100;
-        }
-
+        /* ACTION CONTROLS BAR */
         .action-controls-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            border-top: 1px solid var(--jako-border);
-            border-bottom: 1px solid var(--jako-border);
+            position: relative;
+            z-index: 100;
+            display: flex;
+            justify-content: flex-end;
             align-items: center;
             width: 100%;
-            padding: 0 1rem;
             height: 3rem;
+            padding: 0 0.5rem;
+            border-top: 1px solid var(--jako-border);
+            border-bottom: 1px solid var(--jako-border);
             background: var(--jako-glass);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -238,30 +232,11 @@
         }
 
         .action-controls-grid .btn-tele-glass {
-            justify-content: center;
-            width: 100%;
+            width: 3rem;
             height: 100%;
         }
 
-        .drawer-overlay {
-            position: absolute;
-            bottom: 3rem;
-            left: 0;
-            width: 100%;
-            z-index: 40;
-            background: var(--jako-glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-top: 1px solid var(--jako-border);
-            animation: drawerSlideUp 0.25s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        @keyframes drawerSlideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* FOOTER */
+        /* FOOTER (RIGHT-ALIGNED) */
         .footer-container {
             height: 50px;
             width: 100%;
@@ -270,10 +245,10 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             z-index: 50;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end;
             border-top: 1px solid var(--jako-border);
         }
 
@@ -287,17 +262,18 @@
             transition: opacity 0.3s ease;
         }
 
-        .footer-container:hover .footer-brand-text {
-            opacity: 0.9;
-        }
+        .footer-container:hover .footer-brand-text { opacity: 0.9; }
 
+        /* ZENITH MODE STATE */
         .zenith-active .top-nav-bar,
-        .zenith-active .action-controls-wrapper,
+        .zenith-active .action-controls-grid,
         .zenith-active footer {
             opacity: 0 !important;
             pointer-events: none !important;
             transform: translateY(15px);
         }
+
+        .zenith-active .top-nav-bar { transform: translateY(-15px); }
 
         .zenith-active .info-strip {
             position: fixed;
@@ -310,26 +286,12 @@
             opacity: 1 !important;
         }
 
-        .zenith-active .top-nav-bar {
-            transform: translateY(-15px);
-        }
-
-        .zenith-active main {
-            padding: 0 !important;
-        }
+        .zenith-active main { padding: 0 !important; }
 
         .zenith-active #fotopanel-pack-container {
             transform: scale(1.15);
             filter: drop-shadow(0 35px 80px rgba(0,0,0,0.95));
         }
-
-        /* UNIFIED TRANSITIONS */
-        .top-nav-bar, .info-strip, .action-controls-wrapper, footer, #fotopanel-pack-container {
-            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease, border-color 0.5s ease;
-        }
-
-        button, span, div { -webkit-tap-highlight-color: transparent; }
-        button, input, select, textarea { font-family: inherit; }
     </style>
 </head>
 <body>
@@ -339,13 +301,9 @@
         
     <!-- Top Action Dispatcher Bar -->
     <div class="top-nav-bar" style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 1rem; height: 3rem; border-bottom: 1px solid var(--jako-border); background: var(--jako-glass); backdrop-filter: blur(20px);">
-        
-        <!-- Columna 1: Toggle Theme (Extremo Izquierdo) -->
-        <div style="display: flex; justify-content: flex-start;">
+        <div style="display: flex; justify-content: flex-start;"></div>
 
-        </div>
-
-        <!-- Columna 2: Home / Reset (Centro Exacto) -->
+        <!-- Home / Reset Button -->
         <button class="btn-tele-glass" title="Home / Reset" onclick="resetView()" style="width: auto; padding: 0 1rem; display: flex; align-items: center; gap: 0.5rem; font-size: 10px; font-weight: 700; letter-spacing: 0.15em;">
             <svg viewBox="0 0 100 100" class="icon-tele" style="width: 0.85rem; height: 0.85rem;">
                 <g transform="rotate(180 50 50)">
@@ -353,16 +311,13 @@
                     <polygon points="30,65 70,65 80,80 20,80" />
                 </g>
             </svg>
-            <span class="justify-self-center text-center tracking-[0.25em] font-bold text-white text-[12px] sm:text-[11px]">JAKO</span>
+            <span style="letter-spacing: 0.25em; font-weight: 700;">JAKO</span>
         </button>
 
-        <!-- Columna 3: Order Dispatcher / Cashflow (Extremo Derecho) -->
-        <div style="display: flex; justify-content: flex-end;">
-        </div>
-
+        <div style="display: flex; justify-content: flex-end; align-items: center;"></div>
     </div>
 
-<!-- Visualizer Stage -->
+    <!-- Visualizer Stage -->
     <main class="main-visualizer-container" onclick="handleStageClick(event)">
         <div id="fotopanel-pack-container" onclick="handlePanelClick(event)">
             <div class="pack-viewport">
@@ -371,85 +326,65 @@
             </div>
         </div>
 
-        <!-- Product Spec Strip (Bottom-pinned inside main) -->
+        <!-- Product Spec Strip -->
         <div class="info-strip">
             <div class="info-strip-content">
                 <span id="fotopanel-label" class="tele-value">PULSOR PANEL 40X40</span>
                 <span class="info-separator">/</span>
                 <span id="fotopanel-price" class="tele-value">$40MIL</span>
             </div>
-
-            <!-- Columna 3: Order Dispatcher / Cashflow (Extremo Derecho) -->
-            <div style="display: flex; justify-content: flex-end;">
-                <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-tele-glass btn-highlight-action" style="width: auto; padding: 0.5rem;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M12 3v13.5m0 0l-4.5-4.5M12 16.5l4.5-4.5" />
-                    </svg>
-                </button>
-            </div>
+            
+            <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-tele-glass" style="width: auto; padding: 0.5rem;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M12 3v13.5m0 0l-4.5-4.5M12 16.5l4.5-4.5" />
+                </svg>
+            </button>
         </div>
     </main>
  
-    
-<!-- Control Wrapper -->
-    <div class="action-controls-wrapper">
+    <!-- Right-aligned Action Controls -->
+    <div class="action-controls-grid">
 
-        <!-- SUBSTRATE COLOR SELECTOR DRAWER -->
-        <div id="drawer-color-palette" class="drawer-overlay" style="display: none;">
-            <div class="color-picker-palette">
-                <div class="color-swatch" style="background: #09090b;" onclick="setSubstrateColor('#09090b')"></div>
-                <div class="color-swatch" style="background: #27272a;" onclick="setSubstrateColor('#27272a')"></div>
-                <div class="color-swatch" style="background: #f4f4f5;" onclick="setSubstrateColor('#f4f4f5')"></div>
-                <div class="color-swatch" style="background: #e2e8f0;" onclick="setSubstrateColor('#e2e8f0')"></div>
-                <div class="color-swatch" style="background: #78350f;" onclick="setSubstrateColor('#78350f')"></div>
-                <div class="color-swatch" style="background: #064e3b;" onclick="setSubstrateColor('#064e3b')"></div>
-            </div>
-        </div>
+        <!-- 1. Dot Color Button -->
+        <button id="btn-dot-color" title="Dot Color" class="btn-tele-glass">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <circle cx="12" cy="12" r="7" />
+            </svg>
+        </button>
 
-        <!-- MAIN DISPATCHER BAR (5 Controls) -->
-        <div class="action-controls-grid">
+        <!-- 2. Panel Color Button -->
+        <button id="btn-color-Panel" title="Panel Color Gradient" class="btn-tele-glass">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <rect x="4" y="4" width="16" height="16" rx="1" />
+            </svg>
+        </button>
 
-            <!-- 1. Dot Color Button -->
-            <button id="btn-dot-color" title="Dot Color" onclick="toggleDotColor()" class="btn-tele-glass">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                    <circle cx="12" cy="12" r="7" />
-                </svg>
-            </button>
+        <!-- 3. Next Variant Button -->
+        <button id="btn-next-variant" title="Next Variant Scale" onclick="rotateFotoVariant('next')" class="btn-tele-glass">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4M9 9h6v6H9z" />
+            </svg>
+        </button>
 
-            <!-- 2. Theme Toggle Button (Achromatic) -->
-            <button id="acromatic-toggle-trigger" title="Toggle Theme" class="btn-tele-glass">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21m8.966-8.966h-2.25M4.284 12h-2.25m15.356-6.364l-1.591 1.591M6.364 17.636l-1.591 1.591m12.728 0l-1.591-1.591M6.364 6.364L4.773 4.773M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" />
-                </svg>
-            </button>
+        <!-- 4. Theme Toggle Button (Achromatic) -->
+        <button id="acromatic-toggle-trigger" title="Toggle Theme" class="btn-tele-glass">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21m8.966-8.966h-2.25M4.284 12h-2.25m15.356-6.364l-1.591 1.591M6.364 17.636l-1.591 1.591m12.728 0l-1.591-1.591M6.364 6.364L4.773 4.773M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" />
+            </svg>
+        </button>
 
-            <!-- 3. Substrate Color Button -->
-            <button id="btn-color-substrate" title="Panel Color Gradient" onclick="toggleSubstrateDrawer()" class="btn-tele-glass">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                    <rect x="4" y="4" width="16" height="16" rx="1" />
-                </svg>
-            </button>
+        <!-- 5. Zenith Mode Button -->
+        <button id="btn-zenith-toggle" title="Zenith Mode" onclick="toggleZenithMode()" class="btn-tele-glass">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+            </svg>
+        </button>
 
-            <!-- 4. Next Variant Button -->
-            <button id="btn-next-variant" title="Next Variant Scale" onclick="rotateFotoVariant('next')" class="btn-tele-glass">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4M9 9h6v6H9z" />
-                </svg>
-            </button>
-
-            <!-- 5. Zenith Mode Button -->
-            <button id="btn-zenith-toggle" title="Zenith Mode" onclick="toggleZenithMode()" class="btn-tele-glass">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="icon-stroke">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
-                </svg>
-            </button>
-
-        </div>
     </div>
 
     <!-- Footer -->
     <footer class="footer-container">
-        <span class="footer-brand-text">JAKO RESEARCH 2008-2026</span>
+        <span class="footer-brand-text">JAKO.DEV 2008-2026</span>
     </footer>
 
     <!-- Core Logic Engine -->
@@ -480,7 +415,7 @@
                         imgBack: 'img/30x30B.png'
                     },
                     'PANEL 40X40': { 
-                        label: 'FOTOPANEL40X40CMS', 
+                        label: 'FOTOPANEL 40X40CMS', 
                         spec: 'Community Mural Funding', 
                         media: 'ACM 3mm',
                         finish: 'Matte Lamination Inkjet',
@@ -496,8 +431,6 @@
         // Core Application State
         let currentFotoItem = 'PULSOR';
         let currentFotoVariant = 'PANEL 20X20';
-        let currentSubstrateColor = '#09090b';
-        let currentDotColor = '#ffffff';
         let inspectModeIndex = 0; // 0: Front, 1: Back
         let isZenithActive = false;
         const targetPhoneNumber = "573128707083";
@@ -512,39 +445,10 @@
             if (navigator.vibrate) navigator.vibrate(pattern); 
         };
 
-        // Color Dynamic State Handlers
-        function setSubstrateColor(hex) {
-            currentSubstrateColor = hex;
-            const substrate = getCachedEl('svg-substrate');
-            if (substrate) substrate.setAttribute('fill', hex);
-            triggerHaptic(10);
-        }
-
-        function toggleSubstrateDrawer() {
-            const drawer = getCachedEl('drawer-color-palette');
-            if (!drawer) return;
-            const isOpen = drawer.style.display === 'block';
-            drawer.style.display = isOpen ? 'none' : 'block';
-            triggerHaptic(8);
-        }
-
-        function toggleDotColor() {
-            currentDotColor = currentDotColor === '#ffffff' ? '#000000' : '#ffffff';
-            const dots = getCachedEl('svg-halftone-dots');
-            if (dots) dots.setAttribute('fill', currentDotColor);
-            triggerHaptic(12);
-        }
-
-        function closeAllDrawers() {
-            const palette = getCachedEl('drawer-color-palette');
-            if (palette) palette.style.display = 'none';
-        }
-
         // Zenith Mode Toggle Engine
         function toggleZenithMode() {
             isZenithActive = !isZenithActive;
             document.body.classList.toggle('zenith-active', isZenithActive);
-            closeAllDrawers();
             triggerHaptic([15, 30, 15]);
         }
 
@@ -552,8 +456,6 @@
         function handleStageClick(event) {
             if (isZenithActive) {
                 toggleZenithMode();
-            } else {
-                closeAllDrawers();
             }
         }
 
@@ -667,12 +569,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             initAchromaticToggle();
             updateFotoUI();
-
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.action-controls-wrapper') && !e.target.closest('.top-nav-bar')) {
-                    closeAllDrawers();
-                }
-            });
         });
     </script>
 </body>
