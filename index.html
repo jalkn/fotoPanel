@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS VARIABLES & THEME */
+        /* CSS VARIABLES & THEME CONFIGURATION */
         :root {
             --jako-bg: #f8f9fa;
             --jako-text: #000000;
@@ -60,7 +60,7 @@
 
         button, span, div { -webkit-tap-highlight-color: transparent; }
 
-        /* AMBIENT OVERLAYS */
+        /* AMBIENT BACKGROUND OVERLAYS */
         #page-bg-overlay, .ambient-gradient {
             position: fixed;
             inset: 0;
@@ -80,7 +80,7 @@
             pointer-events: none;
         }
 
-        /* TRANSITIONS */
+        /* UI ANIMATIONS & TRANSITIONS */
         .img-glow-transition {
             transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             backface-visibility: hidden;
@@ -92,7 +92,7 @@
             transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease, border-color 0.5s ease;
         }
 
-        /* BUTTONS & ICONS */
+        /* GLASS BUTTONS & ICON ARCHITECTURE */
         .btn-tele-glass {
             background-color: transparent;
             border: none;
@@ -131,7 +131,7 @@
         .btn-tele-glass:hover .icon-tele { fill: var(--icon-hover); }
         .btn-tele-glass:hover .icon-stroke { stroke: var(--icon-hover); }
 
-        /* VISUALIZER STAGE & CONTAINERS */
+        /* VISUALIZER STAGE & PACK CONTAINERS */
         .main-visualizer-container {
             flex: 1;
             width: 100%;
@@ -145,6 +145,7 @@
             transition: padding 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
+        /* MAIN CONTAINER RESPONSIBLE FOR ENTIRE SCALING */
         #fotopanel-pack-container {
             position: relative;
             width: 100%;
@@ -154,6 +155,8 @@
             margin: auto;
             cursor: pointer;
             filter: drop-shadow(0 40px 60px rgba(0,0,0,0.6));
+            transform-origin: center center;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .pack-viewport {
@@ -168,10 +171,16 @@
             inset: 0;
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
+            transition: filter 0.5s ease;
         }
 
-        /* PRODUCT SPEC STRIP */
+        /* MONOCHROME FILTER STATE */
+        .grayscale-filter {
+            filter: grayscale(100%);
+        }
+
+        /* PRODUCT SPECIFICATION STRIP */
         .info-strip {
             position: absolute;
             bottom: 0;
@@ -224,13 +233,14 @@
             background: var(--jako-glass);
             backdrop-filter: blur(20px);
             transition: background 0.5s ease, border-color 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+            gap: 0.5rem;
         }
 
         .action-controls-grid .btn-tele-glass {
             height: 100%;
         }
 
-        /* FOOTER (RIGHT-ALIGNED) */
+        /* FOOTER BRANDING (RIGHT-ALIGNED) */
         .footer-container {
             height: 50px;
             width: 100%;
@@ -307,9 +317,28 @@
  
     <!-- Bottom Action Controls -->
     <div class="action-controls-grid">
-        <button id="btn-next-variant" title="Next Variant Scale" onclick="rotateFotoVariant('next')" class="btn-tele-glass" style="width: 3rem;">
+        <!-- Hidden File Input for Custom Image Upload -->
+        <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
+
+        <!-- Upload Custom Image Button -->
+        <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-tele-glass" style="width: 3rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25V7.5M12 21V7.5m0 0l-4.5 4.5M12 7.5l4.5 4.5" />
+            </svg>
+        </button>
+
+        <!-- Scale Toggle Button (Original Color) -->
+        <button id="btn-next-variant" title="Next Variant Scale" onclick="rotateFotoVariant('next', false)" class="btn-tele-glass" style="width: 3rem;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4M9 9h6v6H9z" />
+            </svg>
+        </button>
+
+        <!-- Scale Toggle Button (Black & White Filter) -->
+        <button id="btn-next-variant-bw" title="Next Variant Scale (B&W)" onclick="rotateFotoVariant('next', true)" class="btn-tele-glass" style="width: 3rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4M9 9h6v6H9z" />
+                <circle cx="12" cy="12" r="3" fill="currentColor" />
             </svg>
         </button>
     </div>
@@ -324,6 +353,10 @@
 
     <!-- Core Logic Engine -->
     <script>
+        /**
+         * Catalog configuration without static img/imgBack attributes.
+         * Relative scale factors are defined for container transformation.
+         */
         const ARTEPANEL_CATALOG = {
             'PULSOR': {
                 defaultVariant: 'PANEL 20X20',
@@ -335,8 +368,7 @@
                         finish: 'Matte Lamination Inkjet',
                         price: '$20MIL', 
                         id: 'FP-20X20',
-                        img: 'img/20x20.png', 
-                        imgBack: 'img/40x40B.png'
+                        scale: 0.50
                     },
                     'PANEL 30X30': { 
                         label: '30X30CMS', 
@@ -345,8 +377,7 @@
                         finish: 'Matte Lamination Inkjet',
                         price: '$30MIL', 
                         id: 'FP-30X30',
-                        img: 'img/30x30.png', 
-                        imgBack: 'img/40x40B.png'
+                        scale: 0.75
                     },
                     'PANEL 40X40': { 
                         label: '40X40CMS', 
@@ -355,25 +386,61 @@
                         finish: 'Matte Lamination Inkjet',
                         price: '$40MIL', 
                         id: 'FP-40X40',
-                        img: 'img/40x40.png', 
-                        imgBack: 'img/40x40B.png'
+                        scale: 1.00
                     }
                 }
             }
         };
 
+        // Application State
         let currentFotoItem = 'PULSOR';
         let currentFotoVariant = 'PANEL 20X20';
+        let isGrayscale = false;
+        let activeImageSrc = 'img/photo.png'; // Tracks current default or user uploaded image
         const targetPhoneNumber = "573128707083";
 
+        // Element Caching System
         const cachedElements = {};
         const getCachedEl = (id) => cachedElements[id] || (cachedElements[id] = document.getElementById(id));
 
+        /**
+         * Triggers haptic vibration feedback on compatible devices.
+         */
         const triggerHaptic = (pattern) => { 
             if (navigator.vibrate) navigator.vibrate(pattern); 
         };
 
-        function rotateFotoVariant(direction = 'next') {
+        /**
+         * Triggers click event on hidden file input element.
+         */
+        function triggerImageUpload() {
+            const input = getCachedEl('user-image-input');
+            if (input) input.click();
+        }
+
+        /**
+         * Handles local image file selection and updates active image source.
+         * @param {Event} event - File input change event object.
+         */
+        function handleUserImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                activeImageSrc = e.target.result;
+                updateFotoUI();
+                triggerHaptic([10, 20]);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        /**
+         * Cycles through available product scale variants.
+         * @param {string} direction - Direction of rotation ('next' or 'prev').
+         * @param {boolean} enableBW - Toggles black & white filter mode.
+         */
+        function rotateFotoVariant(direction = 'next', enableBW = false) {
             const variants = Object.keys(ARTEPANEL_CATALOG[currentFotoItem].variants);
             let currentIndex = variants.indexOf(currentFotoVariant);
             
@@ -382,19 +449,36 @@
                 : (currentIndex - 1 + variants.length) % variants.length;
             
             currentFotoVariant = variants[currentIndex];
+            isGrayscale = enableBW;
+            
             updateFotoUI();
             triggerHaptic(15);
         }
 
+        /**
+         * Resets state back to default 40x40 color view and resets image source.
+         */
         function resetView() {
             currentFotoVariant = 'PANEL 40X40';
+            isGrayscale = false;
+            activeImageSrc = 'img/photo.png';
+            const input = getCachedEl('user-image-input');
+            if (input) input.value = '';
+            
             updateFotoUI();
             triggerHaptic([10, 10]);
         }
 
+        /**
+         * Renders panel DOM structure and applies full container transformation scaling.
+         * @param {Object} config - Active variant metadata and scale factors.
+         */
         function renderPanelImages(config) {
             const container = getCachedEl('fotopanel-pack-container');
             if (!container) return;
+
+            // Apply scale transformation directly to container to avoid margin offsets
+            container.style.transform = `scale(${config.scale})`;
 
             let viewport = container.querySelector('.pack-viewport');
             if (!viewport) {
@@ -403,13 +487,17 @@
                 container.appendChild(viewport);
             }
 
+            const bwClass = isGrayscale ? 'grayscale-filter' : '';
+
             viewport.innerHTML = `
                 <div style="position: absolute; inset: 0; background-color: #e5e5e5; z-index: 1;"></div>
-                <img src="${config.imgBack}" alt="Panel Base" style="z-index: 5;" />
-                <img src="${config.img}" alt="Panel Surface" class="img-glow-transition" style="z-index: 10;" />
+                <img src="${activeImageSrc}" alt="Panel Surface" class="img-glow-transition ${bwClass}" style="z-index: 10;" />
             `;
         }
 
+        /**
+         * Synchronizes UI elements (labels, price, and visualizer scale).
+         */
         function updateFotoUI() {
             const config = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
             const label = getCachedEl('fotopanel-label');
@@ -421,6 +509,9 @@
             renderPanelImages(config);
         }
 
+        /**
+         * Generates order message payload and initiates WhatsApp checkout redirect.
+         */
         function acquireNodeCashflow() {
             const variant = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
             const message = [
@@ -429,6 +520,7 @@
                 `SPEC: ${variant.spec}`,
                 `MEDIA: ${variant.media}`,
                 `FINISH: ${variant.finish}`,
+                `STYLE: ${isGrayscale ? 'Black & White' : 'Color'}`,
                 `ID: ${variant.id}`,
                 `PRICE: ${variant.price}`
             ].join('\n');
@@ -437,6 +529,7 @@
             window.open(`https://api.whatsapp.com/send?phone=${targetPhoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
         }
 
+        // Initialize stage on DOM load
         document.addEventListener('DOMContentLoaded', updateFotoUI);
     </script>
 </body>
