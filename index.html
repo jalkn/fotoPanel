@@ -286,9 +286,8 @@
     <div class="action-controls-grid">
         <button class="btn-tele-glass btn-reset-text" title="Home / Reset" onclick="resetView()">
             <span>FOTOPANEL</span>
-            <svg viewBox="0 0 100 100" class="icon-tele">
-                <polygon points="80,20 80,80 65,70 65,30" />
-                <polygon points="58,50 50,58 42,50 50,42" />
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
+                <rect x="4" y="4" width="16" height="16" />
             </svg>
         </button>
     </div>
@@ -307,11 +306,16 @@
                 <span id="fotopanel-price" class="tele-value">$40MIL</span>
             </div>
 
+            <!-- Order via WhatsApp / Acquire Button (Bottom Base + Side Corners + Arrow Down) -->
             <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-tele-glass" style="width: auto; padding: 0.5rem;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M12 3v13.5m0 0l-4.5-4.5M12 16.5l4.5-4.5" />
+                    <!-- Complete Bottom Line & Vertical Side Edges -->
+                    <path d="M4 16v4h16v-4" />
+                    <!-- Arrow Down -->
+                    <path d="M12 7v10m0 0l-4-4m4 4l4-4" />
                 </svg>
             </button>
+
         </div>
     </main>
  
@@ -320,25 +324,42 @@
         <!-- Hidden File Input for Custom Image Upload -->
         <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
 
-        <!-- Upload Custom Image Button -->
+        <!-- Upload Custom Image Button (Top Base + Side Corners + Arrow Up) -->
         <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-tele-glass" style="width: 3rem;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25V7.5M12 21V7.5m0 0l-4.5 4.5M12 7.5l4.5 4.5" />
+                <!-- Complete Top Line & Vertical Side Edges -->
+                <path d="M4 8V4h16v4" />
+                <!-- Arrow Up -->
+                <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
             </svg>
         </button>
 
-        <!-- Scale Toggle Button (Original Color) -->
+        <!-- Scale Toggle Button (Original Color - Rainbow Gradient) -->
         <button id="btn-next-variant" title="Next Variant Scale" onclick="rotateFotoVariant('next', false)" class="btn-tele-glass" style="width: 3rem;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4M9 9h6v6H9z" />
+            <svg viewBox="0 0 24 24" class="icon-stroke">
+                <defs>
+                    <linearGradient id="rainbow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="25%" stop-color="#ff0000" />
+                        <stop offset="50%" stop-color="#ff7f00" />
+                        <stop offset="75%" stop-color="#0000ff" />
+                        <stop offset="100%" stop-color="#8b00ff" />
+                    </linearGradient>
+
+                </defs>
+                <rect x="4" y="4" width="16" height="16" fill="url(#rainbow-grad)" stroke="none" />
             </svg>
         </button>
 
-        <!-- Scale Toggle Button (Black & White Filter) -->
+        <!-- Scale Toggle Button (Black & White Filter - Grayscale Gradient) -->
         <button id="btn-next-variant-bw" title="Next Variant Scale (B&W)" onclick="rotateFotoVariant('next', true)" class="btn-tele-glass" style="width: 3rem;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4M9 9h6v6H9z" />
-                <circle cx="12" cy="12" r="3" fill="currentColor" />
+            <svg viewBox="0 0 24 24" class="icon-stroke">
+                <defs>
+                    <linearGradient id="bw-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff" />
+                        <stop offset="100%" stop-color="#000000" />
+                    </linearGradient>
+                </defs>
+                <rect x="4" y="4" width="16" height="16" fill="url(#bw-grad)" stroke="none" />
             </svg>
         </button>
     </div>
