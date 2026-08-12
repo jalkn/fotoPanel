@@ -1,0 +1,12 @@
+{
+  "name": "studio-mode-automation",
+  "version": "1.0.0",
+  "description": "Headless Studio Mode Automation for FotoPanel",
+  "main": "capture.js",
+  "scripts": {
+    "capture": "node capture.js"
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0"
+  }
+}

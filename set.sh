@@ -1,3 +1,10 @@
+#!/usr/bin/env bash
+set -e
+
+echo "=== Initializing Architecture for Streamlit & Studio Mode Automation ==="
+
+# 1. Generate index.html in the repository root
+cat << 'EOF' > index.html
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -766,3 +773,117 @@
     </script>
 </body>
 </html>
+EOF
+
+# 2. Generate app.py (Streamlit Control Interface)
+cat << 'EOF' > app.py
+import streamlit as st
+import subprocess
+import os
+import glob
+
+# Streamlit page layout configuration
+st.set_page_config(page_title="Studio Mode Automation", layout="wide")
+
+st.title("FOTOPANEL.ART — Studio Mode Automation")
+st.markdown("### Headless Captures via Puppeteer & Node.js")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    if st.button("Run Headless Captures"):
+        with st.spinner("Capturing studio frames in background..."):
+            try:
+                result = subprocess.run(["node", "capture.js"], capture_output=True, text=True, check=True)
+                st.success("Studio mode process executed successfully.")
+                st.text(result.stdout)
+            except Exception as e:
+                st.error(f"Execution error: {e}")
+
+with col2:
+    st.markdown("### Output Frames")
+    output_dir = "output"
+    if os.path.exists(output_dir):
+        images = glob.glob(f"{output_dir}/*.png")
+        for img_path in images:
+            st.image(img_path, caption=os.path.basename(img_path))
+    else:
+        st.info("No captured images found in output/ directory.")
+EOF
+
+# 3. Generate capture.js (Puppeteer Headless Automation Script)
+cat << 'EOF' > capture.js
+const puppeteer = require('puppeteer');
+const path = require('path');
+const fs = require('fs');
+
+(async () => {
+    // Ensure output directory exists
+    const outputDir = path.join(__dirname, 'output');
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir);
+    }
+
+    // Launch headless Chromium browser
+    const browser = await puppeteer.launch({
+        headless: 'new',
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+
+    const page = await browser.newPage();
+    // High DPI 1:1 Viewport setting
+    await page.setViewport({ width: 1080, height: 1080, deviceScaleFactor: 2 });
+
+    const indexPath = `file://${path.join(__dirname, 'index.html')}`;
+    await page.goto(indexPath, { waitUntil: 'networkidle0' });
+
+    // Capture standard initial full-color frame
+    await page.screenshot({ path: path.join(outputDir, 'studio_40x40_color.png') });
+
+    // Click color mode toggle to render B&W frame
+    await page.click('#btn-color-toggle');
+    await page.screenshot({ path: path.join(outputDir, 'studio_40x40_bw.png') });
+
+    // Click variant scale toggle for next dimension frame
+    await page.click('#btn-change-scale');
+    await page.screenshot({ path: path.join(outputDir, 'studio_variant_next.png') });
+
+    await browser.close();
+    console.log('Studio Mode captures saved to /output.');
+})();
+EOF
+
+# 4. Create package.json if missing
+if [ ! -f package.json ]; then
+cat << 'EOF' > package.json
+{
+  "name": "studio-mode-automation",
+  "version": "1.0.0",
+  "description": "Headless Studio Mode Automation for FotoPanel",
+  "main": "capture.js",
+  "scripts": {
+    "capture": "node capture.js"
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0"
+  }
+}
+EOF
+fi
+
+# Make set.sh executable
+chmod +x set.sh
+
+echo "=== Files created successfully ==="
+echo ""
+echo "=== Execution Steps / Instrucciones de Ejecución ==="
+echo ""
+echo "1. Grant permissions and run set.sh locally:"
+echo "   chmod +x set.sh"
+echo "   ./set.sh"
+echo ""
+echo "2. Install Node.js dependencies (Puppeteer):"
+echo "   npm install"
+echo ""
+echo "3. Launch Streamlit interface to verify & run automation:"
+echo "   streamlit run app.py"
