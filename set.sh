@@ -537,8 +537,7 @@ cat << 'EOF' > index.html
                         spec_en: 'Your photo personalized', 
                         spec_es: 'Tu foto personalizada', 
                         spec_it: 'La tua foto personalizzata',
-                        spec_pt: 'Sua foto personalizada',
-                        media: '12MM',
+                        spec_pt: 'Sua foto personalizada', media: '12MM',
                         finish: 'ADH INKJET PRINT',
                         price: '40MIL', 
                         id: 'FP-40X40',
@@ -559,7 +558,16 @@ cat << 'EOF' > index.html
         let langIndex = 0;
         let currentLang = supportedLangs[langIndex];
 
-        let activeImageSrc = 'img/photo.png';
+        // 6-hour dynamic image rotation engine via Unsplash time-bucket seed
+        const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
+        const currentBucket = Math.floor(Date.now() / SIX_HOURS_MS);
+        
+        // Generates a deterministic high-resolution 1:1 image URL changing every 6 hours
+        const get6HourRotatingImageUrl = () => {
+            return `https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1080&h=1080&q=80&sig=${currentBucket}`;
+        };
+
+        let activeImageSrc = get6HourRotatingImageUrl();
         const backImageSrc = 'img/30x30B.png';
         const targetPhoneNumber = "573128707083";
 
@@ -700,7 +708,7 @@ cat << 'EOF' > index.html
             currentFotoVariant = 'PANEL 40X40';
             isGrayscale = false;
             isShowingBack = false;
-            activeImageSrc = 'img/photo.png';
+            activeImageSrc = get6HourRotatingImageUrl();
             resetImageTransform();
             const input = getCachedEl('user-image-input');
             if (input) input.value = '';
@@ -775,40 +783,24 @@ cat << 'EOF' > index.html
 </html>
 EOF
 
-# 2. Generate app.py (Streamlit Control Interface)
+# 2. Generate app.py (Streamlit Control Interface & Embedded HTML Renderer)
 cat << 'EOF' > app.py
 import streamlit as st
-import subprocess
+import streamlit.components.v1 as components
 import os
-import glob
 
 # Streamlit page layout configuration
-st.set_page_config(page_title="Studio Mode Automation", layout="wide")
+st.set_page_config(page_title="FOTOPANEL.ART", layout="wide")
 
-st.title("FOTOPANEL.ART — Studio Mode Automation")
-st.markdown("### Headless Captures via Puppeteer & Node.js")
+# Read index.html for direct embedding into Streamlit Component
+html_file_path = os.path.join(os.path.dirname(__file__), "index.html")
 
-col1, col2 = st.columns(2)
-
-with col1:
-    if st.button("Run Headless Captures"):
-        with st.spinner("Capturing studio frames in background..."):
-            try:
-                result = subprocess.run(["node", "capture.js"], capture_output=True, text=True, check=True)
-                st.success("Studio mode process executed successfully.")
-                st.text(result.stdout)
-            except Exception as e:
-                st.error(f"Execution error: {e}")
-
-with col2:
-    st.markdown("### Output Frames")
-    output_dir = "output"
-    if os.path.exists(output_dir):
-        images = glob.glob(f"{output_dir}/*.png")
-        for img_path in images:
-            st.image(img_path, caption=os.path.basename(img_path))
-    else:
-        st.info("No captured images found in output/ directory.")
+if os.path.exists(html_file_path):
+    with open(html_file_path, "r", encoding="utf-8") as f:
+        html_content = f.read()
+    components.html(html_content, height=850, scrolling=True)
+else:
+    st.error("index.html not found. Please execute ./set.sh first.")
 EOF
 
 # 3. Generate capture.js (Puppeteer Headless Automation Script)
@@ -876,7 +868,7 @@ chmod +x set.sh
 
 echo "=== Files created successfully ==="
 echo ""
-echo "=== Execution Steps / Instrucciones de Ejecución ==="
+echo "=== Execution Steps ==="
 echo ""
 echo "1. Grant permissions and run set.sh locally:"
 echo "   chmod +x set.sh"
@@ -885,5 +877,5 @@ echo ""
 echo "2. Install Node.js dependencies (Puppeteer):"
 echo "   npm install"
 echo ""
-echo "3. Launch Streamlit interface to verify & run automation:"
+echo "3. Launch Streamlit interface to verify:"
 echo "   streamlit run app.py"

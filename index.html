@@ -494,7 +494,7 @@
         </span>
     </footer>
 
-    <!-- Core Logic Engine -->
+ <!-- Core Logic Engine -->
     <script>
         // Catalog product configuration data
         const ARTEPANEL_CATALOG = {
@@ -530,7 +530,7 @@
                         spec_en: 'Your photo personalized', 
                         spec_es: 'Tu foto personalizada', 
                         spec_it: 'La tua foto personalizzata',
-                        spec_pt: 'Sua foto personalizada',
+                        spec_pt: 'Sua foto personalizada', 
                         media: '12MM',
                         finish: 'ADH INKJET PRINT',
                         price: '40MIL', 
@@ -552,7 +552,16 @@
         let langIndex = 0;
         let currentLang = supportedLangs[langIndex];
 
-        let activeImageSrc = 'img/photo.png';
+        // 6-hour dynamic local image rotation engine (4 time buckets per day: 0, 1, 2, 3)
+        const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
+        const currentBucket = Math.floor(Date.now() / SIX_HOURS_MS) % 4;
+        
+        // Resolves local image path based on the current 6-hour window
+        const get6HourRotatingImageUrl = () => {
+            return `img/photo_${currentBucket}.png`;
+        };
+
+        let activeImageSrc = get6HourRotatingImageUrl();
         const backImageSrc = 'img/30x30B.png';
         const targetPhoneNumber = "573128707083";
 
@@ -693,7 +702,7 @@
             currentFotoVariant = 'PANEL 40X40';
             isGrayscale = false;
             isShowingBack = false;
-            activeImageSrc = 'img/photo.png';
+            activeImageSrc = get6HourRotatingImageUrl();
             resetImageTransform();
             const input = getCachedEl('user-image-input');
             if (input) input.value = '';
