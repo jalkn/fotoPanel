@@ -1,3 +1,833 @@
+#!/usr/bin/env bash
+set -e
+
+# Print initialization header
+echo "=== Initializing Architecture for Streamlit & Studio Mode Automation ==="
+
+# 1. Generate index.html in the repository root
+cat << 'EOF' > index.html
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <link class="icon" type="image/png" href="img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FOTOPANEL.ART</title>
+    
+    <!-- External Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS VARIABLES & THEME CONFIGURATION */
+        :root[data-theme="dark"] {
+            --jako-bg: #121212;
+            --jako-text: #ffffff;
+            --jako-border: rgba(255, 255, 255, 0.15);
+            --jako-glass: rgba(30, 30, 30, 0.6);
+            --jako-led: rgba(255, 255, 255, 0.6);
+            --gradient-start: rgba(255, 255, 255, 0.05);
+            --gradient-mid: rgba(18, 18, 18, 0.85);
+            --gradient-end: #121212;
+            --icon-hover: #ffffff;
+        }
+
+        :root[data-theme="light"] {
+            --jako-bg: #f8f9fa;
+            --jako-text: #000000;
+            --jako-border: rgba(0, 0, 0, 0.12);
+            --jako-glass: rgba(255, 255, 255, 0.4);
+            --jako-led: rgba(0, 0, 0, 0.3);
+            --gradient-start: rgba(0, 0, 0, 0.02);
+            --gradient-mid: rgba(248, 249, 250, 0.85);
+            --gradient-end: #ffffff;
+            --icon-hover: #666666;
+        }
+
+        /* GLOBAL RESET & BASE STYLES */
+        *, ::before, ::after { 
+            box-sizing: border-box; 
+            margin: 0;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        html, body {
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        body { 
+            font-family: 'Orbitron', monospace, sans-serif; 
+            background-color: var(--jako-bg); 
+            color: var(--jako-text); 
+            width: 100%;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            position: relative;
+            letter-spacing: 0.05em;  
+            overscroll-behavior: none;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        } 
+
+        ::selection {
+            background-color: var(--jako-text);
+            color: var(--jako-bg);
+        }
+
+        button, span, div { -webkit-tap-highlight-color: transparent; }
+
+        /* AMBIENT BACKGROUND OVERLAYS */
+        #page-bg-overlay, .ambient-gradient {
+            position: fixed;
+            inset: 0;
+        }
+
+        #page-bg-overlay {
+            background: radial-gradient(circle at 50% 30%, var(--gradient-start) 0%, var(--gradient-mid) 65%, var(--gradient-end) 100%);
+            z-index: -1;
+            transform: translateZ(0);
+            will-change: background;
+            transition: background 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .ambient-gradient {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent, rgba(0,0,0,0.2));
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* GLOBAL TRANSITIONS */
+        .img-glow-transition, .info-strip, footer, #fotopanel-pack-container, .panel-back-view {
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease, border-color 0.5s ease;
+        }
+
+        /* BUTTON BASE STYLES */
+        button {
+            background-color: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--jako-text);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        button:hover { opacity: 0.8; }
+        button:active { transform: scale(0.92); }
+
+        .btn-reset-text {
+            width: auto;
+            padding: 0 0.5rem;
+            gap: 0.5rem;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+        }
+
+        .btn-lang-text {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            padding: 0 0.5rem;
+        }
+
+        .icon-tele, .icon-stroke {
+            width: 1.2rem;
+            height: 1.2rem;
+            transition: fill 0.3s ease, stroke 0.3s ease;
+        }
+
+        .icon-tele {
+            fill: var(--jako-text);
+            pointer-events: none;
+        }
+
+        .icon-stroke { stroke: var(--jako-text); }
+        button:hover .icon-tele { fill: var(--icon-hover); }
+        button:hover .icon-stroke { stroke: var(--icon-hover); }
+
+        /* LAYOUT HEIGHT SECTIONS */
+        .header-bar {
+            height: 10dvh;
+            max-height: 10dvh;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 100;
+            border-bottom: 1px solid var(--jako-border);
+            background: var(--jako-glass);
+            backdrop-filter: blur(20px);
+        }
+
+        .info-strip-top {
+            height: 5dvh;
+            max-height: 5dvh;
+            flex-shrink: 0;
+        }
+
+        /* MAIN VISUALIZER CONTAINER: STRICT CENTERED SQUARE REGION */
+        .main-visualizer-container {
+            height: 65dvh;
+            max-height: 65dvh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .info-strip-bottom {
+            height: 5dvh;
+            max-height: 5dvh;
+            flex-shrink: 0;
+        }
+
+        .controls-bar {
+            height: 10dvh;
+            max-height: 10dvh;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 0 0.5rem;
+            border-top: 1px solid var(--jako-border);
+            border-bottom: 1px solid var(--jako-border);
+            background: var(--jako-glass);
+            backdrop-filter: blur(20px);
+            gap: 1rem;
+        }
+
+        .footer-container {
+            height: 5dvh;
+            max-height: 5dvh;
+            width: 100%;
+            flex-shrink: 0;
+            background: var(--jako-glass);
+            backdrop-filter: blur(10px);
+            z-index: 50;
+            padding: 0 1.5rem;
+            border-top: 1px solid var(--jako-border);
+        }
+
+        /* SQUARE PACK CONTAINER (PERFECT 1:1 RATIO ALWAYS) */
+        #fotopanel-pack-container {
+            position: relative;
+            height: 100%;
+            max-height: 55dvh;
+            aspect-ratio: 1 / 1;
+            width: auto;
+            flex-shrink: 0;
+            margin: auto;
+            filter: drop-shadow(0 40px 60px rgba(0,0,0,0.6));
+            transform-origin: center center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pack-viewport {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        /* FRONT IMAGE STYLING (FIXED FIT, NO PANNING) */
+        .user-surface-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform-origin: center center;
+            will-change: transform;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        #fotopanel-pack-container img.panel-back-view {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .panel-back-view {
+            z-index: 20;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .panel-back-view.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .grayscale-filter {
+            filter: grayscale(100%);
+        }
+
+        .info-strip, .footer-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info-strip {
+            width: 100%;
+            color: var(--jako-text);
+            font-size: 10px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            padding: 0.8rem 2rem;
+            gap: 1.5rem;
+            z-index: 20;
+        }
+
+        .info-strip-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            white-space: nowrap;
+        }
+
+        .info-item-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1px;
+        }
+
+        .info-item-title {
+            font-size: 7px;
+            opacity: 0.5;
+            letter-spacing: 0.15em;
+        }
+
+        .info-separator {
+            opacity: 0.4;
+            font-weight: 300;
+        }
+
+        .tele-value { 
+            color: var(--jako-text); 
+            text-shadow: var(--jako-led), var(--jako-led);
+            transform: translateZ(0);
+            transition: color 0.5s ease, text-shadow 0.5s ease;
+        }
+
+        .btn-control-action {
+            width: 3.8rem !important;
+            height: 100%;
+        }
+
+        /* FOOTER BRANDING */
+        .footer-brand-text {
+            display: flex;
+            align-items: center;
+            gap: 0.35em;
+            font-size: 7px;
+            letter-spacing: 0.35em;
+            font-weight: 700;
+            color: var(--jako-text);
+            opacity: 0.5;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+            line-height: 1;
+        }
+
+        .footer-copy-symbol {
+            font-size: 1.5em;
+            line-height: 1;
+        }
+
+        .footer-container:hover .footer-brand-text { opacity: 0.9; }
+
+        /* RESPONSIVE SCALING FOR SMALL SCREENS */
+        @media (max-height: 667px) {
+            .btn-reset-text { font-size: 10px; }
+            .icon-stroke { width: 1.1rem; height: 1.1rem; }
+            .info-strip { font-size: 7px; gap: 0.4rem; }
+            .info-strip-content { gap: 0.4rem; }
+            .info-item-title { font-size: 6px; }
+            #fotopanel-pack-container { max-height: 48dvh; }
+            .controls-bar { 
+                gap: 0.3rem; 
+                margin-bottom: 0.4rem;
+            }
+            .btn-control-action { width: 2rem !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="page-bg-overlay"></div>
+    <div class="ambient-gradient"></div>
+        
+    <!-- TOP HEADER -->
+    <header class="header-bar">
+        <button id="btn-lang-toggle" title="Switch Language" onclick="toggleLanguage()" class="btn-control-action btn-lang-text">
+            <span id="lang-label">EN</span>
+        </button>
+
+        <button class="btn-reset-text" title="Home / Reset" onclick="resetView()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
+                <rect x="4" y="4" width="16" height="16" />
+            </svg>
+            <span>FOTOPANEL</span>
+        </button>
+
+        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+        </button>
+    </header>
+
+    <!-- TOP SPEC STRIP -->
+    <div class="info-strip info-strip-top">
+        <div class="info-strip-content">
+            <span id="top-strip-text" class="info-separator">Your printing services</span>
+        </div>
+    </div>
+
+    <!-- MAIN VISUALIZER STAGE (FORCED SQUARE ASPECT RATIO) -->
+    <main class="main-visualizer-container">
+        <div id="fotopanel-pack-container">
+            <div class="pack-viewport"></div>
+        </div>
+    </main>
+
+    <!-- BOTTOM SPEC STRIP -->
+    <div class="info-strip info-strip-bottom">
+        <div class="info-strip-content">
+            <div class="info-item-block">
+                <span id="fotopanel-finish" class="tele-value">ADH INKJET</span>
+                <span id="lbl-printing-media" class="info-item-title">PRINTING MEDIA</span>
+            </div>
+
+            <span class="info-separator">/</span>
+
+            <div class="info-item-block">
+                <span id="fotopanel-media" class="tele-value">MDF 12MM</span>
+                <span id="lbl-mdf-support" class="info-item-title">MDF SUPPORT</span>
+            </div>
+
+            <span class="info-separator">/</span>
+
+            <div class="info-item-block">
+                <span id="fotopanel-label" class="tele-value">40X40</span>
+                <span class="info-item-title">CMS</span>
+            </div>
+            
+            <span class="info-separator">/</span>
+            
+            <div class="info-item-block">
+                <span id="fotopanel-price" class="tele-value">40MIL</span>
+                <span class="info-item-title">COP $</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM ACTION CONTROLS -->
+    <div class="controls-bar">
+        <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
+
+        <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <path d="M4 8V4h16v4" />
+                <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
+            </svg>
+        </button>
+
+        <button id="btn-change-scale" title="Change Scale / Size" onclick="rotateFotoVariant('next')" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                <rect x="5" y="5" width="14" height="14" />
+            </svg>
+        </button>
+
+        <button id="btn-color-toggle" title="Toggle Color / B&W Mode" onclick="toggleFotoColorMode()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" class="icon-stroke">
+                <defs>
+                    <linearGradient id="color-bw-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ff6600" />
+                        <stop offset="33%" stop-color="#0000ff" />
+                        <stop offset="66%" stop-color="#ffffff" />
+                        <stop offset="100%" stop-color="#000000" />
+                    </linearGradient>
+                </defs>
+                <rect x="4" y="4" width="16" height="16" fill="url(#color-bw-grad)" stroke="none" />
+            </svg>
+        </button>
+
+        <button id="btn-crop-zoom" title="Toggle Scale Zoom" onclick="toggleCropZoom()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <path d="M6 2v14a2 2 0 002 2h14" />
+                <path d="M18 22V8a2 2 0 00-2-2H2" />
+            </svg>
+        </button>
+
+        <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action" style="padding: 0.5rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <path d="M4 16v4h16v-4" />
+                <path d="M12 7v10m0 0l-4-4m4 4l4-4" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer-container">
+        <span class="footer-brand-text">
+            <span class="footer-copy-symbol">©</span>
+            <span>2026</span>
+        </span>
+    </footer>
+
+    <!-- Core Logic Engine -->
+    <script>
+        // Catalog product configuration data
+        const ARTEPANEL_CATALOG = {
+            'PULSOR': {
+                defaultVariant: 'PANEL 40X40',
+                variants: {
+                    'PANEL 20X20': { 
+                        label: '20X20', 
+                        spec_en: 'Your photo personalized', 
+                        spec_es: 'Tu foto personalizada', 
+                        spec_it: 'La tua foto personalizzata',
+                        spec_pt: 'Sua foto personalizada',
+                        media: '12MM',
+                        finish: 'ADH INKJET PRINT',
+                        price: '20MIL', 
+                        id: 'FP-20X20',
+                        scale: 0.50
+                    },
+                    'PANEL 30X30': { 
+                        label: '30X30', 
+                        spec_en: 'Your photo personalized', 
+                        spec_es: 'Tu foto personalizada', 
+                        spec_it: 'La tua foto personalizzata',
+                        spec_pt: 'Sua foto personalizada',
+                        media: '9MM',
+                        finish: 'ADH INKJET PRINT',
+                        price: '30MIL', 
+                        id: 'FP-30X30',
+                        scale: 0.75
+                    },
+                    'PANEL 40X40': { 
+                        label: '40X40', 
+                        spec_en: 'Your photo personalized', 
+                        spec_es: 'Tu foto personalizada', 
+                        spec_it: 'La tua foto personalizzata',
+                        spec_pt: 'Sua foto personalizada',
+                        media: '12MM',
+                        finish: 'ADH INKJET PRINT',
+                        price: '40MIL', 
+                        id: 'FP-40X40',
+                        scale: 1.00
+                    }
+                }
+            }
+        };
+
+        // Application state initializations
+        let currentFotoItem = 'PULSOR';
+        let currentFotoVariant = 'PANEL 40X40';
+        let isGrayscale = false;
+        let isShowingBack = false;
+        
+        // Supported UI language choices
+        const supportedLangs = ['EN', 'ES', 'IT', 'PT'];
+        let langIndex = 0;
+        let currentLang = supportedLangs[langIndex];
+
+        let activeImageSrc = 'img/photo.png';
+        const backImageSrc = 'img/30x30B.png';
+        const targetPhoneNumber = "573128707083";
+
+        // Zoom scale toggle state (1x normal, 1.25x zoom)
+        let isZoomed = false;
+
+        // DOM elements cache helper
+        const cachedElements = {};
+        const getCachedEl = (id) => cachedElements[id] || (cachedElements[id] = document.getElementById(id));
+
+        // Haptic feedback function
+        const triggerHaptic = (pattern) => { 
+            if (navigator.vibrate) navigator.vibrate(pattern); 
+        };
+
+        // Toggle UI theme (Dark / Light)
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme') || 'dark';
+            const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', nextTheme);
+            localStorage.setItem('fotopanel_theme', nextTheme);
+            triggerHaptic(10);
+        }
+
+        // Initialize Theme preference from localStorage
+        function initTheme() {
+            const savedTheme = localStorage.getItem('fotopanel_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        // Toggle supported UI languages sequentially
+        function toggleLanguage() {
+            langIndex = (langIndex + 1) % supportedLangs.length;
+            currentLang = supportedLangs[langIndex];
+            
+            const langLabel = getCachedEl('lang-label');
+            if (langLabel) langLabel.textContent = currentLang;
+
+            const i18n = {
+                EN: { top: 'Your printing services', media: 'PRINTING MEDIA', mdf: 'MDF SUPPORT' },
+                ES: { top: 'Tus servicios de impresión', media: 'MEDIO DE IMPRESIÓN', mdf: 'SOPORTE MDF' },
+                IT: { top: 'I tuoi servizi di stampa', media: 'SUPPORTO DI STAMPA', mdf: 'SUPPORTO MDF' },
+                PT: { top: 'Seus serviços de impressão', media: 'MEIO DE IMPRESSÃO', mdf: 'SUPORTE MDF' }
+            };
+
+            const topStrip = getCachedEl('top-strip-text');
+            const lblPrinting = getCachedEl('lbl-printing-media');
+            const lblMdf = getCachedEl('lbl-mdf-support');
+
+            if (topStrip) topStrip.textContent = i18n[currentLang].top;
+            if (lblPrinting) lblPrinting.textContent = i18n[currentLang].media;
+            if (lblMdf) lblMdf.textContent = i18n[currentLang].mdf;
+
+            triggerHaptic(10);
+            updateFotoUI();
+        }
+
+        // Open hidden file input element
+        function triggerImageUpload() {
+            const input = getCachedEl('user-image-input');
+            if (input) input.click();
+        }
+
+        // Handle custom image uploads
+        function handleUserImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                activeImageSrc = e.target.result;
+                isShowingBack = false;
+                resetImageTransform();
+                updateFotoUI();
+                triggerHaptic([10, 20]);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Toggle Zoom mode in place
+        function toggleCropZoom() {
+            isZoomed = !isZoomed;
+            applyImageTransform();
+            triggerHaptic(10);
+        }
+
+        // Reset Zoom transform
+        function resetImageTransform() {
+            isZoomed = false;
+            applyImageTransform();
+        }
+
+        // Apply scale transform directly to the front face image
+        function applyImageTransform() {
+            const img = document.querySelector('.user-surface-image');
+            if (img) {
+                const scale = isZoomed ? 1.25 : 1.0;
+                img.style.transform = `scale(${scale})`;
+            }
+        }
+
+        // Cycle through sizes/variants
+        function rotateFotoVariant(direction = 'next') {
+            const variants = Object.keys(ARTEPANEL_CATALOG[currentFotoItem].variants);
+            let currentIndex = variants.indexOf(currentFotoVariant);
+            
+            currentIndex = direction === 'next' 
+                ? (currentIndex + 1) % variants.length 
+                : (currentIndex - 1 + variants.length) % variants.length;
+            
+            currentFotoVariant = variants[currentIndex];
+            isShowingBack = false;
+            updateFotoUI();
+            triggerHaptic(15);
+        }
+
+        // Toggle Color / Grayscale Mode
+        function toggleFotoColorMode() {
+            isShowingBack = false;
+            isGrayscale = !isGrayscale;
+            updateFotoUI();
+            triggerHaptic(10);
+        }
+
+        // Toggle back surface view overlay
+        function toggleBackView() {
+            isShowingBack = !isShowingBack;
+            const backEl = document.querySelector('.panel-back-view');
+            if (backEl) {
+                backEl.classList.toggle('active', isShowingBack);
+            }
+            triggerHaptic(20);
+        }
+
+        // Reset stage to default setup
+        function resetView() {
+            currentFotoVariant = 'PANEL 40X40';
+            isGrayscale = false;
+            isShowingBack = false;
+            activeImageSrc = 'img/photo.png';
+            resetImageTransform();
+            const input = getCachedEl('user-image-input');
+            if (input) input.value = '';
+            
+            updateFotoUI();
+            triggerHaptic([10, 10]);
+        }
+
+        // Render current panel images within viewport
+        function renderPanelImages(config) {
+            const container = getCachedEl('fotopanel-pack-container');
+            if (!container) return;
+
+            container.style.transform = `scale(${config.scale})`;
+
+            let viewport = container.querySelector('.pack-viewport');
+            if (!viewport) {
+                viewport = document.createElement('div');
+                viewport.className = 'pack-viewport';
+                container.appendChild(viewport);
+            }
+
+            const bwClass = isGrayscale ? 'grayscale-filter' : '';
+            const backActiveClass = isShowingBack ? 'active' : '';
+
+            viewport.innerHTML = `
+                <div style="position: absolute; inset: 0; background-color: #e5e5e5; z-index: 1;"></div>
+                <img src="${activeImageSrc}" alt="Panel Surface Front" class="user-surface-image img-glow-transition ${bwClass}" style="z-index: 10;" />
+                <img src="${backImageSrc}" alt="Panel Surface Back" class="img-glow-transition panel-back-view ${backActiveClass}" onclick="toggleBackView()" />
+            `;
+
+            applyImageTransform();
+        }
+
+        // Update UI specifications and trigger re-render
+        function updateFotoUI() {
+            const config = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
+            const label = getCachedEl('fotopanel-label');
+            const price = getCachedEl('fotopanel-price');
+            const media = getCachedEl('fotopanel-media');
+            
+            if (label) label.textContent = config.label;
+            if (price) price.textContent = config.price;
+            if (media) media.textContent = config.media;
+
+            renderPanelImages(config);
+        }
+
+        // Open WhatsApp checkout order line
+        function acquireNodeCashflow() {
+            const variant = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
+            const styleText = isGrayscale ? 'Adh ikjet print b/w' : 'Adh inkjet print full color';
+            
+            const message = `¡Hola! Quiero hacer un pedido de un FotoPanel personalizado \n\n` +
+                `• Tamaño: ${variant.label} cms\n` +
+                `• Medio: ${styleText}\n` +
+                `• Soporte: MDF ${variant.media}\n` +
+                `• Precio: ${variant.price} COP\n\n` +
+                `¿Cuáles son los pasos para enviar la foto y acordar el pago?`;
+
+            triggerHaptic([15, 40, 15]);
+            window.open(`https://api.whatsapp.com/send?phone=${targetPhoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // Initialize stage on DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            updateFotoUI();
+        });
+    </script>
+</body>
+</html>
+EOF
+
+# 2. Generate packages.txt for Streamlit Community Cloud (System apt dependencies)
+cat << 'EOF' > packages.txt
+nodejs
+npm
+chromium
+gconf-service
+libasound2
+libatk1.0-0
+libc6
+libcairo2
+libcups2
+libdbus-1-3
+libexpat1
+libfontconfig1
+libgbm1
+libgcc1
+libgconf-2-4
+libgdk-pixbuf2.0-0
+libglib2.0-0
+libgtk-3-0
+libnspr4
+pango1.0-tools
+libx11-6
+libx11-xcb1
+libxcb1
+libxcomposite1
+libxcursor1
+libxdamage1
+libext6
+libxfixes3
+libxi6
+libxrandr2
+libxrender1
+libss3
+libxtst6
+ca-certificates
+fonts-liberation
+libappindicator1
+libnss3
+lsb-release
+xdg-utils
+wget
+EOF
+
+# 3. Generate requirements.txt for Python dependencies
+cat << 'EOF' > requirements.txt
+streamlit
+pillow
+EOF
+
+# 4. Generate app.py (Streamlit Control Interface with node_modules check)
+cat << 'EOF' > app.py
 import streamlit as st
 import subprocess
 import os
@@ -15,6 +845,10 @@ with col1:
     if st.button("Run Headless Captures"):
         with st.spinner("Capturing studio frames in background..."):
             try:
+                # Install Node.js modules dynamically if absent
+                if not os.path.exists("node_modules"):
+                    subprocess.run(["npm", "install"], check=True)
+
                 result = subprocess.run(["node", "capture.js"], capture_output=True, text=True, check=True)
                 st.success("Studio mode process executed successfully.")
                 st.text(result.stdout)
@@ -26,7 +860,103 @@ with col2:
     output_dir = "output"
     if os.path.exists(output_dir):
         images = glob.glob(f"{output_dir}/*.png")
-        for img_path in images:
-            st.image(img_path, caption=os.path.basename(img_path))
+        if images:
+            for img_path in images:
+                st.image(img_path, caption=os.path.basename(img_path))
+        else:
+            st.info("No captured images found in output/ directory.")
     else:
         st.info("No captured images found in output/ directory.")
+EOF
+
+# 5. Generate capture.js (Puppeteer Headless Automation Script with Linux system Chromium detection)
+cat << 'EOF' > capture.js
+const puppeteer = require('puppeteer');
+const path = require('path');
+const fs = require('fs');
+
+(async () => {
+    // Ensure output directory exists
+    const outputDir = path.join(__dirname, 'output');
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true });
+    }
+
+    // Detect system Chromium binary path for Linux / Streamlit Cloud environments
+    const executablePath = process.env.PUPPETEER_EXEC_PATH || 
+                           (fs.existsSync('/usr/bin/chromium') ? '/usr/bin/chromium' : 
+                           (fs.existsSync('/usr/bin/chromium-browser') ? '/usr/bin/chromium-browser' : undefined));
+
+    // Launch headless Chromium browser
+    const browser = await puppeteer.launch({
+        headless: 'new',
+        executablePath: executablePath,
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu'
+        ]
+    });
+
+    const page = await browser.newPage();
+    // High DPI 1:1 Viewport setting
+    await page.setViewport({ width: 1080, height: 1080, deviceScaleFactor: 2 });
+
+    const indexPath = `file://${path.join(__dirname, 'index.html')}`;
+    await page.goto(indexPath, { waitUntil: 'networkidle0' });
+
+    // Capture standard initial full-color frame
+    await page.screenshot({ path: path.join(outputDir, 'studio_40x40_color.png') });
+
+    // Click color mode toggle to render B&W frame
+    await page.click('#btn-color-toggle');
+    await page.screenshot({ path: path.join(outputDir, 'studio_40x40_bw.png') });
+
+    // Click variant scale toggle for next dimension frame
+    await page.click('#btn-change-scale');
+    await page.screenshot({ path: path.join(outputDir, 'studio_variant_next.png') });
+
+    await browser.close();
+    console.log('Studio Mode captures saved to /output.');
+})();
+EOF
+
+# 6. Create package.json if missing
+if [ ! -f package.json ]; then
+cat << 'EOF' > package.json
+{
+  "name": "studio-mode-automation",
+  "version": "1.0.0",
+  "description": "Headless Studio Mode Automation for FotoPanel",
+  "main": "capture.js",
+  "scripts": {
+    "capture": "node capture.js"
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0"
+  }
+}
+EOF
+fi
+
+# Make set.sh executable
+chmod +x set.sh
+
+# 7. Execute dependency installations
+echo "=== Installing Python dependencies ==="
+pip install -r requirements.txt
+
+echo "=== Installing Node.js dependencies ==="
+npm install
+
+echo "=== Setup completed successfully ==="
+echo ""
+echo "=== Execution Steps / Instrucciones de Ejecución ==="
+echo ""
+echo "1. Grant permissions and run set.sh locally:"
+echo "   chmod +x set.sh"
+echo "   ./set.sh"
+echo ""
+echo "2. Launch Streamlit interface to verify & run automation:"
+echo "   streamlit run app.py"
