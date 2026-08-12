@@ -136,7 +136,7 @@
         button:hover .icon-tele { fill: var(--icon-hover); }
         button:hover .icon-stroke { stroke: var(--icon-hover); }
 
-        /* PROPORTIONAL 6-TIER HEIGHT LAYOUT (10% - 10% - 50% - 10% - 10% - 10%) */
+        /* RESTRUCTURED 6-BLOCK HEIGHT LAYOUT (10% - 5% - 65% - 5% - 10% - 5%) */
         .header-bar {
             height: 10dvh;
             max-height: 10dvh;
@@ -144,14 +144,14 @@
         }
 
         .info-strip-top {
-            height: 10dvh;
-            max-height: 10dvh;
+            height: 5dvh;
+            max-height: 5dvh;
             flex-shrink: 0;
         }
 
         .main-visualizer-container {
-            height: 50dvh;
-            max-height: 50dvh;
+            height: 65dvh;
+            max-height: 65dvh;
             width: 100%;
             max-width: 800px;
             display: flex;
@@ -166,8 +166,8 @@
         }
 
         .info-strip-bottom {
-            height: 10dvh;
-            max-height: 10dvh;
+            height: 5dvh;
+            max-height: 5dvh;
             flex-shrink: 0;
         }
 
@@ -178,8 +178,8 @@
         }
 
         .footer-container {
-            height: 10dvh;
-            max-height: 10dvh;
+            height: 5dvh;
+            max-height: 5dvh;
             width: 100%;
             flex-shrink: 0;
             background: var(--jako-glass);
@@ -194,7 +194,7 @@
             position: relative;
             width: 100%;
             max-width: 360px;
-            max-height: 42dvh;
+            max-height: 55dvh;
             aspect-ratio: 1 / 1;
             flex-shrink: 0;
             margin: auto;
@@ -210,15 +210,23 @@
             overflow: hidden;
         }
 
-        #fotopanel-pack-container img {
+        /* Front Image Transformation Handling */
+        .panel-front-view {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transform-origin: center center;
+            transition: transform 0.3s ease, filter 0.5s ease;
         }
 
         .panel-back-view {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             z-index: 20;
             opacity: 0;
             pointer-events: none;
@@ -245,7 +253,7 @@
         .info-strip {
             width: 100%;
             color: var(--jako-text);
-            font-size: 12px;
+            font-size: 9px;
             letter-spacing: 0.25em;
             text-transform: uppercase;
             padding: 0.3rem 1rem;
@@ -299,11 +307,11 @@
             border-bottom: 1px solid var(--jako-border);
             background: var(--jako-glass);
             backdrop-filter: blur(20px);
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
         .btn-control-action {
-            width: 4.5rem !important;
+            width: 3.8rem !important;
             height: 100%;
         }
 
@@ -312,7 +320,7 @@
             display: flex;
             align-items: center;
             gap: 0.35em;
-            font-size: 8px;
+            font-size: 7px;
             letter-spacing: 0.35em;
             font-weight: 700;
             color: var(--jako-text);
@@ -335,18 +343,73 @@
     <div id="page-bg-overlay"></div>
     <div class="ambient-gradient"></div>
         
-    <!-- Top Action Controls (Header - 10% Height) -->
-    <div class="action-controls-grid header-bar">
+    <!-- Block 1: Header Bar (10% Height) -->
+    <div class="action-controls-grid header-bar" style="position: relative; justify-content: center;">
         <button class="btn-reset-text" title="Home / Reset" onclick="resetView()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
                 <rect x="4" y="4" width="16" height="16" />
             </svg>
             <span>FOTOPANEL</span>
         </button>
+
+        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action" style="position: absolute; right: 1rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+        </button>
     </div>
 
-    <!-- Top Product Spec Strip (Below Header - 10% Height) -->
+    <!-- Block 2: Top Spec Strip (5% Height) -->
     <div class="info-strip info-strip-top">
+        <div class="info-strip-content">
+            <span class="info-separator">Your printing services</span>
+        </div>
+    </div>
+
+    <!-- Block 3: Main Visualizer Stage (65% Height) -->
+    <main class="main-visualizer-container">
+        <div id="fotopanel-pack-container" onclick="toggleBackView()">
+            <div class="pack-viewport"></div>
+        </div>
+    </main>
+
+    <!-- Block 4: Bottom Spec Strip (5% Height) -->
+    <div class="info-strip info-strip-bottom">
+        <div class="info-strip-content">
+
+            <div class="info-item-block">
+                <span id="fotopanel-finish" class="tele-value">ADH INKJET</span>
+                <span class="info-item-title">PRINTING</span>
+            </div>
+
+            <span class="info-separator">/</span>
+
+            <div class="info-item-block">
+                <span id="fotopanel-label" class="tele-value">40X40</span>
+                <span class="info-item-title">CMS</span>
+            </div>
+            
+            <span class="info-separator">/</span>
+
+            <div class="info-item-block">
+                <span id="fotopanel-media" class="tele-value">MDF 12MM</span>
+                <span class="info-item-title">MDF</span>
+            </div>
+
+            <span class="info-separator">/</span>
+
+            <div class="info-item-block">
+                <span id="fotopanel-price" class="tele-value">$40MIL</span>
+                <span class="info-item-title">COP $</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Block 5: Action Controls Bar (10% Height) -->
+    <div class="action-controls-grid controls-bar">
+        <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
+
         <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <path d="M4 8V4h16v4" />
@@ -354,52 +417,11 @@
             </svg>
         </button>
 
-        <div class="info-strip-content">
-            <span class="info-separator">Your personalized print</span>
-        </div>
-    </div>
-
-    <!-- Visualizer Stage (Main Canvas - 50% Height) -->
-    <main class="main-visualizer-container">
-        <div id="fotopanel-pack-container" onclick="toggleBackView()">
-            <div class="pack-viewport"></div>
-        </div>
-    </main>
-
-    <!-- Bottom Product Spec Strip (Above Controls - 10% Height) -->
-    <div class="info-strip info-strip-bottom">
-        <div class="info-strip-content">
-            <div class="info-item-block">
-                <span id="fotopanel-label" class="tele-value">40X40</span>
-                <span class="info-item-title">SIZE</span>
-            </div>
-            
-            <span class="info-separator">/</span>
-            
-            <div class="info-item-block">
-                <span id="fotopanel-price" class="tele-value">$40MIL</span>
-                <span class="info-item-title">PRICE</span>
-            </div>
-
-            <span class="info-separator">/</span>
-
-            <div class="info-item-block">
-                <span id="fotopanel-media" class="tele-value">MDF 12MM</span>
-                <span class="info-item-title">MEDIA</span>
-            </div>
-        </div>
-
-        <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action" style="padding: 0.5rem;">
+        <button id="btn-crop-zoom" title="Recuadrar / Zoom Photo" onclick="cycleImageCropScale()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                <path d="M4 16v4h16v-4" />
-                <path d="M12 7v10m0 0l-4-4m4 4l4-4" />
+                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m-3-3h6" />
             </svg>
         </button>
-    </div>
-
-    <!-- Bottom Action Controls (Controls Bar - 10% Height) -->
-    <div class="action-controls-grid controls-bar">
-        <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
 
         <button id="btn-change-scale" title="Change Scale / Size" onclick="rotateFotoVariant('next')" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
@@ -433,16 +455,15 @@
             </svg>
         </button>
 
-        <!-- Theme Toggle Button -->
-        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action" style="padding: 0.5rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <path d="M4 16v4h16v-4" />
+                <path d="M12 7v10m0 0l-4-4m4 4l4-4" />
             </svg>
         </button>
     </div>
 
-    <!-- Footer (Footer Bar - 10% Height) -->
+    <!-- Block 6: Footer Bar (5% Height) -->
     <footer class="footer-container">
         <span class="footer-brand-text">
             <span>JAKO.DEV</span>
@@ -459,29 +480,29 @@
                 defaultVariant: 'PANEL 20X20',
                 variants: {
                     'PANEL 20X20': { 
-                        label: '20X20CMS', 
+                        label: '20X20', 
                         spec: 'Your photo personalized', 
-                        media: 'MDF 12MM',
+                        media: '12MM',
                         finish: 'ADH INKJET PRINT',
-                        price: 'COP$20MIL', 
+                        price: '20MIL', 
                         id: 'FP-20X20',
                         scale: 0.50
                     },
                     'PANEL 30X30': { 
-                        label: '30X30CMS', 
+                        label: '30X30', 
                         spec: 'Your photo personalized', 
-                        media: 'MDF 9MM',
+                        media: '9MM',
                         finish: 'ADH INKJET PRINT',
-                        price: '$30MIL', 
+                        price: '30MIL', 
                         id: 'FP-30X30',
                         scale: 0.75
                     },
                     'PANEL 40X40': { 
-                        label: '40X40CMS', 
+                        label: '40X40', 
                         spec: 'Your photo personalized', 
-                        media: 'MDF 12MM',
+                        media: '9MM',
                         finish: 'ADH INKJET PRINT',
-                        price: '$40MIL', 
+                        price: '40MIL', 
                         id: 'FP-40X40',
                         scale: 1.00
                     }
@@ -497,6 +518,10 @@
         let activeImageSrc = 'img/photo.png';
         const backImageSrc = 'img/30x30B.png';
         const targetPhoneNumber = "573128707083";
+
+        // Image Crop / Scale States (1.0 = Fit/Original, 1.25 = Zoom In, 1.5 = Max Zoom)
+        const imageCropScales = [1.0, 1.25, 1.5];
+        let currentCropIndex = 0;
 
         // DOM Cache Helper
         const cachedElements = {};
@@ -529,7 +554,7 @@
             if (input) input.click();
         }
 
-        // Handle Custom User Image Upload & Reset Back View
+        // Handle Custom User Image Upload & Reset Back View / Scale
         function handleUserImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -538,10 +563,19 @@
             reader.onload = function(e) {
                 activeImageSrc = e.target.result;
                 isShowingBack = false;
+                currentCropIndex = 0;
                 updateFotoUI();
                 triggerHaptic([10, 20]);
             };
             reader.readAsDataURL(file);
+        }
+
+        // Cycle through Image Zoom/Crop levels
+        function cycleImageCropScale() {
+            currentCropIndex = (currentCropIndex + 1) % imageCropScales.length;
+            isShowingBack = false;
+            updateFotoUI();
+            triggerHaptic(12);
         }
 
         // Cycle Panel Variants (Sizes) & Reset Back View
@@ -586,6 +620,7 @@
             currentFotoVariant = 'PANEL 40X40';
             isGrayscale = false;
             isShowingBack = false;
+            currentCropIndex = 0;
             activeImageSrc = 'img/photo.png';
             const input = getCachedEl('user-image-input');
             if (input) input.value = '';
@@ -610,10 +645,11 @@
 
             const bwClass = isGrayscale ? 'grayscale-filter' : '';
             const backActiveClass = isShowingBack ? 'active' : '';
+            const imgZoom = imageCropScales[currentCropIndex];
 
             viewport.innerHTML = `
                 <div style="position: absolute; inset: 0; background-color: #e5e5e5; z-index: 1;"></div>
-                <img src="${activeImageSrc}" alt="Panel Surface Front" class="img-glow-transition ${bwClass}" style="z-index: 10;" />
+                <img src="${activeImageSrc}" alt="Panel Surface Front" class="img-glow-transition panel-front-view ${bwClass}" style="z-index: 10; transform: scale(${imgZoom});" />
                 <img src="${backImageSrc}" alt="Panel Surface Back" class="img-glow-transition panel-back-view ${backActiveClass}" />
             `;
         }
@@ -642,6 +678,7 @@
                 `MEDIA: ${variant.media}`,
                 `FINISH: ${variant.finish}`,
                 `STYLE: ${isGrayscale ? 'Black & White' : 'Color'}`,
+                `ZOOM: ${imageCropScales[currentCropIndex]}x`,
                 `ID: ${variant.id}`,
                 `PRICE: ${variant.price}`
             ].join('\n');
