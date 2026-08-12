@@ -121,6 +121,13 @@
             letter-spacing: 0.25em;
         }
 
+        .btn-lang-text {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            padding: 0 0.5rem;
+        }
+
         .icon-tele, .icon-stroke {
             width: 1.8rem;
             height: 1.8rem;
@@ -137,11 +144,21 @@
         button:hover .icon-stroke { stroke: var(--icon-hover); }
 
         /* RESTRUCTURED 6-TIER HEIGHT LAYOUT (10% - 5% - 65% - 5% - 10% - 5%) */
-        /* BLOCK 1: 10% Height */
+        /* BLOCK 1: 10% Height Header Bar */
         .header-bar {
             height: 10dvh;
             max-height: 10dvh;
             flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 100;
+            border-bottom: 1px solid var(--jako-border);
+            background: var(--jako-glass);
+            backdrop-filter: blur(20px);
         }
 
         /* BLOCK 2: 5% Height */
@@ -175,11 +192,23 @@
             flex-shrink: 0;
         }
 
-        /* BLOCK 5: 10% Height */
+        /* BLOCK 5: 10% Height Controls Bar */
         .controls-bar {
             height: 10dvh;
             max-height: 10dvh;
             flex-shrink: 0;
+            position: relative;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 0 0.5rem;
+            border-top: 1px solid var(--jako-border);
+            border-bottom: 1px solid var(--jako-border);
+            background: var(--jako-glass);
+            backdrop-filter: blur(20px);
+            gap: 1rem;
         }
 
         /* BLOCK 6: 5% Height */
@@ -308,22 +337,6 @@
             transition: color 0.5s ease, text-shadow 0.5s ease;
         }
 
-        /* ACTION CONTROLS BAR */
-        .action-controls-grid {
-            position: relative;
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 0 0.5rem;
-            border-top: 1px solid var(--jako-border);
-            border-bottom: 1px solid var(--jako-border);
-            background: var(--jako-glass);
-            backdrop-filter: blur(20px);
-            gap: 1rem;
-        }
-
         .btn-control-action {
             width: 3.8rem !important;
             height: 100%;
@@ -391,20 +404,34 @@
     <div id="page-bg-overlay"></div>
     <div class="ambient-gradient"></div>
         
-    <!-- BLOCK 1: Top Action Controls (Header - 10% Height) -->
-    <div class="action-controls-grid header-bar">
+    <!-- BLOCK 1: Top Action Controls Header (10% Height) -->
+    <header class="header-bar">
+        <!-- Far Left: Language Toggle Button (EN/ES) -->
+        <button id="btn-lang-toggle" title="Switch Language" onclick="toggleLanguage()" class="btn-control-action btn-lang-text">
+            <span id="lang-label">EN</span>
+        </button>
+
+        <!-- Center: Reset / Home Button -->
         <button class="btn-reset-text" title="Home / Reset" onclick="resetView()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
                 <rect x="4" y="4" width="16" height="16" />
             </svg>
             <span>FOTOPANEL</span>
         </button>
-    </div>
+
+        <!-- Far Right: Theme Toggle Button -->
+        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+        </button>
+    </header>
 
     <!-- BLOCK 2: Top Product Spec Strip (5% Height) -->
     <div class="info-strip info-strip-top">
         <div class="info-strip-content">
-            <span class="info-separator">Your printing services</span>
+            <span id="top-strip-text" class="info-separator">Your printing services</span>
         </div>
     </div>
 
@@ -421,34 +448,35 @@
 
             <div class="info-item-block">
                 <span id="fotopanel-finish" class="tele-value">ADH INKJET</span>
-                <span class="info-item-title">MEDIA</span>
+                <span id="lbl-printing-media" class="info-item-title">PRINTING MEDIA</span>
             </div>
 
             <span class="info-separator">/</span>
 
             <div class="info-item-block">
                 <span id="fotopanel-media" class="tele-value">MDF 12MM</span>
-                <span class="info-item-title">SUPPORT</span>
+                <span id="lbl-mdf-support" class="info-item-title">MDF SUPPORT</span>
             </div>
+
+            <span class="info-separator">/</span>
 
             <div class="info-item-block">
                 <span id="fotopanel-label" class="tele-value">40X40</span>
-                <span class="info-item-title">SIZE</span>
+                <span class="info-item-title">CMS</span>
             </div>
             
             <span class="info-separator">/</span>
             
             <div class="info-item-block">
-                <span id="fotopanel-price" class="tele-value">$40MIL</span>
-                <span class="info-item-title">PRICE</span>
+                <span id="fotopanel-price" class="tele-value">40MIL</span>
+                <span class="info-item-title">COP $</span>
             </div>
-
 
         </div>
     </div>
 
     <!-- BLOCK 5: Bottom Action Controls (Controls Bar - 10% Height) -->
-    <div class="action-controls-grid controls-bar">
+    <div class="controls-bar">
         <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
 
         <!-- Popup Menu for Interactive Crop/Zoom Adjustment -->
@@ -471,7 +499,22 @@
             </svg>
         </button>
 
-        <!-- New Visual Editing Tool Button (Crop / Zoom Toolbar) -->
+        <!-- Merged Color / Grayscale Toggle Button -->
+        <button id="btn-color-toggle" title="Toggle Color / B&W Mode" onclick="toggleFotoColorMode()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" class="icon-stroke">
+                <defs>
+                    <linearGradient id="color-bw-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ff0000" />
+                        <stop offset="33%" stop-color="#0000ff" />
+                        <stop offset="66%" stop-color="#ffffff" />
+                        <stop offset="100%" stop-color="#000000" />
+                    </linearGradient>
+                </defs>
+                <rect x="4" y="4" width="16" height="16" fill="url(#color-bw-grad)" stroke="none" />
+            </svg>
+        </button>
+
+        <!-- Visual Editing Tool Button (Crop / Zoom Toolbar) -->
         <button id="btn-crop-zoom" title="Recrop & Zoom Photo" onclick="toggleCropToolbar()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <path d="M6 2v14a2 2 0 002 2h14" />
@@ -479,39 +522,7 @@
             </svg>
         </button>
 
-        <button id="btn-mode-color" title="Color Mode" onclick="setFotoColorMode(false)" class="btn-control-action">
-            <svg viewBox="0 0 24 24" class="icon-stroke">
-                <defs>
-                    <linearGradient id="rainbow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="25%" stop-color="#ff0000" />
-                        <stop offset="50%" stop-color="#ff7f00" />
-                        <stop offset="75%" stop-color="#0000ff" />
-                        <stop offset="100%" stop-color="#8b00ff" />
-                    </linearGradient>
-                </defs>
-                <rect x="4" y="4" width="16" height="16" fill="url(#rainbow-grad)" stroke="none" />
-            </svg>
-        </button>
 
-        <button id="btn-mode-bw" title="B&W Mode" onclick="setFotoColorMode(true)" class="btn-control-action">
-            <svg viewBox="0 0 24 24" class="icon-stroke">
-                <defs>
-                    <linearGradient id="bw-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#ffffff" />
-                        <stop offset="100%" stop-color="#000000" />
-                    </linearGradient>
-                </defs>
-                <rect x="4" y="4" width="16" height="16" fill="url(#bw-grad)" stroke="none" />
-            </svg>
-        </button>
-
-        <!-- Theme Toggle Button -->
-        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-            </svg>
-        </button>
 
         <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action" style="padding: 0.5rem;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
@@ -524,7 +535,6 @@
     <!-- BLOCK 6: Footer (Footer Bar - 5% Height) -->
     <footer class="footer-container">
         <span class="footer-brand-text">
-            <span>JAKO.DEV</span>
             <span class="footer-copy-symbol">©</span>
             <span>2026</span>
         </span>
@@ -535,32 +545,35 @@
         // Product catalog specifications
         const ARTEPANEL_CATALOG = {
             'PULSOR': {
-                defaultVariant: 'PANEL 20X20',
+                defaultVariant: 'PANEL 40X40',
                 variants: {
                     'PANEL 20X20': { 
-                        label: '20X20CMS', 
-                        spec: 'Your photo personalized', 
-                        media: 'MDF 12MM',
+                        label: '20X20', 
+                        spec_en: 'Your photo personalized', 
+                        spec_es: 'Tu foto personalizada', 
+                        media: '12MM',
                         finish: 'ADH INKJET PRINT',
-                        price: 'COP$20MIL', 
+                        price: '20MIL', 
                         id: 'FP-20X20',
                         scale: 0.50
                     },
                     'PANEL 30X30': { 
-                        label: '30X30CMS', 
-                        spec: 'Your photo personalized', 
-                        media: 'MDF 9MM',
+                        label: '30X30', 
+                        spec_en: 'Your photo personalized', 
+                        spec_es: 'Tu foto personalizada', 
+                        media: '9MM',
                         finish: 'ADH INKJET PRINT',
-                        price: '$30MIL', 
+                        price: '30MIL', 
                         id: 'FP-30X30',
                         scale: 0.75
                     },
                     'PANEL 40X40': { 
-                        label: '40X40CMS', 
-                        spec: 'Your photo personalized', 
-                        media: 'MDF 12MM',
+                        label: '40X40', 
+                        spec_en: 'Your photo personalized', 
+                        spec_es: 'Tu foto personalizada', 
+                        media: '12MM',
                         finish: 'ADH INKJET PRINT',
-                        price: '$40MIL', 
+                        price: '40MIL', 
                         id: 'FP-40X40',
                         scale: 1.00
                     }
@@ -573,6 +586,7 @@
         let currentFotoVariant = 'PANEL 40X40';
         let isGrayscale = false;
         let isShowingBack = false;
+        let currentLang = 'EN'; // Options: 'EN' or 'ES'
         let activeImageSrc = 'img/photo.png';
         const backImageSrc = 'img/30x30B.png';
         const targetPhoneNumber = "573128707083";
@@ -608,6 +622,25 @@
         function initTheme() {
             const savedTheme = localStorage.getItem('fotopanel_theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        // Toggle Language State (EN <-> ES)
+        function toggleLanguage() {
+            currentLang = currentLang === 'EN' ? 'ES' : 'EN';
+            const langLabel = getCachedEl('lang-label');
+            if (langLabel) langLabel.textContent = currentLang;
+
+            // Update UI Static Labels
+            const topStrip = getCachedEl('top-strip-text');
+            const lblPrinting = getCachedEl('lbl-printing-media');
+            const lblMdf = getCachedEl('lbl-mdf-support');
+
+            if (topStrip) topStrip.textContent = currentLang === 'EN' ? 'Your printing services' : 'Tus servicios de impresión';
+            if (lblPrinting) lblPrinting.textContent = currentLang === 'EN' ? 'PRINTING MEDIA' : 'MEDIO DE IMPRESIÓN';
+            if (lblMdf) lblMdf.textContent = currentLang === 'EN' ? 'MDF SUPPORT' : 'SOPORTE MDF';
+
+            triggerHaptic(10);
+            updateFotoUI();
         }
 
         // Trigger Hidden File Upload Input
@@ -719,14 +752,10 @@
             triggerHaptic(15);
         }
 
-        // Set Color or Black & White Mode & Reset Back View
-        function setFotoColorMode(enableBW) {
+        // Toggle Single Button Color vs Grayscale Mode
+        function toggleFotoColorMode() {
             isShowingBack = false;
-            if (isGrayscale === enableBW) {
-                updateFotoUI();
-                return;
-            }
-            isGrayscale = enableBW;
+            isGrayscale = !isGrayscale;
             updateFotoUI();
             triggerHaptic(10);
         }
@@ -798,10 +827,11 @@
         // Handle WhatsApp Checkout Action
         function acquireNodeCashflow() {
             const variant = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
+            const spec = currentLang === 'EN' ? variant.spec_en : variant.spec_es;
             const message = [
                 `ORDER: ${variant.label}`,
                 `VARIANT: ${currentFotoVariant}`,
-                `SPEC: ${variant.spec}`,
+                `SPEC: ${spec}`,
                 `MEDIA: ${variant.media}`,
                 `FINISH: ${variant.finish}`,
                 `STYLE: ${isGrayscale ? 'Black & White' : 'Color'}`,
