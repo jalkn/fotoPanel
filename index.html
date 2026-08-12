@@ -4,20 +4,18 @@
     <meta charset="UTF-8">
     <link class="icon" type="image/png" href="img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FOTOPANEL</title>
+    <title>FOTOPANEL.ART</title>
     
     <!-- External Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* ==========================================================================
-           1. CSS VARIABLES & THEME CONFIGURATION
-           ========================================================================== */
+        /* CSS VARIABLES & THEME CONFIGURATION */
         :root[data-theme="dark"] {
             --jako-bg: #121212;
             --jako-text: #ffffff;
             --jako-border: rgba(255, 255, 255, 0.15);
-            --jako-glass: rgba(30, 30, 30, 0.65);
+            --jako-glass: rgba(30, 30, 30, 0.6);
             --jako-led: rgba(255, 255, 255, 0.6);
             --gradient-start: rgba(255, 255, 255, 0.05);
             --gradient-mid: rgba(18, 18, 18, 0.85);
@@ -29,7 +27,7 @@
             --jako-bg: #f8f9fa;
             --jako-text: #000000;
             --jako-border: rgba(0, 0, 0, 0.12);
-            --jako-glass: rgba(255, 255, 255, 0.65);
+            --jako-glass: rgba(255, 255, 255, 0.4);
             --jako-led: rgba(0, 0, 0, 0.3);
             --gradient-start: rgba(0, 0, 0, 0.02);
             --gradient-mid: rgba(248, 249, 250, 0.85);
@@ -37,9 +35,7 @@
             --icon-hover: #666666;
         }
 
-        /* ==========================================================================
-           2. GLOBAL RESET & BASE STYLES
-           ========================================================================== */
+        /* GLOBAL RESET & BASE STYLES */
         *, ::before, ::after { 
             box-sizing: border-box; 
             margin: 0;
@@ -76,7 +72,7 @@
 
         button, span, div { -webkit-tap-highlight-color: transparent; }
 
-        /* Background Overlays */
+        /* AMBIENT BACKGROUND OVERLAYS */
         #page-bg-overlay, .ambient-gradient {
             position: fixed;
             inset: 0;
@@ -96,12 +92,12 @@
             pointer-events: none;
         }
 
-        /* Unified Transitions */
+        /* GLOBAL TRANSITION SELECTOR */
         .img-glow-transition, .info-strip, .action-controls-grid, footer, #fotopanel-pack-container, .panel-back-view {
-            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), filter 0.4s ease, border-color 0.4s ease;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease, border-color 0.5s ease;
         }
 
-        /* Common Button Styles */
+        /* GLASS BUTTONS & COMMON BUTTON STYLES */
         button {
             background-color: transparent;
             border: none;
@@ -113,51 +109,52 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        button:hover { opacity: 0.85; }
+        button:hover { opacity: 0.8; }
         button:active { transform: scale(0.92); }
 
         .btn-reset-text {
             width: auto;
-            padding: 0 0.75rem;
-            gap: 0.6rem;
-            font-size: clamp(14px, 2.2vw, 18px);
+            padding: 0 0.5rem;
+            gap: 0.5rem;
+            font-size: 16px;
             font-weight: 700;
             letter-spacing: 0.25em;
         }
 
-        .icon-stroke {
-            width: clamp(1.4rem, 2.5vw, 1.8rem);
-            height: clamp(1.4rem, 2.5vw, 1.8rem);
-            stroke: var(--jako-text);
-            transition: stroke 0.3s ease;
+        .icon-tele, .icon-stroke {
+            width: 1.8rem;
+            height: 1.8rem;
+            transition: fill 0.3s ease, stroke 0.3s ease;
         }
 
+        .icon-tele {
+            fill: var(--jako-text);
+            pointer-events: none;
+        }
+
+        .icon-stroke { stroke: var(--jako-text); }
+        button:hover .icon-tele { fill: var(--icon-hover); }
         button:hover .icon-stroke { stroke: var(--icon-hover); }
 
-        /* ==========================================================================
-           3. PROPORTIONAL 6-TIER HEIGHT LAYOUT (10% - 10% - 50% - 10% - 10% - 10%)
-           ========================================================================== */
-        
-        /* Tier 1: Header Bar (10dvh) */
+        /* RESTRUCTURED 6-TIER HEIGHT LAYOUT (10% - 5% - 65% - 5% - 10% - 5%) */
+        /* BLOCK 1: 10% Height */
         .header-bar {
             height: 10dvh;
             max-height: 10dvh;
-            width: 100%;
             flex-shrink: 0;
         }
 
-        /* Tier 2: Top Information Strip (10dvh) */
+        /* BLOCK 2: 5% Height */
         .info-strip-top {
-            height: 10dvh;
-            max-height: 10dvh;
-            width: 100%;
+            height: 5dvh;
+            max-height: 5dvh;
             flex-shrink: 0;
         }
 
-        /* Tier 3: Main Visualizer Stage (50dvh) */
+        /* BLOCK 3: 65% Height */
         .main-visualizer-container {
-            height: 50dvh;
-            max-height: 50dvh;
+            height: 65dvh;
+            max-height: 65dvh;
             width: 100%;
             max-width: 800px;
             display: flex;
@@ -171,50 +168,45 @@
             flex-shrink: 0;
         }
 
-        /* Tier 4: Bottom Information Strip (10dvh) */
+        /* BLOCK 4: 5% Height */
         .info-strip-bottom {
-            height: 10dvh;
-            max-height: 10dvh;
-            width: 100%;
+            height: 5dvh;
+            max-height: 5dvh;
             flex-shrink: 0;
         }
 
-        /* Tier 5: Action Controls Bar (10dvh) */
+        /* BLOCK 5: 10% Height */
         .controls-bar {
             height: 10dvh;
             max-height: 10dvh;
-            width: 100%;
             flex-shrink: 0;
         }
 
-        /* Tier 6: Footer Container (10dvh) */
+        /* BLOCK 6: 5% Height */
         .footer-container {
-            height: 10dvh;
-            max-height: 10dvh;
+            height: 5dvh;
+            max-height: 5dvh;
             width: 100%;
             flex-shrink: 0;
             background: var(--jako-glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(10px);
             z-index: 50;
             padding: 0 1.5rem;
             border-top: 1px solid var(--jako-border);
         }
 
-        /* ==========================================================================
-           4. VISUALIZER & PACK CONTAINER
-           ========================================================================== */
+        /* MAIN CONTAINER RESPONSIBLE FOR ENTIRE SCALING */
         #fotopanel-pack-container {
             position: relative;
-            width: min(85vw, 42dvh);
-            height: min(85vw, 42dvh);
+            width: 100%;
+            max-width: 380px;
+            max-height: 55dvh;
             aspect-ratio: 1 / 1;
             flex-shrink: 0;
             margin: auto;
             cursor: pointer;
-            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 40px 60px rgba(0,0,0,0.6));
             transform-origin: center center;
-            will-change: transform;
         }
 
         .pack-viewport {
@@ -222,16 +214,30 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            border-radius: 4px;
         }
 
-        #fotopanel-pack-container img {
+        /* FRONT IMAGE STYLING WITH TRANSFORM SUPPORT FOR PAN/ZOOM */
+        .user-surface-image {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            pointer-events: none;
+            transform-origin: center center;
+            will-change: transform;
+            cursor: grab;
+        }
+
+        .user-surface-image:active {
+            cursor: grabbing;
+        }
+
+        #fotopanel-pack-container img.panel-back-view {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .panel-back-view {
@@ -245,26 +251,26 @@
             pointer-events: auto;
         }
 
+        /* MONOCHROME FILTER STATE */
         .grayscale-filter {
             filter: grayscale(100%);
         }
 
-        /* ==========================================================================
-           5. LAYOUT COMPONENTS & CONTROL GRIDS
-           ========================================================================== */
+        /* UNIFIED FLEX LAYOUT FOR INFO STRIP & FOOTER */
         .info-strip, .footer-container {
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
+        /* PRODUCT SPECIFICATION STRIP */
         .info-strip {
             width: 100%;
             color: var(--jako-text);
-            font-size: clamp(10px, 1.5vw, 13px);
-            letter-spacing: 0.2em;
+            font-size: 10px;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
-            padding: 0.3rem 1rem;
+            padding: 0.1rem 1rem;
             gap: 1.5rem;
             z-index: 20;
         }
@@ -272,7 +278,7 @@
         .info-strip-content {
             display: flex;
             align-items: center;
-            gap: clamp(0.8rem, 2vw, 1.8rem);
+            gap: 1.2rem;
             white-space: nowrap;
         }
 
@@ -281,59 +287,88 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 3px;
+            gap: 2px;
         }
 
         .info-item-title {
-            font-size: clamp(8px, 1.1vw, 10px);
-            opacity: 0.55;
+            font-size: 7px;
+            opacity: 0.5;
             letter-spacing: 0.15em;
         }
 
         .info-separator {
-            opacity: 0.35;
+            opacity: 0.4;
             font-weight: 300;
-            font-size: clamp(12px, 1.8vw, 16px);
         }
 
         .tele-value { 
             color: var(--jako-text); 
-            font-weight: 700;
             text-shadow: var(--jako-led), var(--jako-led);
             transform: translateZ(0);
-            transition: color 0.4s ease, text-shadow 0.4s ease;
+            transition: color 0.5s ease, text-shadow 0.5s ease;
         }
 
-        /* Action Controls Grid */
+        /* ACTION CONTROLS BAR */
         .action-controls-grid {
             position: relative;
             z-index: 100;
             display: flex;
-            justify-content: space-evenly;
+            justify-content: center;
             align-items: center;
             width: 100%;
             padding: 0 0.5rem;
             border-top: 1px solid var(--jako-border);
             border-bottom: 1px solid var(--jako-border);
             background: var(--jako-glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            gap: clamp(0.5rem, 2vw, 1.5rem);
+            backdrop-filter: blur(20px);
+            gap: 1rem;
         }
 
         .btn-control-action {
-            flex: 1;
-            max-width: 4.5rem;
+            width: 3.8rem !important;
             height: 100%;
-            padding: 0.5rem;
         }
 
-        /* Footer Branding */
+        /* CROP / ZOOM TOOLBAR POPUP */
+        .crop-controls-overlay {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--jako-glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--jako-border);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 8px;
+            z-index: 120;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .crop-controls-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .crop-controls-overlay button {
+            font-size: 12px;
+            font-weight: bold;
+            padding: 0.2rem 0.6rem;
+            border: 1px solid var(--jako-border);
+            border-radius: 4px;
+        }
+
+        /* FOOTER BRANDING */
         .footer-brand-text {
             display: flex;
             align-items: center;
-            gap: 0.4em;
-            font-size: clamp(9px, 1.3vw, 12px);
+            gap: 0.35em;
+            font-size: 8px;
             letter-spacing: 0.35em;
             font-weight: 700;
             color: var(--jako-text);
@@ -344,63 +379,55 @@
         }
 
         .footer-copy-symbol {
-            font-size: 1.3em;
+            font-size: 1.5em;
             line-height: 1;
         }
 
-        .footer-container:hover .footer-brand-text { opacity: 0.95; }
+        .footer-container:hover .footer-brand-text { opacity: 0.9; }
     </style>
 </head>
 <body>
 
-    <!-- Ambient Background Layers -->
     <div id="page-bg-overlay"></div>
     <div class="ambient-gradient"></div>
         
-    <!-- Block 1: Top Action Controls Header (10% Height) -->
-    <header class="action-controls-grid header-bar">
+    <!-- BLOCK 1: Top Action Controls (Header - 10% Height) -->
+    <div class="action-controls-grid header-bar">
         <button class="btn-reset-text" title="Home / Reset" onclick="resetView()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
                 <rect x="4" y="4" width="16" height="16" />
             </svg>
             <span>FOTOPANEL</span>
         </button>
+    </div>
 
-        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-            </svg>
-        </button>
-    </header>
-
-    <!-- Block 2: Top Product Spec Strip (10% Height) -->
-    <section class="info-strip info-strip-top" aria-label="Service Information">
+    <!-- BLOCK 2: Top Product Spec Strip (5% Height) -->
+    <div class="info-strip info-strip-top">
         <div class="info-strip-content">
-            <span class="info-separator">YOUR PRINTING SERVICES</span>
+            <span class="info-separator">Your printing services</span>
         </div>
-    </section>
+    </div>
 
-    <!-- Block 3: Visualizer Stage (50% Height) -->
+    <!-- BLOCK 3: Visualizer Stage (Main Canvas - 65% Height) -->
     <main class="main-visualizer-container">
-        <div id="fotopanel-pack-container" onclick="toggleBackView()" title="Click to flip panel view">
+        <div id="fotopanel-pack-container">
             <div class="pack-viewport"></div>
         </div>
     </main>
 
-    <!-- Block 4: Bottom Product Spec Strip (10% Height) -->
-    <section class="info-strip info-strip-bottom" aria-label="Product Specifications">
+    <!-- BLOCK 4: Bottom Product Spec Strip (5% Height) -->
+    <div class="info-strip info-strip-bottom">
         <div class="info-strip-content">
-            <div class="info-item-block">
-                <span id="fotopanel-finish" class="tele-value">ADH INKJET</span>
-                <span class="info-item-title">PRINTING</span>
-            </div>
-
-            <span class="info-separator">/</span>
-
             <div class="info-item-block">
                 <span id="fotopanel-label" class="tele-value">40X40</span>
                 <span class="info-item-title">SIZE</span>
+            </div>
+            
+            <span class="info-separator">/</span>
+            
+            <div class="info-item-block">
+                <span id="fotopanel-price" class="tele-value">$40MIL</span>
+                <span class="info-item-title">PRICE</span>
             </div>
 
             <span class="info-separator">/</span>
@@ -409,22 +436,22 @@
                 <span id="fotopanel-media" class="tele-value">MDF 12MM</span>
                 <span class="info-item-title">MEDIA</span>
             </div>
-
-            <span class="info-separator">/</span>
-            
-            <div class="info-item-block">
-                <span id="fotopanel-price" class="tele-value">$40MIL</span>
-                <span class="info-item-title">PRICE</span>
-            </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Block 5: Bottom Action Controls Bar (10% Height) -->
-    <nav class="action-controls-grid controls-bar" aria-label="Control Actions">
+    <!-- BLOCK 5: Bottom Action Controls (Controls Bar - 10% Height) -->
+    <div class="action-controls-grid controls-bar">
         <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
 
+        <!-- Popup Menu for Interactive Crop/Zoom Adjustment -->
+        <div id="crop-toolbar" class="crop-controls-overlay">
+            <button onclick="adjustImageZoom(0.1)" title="Zoom In">+</button>
+            <button onclick="adjustImageZoom(-0.1)" title="Zoom Out">-</button>
+            <button onclick="resetImageTransform()" title="Reset Framing">RESET</button>
+        </div>
+
         <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="icon-stroke">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <path d="M4 8V4h16v4" />
                 <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
             </svg>
@@ -433,6 +460,14 @@
         <button id="btn-change-scale" title="Change Scale / Size" onclick="rotateFotoVariant('next')" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
                 <rect x="5" y="5" width="14" height="14" />
+            </svg>
+        </button>
+
+        <!-- New Visual Editing Tool Button (Crop / Zoom Toolbar) -->
+        <button id="btn-crop-zoom" title="Recrop & Zoom Photo" onclick="toggleCropToolbar()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <path d="M6 2v14a2 2 0 002 2h14" />
+                <path d="M18 22V8a2 2 0 00-2-2H2" />
             </svg>
         </button>
 
@@ -462,15 +497,23 @@
             </svg>
         </button>
 
-        <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="icon-stroke">
+        <!-- Theme Toggle Button -->
+        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+        </button>
+
+        <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action" style="padding: 0.5rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <path d="M4 16v4h16v-4" />
                 <path d="M12 7v10m0 0l-4-4m4 4l4-4" />
             </svg>
         </button>
-    </nav>
+    </div>
 
-    <!-- Block 6: Footer Bar (10% Height) -->
+    <!-- BLOCK 6: Footer (Footer Bar - 5% Height) -->
     <footer class="footer-container">
         <span class="footer-brand-text">
             <span>JAKO.DEV</span>
@@ -481,12 +524,10 @@
 
     <!-- Core Logic Engine -->
     <script>
-        /**
-         * Product catalog specifications data store
-         */
+        // Product catalog specifications
         const ARTEPANEL_CATALOG = {
             'PULSOR': {
-                defaultVariant: 'PANEL 40X40',
+                defaultVariant: 'PANEL 20X20',
                 variants: {
                     'PANEL 20X20': { 
                         label: '20X20CMS', 
@@ -495,7 +536,7 @@
                         finish: 'ADH INKJET PRINT',
                         price: 'COP$20MIL', 
                         id: 'FP-20X20',
-                        scale: 0.65
+                        scale: 0.50
                     },
                     'PANEL 30X30': { 
                         label: '30X30CMS', 
@@ -504,7 +545,7 @@
                         finish: 'ADH INKJET PRINT',
                         price: '$30MIL', 
                         id: 'FP-30X30',
-                        scale: 0.82
+                        scale: 0.75
                     },
                     'PANEL 40X40': { 
                         label: '40X40CMS', 
@@ -528,26 +569,24 @@
         const backImageSrc = 'img/30x30B.png';
         const targetPhoneNumber = "573128707083";
 
-        // DOM Element Cache Map
-        const cachedElements = new Map();
-        const getCachedEl = (id) => {
-            if (!cachedElements.has(id)) {
-                cachedElements.set(id, document.getElementById(id));
-            }
-            return cachedElements.get(id);
-        };
+        // Image Pan & Zoom Editing State
+        let imgScale = 1;
+        let imgPanX = 0;
+        let imgPanY = 0;
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
 
-        /**
-         * Trigger haptic feedback vibration if supported by device
-         * @param {number|number[]} pattern - Vibration duration or pattern
-         */
+        // DOM Cache Helper
+        const cachedElements = {};
+        const getCachedEl = (id) => cachedElements[id] || (cachedElements[id] = document.getElementById(id));
+
+        // Haptic Feedback Trigger
         const triggerHaptic = (pattern) => { 
             if (navigator.vibrate) navigator.vibrate(pattern); 
         };
 
-        /**
-         * Toggle UI Theme between Dark and Light mode
-         */
+        // Toggle UI Theme (Dark / Light)
         function toggleTheme() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme') || 'dark';
@@ -557,44 +596,107 @@
             triggerHaptic(10);
         }
 
-        /**
-         * Initialize theme configuration from local storage
-         */
+        // Initialize Theme from LocalStorage
         function initTheme() {
             const savedTheme = localStorage.getItem('fotopanel_theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
         }
 
-        /**
-         * Trigger click event on hidden file input element
-         */
+        // Trigger Hidden File Upload Input
         function triggerImageUpload() {
             const input = getCachedEl('user-image-input');
             if (input) input.click();
         }
 
-        /**
-         * Process user uploaded image file and render to panel
-         * @param {Event} event - Input change event
-         */
+        // Handle Custom User Image Upload & Reset Transform Parameters
         function handleUserImageUpload(event) {
-            const file = event.target.files && event.target.files[0];
+            const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
             reader.onload = function(e) {
                 activeImageSrc = e.target.result;
                 isShowingBack = false;
+                resetImageTransform();
                 updateFotoUI();
                 triggerHaptic([10, 20]);
             };
             reader.readAsDataURL(file);
         }
 
-        /**
-         * Cycle panel variant size selection
-         * @param {string} direction - 'next' or 'prev'
-         */
+        // Toggle Interactive Crop & Zoom Overlay Toolbar
+        function toggleCropToolbar() {
+            const toolbar = getCachedEl('crop-toolbar');
+            if (toolbar) {
+                toolbar.classList.toggle('active');
+            }
+            triggerHaptic(10);
+        }
+
+        // Adjust Image Zoom Scale
+        function adjustImageZoom(delta) {
+            imgScale = Math.max(1, Math.min(3, imgScale + delta));
+            applyImageTransform();
+            triggerHaptic(10);
+        }
+
+        // Reset Crop/Zoom Transformations to Default
+        function resetImageTransform() {
+            imgScale = 1;
+            imgPanX = 0;
+            imgPanY = 0;
+            applyImageTransform();
+        }
+
+        // Apply Scale & Translate CSS Transforms to Front Image
+        function applyImageTransform() {
+            const img = document.querySelector('.user-surface-image');
+            if (img) {
+                img.style.transform = `scale(${imgScale}) translate(${imgPanX}px, ${imgPanY}px)`;
+            }
+        }
+
+        // Setup Drag & Pan Gesture Event Handlers
+        function setupImagePanGestures() {
+            const container = getCachedEl('fotopanel-pack-container');
+            if (!container) return;
+
+            const onStart = (e) => {
+                if (isShowingBack) return;
+                isDragging = true;
+                const point = e.touches ? e.touches[0] : e;
+                startX = point.clientX - imgPanX;
+                startY = point.clientY - imgPanY;
+            };
+
+            const onMove = (e) => {
+                if (!isDragging) return;
+                const point = e.touches ? e.touches[0] : e;
+                imgPanX = point.clientX - startX;
+                imgPanY = point.clientY - startY;
+                applyImageTransform();
+            };
+
+            const onEnd = () => {
+                isDragging = false;
+            };
+
+            container.addEventListener('mousedown', onStart);
+            window.addEventListener('mousemove', onMove);
+            window.addEventListener('mouseup', onEnd);
+
+            container.addEventListener('touchstart', onStart, { passive: true });
+            window.addEventListener('touchmove', onMove, { passive: true });
+            window.addEventListener('touchend', onEnd);
+
+            // Wheel zoom gesture on visualizer
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                adjustImageZoom(e.deltaY < 0 ? 0.1 : -0.1);
+            }, { passive: false });
+        }
+
+        // Cycle Panel Variants (Sizes) & Reset Back View
         function rotateFotoVariant(direction = 'next') {
             const variants = Object.keys(ARTEPANEL_CATALOG[currentFotoItem].variants);
             let currentIndex = variants.indexOf(currentFotoVariant);
@@ -609,10 +711,7 @@
             triggerHaptic(15);
         }
 
-        /**
-         * Set image surface color mode (Full color / Black & White)
-         * @param {boolean} enableBW - True to enable grayscale filter
-         */
+        // Set Color or Black & White Mode & Reset Back View
         function setFotoColorMode(enableBW) {
             isShowingBack = false;
             if (isGrayscale === enableBW) {
@@ -624,9 +723,7 @@
             triggerHaptic(10);
         }
 
-        /**
-         * Toggle visibility of rear surface panel texture
-         */
+        // Toggle Back PNG Surface Visibility
         function toggleBackView() {
             isShowingBack = !isShowingBack;
             const backEl = document.querySelector('.panel-back-view');
@@ -636,14 +733,13 @@
             triggerHaptic(20);
         }
 
-        /**
-         * Reset interface state to default settings
-         */
+        // Reset Entire Application View State
         function resetView() {
             currentFotoVariant = 'PANEL 40X40';
             isGrayscale = false;
             isShowingBack = false;
             activeImageSrc = 'img/photo.png';
+            resetImageTransform();
             const input = getCachedEl('user-image-input');
             if (input) input.value = '';
             
@@ -651,10 +747,7 @@
             triggerHaptic([10, 10]);
         }
 
-        /**
-         * Render front/back surface image elements and set scale factor
-         * @param {Object} config - Active variant configuration object
-         */
+        // Render Surface Images & Update Container Scaling
         function renderPanelImages(config) {
             const container = getCachedEl('fotopanel-pack-container');
             if (!container) return;
@@ -673,14 +766,14 @@
 
             viewport.innerHTML = `
                 <div style="position: absolute; inset: 0; background-color: #e5e5e5; z-index: 1;"></div>
-                <img src="${activeImageSrc}" alt="Panel Surface Front" class="img-glow-transition ${bwClass}" style="z-index: 10;" />
-                <img src="${backImageSrc}" alt="Panel Surface Back" class="img-glow-transition panel-back-view ${backActiveClass}" />
+                <img src="${activeImageSrc}" alt="Panel Surface Front" class="user-surface-image img-glow-transition ${bwClass}" style="z-index: 10;" />
+                <img src="${backImageSrc}" alt="Panel Surface Back" class="img-glow-transition panel-back-view ${backActiveClass}" onclick="toggleBackView()" />
             `;
+
+            applyImageTransform();
         }
 
-        /**
-         * Synchronize UI text labels and images with current catalog state
-         */
+        // Synchronize UI Elements with Catalog State
         function updateFotoUI() {
             const config = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
             const label = getCachedEl('fotopanel-label');
@@ -694,9 +787,7 @@
             renderPanelImages(config);
         }
 
-        /**
-         * Build order summary payload and redirect to WhatsApp Web API
-         */
+        // Handle WhatsApp Checkout Action
         function acquireNodeCashflow() {
             const variant = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
             const message = [
@@ -706,6 +797,7 @@
                 `MEDIA: ${variant.media}`,
                 `FINISH: ${variant.finish}`,
                 `STYLE: ${isGrayscale ? 'Black & White' : 'Color'}`,
+                `ZOOM: ${Math.round(imgScale * 100)}%`,
                 `ID: ${variant.id}`,
                 `PRICE: ${variant.price}`
             ].join('\n');
@@ -714,10 +806,11 @@
             window.open(`https://api.whatsapp.com/send?phone=${targetPhoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        // Initialize Application on DOM Ready
+        // DOM Content Loaded Handler
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
             updateFotoUI();
+            setupImagePanGestures();
         });
     </script>
 </body>
