@@ -23,6 +23,19 @@
             --icon-hover: #b6b8b9;
         }
 
+        /* DARK THEME OVERRIDES */
+        [data-theme="dark"] {
+            --jako-bg: #0d0f12;
+            --jako-text: #ffffff;
+            --jako-border: rgba(255, 255, 255, 0.15);
+            --jako-glass: rgba(18, 22, 28, 0.6);
+            --jako-led: rgba(50, 50, 50, 0.6);
+            --gradient-start: rgba(255, 255, 255, 0.02);
+            --gradient-mid: rgba(13, 15, 18, 0.85);
+            --gradient-end: #000000;
+            --icon-hover: #6c757d;
+        }
+
         /* GLOBAL RESET & BASE STYLES */
         *, ::before, ::after { 
             box-sizing: border-box; 
@@ -102,10 +115,19 @@
             color: var(--jako-text);
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 0.35rem;
+            padding: 0 0.4rem;
         }
 
         .btn-tele-glass:hover { opacity: 0.8; }
         .btn-tele-glass:active { transform: scale(0.92); }
+
+        .btn-tag {
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            opacity: 0.6;
+        }
 
         .btn-reset-text {
             width: auto;
@@ -175,9 +197,13 @@
             transition: filter 0.5s ease;
         }
 
-        /* MONOCHROME FILTER STATE */
+        /* IMAGE FILTER STATES */
         .grayscale-filter {
             filter: grayscale(100%);
+        }
+
+        .sepia-filter {
+            filter: sepia(100%);
         }
 
         /* PRODUCT SPECIFICATION STRIP */
@@ -188,22 +214,55 @@
             width: 100%;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: space-between;
             color: var(--jako-text);
             font-size: 8px;
             letter-spacing: 0.25em;
             text-transform: uppercase;
             padding: 0.5rem 1rem;
-            gap: 0.5rem;
+            gap: 1rem;
             z-index: 20;
+            overflow: hidden;
+        }
+
+        /* KEYFRAMES FOR INFINITE TICKER SCROLL */
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* MARQUEE CONTAINER & CONTENT */
+        .info-marquee-wrapper {
+            display: flex;
+            justify-content: flex-start;
+            overflow: hidden;
+            width: 100%;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
 
         .info-strip-content {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            gap: 0.5rem;
+            justify-content: flex-start;
+            gap: 0.6rem;
             white-space: nowrap;
+            will-change: transform;
+            animation: scroll-left 12s linear infinite;
+        }
+
+        /* Pausa suave de la animación al pasar el cursor */
+        .info-marquee-wrapper:hover .info-strip-content {
+            animation-play-state: paused;
+        }
+
+        .spec-tag {
+            opacity: 0.5;
+            font-weight: 200;
         }
 
         .info-separator {
@@ -218,12 +277,12 @@
             transition: color 0.5s ease, text-shadow 0.5s ease;
         }
 
-        /* ACTION CONTROLS BAR */
+        /* ACTION CONTROLS BAR (CENTERED LAYOUT) */
         .action-controls-grid {
             position: relative;
             z-index: 100;
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
             align-items: center;
             width: 100%;
             height: 3rem;
@@ -234,13 +293,15 @@
             backdrop-filter: blur(20px);
             transition: background 0.5s ease, border-color 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
             gap: 0.5rem;
+            overflow-x: auto;
         }
 
         .action-controls-grid .btn-tele-glass {
             height: 100%;
+            flex-shrink: 0;
         }
 
-        /* FOOTER BRANDING (RIGHT-ALIGNED) */
+        /* FOOTER BRANDING (CENTERED LAYOUT) */
         .footer-container {
             height: 50px;
             width: 100%;
@@ -251,7 +312,7 @@
             padding: 0 1.5rem;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: center;
             border-top: 1px solid var(--jako-border);
         }
 
@@ -282,13 +343,13 @@
     <div id="page-bg-overlay"></div>
     <div class="ambient-gradient"></div>
         
-    <!-- Top Action Controls -->
+    <!-- Top Action Controls (Centered) -->
     <div class="action-controls-grid">
         <button class="btn-tele-glass btn-reset-text" title="Home / Reset" onclick="resetView()">
-            <span>FOTOPANEL</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
                 <rect x="4" y="4" width="16" height="16" />
             </svg>
+            <span>FOTOPANEL</span>
         </button>
     </div>
 
@@ -298,44 +359,61 @@
             <div class="pack-viewport"></div>
         </div>
 
-        <!-- Product Spec Strip -->
+        <!-- Product Spec Strip with Upload and Acquire Actions Frozen on Sides -->
         <div class="info-strip">
-            <div class="info-strip-content">
-                <span id="fotopanel-label" class="tele-value">40X40</span>
-                <span class="info-separator">/</span>
-                <span id="fotopanel-price" class="tele-value">$40MIL</span>
-            </div>
+            <!-- Hidden File Input for Custom Image Upload -->
+            <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
 
-            <!-- Order via WhatsApp / Acquire Button (Bottom Base + Side Corners + Arrow Down) -->
-            <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-tele-glass" style="width: auto; padding: 0.5rem;">
+            <!-- Frozen Left: Upload Custom Image Button -->
+            <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-tele-glass" style="width: auto; padding: 0.5rem; flex-shrink: 0;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                    <!-- Complete Bottom Line & Vertical Side Edges -->
-                    <path d="M4 16v4h16v-4" />
-                    <!-- Arrow Down -->
-                    <path d="M12 7v10m0 0l-4-4m4 4l4-4" />
+                    <path d="M4 8V4h16v4" />
+                    <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
                 </svg>
             </button>
 
+            <!-- Center Spec Values Display with Active Scroll Animation -->
+            <div class="info-marquee-wrapper">
+                <div class="info-strip-content">
+                    <span class="info-separator">/</span>
+                    <div class="spec-item"><span class="spec-tag">COP:</span><span id="fotopanel-price" class="tele-value">$40MIL</span></div>
+                    <span class="info-separator">/</span>
+                    <div class="spec-item"><span class="spec-tag">DIM:</span><span id="fotopanel-dims" class="tele-value">40X40CM</span></div>
+                    <span class="info-separator">/</span>
+                    <div class="spec-item"><span class="spec-tag">TIK:</span><span id="fotopanel-thick" class="tele-value">9MM</span></div>
+                    <span class="info-separator">/</span>
+
+                    <!-- Secondary display set for seamless continuous loop -->
+                    <div class="spec-item"><span class="spec-tag">COP:</span><span id="fotopanel-price-dup" class="tele-value">$40MIL</span></div>
+                    <span class="info-separator">/</span>
+                    <div class="spec-item"><span class="spec-tag">DIM:</span><span id="fotopanel-dims-dup" class="tele-value">40X40CM</span></div>
+                    <span class="info-separator">/</span>
+                    <div class="spec-item"><span class="spec-tag">TIK:</span><span id="fotopanel-thick-dup" class="tele-value">9MM</span></div>
+                    <span class="info-separator">/</span>
+                </div>
+            </div>
+
+            <!-- Frozen Right: Order via WhatsApp / Acquire Button -->
+            <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-tele-glass" style="width: auto; padding: 0.5rem; flex-shrink: 0;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                    <path d="M4 16v4h16v-4" />
+                    <path d="M12 7v10m0 0l-4-4m4 4l4-4" />
+                </svg>
+            </button>
         </div>
     </main>
  
-    <!-- Bottom Action Controls -->
+    <!-- Bottom Action Controls (Centered) -->
     <div class="action-controls-grid">
-        <!-- Hidden File Input for Custom Image Upload -->
-        <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
-
-        <!-- Upload Custom Image Button (Top Base + Side Corners + Arrow Up) -->
-        <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-tele-glass" style="width: 3rem;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                <!-- Complete Top Line & Vertical Side Edges -->
-                <path d="M4 8V4h16v4" />
-                <!-- Arrow Up -->
-                <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
+        <!-- Scale Cycle Button -->
+        <button id="btn-change-scale" title="Change Scale / Size" onclick="rotateFotoVariant('next')" class="btn-tele-glass">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                <rect x="5" y="5" width="14" height="14" />
             </svg>
         </button>
 
-        <!-- Scale Toggle Button (Original Color - Rainbow Gradient) -->
-        <button id="btn-next-variant" title="Next Variant Scale" onclick="rotateFotoVariant('next', false)" class="btn-tele-glass" style="width: 3rem;">
+        <!-- Color Mode Toggle Button -->
+        <button id="btn-mode-color" title="Color Mode" onclick="setFotoFilterStyle('color')" class="btn-tele-glass">
             <svg viewBox="0 0 24 24" class="icon-stroke">
                 <defs>
                     <linearGradient id="rainbow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -344,14 +422,13 @@
                         <stop offset="75%" stop-color="#0000ff" />
                         <stop offset="100%" stop-color="#8b00ff" />
                     </linearGradient>
-
                 </defs>
                 <rect x="4" y="4" width="16" height="16" fill="url(#rainbow-grad)" stroke="none" />
             </svg>
         </button>
 
-        <!-- Scale Toggle Button (Black & White Filter - Grayscale Gradient) -->
-        <button id="btn-next-variant-bw" title="Next Variant Scale (B&W)" onclick="rotateFotoVariant('next', true)" class="btn-tele-glass" style="width: 3rem;">
+        <!-- B&W Mode Toggle Button -->
+        <button id="btn-mode-bw" title="B&W Mode" onclick="setFotoFilterStyle('bw')" class="btn-tele-glass">
             <svg viewBox="0 0 24 24" class="icon-stroke">
                 <defs>
                     <linearGradient id="bw-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -362,9 +439,29 @@
                 <rect x="4" y="4" width="16" height="16" fill="url(#bw-grad)" stroke="none" />
             </svg>
         </button>
+
+        <!-- Sepia Tone Style Button -->
+        <button id="btn-mode-sepia" title="Sepia Tone Mode" onclick="setFotoFilterStyle('sepia')" class="btn-tele-glass">
+            <svg viewBox="0 0 24 24" class="icon-stroke">
+                <defs>
+                    <linearGradient id="sepia-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#704214" />
+                        <stop offset="100%" stop-color="#f5e5c9" />
+                    </linearGradient>
+                </defs>
+                <rect x="4" y="4" width="16" height="16" fill="url(#sepia-grad)" stroke="none" />
+            </svg>
+        </button>
+
+        <!-- Wall Texture Backdrop Preview Button -->
+        <button id="btn-toggle-wall" title="Wall Backdrop Preview" onclick="toggleWallPreview()" class="btn-tele-glass">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v6M15 9v6M9 15v6" />
+            </svg>
+        </button>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer (Centered) -->
     <footer class="footer-container">
         <span class="footer-brand-text">
             <span>2026</span>
@@ -375,8 +472,7 @@
     <!-- Core Logic Engine -->
     <script>
         /**
-         * Catalog configuration without static img/imgBack attributes.
-         * Relative scale factors are defined for container transformation.
+         * Product catalog with precise dimensions, thickness, SKU, and barcode metadata.
          */
         const ARTEPANEL_CATALOG = {
             'PULSOR': {
@@ -384,30 +480,42 @@
                 variants: {
                     'PANEL 20X20': { 
                         label: '20X20CMS', 
-                        spec: 'Your photo personalized', 
-                        media: 'ACM 3mm',
+                        spec: 'Your personalized print', 
+                        media: 'ADHESIVO SOBRE MDF 9MM',
                         finish: 'Matte Lamination Inkjet',
                         price: '$20MIL', 
                         id: 'FP-20X20',
-                        scale: 0.50
+                        scale: 0.50,
+                        dimensions: { width: 20, height: 20, unit: 'cm' },
+                        thickness: '9MM',
+                        sku: 'FP-MDF-2020',
+                        barcode: '770123456781'
                     },
                     'PANEL 30X30': { 
                         label: '30X30CMS', 
-                        spec: 'Your photo personalized', 
-                        media: 'ACM 3mm',
+                        spec: 'Your personalized print', 
+                        media: 'ADHESIVO SOBRE MDF 9MM',
                         finish: 'Matte Lamination Inkjet',
                         price: '$30MIL', 
                         id: 'FP-30X30',
-                        scale: 0.75
+                        scale: 0.75,
+                        dimensions: { width: 30, height: 30, unit: 'cm' },
+                        thickness: '9MM',
+                        sku: 'FP-MDF-3030',
+                        barcode: '770123456782'
                     },
                     'PANEL 40X40': { 
                         label: '40X40CMS', 
-                        spec: 'Your photo personalized', 
-                        media: 'ACM 3mm',
+                        spec: 'Your personalized print', 
+                        media: 'ADHESIVO SOBRE MDF 9MM',
                         finish: 'Matte Lamination Inkjet',
                         price: '$40MIL', 
                         id: 'FP-40X40',
-                        scale: 1.00
+                        scale: 1.00,
+                        dimensions: { width: 40, height: 40, unit: 'cm' },
+                        thickness: '9MM',
+                        sku: 'FP-MDF-4040',
+                        barcode: '770123456783'
                     }
                 }
             }
@@ -416,8 +524,9 @@
         // Application State
         let currentFotoItem = 'PULSOR';
         let currentFotoVariant = 'PANEL 20X20';
-        let isGrayscale = false;
-        let activeImageSrc = 'img/photo.png'; // Tracks current default or user uploaded image
+        let filterStyle = 'color'; // Supported values: 'color', 'bw', 'sepia'
+        let activeImageSrc = 'img/photo.png';
+        let isWallPreviewActive = false;
         const targetPhoneNumber = "573128707083";
 
         // Element Caching System
@@ -457,11 +566,24 @@
         }
 
         /**
-         * Cycles through available product scale variants.
-         * @param {string} direction - Direction of rotation ('next' or 'prev').
-         * @param {boolean} enableBW - Toggles black & white filter mode.
+         * Toggles simulated wall backdrop texture in page overlay.
          */
-        function rotateFotoVariant(direction = 'next', enableBW = false) {
+        function toggleWallPreview() {
+            isWallPreviewActive = !isWallPreviewActive;
+            const overlay = getCachedEl('page-bg-overlay');
+            if (overlay) {
+                overlay.style.background = isWallPreviewActive 
+                    ? 'repeating-linear-gradient(0deg, var(--jako-border), var(--jako-border) 1px, transparent 1px, transparent 24px)'
+                    : 'radial-gradient(circle at 50% 30%, var(--gradient-start) 0%, var(--gradient-mid) 65%, var(--gradient-end) 100%)';
+            }
+            triggerHaptic(15);
+        }
+
+        /**
+         * Cycles through available product scale variants without altering color mode.
+         * @param {string} direction - Direction of rotation ('next' or 'prev').
+         */
+        function rotateFotoVariant(direction = 'next') {
             const variants = Object.keys(ARTEPANEL_CATALOG[currentFotoItem].variants);
             let currentIndex = variants.indexOf(currentFotoVariant);
             
@@ -470,10 +592,18 @@
                 : (currentIndex - 1 + variants.length) % variants.length;
             
             currentFotoVariant = variants[currentIndex];
-            isGrayscale = enableBW;
-            
             updateFotoUI();
             triggerHaptic(15);
+        }
+
+        /**
+         * Sets color filter mode ('color', 'bw', or 'sepia').
+         * @param {string} style - Target color filter mode.
+         */
+        function setFotoFilterStyle(style) {
+            filterStyle = style;
+            updateFotoUI();
+            triggerHaptic(10);
         }
 
         /**
@@ -481,10 +611,17 @@
          */
         function resetView() {
             currentFotoVariant = 'PANEL 40X40';
-            isGrayscale = false;
+            filterStyle = 'color';
             activeImageSrc = 'img/photo.png';
+            isWallPreviewActive = false;
+            
             const input = getCachedEl('user-image-input');
             if (input) input.value = '';
+            
+            const overlay = getCachedEl('page-bg-overlay');
+            if (overlay) {
+                overlay.style.background = 'radial-gradient(circle at 50% 30%, var(--gradient-start) 0%, var(--gradient-mid) 65%, var(--gradient-end) 100%)';
+            }
             
             updateFotoUI();
             triggerHaptic([10, 10]);
@@ -498,7 +635,6 @@
             const container = getCachedEl('fotopanel-pack-container');
             if (!container) return;
 
-            // Apply scale transformation directly to container to avoid margin offsets
             container.style.transform = `scale(${config.scale})`;
 
             let viewport = container.querySelector('.pack-viewport');
@@ -508,24 +644,34 @@
                 container.appendChild(viewport);
             }
 
-            const bwClass = isGrayscale ? 'grayscale-filter' : '';
+            let filterClass = '';
+            if (filterStyle === 'bw') filterClass = 'grayscale-filter';
+            if (filterStyle === 'sepia') filterClass = 'sepia-filter';
 
             viewport.innerHTML = `
                 <div style="position: absolute; inset: 0; background-color: #e5e5e5; z-index: 1;"></div>
-                <img src="${activeImageSrc}" alt="Panel Surface" class="img-glow-transition ${bwClass}" style="z-index: 10;" />
+                <img src="${activeImageSrc}" alt="Panel Surface" class="img-glow-transition ${filterClass}" style="z-index: 10;" />
             `;
         }
 
         /**
-         * Synchronizes UI elements (labels, price, and visualizer scale).
+         * Synchronizes UI elements (specs, price, and visualizer scale).
          */
         function updateFotoUI() {
             const config = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
-            const label = getCachedEl('fotopanel-label');
-            const price = getCachedEl('fotopanel-price');
+            const dimsText = `${config.dimensions.width}X${config.dimensions.height}${config.dimensions.unit.toUpperCase()}`;
             
-            if (label) label.textContent = config.label;
-            if (price) price.textContent = config.price;
+            // Helper to batch update main and duplicated ticker elements
+            const setSpecText = (id, text) => {
+                const el = getCachedEl(id);
+                const dupEl = getCachedEl(`${id}-dup`);
+                if (el) el.textContent = text;
+                if (dupEl) dupEl.textContent = text;
+            };
+
+            setSpecText('fotopanel-price', config.price);
+            setSpecText('fotopanel-dims', dimsText);
+            setSpecText('fotopanel-thick', config.thickness);
 
             renderPanelImages(config);
         }
@@ -535,14 +681,17 @@
          */
         function acquireNodeCashflow() {
             const variant = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
+            const dimsText = `${variant.dimensions.width}x${variant.dimensions.height}${variant.dimensions.unit}`;
             const message = [
                 `ORDER: ${variant.label}`,
                 `VARIANT: ${currentFotoVariant}`,
                 `SPEC: ${variant.spec}`,
                 `MEDIA: ${variant.media}`,
-                `FINISH: ${variant.finish}`,
-                `STYLE: ${isGrayscale ? 'Black & White' : 'Color'}`,
-                `ID: ${variant.id}`,
+                `DIMS: ${dimsText}`,
+                `THICKNESS: ${variant.thickness}`,
+                `SKU: ${variant.sku}`,
+                `BARCODE: ${variant.barcode}`,
+                `STYLE: ${filterStyle.toUpperCase()}`,
                 `PRICE: ${variant.price}`
             ].join('\n');
 
