@@ -365,6 +365,13 @@
             </svg>
             <span>FOTOPANEL</span>
         </button>
+
+        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+        </button>
     </header>
 
     <!-- Block 2: Top Product Spec Strip (10% Height) -->
@@ -385,15 +392,15 @@
     <section class="info-strip info-strip-bottom" aria-label="Product Specifications">
         <div class="info-strip-content">
             <div class="info-item-block">
+                <span id="fotopanel-finish" class="tele-value">ADH INKJET</span>
+                <span class="info-item-title">PRINTING</span>
+            </div>
+
+            <span class="info-separator">/</span>
+
+            <div class="info-item-block">
                 <span id="fotopanel-label" class="tele-value">40X40</span>
                 <span class="info-item-title">SIZE</span>
-            </div>
-            
-            <span class="info-separator">/</span>
-            
-            <div class="info-item-block">
-                <span id="fotopanel-price" class="tele-value">$40MIL</span>
-                <span class="info-item-title">PRICE</span>
             </div>
 
             <span class="info-separator">/</span>
@@ -401,6 +408,13 @@
             <div class="info-item-block">
                 <span id="fotopanel-media" class="tele-value">MDF 12MM</span>
                 <span class="info-item-title">MEDIA</span>
+            </div>
+
+            <span class="info-separator">/</span>
+            
+            <div class="info-item-block">
+                <span id="fotopanel-price" class="tele-value">$40MIL</span>
+                <span class="info-item-title">PRICE</span>
             </div>
         </div>
     </section>
@@ -445,13 +459,6 @@
                     </linearGradient>
                 </defs>
                 <rect x="4" y="4" width="16" height="16" fill="url(#bw-grad)" stroke="none" />
-            </svg>
-        </button>
-
-        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
             </svg>
         </button>
 
