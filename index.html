@@ -857,11 +857,11 @@
         // Handle Commercial WhatsApp Checkout Action
         function acquireNodeCashflow() {
             const variant = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
-            const styleText = isGrayscale ? 'Blanco y Negro' : 'A Color';
+            const styleText = isGrayscale ? 'Adh ikjet print b/w' : 'Adh inkjet print full color';
             
-            const message = `¡Hola! Quiero hacer un pedido de un FotoPanel personalizado 📸✨\n\n` +
-                `• Tamaños/Medidas: ${variant.label} cms\n` +
-                `• Acabado / Estilo: ${styleText}\n` +
+            const message = `¡Hola! Quiero hacer un pedido de un FotoPanel personalizado \n\n` +
+                `• Tamaño: ${variant.label} cms\n` +
+                `• Medio: ${styleText}\n` +
                 `• Soporte: MDF ${variant.media}\n` +
                 `• Precio: ${variant.price} COP\n\n` +
                 `¿Cuáles son los pasos para enviar la foto y acordar el pago?`;
