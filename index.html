@@ -342,25 +342,25 @@
             height: 100%;
         }
 
-        /* CROP / ZOOM TOOLBAR POPUP */
+        /* FIXED CROP / ZOOM TOOLBAR POPUP POSITIONING */
         .crop-controls-overlay {
             position: absolute;
-            bottom: 100%;
+            bottom: calc(100% + 8px);
             left: 50%;
             transform: translateX(-50%);
             background: var(--jako-glass);
             backdrop-filter: blur(15px);
             border: 1px solid var(--jako-border);
             border-radius: 8px;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.8rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 8px;
-            z-index: 120;
+            gap: 0.8rem;
+            z-index: 150;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .crop-controls-overlay.active {
@@ -369,9 +369,9 @@
         }
 
         .crop-controls-overlay button {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
-            padding: 0.2rem 0.6rem;
+            padding: 0.3rem 0.6rem;
             border: 1px solid var(--jako-border);
             border-radius: 4px;
         }
@@ -397,6 +397,18 @@
         }
 
         .footer-container:hover .footer-brand-text { opacity: 0.9; }
+
+        /* RESPONSIVE SCALING FOR SMALL SCREENS */
+        @media (max-height: 667px) {
+            .btn-reset-text { font-size: 13px; }
+            .icon-stroke { width: 1.4rem; height: 1.4rem; }
+            .info-strip { font-size: 8px; gap: 0.8rem; }
+            .info-strip-content { gap: 0.8rem; }
+            .info-item-title { font-size: 6px; }
+            #fotopanel-pack-container { max-height: 48dvh; }
+            .controls-bar { gap: 0.4rem; }
+            .btn-control-action { width: 3rem !important; }
+        }
     </style>
 </head>
 <body>
@@ -406,7 +418,7 @@
         
     <!-- BLOCK 1: Top Action Controls Header (10% Height) -->
     <header class="header-bar">
-        <!-- Far Left: Language Toggle Button (EN/ES) -->
+        <!-- Far Left: Language Toggle Button (EN/ES/IT/PT) -->
         <button id="btn-lang-toggle" title="Switch Language" onclick="toggleLanguage()" class="btn-control-action btn-lang-text">
             <span id="lang-label">EN</span>
         </button>
@@ -499,12 +511,12 @@
             </svg>
         </button>
 
-        <!-- Merged Color / Grayscale Toggle Button -->
+        <!-- Merged Color / Grayscale Toggle Button (Updated Orange Gradient) -->
         <button id="btn-color-toggle" title="Toggle Color / B&W Mode" onclick="toggleFotoColorMode()" class="btn-control-action">
             <svg viewBox="0 0 24 24" class="icon-stroke">
                 <defs>
                     <linearGradient id="color-bw-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#ff0000" />
+                        <stop offset="0%" stop-color="#ff6600" />
                         <stop offset="33%" stop-color="#0000ff" />
                         <stop offset="66%" stop-color="#ffffff" />
                         <stop offset="100%" stop-color="#000000" />
@@ -521,8 +533,6 @@
                 <path d="M18 22V8a2 2 0 00-2-2H2" />
             </svg>
         </button>
-
-
 
         <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action" style="padding: 0.5rem;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
@@ -551,6 +561,8 @@
                         label: '20X20', 
                         spec_en: 'Your photo personalized', 
                         spec_es: 'Tu foto personalizada', 
+                        spec_it: 'La tua foto personalizzata',
+                        spec_pt: 'Sua foto personalizada',
                         media: '12MM',
                         finish: 'ADH INKJET PRINT',
                         price: '20MIL', 
@@ -561,6 +573,8 @@
                         label: '30X30', 
                         spec_en: 'Your photo personalized', 
                         spec_es: 'Tu foto personalizada', 
+                        spec_it: 'La tua foto personalizzata',
+                        spec_pt: 'Sua foto personalizada',
                         media: '9MM',
                         finish: 'ADH INKJET PRINT',
                         price: '30MIL', 
@@ -571,6 +585,8 @@
                         label: '40X40', 
                         spec_en: 'Your photo personalized', 
                         spec_es: 'Tu foto personalizada', 
+                        spec_it: 'La tua foto personalizzata',
+                        spec_pt: 'Sua foto personalizada',
                         media: '12MM',
                         finish: 'ADH INKJET PRINT',
                         price: '40MIL', 
@@ -586,7 +602,12 @@
         let currentFotoVariant = 'PANEL 40X40';
         let isGrayscale = false;
         let isShowingBack = false;
-        let currentLang = 'EN'; // Options: 'EN' or 'ES'
+        
+        // Multi-language sequence support
+        const supportedLangs = ['EN', 'ES', 'IT', 'PT'];
+        let langIndex = 0;
+        let currentLang = supportedLangs[langIndex];
+
         let activeImageSrc = 'img/photo.png';
         const backImageSrc = 'img/30x30B.png';
         const targetPhoneNumber = "573128707083";
@@ -624,20 +645,29 @@
             document.documentElement.setAttribute('data-theme', savedTheme);
         }
 
-        // Toggle Language State (EN <-> ES)
+        // Toggle Language State (EN -> ES -> IT -> PT)
         function toggleLanguage() {
-            currentLang = currentLang === 'EN' ? 'ES' : 'EN';
+            langIndex = (langIndex + 1) % supportedLangs.length;
+            currentLang = supportedLangs[langIndex];
+            
             const langLabel = getCachedEl('lang-label');
             if (langLabel) langLabel.textContent = currentLang;
 
-            // Update UI Static Labels
+            // Dictionary mappings for static UI headers
+            const i18n = {
+                EN: { top: 'Your printing services', media: 'PRINTING MEDIA', mdf: 'MDF SUPPORT' },
+                ES: { top: 'Tus servicios de impresión', media: 'MEDIO DE IMPRESIÓN', mdf: 'SOPORTE MDF' },
+                IT: { top: 'I tuoi servizi di stampa', media: 'SUPPORTO DI STAMPA', mdf: 'SUPPORTO MDF' },
+                PT: { top: 'Seus serviços de impressão', media: 'MEIO DE IMPRESSÃO', mdf: 'SUPORTE MDF' }
+            };
+
             const topStrip = getCachedEl('top-strip-text');
             const lblPrinting = getCachedEl('lbl-printing-media');
             const lblMdf = getCachedEl('lbl-mdf-support');
 
-            if (topStrip) topStrip.textContent = currentLang === 'EN' ? 'Your printing services' : 'Tus servicios de impresión';
-            if (lblPrinting) lblPrinting.textContent = currentLang === 'EN' ? 'PRINTING MEDIA' : 'MEDIO DE IMPRESIÓN';
-            if (lblMdf) lblMdf.textContent = currentLang === 'EN' ? 'MDF SUPPORT' : 'SOPORTE MDF';
+            if (topStrip) topStrip.textContent = i18n[currentLang].top;
+            if (lblPrinting) lblPrinting.textContent = i18n[currentLang].media;
+            if (lblMdf) lblMdf.textContent = i18n[currentLang].mdf;
 
             triggerHaptic(10);
             updateFotoUI();
@@ -824,21 +854,17 @@
             renderPanelImages(config);
         }
 
-        // Handle WhatsApp Checkout Action
+        // Handle Commercial WhatsApp Checkout Action
         function acquireNodeCashflow() {
             const variant = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
-            const spec = currentLang === 'EN' ? variant.spec_en : variant.spec_es;
-            const message = [
-                `ORDER: ${variant.label}`,
-                `VARIANT: ${currentFotoVariant}`,
-                `SPEC: ${spec}`,
-                `MEDIA: ${variant.media}`,
-                `FINISH: ${variant.finish}`,
-                `STYLE: ${isGrayscale ? 'Black & White' : 'Color'}`,
-                `ZOOM: ${Math.round(imgScale * 100)}%`,
-                `ID: ${variant.id}`,
-                `PRICE: ${variant.price}`
-            ].join('\n');
+            const styleText = isGrayscale ? 'Blanco y Negro' : 'A Color';
+            
+            const message = `¡Hola! Quiero hacer un pedido de un FotoPanel personalizado 📸✨\n\n` +
+                `• Tamaños/Medidas: ${variant.label} cms\n` +
+                `• Acabado / Estilo: ${styleText}\n` +
+                `• Soporte: MDF ${variant.media}\n` +
+                `• Precio: ${variant.price} COP\n\n` +
+                `¿Cuáles son los pasos para enviar la foto y acordar el pago?`;
 
             triggerHaptic([15, 40, 15]);
             window.open(`https://api.whatsapp.com/send?phone=${targetPhoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
