@@ -501,7 +501,7 @@ cat << 'EOF' > index.html
         </span>
     </footer>
 
-    <!-- Core Logic Engine -->
+ <!-- Core Logic Engine -->
     <script>
         // Catalog product configuration data
         const ARTEPANEL_CATALOG = {
@@ -537,7 +537,8 @@ cat << 'EOF' > index.html
                         spec_en: 'Your photo personalized', 
                         spec_es: 'Tu foto personalizada', 
                         spec_it: 'La tua foto personalizzata',
-                        spec_pt: 'Sua foto personalizada', media: '12MM',
+                        spec_pt: 'Sua foto personalizada', 
+                        media: '12MM',
                         finish: 'ADH INKJET PRINT',
                         price: '40MIL', 
                         id: 'FP-40X40',
@@ -558,13 +559,13 @@ cat << 'EOF' > index.html
         let langIndex = 0;
         let currentLang = supportedLangs[langIndex];
 
-        // 6-hour dynamic image rotation engine via Unsplash time-bucket seed
+        // 6-hour dynamic local image rotation engine (4 time buckets per day: 0, 1, 2, 3)
         const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
-        const currentBucket = Math.floor(Date.now() / SIX_HOURS_MS);
+        const currentBucket = Math.floor(Date.now() / SIX_HOURS_MS) % 4;
         
-        // Generates a deterministic high-resolution 1:1 image URL changing every 6 hours
+        // Resolves local image path based on the current 6-hour window
         const get6HourRotatingImageUrl = () => {
-            return `https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1080&h=1080&q=80&sig=${currentBucket}`;
+            return `img/photo_${currentBucket}.png`;
         };
 
         let activeImageSrc = get6HourRotatingImageUrl();
@@ -789,15 +790,15 @@ import streamlit as st
 import streamlit.components.v1 as components
 import os
 
-# Streamlit page layout configuration
 st.set_page_config(page_title="FOTOPANEL.ART", layout="wide")
 
-# Read index.html for direct embedding into Streamlit Component
 html_file_path = os.path.join(os.path.dirname(__file__), "index.html")
 
 if os.path.exists(html_file_path):
     with open(html_file_path, "r", encoding="utf-8") as f:
         html_content = f.read()
+    
+    # Render component with HTML content
     components.html(html_content, height=850, scrolling=True)
 else:
     st.error("index.html not found. Please execute ./set.sh first.")

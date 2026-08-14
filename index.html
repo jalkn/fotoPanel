@@ -65,6 +65,18 @@
             transition: background-color 0.5s ease, color 0.5s ease;
         } 
 
+        #texture-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15; 
+            transition: background-image 0.4s ease, opacity 0.4s ease;
+            mix-blend-mode: overlay; 
+        }
+
         ::selection {
             background-color: var(--jako-text);
             color: var(--jako-bg);
@@ -149,7 +161,7 @@
             max-height: 10dvh;
             flex-shrink: 0;
             display: flex;
-            justify-content: space-between;
+            justify-content: center; 
             align-items: center;
             width: 100%;
             padding: 0 1rem;
@@ -212,8 +224,11 @@
             background: var(--jako-glass);
             backdrop-filter: blur(10px);
             z-index: 50;
-            padding: 0 1.5rem;
+            padding: 0 1.25rem; 
             border-top: 1px solid var(--jako-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between !important; 
         }
 
         /* SQUARE PACK CONTAINER (PERFECT 1:1 RATIO ALWAYS) */
@@ -283,6 +298,9 @@
         }
 
         .info-strip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             color: var(--jako-text);
             font-size: 10px;
@@ -353,8 +371,16 @@
 
         .footer-container:hover .footer-brand-text { opacity: 0.9; }
 
+        #btn-lang-toggle {
+            width: auto !important;
+            min-width: 2rem;
+        }
+
         /* RESPONSIVE SCALING FOR SMALL SCREENS */
         @media (max-height: 667px) {
+            .footer-container {
+                padding: 0 0.5rem;
+            }
             .btn-reset-text { font-size: 10px; }
             .icon-stroke { width: 1.1rem; height: 1.1rem; }
             .info-strip { font-size: 7px; gap: 0.4rem; }
@@ -372,26 +398,16 @@
 <body>
 
     <div id="page-bg-overlay"></div>
+    <div id="texture-overlay"></div>
     <div class="ambient-gradient"></div>
         
     <!-- TOP HEADER -->
     <header class="header-bar">
-        <button id="btn-lang-toggle" title="Switch Language" onclick="toggleLanguage()" class="btn-control-action btn-lang-text">
-            <span id="lang-label">EN</span>
-        </button>
-
         <button class="btn-reset-text" title="Home / Reset" onclick="resetView()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
                 <rect x="4" y="4" width="16" height="16" />
             </svg>
             <span>FOTOPANEL</span>
-        </button>
-
-        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-            </svg>
         </button>
     </header>
 
@@ -414,7 +430,7 @@
         <div class="info-strip-content">
             <div class="info-item-block">
                 <span id="fotopanel-finish" class="tele-value">ADH INKJET</span>
-                <span id="lbl-printing-media" class="info-item-title">PRINTING MEDIA</span>
+                <span id="lbl-printing-media" class="info-item-title">DIGITAL PRINT</span>
             </div>
 
             <span class="info-separator">/</span>
@@ -478,6 +494,8 @@
             </svg>
         </button>
 
+
+
         <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action" style="padding: 0.5rem;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <path d="M4 16v4h16v-4" />
@@ -488,13 +506,27 @@
 
     <!-- FOOTER -->
     <footer class="footer-container">
-        <span class="footer-brand-text">
+
+        <button id="btn-lang-toggle" title="Switch Language" onclick="toggleLanguage()" class="btn-control-action btn-lang-text">
+            <span id="lang-label">EN</span>
+        </button>
+
+        <a href="https://github.com/jalkn" target="_blank" rel="noopener noreferrer" class="footer-brand-text" style="text-decoration: none; color: inherit;">
+            <span>JAKO.DEV</span>
             <span class="footer-copy-symbol">©</span>
             <span>2026</span>
-        </span>
+        </a>     
+
+        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+        </button>
+
     </footer>
 
- <!-- Core Logic Engine -->
+<!-- Core Logic Engine -->
     <script>
         // Catalog product configuration data
         const ARTEPANEL_CATALOG = {
@@ -507,7 +539,7 @@
                         spec_es: 'Tu foto personalizada', 
                         spec_it: 'La tua foto personalizzata',
                         spec_pt: 'Sua foto personalizada',
-                        media: '12MM',
+                        media: '9MM',
                         finish: 'ADH INKJET PRINT',
                         price: '20MIL', 
                         id: 'FP-20X20',
@@ -546,6 +578,7 @@
         let currentFotoVariant = 'PANEL 40X40';
         let isGrayscale = false;
         let isShowingBack = false;
+        let isUserCustomImage = false;
         
         // Supported UI language choices
         const supportedLangs = ['EN', 'ES', 'IT', 'PT'];
@@ -554,15 +587,15 @@
 
         // 6-hour dynamic local image rotation engine (4 time buckets per day: 0, 1, 2, 3)
         const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
-        const currentBucket = Math.floor(Date.now() / SIX_HOURS_MS) % 4;
         
-        // Resolves local image path based on the current 6-hour window
-        const get6HourRotatingImageUrl = () => {
-            return `img/photo_${currentBucket}.png`;
-        };
+        const getCurrentBucketIndex = () => Math.floor(Date.now() / SIX_HOURS_MS) % 4;
+        
+        const get6HourRotatingImageUrl = () => `img/photo_${getCurrentBucketIndex()}.png`;
 
         let activeImageSrc = get6HourRotatingImageUrl();
-        const backImageSrc = 'img/30x30B.png';
+        let lastBucket = getCurrentBucketIndex();
+        
+        const backImageSrc = 'img/back.png';
         const targetPhoneNumber = "573128707083";
 
         // Zoom scale toggle state (1x normal, 1.25x zoom)
@@ -576,6 +609,19 @@
         const triggerHaptic = (pattern) => { 
             if (navigator.vibrate) navigator.vibrate(pattern); 
         };
+
+        // Automatic background checker for 6-hour image rotation
+        function checkAndAutoRotateImage() {
+            if (isUserCustomImage) return; // Do not overwrite if user uploaded custom photo
+            
+            const currentBucket = getCurrentBucketIndex();
+            if (currentBucket !== lastBucket) {
+                lastBucket = currentBucket;
+                activeImageSrc = get6HourRotatingImageUrl();
+                updateFotoUI();
+            }
+        }
+        setInterval(checkAndAutoRotateImage, 60000); // Check every minute
 
         // Toggle UI theme (Dark / Light)
         function toggleTheme() {
@@ -602,10 +648,10 @@
             if (langLabel) langLabel.textContent = currentLang;
 
             const i18n = {
-                EN: { top: 'Your printing services', media: 'PRINTING MEDIA', mdf: 'MDF SUPPORT' },
-                ES: { top: 'Tus servicios de impresión', media: 'MEDIO DE IMPRESIÓN', mdf: 'SOPORTE MDF' },
-                IT: { top: 'I tuoi servizi di stampa', media: 'SUPPORTO DI STAMPA', mdf: 'SUPPORTO MDF' },
-                PT: { top: 'Seus serviços de impressão', media: 'MEIO DE IMPRESSÃO', mdf: 'SUPORTE MDF' }
+                EN: { top: 'Your printing services', media: 'DIGITAL PRINTING', mdf: 'MDF SUPPORT' },
+                ES: { top: 'Tus servicios de impresión', media: 'IMPRESIÓN DIGITAL', mdf: 'SOPORTE MDF' },
+                IT: { top: 'I tuoi servizi di stampa', media: 'STAMPA DIGITALE', mdf: 'SUPPORTO MDF' },
+                PT: { top: 'Seus serviços de impressão', media: 'IMPRESSÃO DIGITAL', mdf: 'SUPORTE MDF' }
             };
 
             const topStrip = getCachedEl('top-strip-text');
@@ -634,6 +680,7 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 activeImageSrc = e.target.result;
+                isUserCustomImage = true;
                 isShowingBack = false;
                 resetImageTransform();
                 updateFotoUI();
@@ -687,21 +734,12 @@
             triggerHaptic(10);
         }
 
-        // Toggle back surface view overlay
-        function toggleBackView() {
-            isShowingBack = !isShowingBack;
-            const backEl = document.querySelector('.panel-back-view');
-            if (backEl) {
-                backEl.classList.toggle('active', isShowingBack);
-            }
-            triggerHaptic(20);
-        }
-
         // Reset stage to default setup
         function resetView() {
             currentFotoVariant = 'PANEL 40X40';
             isGrayscale = false;
             isShowingBack = false;
+            isUserCustomImage = false;
             activeImageSrc = get6HourRotatingImageUrl();
             resetImageTransform();
             const input = getCachedEl('user-image-input');
@@ -711,7 +749,7 @@
             triggerHaptic([10, 10]);
         }
 
-        // Render current panel images within viewport
+        // Render current panel images within viewport and setup long-press listener
         function renderPanelImages(config) {
             const container = getCachedEl('fotopanel-pack-container');
             if (!container) return;
@@ -726,15 +764,43 @@
             }
 
             const bwClass = isGrayscale ? 'grayscale-filter' : '';
-            const backActiveClass = isShowingBack ? 'active' : '';
 
             viewport.innerHTML = `
                 <div style="position: absolute; inset: 0; background-color: #e5e5e5; z-index: 1;"></div>
                 <img src="${activeImageSrc}" alt="Panel Surface Front" class="user-surface-image img-glow-transition ${bwClass}" style="z-index: 10;" />
-                <img src="${backImageSrc}" alt="Panel Surface Back" class="img-glow-transition panel-back-view ${backActiveClass}" onclick="toggleBackView()" />
+                <img src="${backImageSrc}" alt="Panel Surface Back" class="img-glow-transition panel-back-view" style="z-index: 20; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;" />
             `;
 
             applyImageTransform();
+            attachLongPressListener(viewport);
+        }
+
+        // Attach hold / long-press events for smooth fade-in preview of back.png
+        function attachLongPressListener(element) {
+            const showBack = () => {
+                const backImg = element.querySelector('.panel-back-view');
+                if (backImg) {
+                    backImg.style.opacity = '1';
+                    triggerHaptic(15);
+                }
+            };
+
+            const hideBack = () => {
+                const backImg = element.querySelector('.panel-back-view');
+                if (backImg) {
+                    backImg.style.opacity = '0';
+                }
+            };
+
+            // Touch events
+            element.addEventListener('touchstart', (e) => { e.preventDefault(); showBack(); }, { passive: false });
+            element.addEventListener('touchend', hideBack);
+            element.addEventListener('touchcancel', hideBack);
+
+            // Mouse events
+            element.addEventListener('mousedown', showBack);
+            element.addEventListener('mouseup', hideBack);
+            element.addEventListener('mouseleave', hideBack);
         }
 
         // Update UI specifications and trigger re-render
