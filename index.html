@@ -450,10 +450,12 @@
         </div>
     </div>
 
-    <!-- BOTTOM ACTION CONTROLS -->
+<!-- BOTTOM ACTION CONTROLS -->
     <div class="controls-bar">
+        <!-- Hidden file input for custom uploads -->
         <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
 
+        <!-- Upload image button -->
         <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <path d="M4 8V4h16v4" />
@@ -461,12 +463,14 @@
             </svg>
         </button>
 
+        <!-- Change scale/size button -->
         <button id="btn-change-scale" title="Change Scale / Size" onclick="rotateFotoVariant('next')" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
                 <rect x="5" y="5" width="14" height="14" />
             </svg>
         </button>
 
+        <!-- Toggle color / B&W mode button -->
         <button id="btn-color-toggle" title="Toggle Color / B&W Mode" onclick="toggleFotoColorMode()" class="btn-control-action">
             <svg viewBox="0 0 24 24" class="icon-stroke">
                 <defs>
@@ -481,6 +485,7 @@
             </svg>
         </button>
 
+        <!-- Crop / zoom toggle button -->
         <button id="btn-crop-zoom" title="Toggle Scale Zoom" onclick="toggleCropZoom()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <path d="M6 2v14a2 2 0 002 2h14" />
@@ -488,12 +493,12 @@
             </svg>
         </button>
 
-
-
-        <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action" style="padding: 0.5rem;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                <path d="M4 16v4h16v-4" />
-                <path d="M12 7v10m0 0l-4-4m4 4l4-4" />
+        <!-- Order / info dispatch button -->
+        <button id="btn-activate-node" title="Order Configuration via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="icon-stroke">
+                <circle cx="12" cy="12" r="9" />
+                <line x1="12" y1="17" x2="12" y2="11" />
+                <line x1="12" y1="7" x2="12.01" y2="7" />
             </svg>
         </button>
     </div>
@@ -502,7 +507,13 @@
     <footer class="footer-container">
 
         <button id="btn-lang-toggle" title="Switch Language" onclick="toggleLanguage()" class="btn-control-action btn-lang-text">
-            <span id="lang-label">EN</span>
+            <!-- 3D Globe Sphere Icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="icon-stroke" style="width: 1.1rem; height: 1.1rem; margin-right: 0.3rem;">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M3.6 9h16.8M3.6 15h16.8" />
+                <ellipse cx="12" cy="12" rx="4" ry="9" />
+            </svg>
+            <span id="lang-label" style="font-size: 13px;">🇺🇸</span>
         </button>
 
         <a href="https://github.com/jalkn" target="_blank" rel="noopener noreferrer" class="footer-brand-text" style="text-decoration: none; color: inherit;">
@@ -633,19 +644,27 @@
             document.documentElement.setAttribute('data-theme', savedTheme);
         }
 
+// Flag mapping per supported language choice
+        const langFlags = {
+            'EN': '🇺🇸',
+            'ES': '🇨🇴',
+            'PT': '🇧🇷',
+            'IT': '🇮🇹'
+        };
+
         // Toggle supported UI languages sequentially
         function toggleLanguage() {
             langIndex = (langIndex + 1) % supportedLangs.length;
             currentLang = supportedLangs[langIndex];
             
             const langLabel = getCachedEl('lang-label');
-            if (langLabel) langLabel.textContent = currentLang;
+            if (langLabel) langLabel.textContent = langFlags[currentLang] || '🇺🇸';
 
             const i18n = {
                 EN: { top: 'PRECISION PRINTING, WORLDWIDE', media: 'DIGITAL PRINTING', mdf: 'MDF SUPPORT' },
                 ES: { top: 'IMPRESIÓN DE PRECISIÓN, GLOBAL', media: 'IMPRESIÓN DIGITAL', mdf: 'SOPORTE MDF' },
                 IT: { top: 'STAMPA DI PRECISIONE, NEL MONDO', media: 'STAMPA DIGITALE', mdf: 'SUPPORTO MDF' },
-                PT: { top: 'IMPRESSÃO DE PRECISÃO, MUNDIAL', media: 'IMPRESSÃO DIGITAL', mdf: 'SUPORTE MDF' }
+                PT: { top: 'IMPRESSÃO DE PRECISÃO, MUNDIAL', media: 'IMPRESSÃO DIGITAL', mdf: 'SUPPORTO MDF' }
             };
 
             const topStrip = getCachedEl('top-strip-text');
@@ -811,20 +830,49 @@
             renderPanelImages(config);
         }
 
-        // Open WhatsApp checkout order line
+// Open WhatsApp checkout order line with full multilingual support
         function acquireNodeCashflow() {
             const variant = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
-            const styleText = isGrayscale ? 'Adh ikjet print b/w' : 'Adh inkjet print full color';
             
-            const message = `¡Hola! Quiero hacer un pedido de un FotoPanel personalizado \n\n` +
-                `• Tamaño: ${variant.label} cms\n` +
-                `• Medio: ${styleText}\n` +
-                `• Soporte: MDF ${variant.media}\n` +
-                `• Precio: ${variant.price} COP\n\n` +
-                `¿Cuáles son los pasos para enviar la foto y acordar el pago?`;
+            // Multilingual text definitions for WhatsApp checkout dispatch
+            const messages = {
+                EN: `Hello! I would like to order a custom FotoPanel:\n\n` +
+                    `• Size: ${variant.label} cm\n` +
+                    `• Style: ${isGrayscale ? 'Adhesive Inkjet Print B/W' : 'Adhesive Inkjet Print Full Color'}\n` +
+                    `• Support: MDF ${variant.media}\n` +
+                    `• Price: ${variant.price} COP\n\n` +
+                    `What are the steps to send my photo and finalize payment?`,
 
+                ES: `¡Hola! Quiero hacer un pedido de un FotoPanel personalizado:\n\n` +
+                    `• Tamaño: ${variant.label} cms\n` +
+                    `• Estilo: ${isGrayscale ? 'Adhesivo Inkjet B/N' : 'Adhesivo Inkjet Color'}\n` +
+                    `• Soporte: MDF ${variant.media}\n` +
+                    `• Precio: ${variant.price} COP\n\n` +
+                    `¿Cuáles son los pasos para enviar la foto y acordar el pago?`,
+
+                IT: `Ciao! Vorrei ordinare un FotoPanel personalizzato:\n\n` +
+                    `• Dimensioni: ${variant.label} cm\n` +
+                    `• Stile: ${isGrayscale ? 'Adesivo Inkjet B/N' : 'Adesivo Inkjet Colore'}\n` +
+                    `• Supporto: MDF ${variant.media}\n` +
+                    `• Prezzo: ${variant.price} COP\n\n` +
+                    `Quali sono i passaggi per inviare la foto e concordare il pagamento?`,
+
+                PT: `Olá! Gostaria de encomendar um FotoPanel personalizado:\n\n` +
+                    `• Tamanho: ${variant.label} cm\n` +
+                    `• Estilo: ${isGrayscale ? 'Adesivo Inkjet P/B' : 'Adesivo Inkjet Colorido'}\n` +
+                    `• Suporte: MDF ${variant.media}\n` +
+                    `• Preço: ${variant.price} COP\n\n` +
+                    `Quais são os passos para enviar a foto e finalizar o pagamento?`
+            };
+
+            // Select active language message or default to English
+            const selectedMessage = messages[currentLang] || messages.EN;
+
+            // Trigger haptic response pattern
             triggerHaptic([15, 40, 15]);
-            window.open(`https://api.whatsapp.com/send?phone=${targetPhoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
+
+            // Open WhatsApp with encoded text string
+            window.open(`https://api.whatsapp.com/send?phone=${targetPhoneNumber}&text=${encodeURIComponent(selectedMessage)}`, '_blank');
         }
 
         // Initialize stage on DOM load
