@@ -401,22 +401,16 @@
     <div id="texture-overlay"></div>
     <div class="ambient-gradient"></div>
         
-    <!-- TOP HEADER -->
-    <header class="header-bar">
+<!-- TOP HEADER -->
+    <header class="header-bar" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.2rem;">
         <button class="btn-reset-text" title="Home / Reset" onclick="resetView()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
                 <rect x="4" y="4" width="16" height="16" />
             </svg>
             <span>FOTOPANEL</span>
         </button>
+        <span id="top-strip-text" style="font-size: 7px; opacity: 0.5; letter-spacing: 0.25em; text-transform: uppercase;">PRECISION PRINTING, WORLDWIDE</span>
     </header>
-
-    <!-- TOP SPEC STRIP -->
-    <div class="info-strip info-strip-top">
-        <div class="info-strip-content">
-            <span id="top-strip-text" class="info-separator">Your printing services</span>
-        </div>
-    </div>
 
     <!-- MAIN VISUALIZER STAGE (FORCED SQUARE ASPECT RATIO) -->
     <main class="main-visualizer-container">
@@ -539,7 +533,7 @@
                         spec_es: 'Tu foto personalizada', 
                         spec_it: 'La tua foto personalizzata',
                         spec_pt: 'Sua foto personalizada',
-                        media: '9MM',
+                        media: '12MM',
                         finish: 'ADH INKJET PRINT',
                         price: '20MIL', 
                         id: 'FP-20X20',
@@ -563,7 +557,7 @@
                         spec_es: 'Tu foto personalizada', 
                         spec_it: 'La tua foto personalizzata',
                         spec_pt: 'Sua foto personalizada', 
-                        media: '12MM',
+                        media: '9MM',
                         finish: 'ADH INKJET PRINT',
                         price: '40MIL', 
                         id: 'FP-40X40',
@@ -648,10 +642,10 @@
             if (langLabel) langLabel.textContent = currentLang;
 
             const i18n = {
-                EN: { top: 'Your printing services', media: 'DIGITAL PRINTING', mdf: 'MDF SUPPORT' },
-                ES: { top: 'Tus servicios de impresión', media: 'IMPRESIÓN DIGITAL', mdf: 'SOPORTE MDF' },
-                IT: { top: 'I tuoi servizi di stampa', media: 'STAMPA DIGITALE', mdf: 'SUPPORTO MDF' },
-                PT: { top: 'Seus serviços de impressão', media: 'IMPRESSÃO DIGITAL', mdf: 'SUPORTE MDF' }
+                EN: { top: 'PRECISION PRINTING, WORLDWIDE', media: 'DIGITAL PRINTING', mdf: 'MDF SUPPORT' },
+                ES: { top: 'IMPRESIÓN DE PRECISIÓN, GLOBAL', media: 'IMPRESIÓN DIGITAL', mdf: 'SOPORTE MDF' },
+                IT: { top: 'STAMPA DI PRECISIONE, NEL MONDO', media: 'STAMPA DIGITALE', mdf: 'SUPPORTO MDF' },
+                PT: { top: 'IMPRESSÃO DE PRECISÃO, MUNDIAL', media: 'IMPRESSÃO DIGITAL', mdf: 'SUPORTE MDF' }
             };
 
             const topStrip = getCachedEl('top-strip-text');
