@@ -412,7 +412,7 @@
         <div class="info-strip-content">
 <div class="info-item-block">
     <span id="fotopanel-finish" class="tele-value">ADH INKJET PRINT</span>
-    <span id="lbl-printing-media" class="info-item-title">MEDIA</span>
+    <span id="lbl-printing-media" class="info-item-title">IMPRESIÓN</span>
 </div>
 
             <span class="info-separator">/</span>
@@ -518,8 +518,8 @@
                 variants: {
                     'PANEL 10X10 INKJET': { 
                         label: '10X10', 
-                        spec_es: 'Tu foto personalizada',
-                        media: 'MDF 9/12MM',
+                        spec_es: 'Impresión',
+                        media: 'MDF 12MM',
                         finish: 'INKJET',
                         price: '20MIL', 
                         id: 'FP-10X10-INK',
@@ -527,7 +527,7 @@
                     },
                     'PANEL 13X13 INKJET': { 
                         label: '13X13', 
-                        spec_es: 'Tu foto personalizada',
+                        spec_es: 'Impresión',
                         media: 'MDF 9MM',
                         finish: 'INKJET',
                         price: '25MIL', 
@@ -536,8 +536,8 @@
                     },
                     'PANEL 10X10 LASER': { 
                         label: '10X10', 
-                        spec_es: 'Grabado láser directo',
-                        media: 'MDF 9/12MM',
+                        spec_es: 'Grabado',
+                        media: 'MDF 12MM',
                         finish: 'LASER',
                         price: '25MIL', 
                         id: 'FP-10X10-LAS',
@@ -546,7 +546,7 @@
 
                     'PANEL 13X13 LASER': { 
                         label: '13X13', 
-                        spec_es: 'Grabado láser directo',
+                        spec_es: 'Grabado',
                         media: 'MDF 9MM',
                         finish: 'LASER',
                         price: '30MIL', 
@@ -739,11 +739,13 @@
             const price = getCachedEl('fotopanel-price');
             const media = getCachedEl('fotopanel-media');
             const finish = getCachedEl('fotopanel-finish');
+            const specEs = getCachedEl('lbl-printing-media');
             
             if (label) label.textContent = config.label;
             if (price) price.textContent = config.price;
             if (media) media.textContent = config.media;
             if (finish) finish.textContent = config.finish;
+            if (specEs) specEs.textContent = config.spec_es;
 
             renderPanelImages(config);
         }
