@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <link class="icon" type="image/png" href="img/favicon.png">
@@ -131,13 +131,6 @@
             font-size: 16px;
             font-weight: 700;
             letter-spacing: 0.25em;
-        }
-
-        .btn-lang-text {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            padding: 0 0.5rem;
         }
 
         .icon-tele, .icon-stroke {
@@ -371,11 +364,6 @@
 
         .footer-container:hover .footer-brand-text { opacity: 0.9; }
 
-        #btn-lang-toggle {
-            width: auto !important;
-            min-width: 2rem;
-        }
-
         /* RESPONSIVE SCALING FOR SMALL SCREENS */
         @media (max-height: 667px) {
             .footer-container {
@@ -403,13 +391,13 @@
         
 <!-- TOP HEADER -->
     <header class="header-bar" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.2rem;">
-        <button class="btn-reset-text" title="Home / Reset" onclick="resetView()">
+        <button class="btn-reset-text" title="Inicio / Reiniciar" onclick="resetView()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
                 <rect x="4" y="4" width="16" height="16" />
             </svg>
             <span>FOTOPANEL</span>
         </button>
-        <span id="top-strip-text" style="font-size: 7px; opacity: 0.5; letter-spacing: 0.25em; text-transform: uppercase;">PRECISION PRINTING, WORLDWIDE</span>
+        <span id="top-strip-text" style="font-size: 7px; opacity: 0.5; letter-spacing: 0.25em; text-transform: uppercase;">SUEÑA, CREA, IMPRIME</span>
     </header>
 
     <!-- MAIN VISUALIZER STAGE (FORCED SQUARE ASPECT RATIO) -->
@@ -424,39 +412,39 @@
         <div class="info-strip-content">
             <div class="info-item-block">
                 <span id="fotopanel-finish" class="tele-value">ADH INKJET</span>
-                <span id="lbl-printing-media" class="info-item-title">DIGITAL PRINT</span>
+                <span id="lbl-printing-media" class="info-item-title">IMPRESIÓN DIGITAL</span>
             </div>
 
             <span class="info-separator">/</span>
 
             <div class="info-item-block">
-                <span id="fotopanel-media" class="tele-value">MDF 12MM</span>
-                <span id="lbl-mdf-support" class="info-item-title">MDF SUPPORT</span>
+                <span id="fotopanel-media" class="tele-value">MDF 9/12MM</span>
+                <span id="lbl-mdf-support" class="info-item-title">SOPORTE MDF</span>
             </div>
 
             <span class="info-separator">/</span>
 
             <div class="info-item-block">
-                <span id="fotopanel-label" class="tele-value">40X40</span>
+                <span id="fotopanel-label" class="tele-value">20X20</span>
                 <span class="info-item-title">CMS</span>
             </div>
             
             <span class="info-separator">/</span>
             
             <div class="info-item-block">
-                <span id="fotopanel-price" class="tele-value">40MIL</span>
+                <span id="fotopanel-price" class="tele-value">25MIL</span>
                 <span class="info-item-title">COP $</span>
             </div>
         </div>
     </div>
 
-<!-- BOTTOM ACTION CONTROLS -->
+    <!-- BOTTOM ACTION CONTROLS -->
     <div class="controls-bar">
         <!-- Hidden file input for custom uploads -->
         <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
 
         <!-- Upload image button -->
-        <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-control-action">
+        <button id="btn-upload-image" title="Subir Foto Personalizada" onclick="triggerImageUpload()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <path d="M4 8V4h16v4" />
                 <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
@@ -464,14 +452,14 @@
         </button>
 
         <!-- Change scale/size button -->
-        <button id="btn-change-scale" title="Change Scale / Size" onclick="rotateFotoVariant('next')" class="btn-control-action">
+        <button id="btn-change-scale" title="Cambiar Tamaño" onclick="rotateFotoVariant('next')" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
                 <rect x="5" y="5" width="14" height="14" />
             </svg>
         </button>
 
         <!-- Toggle color / B&W mode button -->
-        <button id="btn-color-toggle" title="Toggle Color / B&W Mode" onclick="toggleFotoColorMode()" class="btn-control-action">
+        <button id="btn-color-toggle" title="Modo Color / Blanco y Negro" onclick="toggleFotoColorMode()" class="btn-control-action">
             <svg viewBox="0 0 24 24" class="icon-stroke">
                 <defs>
                     <linearGradient id="color-bw-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -486,7 +474,7 @@
         </button>
 
         <!-- Crop / zoom toggle button -->
-        <button id="btn-crop-zoom" title="Toggle Scale Zoom" onclick="toggleCropZoom()" class="btn-control-action">
+        <button id="btn-crop-zoom" title="Ajustar Enfoque / Zoom" onclick="toggleCropZoom()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <path d="M6 2v14a2 2 0 002 2h14" />
                 <path d="M18 22V8a2 2 0 00-2-2H2" />
@@ -494,7 +482,7 @@
         </button>
 
         <!-- Order / info dispatch button -->
-        <button id="btn-activate-node" title="Order Configuration via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action">
+        <button id="btn-activate-node" title="Ordenar por WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="icon-stroke">
                 <circle cx="12" cy="12" r="9" />
                 <line x1="12" y1="17" x2="12" y2="11" />
@@ -506,23 +494,13 @@
     <!-- FOOTER -->
     <footer class="footer-container">
 
-        <button id="btn-lang-toggle" title="Switch Language" onclick="toggleLanguage()" class="btn-control-action btn-lang-text">
-            <!-- 3D Globe Sphere Icon -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="icon-stroke" style="width: 1.1rem; height: 1.1rem; margin-right: 0.3rem;">
-                <circle cx="12" cy="12" r="9" />
-                <path d="M3.6 9h16.8M3.6 15h16.8" />
-                <ellipse cx="12" cy="12" rx="4" ry="9" />
-            </svg>
-            <span id="lang-label" style="font-size: 13px;">🇺🇸</span>
-        </button>
-
         <a href="https://github.com/jalkn" target="_blank" rel="noopener noreferrer" class="footer-brand-text" style="text-decoration: none; color: inherit;">
             <span>JAKO.DEV</span>
             <span class="footer-copy-symbol">©</span>
             <span>2026</span>
         </a>     
 
-        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
+        <button id="btn-theme-toggle" title="Cambiar Tema (Claro/Oscuro)" onclick="toggleTheme()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
                 <circle cx="12" cy="12" r="5" />
                 <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
@@ -531,47 +509,38 @@
 
     </footer>
 
-<!-- Core Logic Engine -->
+    <!-- Core Logic Engine -->
     <script>
-        // Catalog product configuration data
+        // Catalog product configuration data focused on compact local shipping sizes (<= 20cm)
         const ARTEPANEL_CATALOG = {
             'PULSOR': {
-                defaultVariant: 'PANEL 40X40',
+                defaultVariant: 'PANEL 20X20',
                 variants: {
-                    'PANEL 20X20': { 
-                        label: '20X20', 
-                        spec_en: 'Your photo personalized', 
-                        spec_es: 'Tu foto personalizada', 
-                        spec_it: 'La tua foto personalizzata',
-                        spec_pt: 'Sua foto personalizada',
-                        media: '12MM',
+                    'PANEL 10X10': { 
+                        label: '10X10', 
+                        spec_es: 'Tu foto personalizada',
+                        media: '9/12MM',
                         finish: 'ADH INKJET PRINT',
-                        price: '20MIL', 
-                        id: 'FP-20X20',
+                        price: '12MIL', 
+                        id: 'FP-10X10',
                         scale: 0.50
                     },
-                    'PANEL 30X30': { 
-                        label: '30X30', 
-                        spec_en: 'Your photo personalized', 
-                        spec_es: 'Tu foto personalizada', 
-                        spec_it: 'La tua foto personalizzata',
-                        spec_pt: 'Sua foto personalizada',
-                        media: '9MM',
+                    'PANEL 15X15': { 
+                        label: '15X15', 
+                        spec_es: 'Tu foto personalizada',
+                        media: '9/12MM',
                         finish: 'ADH INKJET PRINT',
-                        price: '30MIL', 
-                        id: 'FP-30X30',
+                        price: '18MIL', 
+                        id: 'FP-15X15',
                         scale: 0.75
                     },
-                    'PANEL 40X40': { 
-                        label: '40X40', 
-                        spec_en: 'Your photo personalized', 
+                    'PANEL 20X20': { 
+                        label: '20X20', 
                         spec_es: 'Tu foto personalizada', 
-                        spec_it: 'La tua foto personalizzata',
-                        spec_pt: 'Sua foto personalizada', 
-                        media: '9MM',
+                        media: '9/12MM',
                         finish: 'ADH INKJET PRINT',
-                        price: '40MIL', 
-                        id: 'FP-40X40',
+                        price: '25MIL', 
+                        id: 'FP-20X20',
                         scale: 1.00
                     }
                 }
@@ -580,26 +549,13 @@
 
         // Application state initializations
         let currentFotoItem = 'PULSOR';
-        let currentFotoVariant = 'PANEL 40X40';
+        let currentFotoVariant = 'PANEL 20X20';
         let isGrayscale = false;
         let isShowingBack = false;
-        let isUserCustomImage = false;
-        
-        // Supported UI language choices
-        const supportedLangs = ['EN', 'ES', 'IT', 'PT'];
-        let langIndex = 0;
-        let currentLang = supportedLangs[langIndex];
 
-        // 6-hour dynamic local image rotation engine (4 time buckets per day: 0, 1, 2, 3)
-        const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
-        
-        const getCurrentBucketIndex = () => Math.floor(Date.now() / SIX_HOURS_MS) % 4;
-        
-        const get6HourRotatingImageUrl = () => `img/photo_${getCurrentBucketIndex()}.png`;
-
-        let activeImageSrc = get6HourRotatingImageUrl();
-        let lastBucket = getCurrentBucketIndex();
-        
+        // Fixed static image paths
+        const defaultStaticImageSrc = 'img/photo.png';
+        let activeImageSrc = defaultStaticImageSrc;
         const backImageSrc = 'img/back.png';
         const targetPhoneNumber = "573128707083";
 
@@ -614,19 +570,6 @@
         const triggerHaptic = (pattern) => { 
             if (navigator.vibrate) navigator.vibrate(pattern); 
         };
-
-        // Automatic background checker for 6-hour image rotation
-        function checkAndAutoRotateImage() {
-            if (isUserCustomImage) return; // Do not overwrite if user uploaded custom photo
-            
-            const currentBucket = getCurrentBucketIndex();
-            if (currentBucket !== lastBucket) {
-                lastBucket = currentBucket;
-                activeImageSrc = get6HourRotatingImageUrl();
-                updateFotoUI();
-            }
-        }
-        setInterval(checkAndAutoRotateImage, 60000); // Check every minute
 
         // Toggle UI theme (Dark / Light)
         function toggleTheme() {
@@ -644,41 +587,6 @@
             document.documentElement.setAttribute('data-theme', savedTheme);
         }
 
-// Flag mapping per supported language choice
-        const langFlags = {
-            'EN': '🇺🇸',
-            'ES': '🇨🇴',
-            'PT': '🇧🇷',
-            'IT': '🇮🇹'
-        };
-
-        // Toggle supported UI languages sequentially
-        function toggleLanguage() {
-            langIndex = (langIndex + 1) % supportedLangs.length;
-            currentLang = supportedLangs[langIndex];
-            
-            const langLabel = getCachedEl('lang-label');
-            if (langLabel) langLabel.textContent = langFlags[currentLang] || '🇺🇸';
-
-            const i18n = {
-                EN: { top: 'PRECISION PRINTING, WORLDWIDE', media: 'DIGITAL PRINTING', mdf: 'MDF SUPPORT' },
-                ES: { top: 'IMPRESIÓN DE PRECISIÓN, GLOBAL', media: 'IMPRESIÓN DIGITAL', mdf: 'SOPORTE MDF' },
-                IT: { top: 'STAMPA DI PRECISIONE, NEL MONDO', media: 'STAMPA DIGITALE', mdf: 'SUPPORTO MDF' },
-                PT: { top: 'IMPRESSÃO DE PRECISÃO, MUNDIAL', media: 'IMPRESSÃO DIGITAL', mdf: 'SUPPORTO MDF' }
-            };
-
-            const topStrip = getCachedEl('top-strip-text');
-            const lblPrinting = getCachedEl('lbl-printing-media');
-            const lblMdf = getCachedEl('lbl-mdf-support');
-
-            if (topStrip) topStrip.textContent = i18n[currentLang].top;
-            if (lblPrinting) lblPrinting.textContent = i18n[currentLang].media;
-            if (lblMdf) lblMdf.textContent = i18n[currentLang].mdf;
-
-            triggerHaptic(10);
-            updateFotoUI();
-        }
-
         // Open hidden file input element
         function triggerImageUpload() {
             const input = getCachedEl('user-image-input');
@@ -693,7 +601,6 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 activeImageSrc = e.target.result;
-                isUserCustomImage = true;
                 isShowingBack = false;
                 resetImageTransform();
                 updateFotoUI();
@@ -749,11 +656,10 @@
 
         // Reset stage to default setup
         function resetView() {
-            currentFotoVariant = 'PANEL 40X40';
+            currentFotoVariant = 'PANEL 20X20';
             isGrayscale = false;
             isShowingBack = false;
-            isUserCustomImage = false;
-            activeImageSrc = get6HourRotatingImageUrl();
+            activeImageSrc = defaultStaticImageSrc;
             resetImageTransform();
             const input = getCachedEl('user-image-input');
             if (input) input.value = '';
@@ -830,49 +736,22 @@
             renderPanelImages(config);
         }
 
-// Open WhatsApp checkout order line with full multilingual support
+        // Open WhatsApp checkout order line formatted strictly for local Spanish audience
         function acquireNodeCashflow() {
             const variant = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
             
-            // Multilingual text definitions for WhatsApp checkout dispatch
-            const messages = {
-                EN: `Hello! I would like to order a custom FotoPanel:\n\n` +
-                    `• Size: ${variant.label} cm\n` +
-                    `• Style: ${isGrayscale ? 'Adhesive Inkjet Print B/W' : 'Adhesive Inkjet Print Full Color'}\n` +
-                    `• Support: MDF ${variant.media}\n` +
-                    `• Price: ${variant.price} COP\n\n` +
-                    `What are the steps to send my photo and finalize payment?`,
-
-                ES: `¡Hola! Quiero hacer un pedido de un FotoPanel personalizado:\n\n` +
-                    `• Tamaño: ${variant.label} cms\n` +
-                    `• Estilo: ${isGrayscale ? 'Adhesivo Inkjet B/N' : 'Adhesivo Inkjet Color'}\n` +
-                    `• Soporte: MDF ${variant.media}\n` +
-                    `• Precio: ${variant.price} COP\n\n` +
-                    `¿Cuáles son los pasos para enviar la foto y acordar el pago?`,
-
-                IT: `Ciao! Vorrei ordinare un FotoPanel personalizzato:\n\n` +
-                    `• Dimensioni: ${variant.label} cm\n` +
-                    `• Stile: ${isGrayscale ? 'Adesivo Inkjet B/N' : 'Adesivo Inkjet Colore'}\n` +
-                    `• Supporto: MDF ${variant.media}\n` +
-                    `• Prezzo: ${variant.price} COP\n\n` +
-                    `Quali sono i passaggi per inviare la foto e concordare il pagamento?`,
-
-                PT: `Olá! Gostaria de encomendar um FotoPanel personalizado:\n\n` +
-                    `• Tamanho: ${variant.label} cm\n` +
-                    `• Estilo: ${isGrayscale ? 'Adesivo Inkjet P/B' : 'Adesivo Inkjet Colorido'}\n` +
-                    `• Suporte: MDF ${variant.media}\n` +
-                    `• Preço: ${variant.price} COP\n\n` +
-                    `Quais são os passos para enviar a foto e finalizar o pagamento?`
-            };
-
-            // Select active language message or default to English
-            const selectedMessage = messages[currentLang] || messages.EN;
+            const message = `¡Hola! Quiero hacer un pedido de un FotoPanel personalizado:\n\n` +
+                `• Tamaño: ${variant.label} cms\n` +
+                `• Estilo: ${isGrayscale ? 'Adhesivo Inkjet B/N' : 'Adhesivo Inkjet Color'}\n` +
+                `• Soporte: MDF ${variant.media} (A elegir 9mm o 12mm)\n` +
+                `• Precio: ${variant.price} COP\n\n` +
+                `¿Cuáles son los pasos para enviar la foto y acordar el pago/envío?`;
 
             // Trigger haptic response pattern
             triggerHaptic([15, 40, 15]);
 
             // Open WhatsApp with encoded text string
-            window.open(`https://api.whatsapp.com/send?phone=${targetPhoneNumber}&text=${encodeURIComponent(selectedMessage)}`, '_blank');
+            window.open(`https://api.whatsapp.com/send?phone=${targetPhoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
         }
 
         // Initialize stage on DOM load
