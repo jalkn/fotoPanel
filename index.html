@@ -410,16 +410,16 @@
     <!-- BOTTOM SPEC STRIP -->
     <div class="info-strip info-strip-bottom">
         <div class="info-strip-content">
-            <div class="info-item-block">
-                <span id="fotopanel-finish" class="tele-value">ADH INKJET</span>
-                <span id="lbl-printing-media" class="info-item-title">IMPRESIÓN DIGITAL</span>
-            </div>
+<div class="info-item-block">
+    <span id="fotopanel-finish" class="tele-value">ADH INKJET PRINT</span>
+    <span id="lbl-printing-media" class="info-item-title">MEDIA</span>
+</div>
 
             <span class="info-separator">/</span>
 
             <div class="info-item-block">
                 <span id="fotopanel-media" class="tele-value">MDF 9/12MM</span>
-                <span id="lbl-mdf-support" class="info-item-title">SOPORTE MDF</span>
+                <span id="lbl-mdf-support" class="info-item-title">SOPORTE</span>
             </div>
 
             <span class="info-separator">/</span>
@@ -511,37 +511,47 @@
 
     <!-- Core Logic Engine -->
     <script>
-        // Catalog product configuration data focused on compact local shipping sizes (<= 20cm)
+// Catalog product configuration data focused on compact local shipping sizes (10x10 & 13x13)
         const ARTEPANEL_CATALOG = {
             'PULSOR': {
-                defaultVariant: 'PANEL 20X20',
+                defaultVariant: 'PANEL 10X10 INKJET',
                 variants: {
-                    'PANEL 10X10': { 
+                    'PANEL 10X10 INKJET': { 
                         label: '10X10', 
                         spec_es: 'Tu foto personalizada',
-                        media: '9/12MM',
-                        finish: 'ADH INKJET PRINT',
+                        media: 'MDF 9/12MM',
+                        finish: 'INKJET PRINT',
                         price: '12MIL', 
-                        id: 'FP-10X10',
+                        id: 'FP-10X10-INK',
                         scale: 0.50
                     },
-                    'PANEL 15X15': { 
-                        label: '15X15', 
+                    'PANEL 13X13 INKJET': { 
+                        label: '13X13', 
                         spec_es: 'Tu foto personalizada',
-                        media: '9/12MM',
-                        finish: 'ADH INKJET PRINT',
-                        price: '18MIL', 
-                        id: 'FP-15X15',
-                        scale: 0.75
+                        media: 'MDF 9MM',
+                        finish: 'INKJET PRINT',
+                        price: '16MIL', 
+                        id: 'FP-13X13-INK',
+                        scale: 0.65
                     },
-                    'PANEL 20X20': { 
-                        label: '20X20', 
-                        spec_es: 'Tu foto personalizada', 
-                        media: '9/12MM',
-                        finish: 'ADH INKJET PRINT',
-                        price: '25MIL', 
-                        id: 'FP-20X20',
-                        scale: 1.00
+                    'PANEL 10X10 LASER': { 
+                        label: '10X10', 
+                        spec_es: 'Grabado láser directo',
+                        media: 'MDF 9/12MM',
+                        finish: 'GRABADO LASER',
+                        price: '15MIL', 
+                        id: 'FP-10X10-LAS',
+                        scale: 0.50
+                    },
+
+                    'PANEL 13X13 LASER': { 
+                        label: '13X13', 
+                        spec_es: 'Grabado láser directo',
+                        media: 'MDF 9MM',
+                        finish: 'GRABADO LASER',
+                        price: '20MIL', 
+                        id: 'FP-13X13-LAS',
+                        scale: 0.65
                     }
                 }
             }
@@ -549,7 +559,7 @@
 
         // Application state initializations
         let currentFotoItem = 'PULSOR';
-        let currentFotoVariant = 'PANEL 20X20';
+        let currentFotoVariant = 'PANEL 10X10 INKJET';
         let isGrayscale = false;
         let isShowingBack = false;
 
@@ -656,7 +666,7 @@
 
         // Reset stage to default setup
         function resetView() {
-            currentFotoVariant = 'PANEL 20X20';
+            currentFotoVariant = 'PANEL 10X10';
             isGrayscale = false;
             isShowingBack = false;
             activeImageSrc = defaultStaticImageSrc;
@@ -728,10 +738,12 @@
             const label = getCachedEl('fotopanel-label');
             const price = getCachedEl('fotopanel-price');
             const media = getCachedEl('fotopanel-media');
+            const finish = getCachedEl('fotopanel-finish');
             
             if (label) label.textContent = config.label;
             if (price) price.textContent = config.price;
             if (media) media.textContent = config.media;
+            if (finish) finish.textContent = config.finish;
 
             renderPanelImages(config);
         }
