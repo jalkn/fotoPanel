@@ -24,19 +24,56 @@
         }
 
         :root[data-theme="light"] {
-            --jako-bg: #ffffff;
+            --jako-bg: #f8f9fa;
             --jako-text: #000000;
             --jako-border: rgba(0, 0, 0, 0.12);
-            --jako-glass: rgba(255, 255, 255, 0.85);
+            --jako-glass: rgba(255, 255, 255, 0.4);
             --jako-led: rgba(0, 0, 0, 0.3);
             --gradient-start: rgba(0, 0, 0, 0.02);
-            --gradient-mid: rgba(255, 255, 255, 0.85);
+            --gradient-mid: rgba(248, 249, 250, 0.85);
             --gradient-end: #ffffff;
             --icon-hover: #666666;
         }
 
         :root {
             --halftone-size: 3.6px;
+        }
+
+        /* HALFTONE WRAPPER AND DOT MATRIX OVERLAY */
+        .halftone-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: block;
+        }
+
+        .halftone-filter {
+            filter: grayscale(100%) contrast(200%) brightness(105%);
+            transition: filter 0.3s ease;
+        }
+
+        .halftone-wrapper::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at center, rgba(0,0,0,0.85) 35%, transparent 36%);
+            background-size: var(--halftone-size) var(--halftone-size);
+            background-repeat: repeat;
+            pointer-events: none;
+            z-index: 15;
+            mix-blend-mode: multiply;
+            opacity: 0.7;
+        }
+
+        .halftone-coarse {
+            --halftone-size: 10.8px;
+        }
+
+        .halftone-filter.inverted-active {
+            filter: grayscale(100%) contrast(200%) brightness(105%) invert(1);
         }
 
         /* GLOBAL RESET & BASE STYLES */
@@ -66,7 +103,7 @@
             position: relative;
             letter-spacing: 0.05em;  
             overscroll-behavior: none;
-            transition: background-color 0.4s ease, color 0.4s ease;
+            transition: background-color 0.5s ease, color 0.5s ease;
         } 
 
         #texture-overlay {
@@ -77,6 +114,7 @@
             background-size: cover;
             background-position: center;
             opacity: 0.15; 
+            transition: background-image 0.4s ease, opacity 0.4s ease;
             mix-blend-mode: overlay; 
         }
 
@@ -96,13 +134,20 @@
         #page-bg-overlay {
             background: radial-gradient(circle at 50% 30%, var(--gradient-start) 0%, var(--gradient-mid) 65%, var(--gradient-end) 100%);
             z-index: -1;
-            transition: background 0.5s ease;
+            transform: translateZ(0);
+            will-change: background;
+            transition: background 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .ambient-gradient {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.05), transparent, rgba(0,0,0,0.05));
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent, rgba(0,0,0,0.2));
             z-index: 0;
             pointer-events: none;
+        }
+
+        /* GLOBAL TRANSITIONS */
+        .img-glow-transition, .info-strip, footer, #fotopanel-pack-container, .panel-back-view {
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease, border-color 0.5s ease;
         }
 
         /* BUTTON BASE STYLES */
@@ -114,12 +159,12 @@
             justify-content: center;
             color: var(--jako-text);
             cursor: pointer;
-            transition: opacity 0.2s ease, transform 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         button:hover { opacity: 0.8; }
         button:active { transform: scale(0.92); }
-        button.active-btn { opacity: 1; filter: drop-shadow(0 0 3px var(--jako-text)); }
+        button.active-btn { opacity: 1; filter: drop-shadow(0 0 5px var(--jako-text)); }
 
         .btn-reset-text {
             width: auto;
@@ -130,13 +175,19 @@
             letter-spacing: 0.25em;
         }
 
-        .icon-stroke {
+        .icon-tele, .icon-stroke {
             width: 1.2rem;
             height: 1.2rem;
-            stroke: var(--jako-text);
-            transition: stroke 0.2s ease;
+            transition: fill 0.3s ease, stroke 0.3s ease;
         }
 
+        .icon-tele {
+            fill: var(--jako-text);
+            pointer-events: none;
+        }
+
+        .icon-stroke { stroke: var(--jako-text); }
+        button:hover .icon-tele { fill: var(--icon-hover); }
         button:hover .icon-stroke { stroke: var(--icon-hover); }
 
         /* LAYOUT HEIGHT SECTIONS */
@@ -153,6 +204,13 @@
             z-index: 100;
             border-bottom: 1px solid var(--jako-border);
             background: var(--jako-glass);
+            backdrop-filter: blur(20px);
+        }
+
+        .info-strip-top {
+            height: 5dvh;
+            max-height: 5dvh;
+            flex-shrink: 0;
         }
 
         /* MAIN VISUALIZER CONTAINER */
@@ -167,6 +225,7 @@
             position: relative;
             overflow: hidden;
             flex-shrink: 0;
+            background-color: transparent; 
         }
 
         .info-strip-bottom {
@@ -189,6 +248,7 @@
             border-top: 1px solid var(--jako-border);
             border-bottom: 1px solid var(--jako-border);
             background: var(--jako-glass);
+            backdrop-filter: blur(20px);
             gap: 1.5rem;
         }
 
@@ -198,6 +258,7 @@
             width: 100%;
             flex-shrink: 0;
             background: var(--jako-glass);
+            backdrop-filter: blur(10px);
             z-index: 50;
             padding: 0 1.25rem; 
             border-top: 1px solid var(--jako-border);
@@ -206,7 +267,7 @@
             justify-content: space-between !important; 
         }
 
-        /* PACK CONTAINER & VECTOR CANVAS STYLING */
+        /* PACK CONTAINER */
         #fotopanel-pack-container {
             position: relative;
             height: 100%;
@@ -214,28 +275,79 @@
             width: auto;
             flex-shrink: 0;
             margin: auto;
+            filter: drop-shadow(0 40px 60px rgba(0,0,0,0.6));
             transform-origin: center center;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        #fotopanel-pack-container.mode-single { aspect-ratio: 1 / 1; }
-        #fotopanel-pack-container.mode-grid { aspect-ratio: 1 / 2; }
+        #fotopanel-pack-container.mode-single {
+            aspect-ratio: 1 / 1;
+        }
+
+        #fotopanel-pack-container.mode-grid {
+            aspect-ratio: 1 / 2;
+        }
 
         .pack-viewport {
             position: relative;
             width: 100%;
             height: 100%;
             overflow: hidden;
-            border-radius: 2px;
-            border: 1px solid var(--jako-border);
+            border-radius: 4px;
         }
 
-        .pack-viewport svg {
+        /* GRID / MOSAIC VIEWPORT STYLES */
+        .mosaic-grid-container {
+            display: grid;
             width: 100%;
             height: 100%;
-            display: block;
+            background-color: var(--jako-bg);
+            gap: 1px;
+        }
+
+        .mosaic-node-tile {
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        /* FRONT IMAGE STYLING */
+        .user-surface-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform-origin: center center;
+            will-change: transform;
+        }
+
+        #fotopanel-pack-container img.panel-back-view {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .panel-back-view {
+            z-index: 20;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .panel-back-view.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .info-strip, .footer-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .info-strip {
@@ -280,6 +392,9 @@
 
         .tele-value { 
             color: var(--jako-text); 
+            text-shadow: var(--jako-led), var(--jako-led);
+            transform: translateZ(0);
+            transition: color 0.5s ease, text-shadow 0.5s ease;
         }
 
         .btn-control-action {
@@ -331,7 +446,7 @@
         
     <!-- TOP HEADER -->
     <header class="header-bar" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.2rem;">
-        <button class="btn-reset-text" title="Reset View" onclick="resetView()">
+        <button class="btn-reset-text" title="Inicio / Reiniciar" onclick="resetView()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
                 <rect x="4" y="4" width="16" height="16" />
             </svg>
@@ -343,10 +458,7 @@
     <!-- MAIN VISUALIZER STAGE -->
     <main class="main-visualizer-container">
         <div id="fotopanel-pack-container" class="mode-single">
-            <div class="pack-viewport">
-                <canvas id="halftone-canvas" style="display: none;"></canvas>
-                <div id="svg-output-target" style="width: 100%; height: 100%;"></div>
-            </div>
+            <div class="pack-viewport"></div>
         </div>
     </main>
 
@@ -383,16 +495,27 @@
 
     <!-- BOTTOM ACTION CONTROLS -->
     <div class="controls-bar">
+        <!-- Hidden file input for custom uploads -->
+        <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
+
+        <!-- Upload image button -->
+        <button id="btn-upload-image" title="Subir Foto Personalizada" onclick="triggerImageUpload()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <path d="M4 8V4h16v4" />
+                <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
+            </svg>
+        </button>
+
         <!-- Toggle Image Color Inversion -->
-        <button id="btn-invert-color" title="Invert Color Scheme" onclick="toggleImageInvert()" class="btn-control-action">
+        <button id="btn-invert-color" title="Invertir Color de Imagen" onclick="toggleImageInvert()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <circle cx="12" cy="12" r="9" />
                 <path d="M12 3v18a9 9 0 0 0 0-18z" fill="currentColor" />
             </svg>
         </button>
 
-        <!-- Toggle Halftone Grid Resolution -->
-        <button id="btn-toggle-halftone-size" title="Toggle Grid Density (Low/High Res)" onclick="toggleHalftoneSize()" class="btn-control-action">
+        <!-- Toggle Halftone Dot Density (3.6px vs 10.8px) -->
+        <button id="btn-toggle-halftone-size" title="Cambiar Tamaño de Puntos Halftone (3.6px / 10.8px)" onclick="toggleHalftoneSize()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <circle cx="6" cy="6" r="1.5" fill="currentColor" />
                 <circle cx="12" cy="6" r="1.5" fill="currentColor" />
@@ -406,8 +529,8 @@
             </svg>
         </button>
 
-        <!-- Toggle Mosaic / Package Mural Grid Mode -->
-        <button id="btn-toggle-grid" title="Mosaic Grid View" onclick="toggleGridMode()" class="btn-control-action">
+        <!-- Toggle Mosaic / Package Mural Grid (Nodes) -->
+        <button id="btn-toggle-grid" title="Mural en Mosaico (Paquete)" onclick="toggleGridMode()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <rect x="3" y="3" width="7" height="7" />
                 <rect x="14" y="3" width="7" height="7" />
@@ -435,7 +558,7 @@
 
     <!-- Core Logic Engine -->
     <script>
-        // Catalog setup
+        // Single variant catalog setup for ACM 10x10 Laser
         const ARTEPANEL_CATALOG = {
             'PULSOR': {
                 defaultVariant: 'STENCIL 10X10',
@@ -466,8 +589,11 @@
         let isImageInverted = false;
         let isCoarseHalftone = false;
 
-        // Default image path
-        const activeImageSrc = 'img/photo.png';
+        // Fixed static image paths
+        const defaultStaticImageSrc = 'img/photo.png';
+        let activeImageSrc = defaultStaticImageSrc;
+        const backImageSrc = 'img/back.png';
+        const targetPhoneNumber = "573128707083";
 
         // Icon SVG Templates for grid toggle button
         const SVG_GRID_FOUR = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>`;
@@ -477,7 +603,7 @@
         const cachedElements = {};
         const getCachedEl = (id) => cachedElements[id] || (cachedElements[id] = document.getElementById(id));
 
-        // Haptic feedback trigger
+        // Haptic feedback function
         const triggerHaptic = (pattern) => { 
             if (navigator.vibrate) navigator.vibrate(pattern); 
         };
@@ -498,6 +624,26 @@
             document.documentElement.setAttribute('data-theme', savedTheme);
         }
 
+        // Open hidden file input element
+        function triggerImageUpload() {
+            const input = getCachedEl('user-image-input');
+            if (input) input.click();
+        }
+
+        // Handle custom image uploads
+        function handleUserImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                activeImageSrc = e.target.result;
+                updateFotoUI();
+                triggerHaptic([10, 20]);
+            };
+            reader.readAsDataURL(file);
+        }
+
         // Toggle Grid Mode (Mosaico 200 Nodos)
         function toggleGridMode() {
             isGridMode = !isGridMode;
@@ -506,32 +652,53 @@
                 if (isGridMode) {
                     btn.classList.add('active-btn');
                     btn.innerHTML = SVG_GRID_SINGLE;
-                    btn.title = "Single Panel View";
+                    btn.title = "Ver Panel Individual";
                 } else {
                     btn.classList.remove('active-btn');
                     btn.innerHTML = SVG_GRID_FOUR;
-                    btn.title = "Mosaic Grid View";
+                    btn.title = "Mural en Mosaico (Paquete)";
                 }
             }
             updateFotoUI();
             triggerHaptic([15, 30]);
         }
 
-        // Toggle Halftone Grid Resolution (30 vs 60 dots)
+        // Toggle Halftone Grid Size (3.6px vs 10.8px)
         function toggleHalftoneSize() {
             isCoarseHalftone = !isCoarseHalftone;
             const btn = getCachedEl('btn-toggle-halftone-size');
-            if (btn) btn.classList.toggle('active-btn', isCoarseHalftone);
-            updateFotoUI();
+            
+            if (btn) {
+                btn.classList.toggle('active-btn', isCoarseHalftone);
+            }
+            
+            const wrappers = document.querySelectorAll('.halftone-wrapper');
+            wrappers.forEach(w => {
+                w.classList.toggle('halftone-coarse', isCoarseHalftone);
+            });
+
             triggerHaptic([10, 20]);
         }
 
         // Toggle Image Inversion
         function toggleImageInvert() {
             isImageInverted = !isImageInverted;
+            
+            const halftoneElements = document.querySelectorAll('.halftone-filter');
             const btn = getCachedEl('btn-invert-color');
-            if (btn) btn.classList.toggle('active-btn', isImageInverted);
-            updateFotoUI();
+
+            halftoneElements.forEach(el => {
+                if (isImageInverted) {
+                    el.classList.add('inverted-active');
+                } else {
+                    el.classList.remove('inverted-active');
+                }
+            });
+
+            if (btn) {
+                btn.classList.toggle('active-btn', isImageInverted);
+            }
+
             triggerHaptic([10, 20]);
         }
 
@@ -540,11 +707,13 @@
             isGridMode = false;
             isImageInverted = false;
             isCoarseHalftone = false;
+            activeImageSrc = defaultStaticImageSrc;
             
             const btnGrid = getCachedEl('btn-toggle-grid');
             if (btnGrid) {
                 btnGrid.classList.remove('active-btn');
                 btnGrid.innerHTML = SVG_GRID_FOUR;
+                btnGrid.title = "Mural en Mosaico (Paquete)";
             }
 
             const btnInvert = getCachedEl('btn-invert-color');
@@ -552,76 +721,20 @@
 
             const btnHalftone = getCachedEl('btn-toggle-halftone-size');
             if (btnHalftone) btnHalftone.classList.remove('active-btn');
+
+            const input = getCachedEl('user-image-input');
+            if (input) input.value = '';
             
             updateFotoUI();
             triggerHaptic([10, 10]);
         }
 
-        // Generate vector halftone SVG directly via client Canvas calculation
-        function generateVectorSVG(imageSrc, gridCols, isInverted, callback) {
-            const img = new Image();
-            img.crossOrigin = "Anonymous";
-            img.onload = () => {
-                const canvas = getCachedEl('halftone-canvas');
-                const ctx = canvas.getContext('2d');
-
-                const aspect = img.height / img.width;
-                const gridRows = Math.round(gridCols * (isGridMode ? aspect : 1));
-
-                canvas.width = gridCols;
-                canvas.height = gridRows;
-
-                ctx.drawImage(img, 0, 0, gridCols, gridRows);
-                const imgData = ctx.getImageData(0, 0, gridCols, gridRows).data;
-
-                const cellSize = 10;
-                const viewWidth = gridCols * cellSize;
-                const viewHeight = gridRows * cellSize;
-                const maxRadius = isCoarseHalftone ? 4.5 : 2.2;
-                const minRadius = 0.5;
-
-                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-                const baseBg = isDark ? "#121212" : "#ffffff";
-                const baseDot = isDark ? "#ffffff" : "#000000";
-
-                const bgColor = isInverted ? baseDot : baseBg;
-                const dotColor = isInverted ? baseBg : baseDot;
-
-                let svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${viewWidth} ${viewHeight}" width="100%" height="100%" style="background-color: ${bgColor};">`;
-                svgString += `<g fill="${dotColor}">`;
-
-                for (let y = 0; y < gridRows; y++) {
-                    for (let x = 0; x < gridCols; x++) {
-                        const idx = (y * gridCols + x) * 4;
-                        const r = imgData[idx];
-                        const g = imgData[idx + 1];
-                        const b = imgData[idx + 2];
-                        
-                        // Luminance calculation
-                        const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
-                        const factor = isInverted ? (brightness / 255.0) : ((255 - brightness) / 255.0);
-                        
-                        const radius = minRadius + (factor * (maxRadius - minRadius));
-
-                        if (radius > 0.2) {
-                            const cx = (x * cellSize) + (cellSize / 2);
-                            const cy = (y * cellSize) + (cellSize / 2);
-                            svgString += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${radius.toFixed(2)}" />`;
-                        }
-                    }
-                }
-
-                svgString += `</g></svg>`;
-                callback(svgString);
-            };
-            img.src = imageSrc;
-        }
-
-        // Render current panel vector SVG within viewport
+        // Render current panel images within viewport
         function renderPanelImages(config) {
             const container = getCachedEl('fotopanel-pack-container');
-            const target = getCachedEl('svg-output-target');
-            if (!container || !target) return;
+            const invertClass = isImageInverted ? ' inverted-active' : '';
+            const coarseClass = isCoarseHalftone ? ' halftone-coarse' : '';
+            if (!container) return;
 
             if (isGridMode) {
                 container.classList.remove('mode-single');
@@ -633,10 +746,66 @@
                 container.style.transform = `scale(${config.scale})`;
             }
 
-            const gridResolution = isCoarseHalftone ? 30 : 60;
-            generateVectorSVG(activeImageSrc, gridResolution, isImageInverted, (svgContent) => {
-                target.innerHTML = svgContent;
-            });
+            let viewport = container.querySelector('.pack-viewport');
+            if (!viewport) {
+                viewport = document.createElement('div');
+                viewport.className = 'pack-viewport';
+                container.appendChild(viewport);
+            }
+
+            if (isGridMode) {
+                const cols = config.nodes.cols;
+                const rows = config.nodes.rows;
+                
+                let mosaicHTML = `<div class="halftone-wrapper${coarseClass}"><div class="mosaic-grid-container halftone-filter${invertClass}" style="grid-template-columns: repeat(${cols}, 1fr); grid-template-rows: repeat(${rows}, 1fr);">`;
+                
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        const posX = cols > 1 ? (c / (cols - 1)) * 100 : 0;
+                        const posY = rows > 1 ? (r / (rows - 1)) * 100 : 0;
+                        
+                        mosaicHTML += `<div class="mosaic-node-tile" style="background-image: url('${activeImageSrc}'); background-size: ${cols * 100}% ${rows * 100}%; background-position: ${posX}% ${posY}%;"></div>`;
+                    }
+                }
+                mosaicHTML += `</div></div>`;
+                
+                viewport.innerHTML = mosaicHTML;
+            } else {
+                viewport.innerHTML = `
+                    <div style="position: absolute; inset: 0; background-color: #e5e5e5; z-index: 1;"></div>
+                    <div class="halftone-wrapper${coarseClass}" style="position: absolute; inset: 0; z-index: 10;">
+                        <img src="${activeImageSrc}" alt="Panel Surface Front" class="user-surface-image img-glow-transition halftone-filter${invertClass}" />
+                    </div>
+                    <img src="${backImageSrc}" alt="Panel Surface Back" class="img-glow-transition panel-back-view" style="z-index: 20; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;" />
+                `;
+                attachLongPressListener(viewport);
+            }
+        }
+
+        // Attach hold / long-press events for smooth fade-in preview of back.png
+        function attachLongPressListener(element) {
+            const showBack = () => {
+                const backImg = element.querySelector('.panel-back-view');
+                if (backImg) {
+                    backImg.style.opacity = '1';
+                    triggerHaptic(15);
+                }
+            };
+
+            const hideBack = () => {
+                const backImg = element.querySelector('.panel-back-view');
+                if (backImg) {
+                    backImg.style.opacity = '0';
+                }
+            };
+
+            element.addEventListener('touchstart', (e) => { e.preventDefault(); showBack(); }, { passive: false });
+            element.addEventListener('touchend', hideBack);
+            element.addEventListener('touchcancel', hideBack);
+
+            element.addEventListener('mousedown', showBack);
+            element.addEventListener('mouseup', hideBack);
+            element.addEventListener('mouseleave', hideBack);
         }
 
         // Update UI specifications and trigger re-render
