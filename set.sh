@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
-echo "=== Initializing Architecture for  & Studio Mode Automation ==="
+echo "=== Initializing Architecture for FotoPanel Automation ==="
 
 # 1. Generate index.html in the repository root
 cat << 'EOF' > index.html
 <!DOCTYPE html>
-<html lang="es" data-theme="dark">
+<html lang="es" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <link class="icon" type="image/png" href="img/favicon.png">
@@ -136,11 +136,8 @@ cat << 'EOF' > index.html
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            aspect-ratio: 1 / 1;
         }
-
-        #fotopanel-pack-container.mode-single { aspect-ratio: 1 / 1; }
-        #fotopanel-pack-container.mode-grid { aspect-ratio: 1 / 2; }
 
         .pack-viewport {
             width: 100%;
@@ -148,6 +145,16 @@ cat << 'EOF' > index.html
             overflow: hidden;
             border-radius: 2px;
             border: 1px solid var(--jako-border);
+        }
+
+        #svg-output-target {
+            width: 100%;
+            height: 100%;
+            transition: filter 0.3s ease;
+        }
+
+        .invert-active {
+            filter: invert(1) hue-rotate(180deg);
         }
 
         .info-strip {
@@ -215,6 +222,7 @@ cat << 'EOF' > index.html
             color: var(--jako-text);
             opacity: 0.5;
             text-transform: uppercase;
+            text-decoration: none;
         }
 
         .btn-control-action {
@@ -238,10 +246,9 @@ cat << 'EOF' > index.html
     </header>
 
     <main class="main-visualizer-container">
-        <div id="fotopanel-pack-container" class="mode-single">
+        <div id="fotopanel-pack-container">
             <div class="pack-viewport">
-                <canvas id="halftone-canvas" style="display: none;"></canvas>
-                <div id="svg-output-target" style="width: 100%; height: 100%;"></div>
+                <div id="svg-output-target"></div>
             </div>
         </div>
     </main>
@@ -260,7 +267,7 @@ cat << 'EOF' > index.html
             <span>/</span>
             <div class="info-item-block">
                 <span id="fotopanel-label">10X10 CM</span>
-                <span id="lbl-grid-spec" class="info-item-title">GRID 3MM (33 DOTS)</span>
+                <span id="lbl-grid-spec" class="info-item-title">GRID 1.0MM (100 DOTS)</span>
             </div>
             <span>/</span>
             <div class="info-item-block">
@@ -271,14 +278,14 @@ cat << 'EOF' > index.html
     </div>
 
     <div class="controls-bar">
-        <button id="btn-invert-color" title="Invertir Colores" onclick="toggleImageInvert()" class="btn-control-action">
+        <button id="btn-invert-color" title="Invert Colors" onclick="toggleImageInvert()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <circle cx="12" cy="12" r="9" />
                 <path d="M12 3v18a9 9 0 0 0 0-18z" fill="currentColor" />
             </svg>
         </button>
 
-        <button id="btn-toggle-halftone-size" title="Cambiar Densidad Grid (3mm / 1.5mm)" onclick="toggleHalftoneSize()" class="btn-control-action">
+        <button id="btn-toggle-halftone-size" title="Toggle Grid Density" onclick="toggleHalftoneSize()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <circle cx="6" cy="6" r="1.5" fill="currentColor" />
                 <circle cx="12" cy="6" r="1.5" fill="currentColor" />
@@ -291,23 +298,14 @@ cat << 'EOF' > index.html
                 <circle cx="18" cy="18" r="1.5" fill="currentColor" />
             </svg>
         </button>
-
-        <button id="btn-toggle-grid" title="Vista Mosaico Mural" onclick="toggleGridMode()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                <rect x="3" y="3" width="7" height="7" />
-                <rect x="14" y="3" width="7" height="7" />
-                <rect x="14" y="14" width="7" height="7" />
-                <rect x="3" y="14" width="7" height="7" />
-            </svg>
-        </button>
     </div>
 
     <footer class="footer-container">
-        <a href="https://github.com/jalkn" target="_blank" rel="noopener noreferrer" class="footer-brand-text" style="text-decoration: none;">
+        <a href="https://github.com/jalkn" target="_blank" rel="noopener noreferrer" class="footer-brand-text">
             <span>JAKO.DEV</span>
             <span>©</span>
             <span>2026</span>
-        </a>     
+        </a>
 
         <button id="btn-theme-toggle" title="Cambiar Tema" onclick="toggleTheme()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
@@ -318,171 +316,70 @@ cat << 'EOF' > index.html
     </footer>
 
     <script>
-        let isGridMode = false;
         let isImageInverted = false;
-        let isFineGrid = false; // False = 3mm pitch (33 dots/panel), True = 1.5mm pitch (66 dots/panel)
-
-        const activeImageSrc = 'img/photo.png';
-
-        const SVG_GRID_FOUR = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>`;
-        const SVG_GRID_SINGLE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke"><rect x="4" y="4" width="16" height="16" /></svg>`;
+        let isFineGrid = false; // False = 1.0mm pitch, True = 0.5mm pitch
 
         const cachedElements = {};
         const getCachedEl = (id) => cachedElements[id] || (cachedElements[id] = document.getElementById(id));
-
         const triggerHaptic = (pattern) => { if (navigator.vibrate) navigator.vibrate(pattern); };
 
-        function toggleTheme() {
-            const html = document.documentElement;
-            const nextTheme = (html.getAttribute('data-theme') || 'dark') === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', nextTheme);
-            localStorage.setItem('fotopanel_theme', nextTheme);
-            triggerHaptic(10);
-            updateFotoUI();
-        }
-
         function initTheme() {
-            const savedTheme = localStorage.getItem('fotopanel_theme') || 'dark';
+            const savedTheme = localStorage.getItem('fotopanel_theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
         }
 
-        function toggleGridMode() {
-            isGridMode = !isGridMode;
-            const btn = getCachedEl('btn-toggle-grid');
-            if (btn) {
-                btn.classList.toggle('active-btn', isGridMode);
-                btn.innerHTML = isGridMode ? SVG_GRID_SINGLE : SVG_GRID_FOUR;
-            }
-            updateFotoUI();
-            triggerHaptic([15, 30]);
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme') || 'light';
+            const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', nextTheme);
+            localStorage.setItem('fotopanel_theme', nextTheme);
+            triggerHaptic(10);
         }
 
         function toggleHalftoneSize() {
             isFineGrid = !isFineGrid;
-            const btn = getCachedEl('btn-toggle-halftone-size');
-            if (btn) btn.classList.toggle('active-btn', isFineGrid);
+            getCachedEl('btn-toggle-halftone-size')?.classList.toggle('active-btn', isFineGrid);
             updateFotoUI();
             triggerHaptic([10, 20]);
         }
 
         function toggleImageInvert() {
             isImageInverted = !isImageInverted;
-            const btn = getCachedEl('btn-invert-color');
-            if (btn) btn.classList.toggle('active-btn', isImageInverted);
-            updateFotoUI();
+            getCachedEl('btn-invert-color')?.classList.toggle('active-btn', isImageInverted);
+            getCachedEl('svg-output-target')?.classList.toggle('invert-active', isImageInverted);
             triggerHaptic([10, 20]);
         }
 
         function resetView() {
-            isGridMode = false;
             isImageInverted = false;
             isFineGrid = false;
             
-            const btnGrid = getCachedEl('btn-toggle-grid');
-            if (btnGrid) {
-                btnGrid.classList.remove('active-btn');
-                btnGrid.innerHTML = SVG_GRID_FOUR;
-            }
-
-            const btnInvert = getCachedEl('btn-invert-color');
-            if (btnInvert) btnInvert.classList.remove('active-btn');
-
-            const btnHalftone = getCachedEl('btn-toggle-halftone-size');
-            if (btnHalftone) btnHalftone.classList.remove('active-btn');
+            getCachedEl('btn-invert-color')?.classList.remove('active-btn');
+            getCachedEl('btn-toggle-halftone-size')?.classList.remove('active-btn');
+            getCachedEl('svg-output-target')?.classList.remove('invert-active');
             
             updateFotoUI();
             triggerHaptic([10, 10]);
-        }
-        
-        function generateVectorSVG(imageSrc, dotsPerPanel, isInverted, callback) {
-            const img = new Image();
-            img.crossOrigin = "Anonymous";
-            img.onload = () => {
-                const canvas = getCachedEl('halftone-canvas');
-                const ctx = canvas.getContext('2d');
-
-                // Si es mosaico mural (1x2 paneles), duplicamos el alto de columnas
-                const panelCols = dotsPerPanel;
-                const panelRows = dotsPerPanel * (isGridMode ? 2 : 1);
-
-                canvas.width = panelCols;
-                canvas.height = panelRows;
-
-                ctx.drawImage(img, 0, 0, panelCols, panelRows);
-                const imgData = ctx.getImageData(0, 0, panelCols, panelRows).data;
-
-                // Definimos dimensiones internas en mm dentro del ViewBox
-                const pitchMM = 3.0; // Distancia entre centros de punto (3mm)
-                const viewWidth = panelCols * pitchMM;
-                const viewHeight = panelRows * pitchMM;
-                
-                // Radio físico máximo (1.35mm = 2.7mm diámetro) y mínimo (0.25mm)
-                const maxRadius = (pitchMM / 2) * 0.90; 
-                const minRadius = 0.25;
-
-                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-                const baseBg = isDark ? "#121212" : "#ffffff";
-                const baseDot = isDark ? "#ffffff" : "#000000";
-
-                const bgColor = isInverted ? baseDot : baseBg;
-                const dotColor = isInverted ? baseBg : baseDot;
-
-                let svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${viewWidth} ${viewHeight}" width="100%" height="100%" style="background-color: ${bgColor};">`;
-                svgString += `<g fill="${dotColor}">`;
-
-                for (let y = 0; y < panelRows; y++) {
-                    for (let x = 0; x < panelCols; x++) {
-                        const idx = (y * panelCols + x) * 4;
-                        const r = imgData[idx];
-                        const g = imgData[idx + 1];
-                        const b = imgData[idx + 2];
-                        
-                        const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
-                        const factor = isInverted ? (brightness / 255.0) : ((255 - brightness) / 255.0);
-                        
-                        const radius = minRadius + (factor * (maxRadius - minRadius));
-
-                        if (radius > 0.1) {
-                            const cx = (x * pitchMM) + (pitchMM / 2);
-                            const cy = (y * pitchMM) + (pitchMM / 2);
-                            svgString += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${radius.toFixed(2)}" />`;
-                        }
-                    }
-                }
-
-                svgString += `</g></svg>`;
-                callback(svgString);
-            };
-            img.src = imageSrc;
         }
 
         function renderPanelImages() {
             const target = getCachedEl('svg-output-target');
             if (!target) return;
 
-            // Selecciona el archivo vector según la densidad (Low: 100 dots / High: 200 dots)
             const svgFile = isFineGrid ? 'fotopanel_high_res.svg' : 'fotopanel_low_res.svg';
 
             fetch(svgFile)
                 .then(res => res.text())
-                .then(svgData => {
-                    target.innerHTML = svgData;
-                })
-                .catch(err => console.error("Error al cargar SVG:", err));
+                .then(svgData => target.innerHTML = svgData)
+                .catch(err => console.error("SVG Loading Error:", err));
         }
 
         function updateFotoUI() {
             const gridSpec = getCachedEl('lbl-grid-spec');
             if (gridSpec) {
                 gridSpec.textContent = isFineGrid ? 'GRID 0.5MM (200 DOTS)' : 'GRID 1.0MM (100 DOTS)';
-            }
-            renderPanelImages();
-        }
-
-        function updateFotoUI() {
-            const gridSpec = getCachedEl('lbl-grid-spec');
-            if (gridSpec) {
-                gridSpec.textContent = isFineGrid ? 'GRID 1.5MM (66 DOTS)' : 'GRID 3MM (33 DOTS)';
             }
             renderPanelImages();
         }
@@ -499,32 +396,32 @@ EOF
 # 2. Generate filter.py (Python Halftone Generator)
 cat << 'EOF' > filter.py
 #!/usr/bin/env python3
-#!/usr/bin/env python3
 import os
 from PIL import Image, ImageOps
 
-def generate_halftone_svg(image_path, output_path, dots_per_panel, pitch_mm=1.0, is_inverted=False):
+def generate_halftone_svg(image_path, output_path, dots_per_panel, pitch_mm=1.0):
     if not os.path.exists(image_path):
-        print(f"Error: No se encontró la imagen {image_path}")
+        print(f"Error: Image {image_path} not found.")
         return
 
-    # 1. Cargar imagen y convertir a escala de grises
+    # 1. Load image and convert to grayscale
     img = Image.open(image_path).convert('L')
     
-    # 2. Normalizar contraste para asegurar rango completo
+    # 2. Normalize contrast to ensure full range mapping
     img = ImageOps.autocontrast(img, cutoff=1)
     
-    # 3. Redimensionar exacto al grid de puntos usando Lanczos
+    # 3. Exact resize to dot grid using Lanczos resampling
     img = img.resize((dots_per_panel, dots_per_panel), Image.Resampling.LANCZOS)
     
     view_size = dots_per_panel * pitch_mm
     
-    # Radios calibrados según la densidad del punto
+    # Calibrated radii based on dot density
     max_radius = (pitch_mm / 2.0) * 0.88
     min_radius = pitch_mm * 0.08
 
-    bg_color = "#000000" if is_inverted else "#121212"
-    dot_color = "#ffffff" if is_inverted else "#ffffff"
+    # Fixed base colors
+    bg_color = "#ffffff"
+    dot_color = "#000000"
 
     svg_lines = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {view_size:.2f} {view_size:.2f}" width="100%" height="100%" style="background-color: {bg_color};">',
@@ -534,7 +431,7 @@ def generate_halftone_svg(image_path, output_path, dots_per_panel, pitch_mm=1.0,
     for y in range(dots_per_panel):
         for x in range(dots_per_panel):
             gray = img.getpixel((x, y))
-            factor = (gray / 255.0) if is_inverted else ((255.0 - gray) / 255.0)
+            factor = (255.0 - gray) / 255.0
             radius = min_radius + (factor * (max_radius - min_radius))
 
             if radius > (pitch_mm * 0.05):
@@ -554,22 +451,14 @@ if __name__ == '__main__':
     # Low Res (Grid 1.0mm - 100x100 dots)
     generate_halftone_svg(img_src, 'fotopanel_low_res.svg', dots_per_panel=100, pitch_mm=1.0)
     
-    # High Res Duplicado (Grid 0.5mm - 200x200 dots)
+    # High Res (Grid 0.5mm - 200x200 dots)
     generate_halftone_svg(img_src, 'fotopanel_high_res.svg', dots_per_panel=200, pitch_mm=0.5)
     
-    print(f"SVGs (100 dots Low / 200 dots High) generados correctamente.")
+    print("SVGs (100 dots Low / 200 dots High) generated successfully.")
 EOF
 
-
-# Make set.sh executable
-chmod +x set.sh
+# Make set.sh and filter.py executable
+chmod +x set.sh filter.py
 
 echo "=== Files created successfully ==="
-echo ""
-echo "=== Execution Steps ==="
-echo ""
-echo "1. Grant permissions and run set.sh locally:"
-echo "   chmod +x set.sh"
-echo "   ./set.sh"
-echo ""
-echo "   python3 filter.py"
+echo "Run './set.sh' to compile, then 'python3 filter.py' to generate vectors."
