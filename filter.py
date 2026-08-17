@@ -1,76 +1,60 @@
+#!/usr/bin/env python3
+#!/usr/bin/env python3
 import os
-from PIL import Image
+from PIL import Image, ImageOps
 
-def generate_halftone_svg(image_path, output_svg_path, grid_size=40, max_radius=4.0, min_radius=0.5):
-    """
-    Generates a halftone vector SVG (FotoPanel dot matrix) from an input image.
+def generate_halftone_svg(image_path, output_path, dots_per_panel, pitch_mm=1.0, is_inverted=False):
+    if not os.path.exists(image_path):
+        print(f"Error: No se encontró la imagen {image_path}")
+        return
 
-    :param image_path: Path to the source image file.
-    :param output_svg_path: Path where the generated SVG file will be saved.
-    :param grid_size: Number of points along the X and Y axes (grid resolution).
-    :param max_radius: Maximum radius of each circle (dark areas).
-    :param min_radius: Minimum radius of each circle (light areas / min perforation).
-    """
-    # Load input image and convert to grayscale
+    # 1. Cargar imagen y convertir a escala de grises
     img = Image.open(image_path).convert('L')
     
-    # Calculate aspect ratio to preserve image proportions dynamically
-    orig_width, orig_height = img.size
-    aspect_ratio = orig_height / orig_width
+    # 2. Normalizar contraste para asegurar rango completo
+    img = ImageOps.autocontrast(img, cutoff=1)
     
-    grid_width = grid_size
-    grid_height = int(grid_size * aspect_ratio)
+    # 3. Redimensionar exacto al grid de puntos usando Lanczos
+    img = img.resize((dots_per_panel, dots_per_panel), Image.Resampling.LANCZOS)
     
-    # Resize image to target grid dimensions using Lanczos resampling
-    img_resized = img.resize((grid_width, grid_height), Image.Resampling.LANCZOS)
+    view_size = dots_per_panel * pitch_mm
     
-    # Define cell size and overall SVG viewBox dimensions
-    cell_size = 10
-    view_width = grid_width * cell_size
-    view_height = grid_height * cell_size
+    # Radios calibrados según la densidad del punto
+    max_radius = (pitch_mm / 2.0) * 0.88
+    min_radius = pitch_mm * 0.08
 
-    # Build SVG header with clean background fill
-    svg_elements = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {view_width} {view_height}" width="{view_width}" height="{view_height}">',
-        '  <rect width="100%" height="100%" fill="#ffffff" />',
-        '  <g fill="#000000">'
+    bg_color = "#000000" if is_inverted else "#121212"
+    dot_color = "#ffffff" if is_inverted else "#ffffff"
+
+    svg_lines = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {view_size:.2f} {view_size:.2f}" width="100%" height="100%" style="background-color: {bg_color};">',
+        f'  <g fill="{dot_color}">'
     ]
 
-    # Iterate over pixel grid to produce proportional vector circles
-    for y in range(grid_height):
-        for x in range(grid_width):
-            # Fetch pixel brightness level (0 = black, 255 = white)
-            pixel = img_resized.getpixel((x, y))
-            
-            # Invert brightness so darker pixels yield larger vector points
-            darkness = (255 - pixel) / 255.0
-            
-            # Map darkness ratio to corresponding circle radius
-            radius = min_radius + (darkness * (max_radius - min_radius))
-            
-            if radius > 0.1:
-                cx = (x * cell_size) + (cell_size / 2)
-                cy = (y * cell_size) + (cell_size / 2)
-                svg_elements.append(f'    <circle cx="{cx:.2f}" cy="{cy:.2f}" r="{radius:.2f}" />')
+    for y in range(dots_per_panel):
+        for x in range(dots_per_panel):
+            gray = img.getpixel((x, y))
+            factor = (gray / 255.0) if is_inverted else ((255.0 - gray) / 255.0)
+            radius = min_radius + (factor * (max_radius - min_radius))
 
-    svg_elements.append('  </g>')
-    svg_elements.append('</svg>')
+            if radius > (pitch_mm * 0.05):
+                cx = (x * pitch_mm) + (pitch_mm / 2.0)
+                cy = (y * pitch_mm) + (pitch_mm / 2.0)
+                svg_lines.append(f'    <circle cx="{cx:.2f}" cy="{cy:.2f}" r="{radius:.2f}" />')
 
-    # Write output SVG string to disk
-    with open(output_svg_path, 'w', encoding='utf-8') as file:
-        file.write('\n'.join(svg_elements))
+    svg_lines.append('  </g>')
+    svg_lines.append('</svg>')
 
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(svg_lines))
 
-# Define default input path with localized fallback check
-input_image = "img/photo.png" if os.path.exists("img/photo.png") else "input.jpg"
-
-if os.path.exists(input_image):
-    # Generate low resolution vector preview with updated max radius (1.08)
-    generate_halftone_svg(input_image, "fotopanel_low_res.svg", grid_size=80, max_radius=1.08, min_radius=0.05)
+if __name__ == '__main__':
+    img_src = 'img/photo.png'
     
-    # Generate high resolution vector output with updated max radius (0.36)
-    generate_halftone_svg(input_image, "fotopanel_high_res.svg", grid_size=160, max_radius=0.36, min_radius=0.05)
+    # Low Res (Grid 1.0mm - 100x100 dots)
+    generate_halftone_svg(img_src, 'fotopanel_low_res.svg', dots_per_panel=100, pitch_mm=1.0)
     
-    print(f"Halftone SVGs generated successfully from '{input_image}'.")
-else:
-    print(f"Error: Target image file '{input_image}' was not found.")
+    # High Res Duplicado (Grid 0.5mm - 200x200 dots)
+    generate_halftone_svg(img_src, 'fotopanel_high_res.svg', dots_per_panel=200, pitch_mm=0.5)
+    
+    print(f"SVGs (100 dots Low / 200 dots High) generados correctamente.")
