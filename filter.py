@@ -1,43 +1,51 @@
+import os
 from PIL import Image
-import math
 
 def generate_halftone_svg(image_path, output_svg_path, grid_size=40, max_radius=4.0, min_radius=0.5):
     """
-    Genera un SVG vectorial de entramado de puntos (Halftone / FotoPanel)
-    a partir de una imagen de entrada.
-    
-    :param image_path: Ruta a la imagen fuente.
-    :param output_svg_path: Ruta donde se guardará el SVG.
-    :param grid_size: Número de puntos en el eje X/Y (resolución de la grilla).
-    :param max_radius: Radio máximo del círculo (áreas oscuras).
-    :param min_radius: Radio mínimo del círculo (áreas claras/perforación mínima).
+    Generates a halftone vector SVG (FotoPanel dot matrix) from an input image.
+
+    :param image_path: Path to the source image file.
+    :param output_svg_path: Path where the generated SVG file will be saved.
+    :param grid_size: Number of points along the X and Y axes (grid resolution).
+    :param max_radius: Maximum radius of each circle (dark areas).
+    :param min_radius: Minimum radius of each circle (light areas / min perforation).
     """
-    # Cargar imagen y convertir a escala de grises
+    # Load input image and convert to grayscale
     img = Image.open(image_path).convert('L')
     
-    # Redimensionar al tamaño de la grilla
-    img_resized = img.resize((grid_size, grid_size), Image.Resampling.LANCZOS)
+    # Calculate aspect ratio to preserve image proportions dynamically
+    orig_width, orig_height = img.size
+    aspect_ratio = orig_height / orig_width
     
-    # Definir dimensiones del ViewBox del SVG
-    cell_size = 10  # Tamaño de cada celda en unidades de SVG
-    width = grid_size * cell_size
-    height = grid_size * cell_size
+    grid_width = grid_size
+    grid_height = int(grid_size * aspect_ratio)
+    
+    # Resize image to target grid dimensions using Lanczos resampling
+    img_resized = img.resize((grid_width, grid_height), Image.Resampling.LANCZOS)
+    
+    # Define cell size and overall SVG viewBox dimensions
+    cell_size = 10
+    view_width = grid_width * cell_size
+    view_height = grid_height * cell_size
 
+    # Build SVG header with clean background fill
     svg_elements = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="{width}" height="{height}">',
-        f'  <rect width="100%" height="100%" fill="#ffffff" />',  # Fondo base
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {view_width} {view_height}" width="{view_width}" height="{view_height}">',
+        '  <rect width="100%" height="100%" fill="#ffffff" />',
         '  <g fill="#000000">'
     ]
 
-    for y in range(grid_size):
-        for x in range(grid_size):
-            # Obtener luminosidad (0 = negro, 255 = blanco)
+    # Iterate over pixel grid to produce proportional vector circles
+    for y in range(grid_height):
+        for x in range(grid_width):
+            # Fetch pixel brightness level (0 = black, 255 = white)
             pixel = img_resized.getpixel((x, y))
             
-            # Invertir para que las zonas oscuras tengan puntos más grandes
+            # Invert brightness so darker pixels yield larger vector points
             darkness = (255 - pixel) / 255.0
             
-            # Calcular el radio proporcional
+            # Map darkness ratio to corresponding circle radius
             radius = min_radius + (darkness * (max_radius - min_radius))
             
             if radius > 0.1:
@@ -48,9 +56,21 @@ def generate_halftone_svg(image_path, output_svg_path, grid_size=40, max_radius=
     svg_elements.append('  </g>')
     svg_elements.append('</svg>')
 
-    with open(output_svg_path, 'w', encoding='utf-8') as f:
-        f.write('\n'.join(svg_elements))
+    # Write output SVG string to disk
+    with open(output_svg_path, 'w', encoding='utf-8') as file:
+        file.write('\n'.join(svg_elements))
 
-# Generar ambas resoluciones
-generate_halftone_svg("input.jpg", "fotopanel_low_res.svg", grid_size=30, max_radius=4.5)
-generate_halftone_svg("input.jpg", "fotopanel_high_res.svg", grid_size=60, max_radius=2.2)
+
+# Define default input path with localized fallback check
+input_image = "img/photo.png" if os.path.exists("img/photo.png") else "input.jpg"
+
+if os.path.exists(input_image):
+    # Generate low resolution vector preview
+    generate_halftone_svg(input_image, "fotopanel_low_res.svg", grid_size=30, max_radius=4.5)
+    
+    # Generate high resolution vector output
+    generate_halftone_svg(input_image, "fotopanel_high_res.svg", grid_size=60, max_radius=2.2)
+    
+    print(f"Halftone SVGs generated successfully from '{input_image}'.")
+else:
+    print(f"Error: Target image file '{input_image}' was not found.")
