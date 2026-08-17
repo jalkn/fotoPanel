@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
-echo "=== Initializing Architecture for Streamlit & Studio Mode Automation ==="
+echo "=== Initializing Architecture for  & Studio Mode Automation ==="
 
 # 1. Generate index.html in the repository root
 cat << 'EOF' > index.html
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <link class="icon" type="image/png" href="img/favicon.png">
@@ -31,15 +31,19 @@ cat << 'EOF' > index.html
         }
 
         :root[data-theme="light"] {
-            --jako-bg: #f8f9fa;
+            --jako-bg: #ffffff;
             --jako-text: #000000;
             --jako-border: rgba(0, 0, 0, 0.12);
-            --jako-glass: rgba(255, 255, 255, 0.4);
+            --jako-glass: rgba(255, 255, 255, 0.85);
             --jako-led: rgba(0, 0, 0, 0.3);
             --gradient-start: rgba(0, 0, 0, 0.02);
-            --gradient-mid: rgba(248, 249, 250, 0.85);
+            --gradient-mid: rgba(255, 255, 255, 0.85);
             --gradient-end: #ffffff;
             --icon-hover: #666666;
+        }
+
+        :root {
+            --halftone-size: 3.6px;
         }
 
         /* GLOBAL RESET & BASE STYLES */
@@ -69,8 +73,19 @@ cat << 'EOF' > index.html
             position: relative;
             letter-spacing: 0.05em;  
             overscroll-behavior: none;
-            transition: background-color 0.5s ease, color 0.5s ease;
+            transition: background-color 0.4s ease, color 0.4s ease;
         } 
+
+        #texture-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15; 
+            mix-blend-mode: overlay; 
+        }
 
         ::selection {
             background-color: var(--jako-text);
@@ -88,20 +103,13 @@ cat << 'EOF' > index.html
         #page-bg-overlay {
             background: radial-gradient(circle at 50% 30%, var(--gradient-start) 0%, var(--gradient-mid) 65%, var(--gradient-end) 100%);
             z-index: -1;
-            transform: translateZ(0);
-            will-change: background;
-            transition: background 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: background 0.5s ease;
         }
 
         .ambient-gradient {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent, rgba(0,0,0,0.2));
+            background: linear-gradient(to bottom, rgba(0,0,0,0.05), transparent, rgba(0,0,0,0.05));
             z-index: 0;
             pointer-events: none;
-        }
-
-        /* GLOBAL TRANSITIONS */
-        .img-glow-transition, .info-strip, footer, #fotopanel-pack-container, .panel-back-view {
-            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease, border-color 0.5s ease;
         }
 
         /* BUTTON BASE STYLES */
@@ -113,11 +121,12 @@ cat << 'EOF' > index.html
             justify-content: center;
             color: var(--jako-text);
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.2s ease, transform 0.2s ease;
         }
 
         button:hover { opacity: 0.8; }
         button:active { transform: scale(0.92); }
+        button.active-btn { opacity: 1; filter: drop-shadow(0 0 3px var(--jako-text)); }
 
         .btn-reset-text {
             width: auto;
@@ -128,26 +137,13 @@ cat << 'EOF' > index.html
             letter-spacing: 0.25em;
         }
 
-        .btn-lang-text {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            padding: 0 0.5rem;
-        }
-
-        .icon-tele, .icon-stroke {
+        .icon-stroke {
             width: 1.2rem;
             height: 1.2rem;
-            transition: fill 0.3s ease, stroke 0.3s ease;
+            stroke: var(--jako-text);
+            transition: stroke 0.2s ease;
         }
 
-        .icon-tele {
-            fill: var(--jako-text);
-            pointer-events: none;
-        }
-
-        .icon-stroke { stroke: var(--jako-text); }
-        button:hover .icon-tele { fill: var(--icon-hover); }
         button:hover .icon-stroke { stroke: var(--icon-hover); }
 
         /* LAYOUT HEIGHT SECTIONS */
@@ -156,7 +152,7 @@ cat << 'EOF' > index.html
             max-height: 10dvh;
             flex-shrink: 0;
             display: flex;
-            justify-content: space-between;
+            justify-content: center; 
             align-items: center;
             width: 100%;
             padding: 0 1rem;
@@ -164,16 +160,9 @@ cat << 'EOF' > index.html
             z-index: 100;
             border-bottom: 1px solid var(--jako-border);
             background: var(--jako-glass);
-            backdrop-filter: blur(20px);
         }
 
-        .info-strip-top {
-            height: 5dvh;
-            max-height: 5dvh;
-            flex-shrink: 0;
-        }
-
-        /* MAIN VISUALIZER CONTAINER: STRICT CENTERED SQUARE REGION */
+        /* MAIN VISUALIZER CONTAINER */
         .main-visualizer-container {
             height: 65dvh;
             max-height: 65dvh;
@@ -207,8 +196,7 @@ cat << 'EOF' > index.html
             border-top: 1px solid var(--jako-border);
             border-bottom: 1px solid var(--jako-border);
             background: var(--jako-glass);
-            backdrop-filter: blur(20px);
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .footer-container {
@@ -217,79 +205,50 @@ cat << 'EOF' > index.html
             width: 100%;
             flex-shrink: 0;
             background: var(--jako-glass);
-            backdrop-filter: blur(10px);
             z-index: 50;
-            padding: 0 1.5rem;
+            padding: 0 1.25rem; 
             border-top: 1px solid var(--jako-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between !important; 
         }
 
-        /* SQUARE PACK CONTAINER (PERFECT 1:1 RATIO ALWAYS) */
+        /* PACK CONTAINER & VECTOR CANVAS STYLING */
         #fotopanel-pack-container {
             position: relative;
             height: 100%;
             max-height: 55dvh;
-            aspect-ratio: 1 / 1;
             width: auto;
             flex-shrink: 0;
             margin: auto;
-            filter: drop-shadow(0 40px 60px rgba(0,0,0,0.6));
             transform-origin: center center;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+
+        #fotopanel-pack-container.mode-single { aspect-ratio: 1 / 1; }
+        #fotopanel-pack-container.mode-grid { aspect-ratio: 1 / 2; }
 
         .pack-viewport {
             position: relative;
             width: 100%;
             height: 100%;
-            aspect-ratio: 1 / 1;
             overflow: hidden;
-            border-radius: 4px;
+            border-radius: 2px;
+            border: 1px solid var(--jako-border);
         }
 
-        /* FRONT IMAGE STYLING (FIXED FIT, NO PANNING) */
-        .user-surface-image {
-            position: absolute;
-            inset: 0;
+        .pack-viewport svg {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transform-origin: center center;
-            will-change: transform;
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        #fotopanel-pack-container img.panel-back-view {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .panel-back-view {
-            z-index: 20;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .panel-back-view.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .grayscale-filter {
-            filter: grayscale(100%);
-        }
-
-        .info-strip, .footer-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: block;
         }
 
         .info-strip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             color: var(--jako-text);
             font-size: 10px;
@@ -328,9 +287,6 @@ cat << 'EOF' > index.html
 
         .tele-value { 
             color: var(--jako-text); 
-            text-shadow: var(--jako-led), var(--jako-led);
-            transform: translateZ(0);
-            transition: color 0.5s ease, text-shadow 0.5s ease;
         }
 
         .btn-control-action {
@@ -360,18 +316,16 @@ cat << 'EOF' > index.html
 
         .footer-container:hover .footer-brand-text { opacity: 0.9; }
 
-        /* RESPONSIVE SCALING FOR SMALL SCREENS */
+        /* RESPONSIVE SCALING */
         @media (max-height: 667px) {
+            .footer-container { padding: 0 0.5rem; }
             .btn-reset-text { font-size: 10px; }
             .icon-stroke { width: 1.1rem; height: 1.1rem; }
             .info-strip { font-size: 7px; gap: 0.4rem; }
             .info-strip-content { gap: 0.4rem; }
             .info-item-title { font-size: 6px; }
             #fotopanel-pack-container { max-height: 48dvh; }
-            .controls-bar { 
-                gap: 0.3rem; 
-                margin-bottom: 0.4rem;
-            }
+            .controls-bar { gap: 0.5rem; margin-bottom: 0.4rem; }
             .btn-control-action { width: 2rem !important; }
         }
     </style>
@@ -379,40 +333,27 @@ cat << 'EOF' > index.html
 <body>
 
     <div id="page-bg-overlay"></div>
+    <div id="texture-overlay"></div>
     <div class="ambient-gradient"></div>
         
     <!-- TOP HEADER -->
-    <header class="header-bar">
-        <button id="btn-lang-toggle" title="Switch Language" onclick="toggleLanguage()" class="btn-control-action btn-lang-text">
-            <span id="lang-label">EN</span>
-        </button>
-
-        <button class="btn-reset-text" title="Home / Reset" onclick="resetView()">
+    <header class="header-bar" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.2rem;">
+        <button class="btn-reset-text" title="Reset View" onclick="resetView()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
                 <rect x="4" y="4" width="16" height="16" />
             </svg>
             <span>FOTOPANEL</span>
         </button>
-
-        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-            </svg>
-        </button>
+        <span id="top-strip-text" style="font-size: 7px; opacity: 0.5; letter-spacing: 0.25em; text-transform: uppercase;">IMAGINA • ENFOCA • PROYECTA</span>
     </header>
 
-    <!-- TOP SPEC STRIP -->
-    <div class="info-strip info-strip-top">
-        <div class="info-strip-content">
-            <span id="top-strip-text" class="info-separator">Your printing services</span>
-        </div>
-    </div>
-
-    <!-- MAIN VISUALIZER STAGE (FORCED SQUARE ASPECT RATIO) -->
+    <!-- MAIN VISUALIZER STAGE -->
     <main class="main-visualizer-container">
-        <div id="fotopanel-pack-container">
-            <div class="pack-viewport"></div>
+        <div id="fotopanel-pack-container" class="mode-single">
+            <div class="pack-viewport">
+                <canvas id="halftone-canvas" style="display: none;"></canvas>
+                <div id="svg-output-target" style="width: 100%; height: 100%;"></div>
+            </div>
         </div>
     </main>
 
@@ -420,28 +361,28 @@ cat << 'EOF' > index.html
     <div class="info-strip info-strip-bottom">
         <div class="info-strip-content">
             <div class="info-item-block">
-                <span id="fotopanel-finish" class="tele-value">ADH INKJET</span>
-                <span id="lbl-printing-media" class="info-item-title">PRINTING MEDIA</span>
+                <span id="fotopanel-finish" class="tele-value">GRABADO LASER</span>
+                <span id="lbl-printing-media" class="info-item-title">GRABADO LÁSER</span>
             </div>
 
             <span class="info-separator">/</span>
 
             <div class="info-item-block">
-                <span id="fotopanel-media" class="tele-value">MDF 12MM</span>
-                <span id="lbl-mdf-support" class="info-item-title">MDF SUPPORT</span>
+                <span id="fotopanel-media" class="tele-value">ACM 3MM</span>
+                <span id="lbl-mdf-support" class="info-item-title">MATERIAL</span>
             </div>
 
             <span class="info-separator">/</span>
 
             <div class="info-item-block">
-                <span id="fotopanel-label" class="tele-value">40X40</span>
+                <span id="fotopanel-label" class="tele-value">10X10 ACM 12MM</span>
                 <span class="info-item-title">CMS</span>
             </div>
             
             <span class="info-separator">/</span>
             
             <div class="info-item-block">
-                <span id="fotopanel-price" class="tele-value">40MIL</span>
+                <span id="fotopanel-price" class="tele-value">25MIL</span>
                 <span class="info-item-title">COP $</span>
             </div>
         </div>
@@ -449,100 +390,77 @@ cat << 'EOF' > index.html
 
     <!-- BOTTOM ACTION CONTROLS -->
     <div class="controls-bar">
-        <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
-
-        <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-control-action">
+        <!-- Toggle Image Color Inversion -->
+        <button id="btn-invert-color" title="Invert Color Scheme" onclick="toggleImageInvert()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                <path d="M4 8V4h16v4" />
-                <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 3v18a9 9 0 0 0 0-18z" fill="currentColor" />
             </svg>
         </button>
 
-        <button id="btn-change-scale" title="Change Scale / Size" onclick="rotateFotoVariant('next')" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
-                <rect x="5" y="5" width="14" height="14" />
-            </svg>
-        </button>
-
-        <button id="btn-color-toggle" title="Toggle Color / B&W Mode" onclick="toggleFotoColorMode()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" class="icon-stroke">
-                <defs>
-                    <linearGradient id="color-bw-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#ff6600" />
-                        <stop offset="33%" stop-color="#0000ff" />
-                        <stop offset="66%" stop-color="#ffffff" />
-                        <stop offset="100%" stop-color="#000000" />
-                    </linearGradient>
-                </defs>
-                <rect x="4" y="4" width="16" height="16" fill="url(#color-bw-grad)" stroke="none" />
-            </svg>
-        </button>
-
-        <button id="btn-crop-zoom" title="Toggle Scale Zoom" onclick="toggleCropZoom()" class="btn-control-action">
+        <!-- Toggle Halftone Grid Resolution -->
+        <button id="btn-toggle-halftone-size" title="Toggle Grid Density (Low/High Res)" onclick="toggleHalftoneSize()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                <path d="M6 2v14a2 2 0 002 2h14" />
-                <path d="M18 22V8a2 2 0 00-2-2H2" />
+                <circle cx="6" cy="6" r="1.5" fill="currentColor" />
+                <circle cx="12" cy="6" r="1.5" fill="currentColor" />
+                <circle cx="18" cy="6" r="1.5" fill="currentColor" />
+                <circle cx="6" cy="12" r="2" fill="currentColor" />
+                <circle cx="12" cy="12" r="2.5" fill="currentColor" />
+                <circle cx="18" cy="12" r="2" fill="currentColor" />
+                <circle cx="6" cy="18" r="1.5" fill="currentColor" />
+                <circle cx="12" cy="18" r="1.5" fill="currentColor" />
+                <circle cx="18" cy="18" r="1.5" fill="currentColor" />
             </svg>
         </button>
 
-        <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action" style="padding: 0.5rem;">
+        <!-- Toggle Mosaic / Package Mural Grid Mode -->
+        <button id="btn-toggle-grid" title="Mosaic Grid View" onclick="toggleGridMode()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                <path d="M4 16v4h16v-4" />
-                <path d="M12 7v10m0 0l-4-4m4 4l4-4" />
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
             </svg>
         </button>
     </div>
 
     <!-- FOOTER -->
     <footer class="footer-container">
-        <span class="footer-brand-text">
+        <a href="https://github.com/jalkn" target="_blank" rel="noopener noreferrer" class="footer-brand-text" style="text-decoration: none; color: inherit;">
+            <span>JAKO.DEV</span>
             <span class="footer-copy-symbol">©</span>
             <span>2026</span>
-        </span>
+        </a>     
+
+        <button id="btn-theme-toggle" title="Cambiar Tema (Claro/Oscuro)" onclick="toggleTheme()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+        </button>
     </footer>
 
- <!-- Core Logic Engine -->
+    <!-- Core Logic Engine -->
     <script>
-        // Catalog product configuration data
+        // Catalog setup
         const ARTEPANEL_CATALOG = {
             'PULSOR': {
-                defaultVariant: 'PANEL 40X40',
+                defaultVariant: 'STENCIL 10X10',
                 variants: {
-                    'PANEL 20X20': { 
-                        label: '20X20', 
-                        spec_en: 'Your photo personalized', 
-                        spec_es: 'Tu foto personalizada', 
-                        spec_it: 'La tua foto personalizzata',
-                        spec_pt: 'Sua foto personalizada',
-                        media: '12MM',
-                        finish: 'ADH INKJET PRINT',
-                        price: '20MIL', 
-                        id: 'FP-20X20',
-                        scale: 0.50
-                    },
-                    'PANEL 30X30': { 
-                        label: '30X30', 
-                        spec_en: 'Your photo personalized', 
-                        spec_es: 'Tu foto personalizada', 
-                        spec_it: 'La tua foto personalizzata',
-                        spec_pt: 'Sua foto personalizada',
-                        media: '9MM',
-                        finish: 'ADH INKJET PRINT',
-                        price: '30MIL', 
-                        id: 'FP-30X30',
-                        scale: 0.75
-                    },
-                    'PANEL 40X40': { 
-                        label: '40X40', 
-                        spec_en: 'Your photo personalized', 
-                        spec_es: 'Tu foto personalizada', 
-                        spec_it: 'La tua foto personalizzata',
-                        spec_pt: 'Sua foto personalizada', 
-                        media: '12MM',
-                        finish: 'ADH INKJET PRINT',
-                        price: '40MIL', 
-                        id: 'FP-40X40',
-                        scale: 1.00
+                    'STENCIL 10X10': { 
+                        label: '10X10', 
+                        spec_es: 'CORTE LASER SOLID',
+                        media: '200GRS',
+                        finish: 'PAPEL REC.',
+                        price: '25MIL', 
+                        scale: 0.50,
+                        nodes: {
+                            cols: 10,
+                            rows: 20,
+                            total: 200,
+                            muralLabel: '200X100', 
+                            totalPriceFormatted: '5MILLONES'
+                        }
                     }
                 }
             }
@@ -550,36 +468,23 @@ cat << 'EOF' > index.html
 
         // Application state initializations
         let currentFotoItem = 'PULSOR';
-        let currentFotoVariant = 'PANEL 40X40';
-        let isGrayscale = false;
-        let isShowingBack = false;
-        
-        // Supported UI language choices
-        const supportedLangs = ['EN', 'ES', 'IT', 'PT'];
-        let langIndex = 0;
-        let currentLang = supportedLangs[langIndex];
+        let currentFotoVariant = 'STENCIL 10X10';
+        let isGridMode = false;
+        let isImageInverted = false;
+        let isCoarseHalftone = false;
 
-        // 6-hour dynamic local image rotation engine (4 time buckets per day: 0, 1, 2, 3)
-        const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
-        const currentBucket = Math.floor(Date.now() / SIX_HOURS_MS) % 4;
-        
-        // Resolves local image path based on the current 6-hour window
-        const get6HourRotatingImageUrl = () => {
-            return `img/photo_${currentBucket}.png`;
-        };
+        // Default image path
+        const activeImageSrc = 'img/photo.png';
 
-        let activeImageSrc = get6HourRotatingImageUrl();
-        const backImageSrc = 'img/30x30B.png';
-        const targetPhoneNumber = "573128707083";
-
-        // Zoom scale toggle state (1x normal, 1.25x zoom)
-        let isZoomed = false;
+        // Icon SVG Templates for grid toggle button
+        const SVG_GRID_FOUR = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>`;
+        const SVG_GRID_SINGLE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke"><rect x="4" y="4" width="16" height="16" /></svg>`;
 
         // DOM elements cache helper
         const cachedElements = {};
         const getCachedEl = (id) => cachedElements[id] || (cachedElements[id] = document.getElementById(id));
 
-        // Haptic feedback function
+        // Haptic feedback trigger
         const triggerHaptic = (pattern) => { 
             if (navigator.vibrate) navigator.vibrate(pattern); 
         };
@@ -600,148 +505,145 @@ cat << 'EOF' > index.html
             document.documentElement.setAttribute('data-theme', savedTheme);
         }
 
-        // Toggle supported UI languages sequentially
-        function toggleLanguage() {
-            langIndex = (langIndex + 1) % supportedLangs.length;
-            currentLang = supportedLangs[langIndex];
-            
-            const langLabel = getCachedEl('lang-label');
-            if (langLabel) langLabel.textContent = currentLang;
-
-            const i18n = {
-                EN: { top: 'Your printing services', media: 'PRINTING MEDIA', mdf: 'MDF SUPPORT' },
-                ES: { top: 'Tus servicios de impresión', media: 'MEDIO DE IMPRESIÓN', mdf: 'SOPORTE MDF' },
-                IT: { top: 'I tuoi servizi di stampa', media: 'SUPPORTO DI STAMPA', mdf: 'SUPPORTO MDF' },
-                PT: { top: 'Seus serviços de impressão', media: 'MEIO DE IMPRESSÃO', mdf: 'SUPORTE MDF' }
-            };
-
-            const topStrip = getCachedEl('top-strip-text');
-            const lblPrinting = getCachedEl('lbl-printing-media');
-            const lblMdf = getCachedEl('lbl-mdf-support');
-
-            if (topStrip) topStrip.textContent = i18n[currentLang].top;
-            if (lblPrinting) lblPrinting.textContent = i18n[currentLang].media;
-            if (lblMdf) lblMdf.textContent = i18n[currentLang].mdf;
-
-            triggerHaptic(10);
-            updateFotoUI();
-        }
-
-        // Open hidden file input element
-        function triggerImageUpload() {
-            const input = getCachedEl('user-image-input');
-            if (input) input.click();
-        }
-
-        // Handle custom image uploads
-        function handleUserImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                activeImageSrc = e.target.result;
-                isShowingBack = false;
-                resetImageTransform();
-                updateFotoUI();
-                triggerHaptic([10, 20]);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Toggle Zoom mode in place
-        function toggleCropZoom() {
-            isZoomed = !isZoomed;
-            applyImageTransform();
-            triggerHaptic(10);
-        }
-
-        // Reset Zoom transform
-        function resetImageTransform() {
-            isZoomed = false;
-            applyImageTransform();
-        }
-
-        // Apply scale transform directly to the front face image
-        function applyImageTransform() {
-            const img = document.querySelector('.user-surface-image');
-            if (img) {
-                const scale = isZoomed ? 1.25 : 1.0;
-                img.style.transform = `scale(${scale})`;
+        // Toggle Grid Mode (Mosaico 200 Nodos)
+        function toggleGridMode() {
+            isGridMode = !isGridMode;
+            const btn = getCachedEl('btn-toggle-grid');
+            if (btn) {
+                if (isGridMode) {
+                    btn.classList.add('active-btn');
+                    btn.innerHTML = SVG_GRID_SINGLE;
+                    btn.title = "Single Panel View";
+                } else {
+                    btn.classList.remove('active-btn');
+                    btn.innerHTML = SVG_GRID_FOUR;
+                    btn.title = "Mosaic Grid View";
+                }
             }
-        }
-
-        // Cycle through sizes/variants
-        function rotateFotoVariant(direction = 'next') {
-            const variants = Object.keys(ARTEPANEL_CATALOG[currentFotoItem].variants);
-            let currentIndex = variants.indexOf(currentFotoVariant);
-            
-            currentIndex = direction === 'next' 
-                ? (currentIndex + 1) % variants.length 
-                : (currentIndex - 1 + variants.length) % variants.length;
-            
-            currentFotoVariant = variants[currentIndex];
-            isShowingBack = false;
             updateFotoUI();
-            triggerHaptic(15);
+            triggerHaptic([15, 30]);
         }
 
-        // Toggle Color / Grayscale Mode
-        function toggleFotoColorMode() {
-            isShowingBack = false;
-            isGrayscale = !isGrayscale;
+        // Toggle Halftone Grid Resolution (30 vs 60 dots)
+        function toggleHalftoneSize() {
+            isCoarseHalftone = !isCoarseHalftone;
+            const btn = getCachedEl('btn-toggle-halftone-size');
+            if (btn) btn.classList.toggle('active-btn', isCoarseHalftone);
             updateFotoUI();
-            triggerHaptic(10);
+            triggerHaptic([10, 20]);
         }
 
-        // Toggle back surface view overlay
-        function toggleBackView() {
-            isShowingBack = !isShowingBack;
-            const backEl = document.querySelector('.panel-back-view');
-            if (backEl) {
-                backEl.classList.toggle('active', isShowingBack);
-            }
-            triggerHaptic(20);
+        // Toggle Image Inversion
+        function toggleImageInvert() {
+            isImageInverted = !isImageInverted;
+            const btn = getCachedEl('btn-invert-color');
+            if (btn) btn.classList.toggle('active-btn', isImageInverted);
+            updateFotoUI();
+            triggerHaptic([10, 20]);
         }
 
         // Reset stage to default setup
         function resetView() {
-            currentFotoVariant = 'PANEL 40X40';
-            isGrayscale = false;
-            isShowingBack = false;
-            activeImageSrc = get6HourRotatingImageUrl();
-            resetImageTransform();
-            const input = getCachedEl('user-image-input');
-            if (input) input.value = '';
+            isGridMode = false;
+            isImageInverted = false;
+            isCoarseHalftone = false;
+            
+            const btnGrid = getCachedEl('btn-toggle-grid');
+            if (btnGrid) {
+                btnGrid.classList.remove('active-btn');
+                btnGrid.innerHTML = SVG_GRID_FOUR;
+            }
+
+            const btnInvert = getCachedEl('btn-invert-color');
+            if (btnInvert) btnInvert.classList.remove('active-btn');
+
+            const btnHalftone = getCachedEl('btn-toggle-halftone-size');
+            if (btnHalftone) btnHalftone.classList.remove('active-btn');
             
             updateFotoUI();
             triggerHaptic([10, 10]);
         }
 
-        // Render current panel images within viewport
+        // Generate vector halftone SVG directly via client Canvas calculation
+        function generateVectorSVG(imageSrc, gridCols, isInverted, callback) {
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            img.onload = () => {
+                const canvas = getCachedEl('halftone-canvas');
+                const ctx = canvas.getContext('2d');
+
+                const aspect = img.height / img.width;
+                const gridRows = Math.round(gridCols * (isGridMode ? aspect : 1));
+
+                canvas.width = gridCols;
+                canvas.height = gridRows;
+
+                ctx.drawImage(img, 0, 0, gridCols, gridRows);
+                const imgData = ctx.getImageData(0, 0, gridCols, gridRows).data;
+
+                const cellSize = 10;
+                const viewWidth = gridCols * cellSize;
+                const viewHeight = gridRows * cellSize;
+                const maxRadius = isCoarseHalftone ? 4.5 : 2.2;
+                const minRadius = 0.5;
+
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                const baseBg = isDark ? "#121212" : "#ffffff";
+                const baseDot = isDark ? "#ffffff" : "#000000";
+
+                const bgColor = isInverted ? baseDot : baseBg;
+                const dotColor = isInverted ? baseBg : baseDot;
+
+                let svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${viewWidth} ${viewHeight}" width="100%" height="100%" style="background-color: ${bgColor};">`;
+                svgString += `<g fill="${dotColor}">`;
+
+                for (let y = 0; y < gridRows; y++) {
+                    for (let x = 0; x < gridCols; x++) {
+                        const idx = (y * gridCols + x) * 4;
+                        const r = imgData[idx];
+                        const g = imgData[idx + 1];
+                        const b = imgData[idx + 2];
+                        
+                        // Luminance calculation
+                        const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
+                        const factor = isInverted ? (brightness / 255.0) : ((255 - brightness) / 255.0);
+                        
+                        const radius = minRadius + (factor * (maxRadius - minRadius));
+
+                        if (radius > 0.2) {
+                            const cx = (x * cellSize) + (cellSize / 2);
+                            const cy = (y * cellSize) + (cellSize / 2);
+                            svgString += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${radius.toFixed(2)}" />`;
+                        }
+                    }
+                }
+
+                svgString += `</g></svg>`;
+                callback(svgString);
+            };
+            img.src = imageSrc;
+        }
+
+        // Render current panel vector SVG within viewport
         function renderPanelImages(config) {
             const container = getCachedEl('fotopanel-pack-container');
-            if (!container) return;
+            const target = getCachedEl('svg-output-target');
+            if (!container || !target) return;
 
-            container.style.transform = `scale(${config.scale})`;
-
-            let viewport = container.querySelector('.pack-viewport');
-            if (!viewport) {
-                viewport = document.createElement('div');
-                viewport.className = 'pack-viewport';
-                container.appendChild(viewport);
+            if (isGridMode) {
+                container.classList.remove('mode-single');
+                container.classList.add('mode-grid');
+                container.style.transform = `scale(0.85)`;
+            } else {
+                container.classList.remove('mode-grid');
+                container.classList.add('mode-single');
+                container.style.transform = `scale(${config.scale})`;
             }
 
-            const bwClass = isGrayscale ? 'grayscale-filter' : '';
-            const backActiveClass = isShowingBack ? 'active' : '';
-
-            viewport.innerHTML = `
-                <div style="position: absolute; inset: 0; background-color: #e5e5e5; z-index: 1;"></div>
-                <img src="${activeImageSrc}" alt="Panel Surface Front" class="user-surface-image img-glow-transition ${bwClass}" style="z-index: 10;" />
-                <img src="${backImageSrc}" alt="Panel Surface Back" class="img-glow-transition panel-back-view ${backActiveClass}" onclick="toggleBackView()" />
-            `;
-
-            applyImageTransform();
+            const gridResolution = isCoarseHalftone ? 30 : 60;
+            generateVectorSVG(activeImageSrc, gridResolution, isImageInverted, (svgContent) => {
+                target.innerHTML = svgContent;
+            });
         }
 
         // Update UI specifications and trigger re-render
@@ -750,28 +652,27 @@ cat << 'EOF' > index.html
             const label = getCachedEl('fotopanel-label');
             const price = getCachedEl('fotopanel-price');
             const media = getCachedEl('fotopanel-media');
-            
-            if (label) label.textContent = config.label;
-            if (price) price.textContent = config.price;
-            if (media) media.textContent = config.media;
+            const finish = getCachedEl('fotopanel-finish');
+            const specEs = getCachedEl('lbl-printing-media');
+            const mdfSupportLbl = getCachedEl('lbl-mdf-support');
+
+            if (isGridMode) {
+                if (label) label.textContent = config.nodes.muralLabel;
+                if (mdfSupportLbl) mdfSupportLbl.textContent = `STENCILX${config.nodes.total}`;
+                if (price) price.textContent = config.nodes.totalPriceFormatted;
+                if (media) media.textContent = config.media;
+                if (finish) finish.textContent = config.finish;
+                if (specEs) specEs.textContent = config.spec_es;
+            } else {
+                if (label) label.textContent = config.label;
+                if (mdfSupportLbl) mdfSupportLbl.textContent = 'STENCIL';
+                if (price) price.textContent = config.price;
+                if (media) media.textContent = config.media;
+                if (finish) finish.textContent = config.finish;
+                if (specEs) specEs.textContent = config.spec_es;
+            }
 
             renderPanelImages(config);
-        }
-
-        // Open WhatsApp checkout order line
-        function acquireNodeCashflow() {
-            const variant = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
-            const styleText = isGrayscale ? 'Adh ikjet print b/w' : 'Adh inkjet print full color';
-            
-            const message = `¡Hola! Quiero hacer un pedido de un FotoPanel personalizado \n\n` +
-                `• Tamaño: ${variant.label} cms\n` +
-                `• Medio: ${styleText}\n` +
-                `• Soporte: MDF ${variant.media}\n` +
-                `• Precio: ${variant.price} COP\n\n` +
-                `¿Cuáles son los pasos para enviar la foto y acordar el pago?`;
-
-            triggerHaptic([15, 40, 15]);
-            window.open(`https://api.whatsapp.com/send?phone=${targetPhoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
         }
 
         // Initialize stage on DOM load
@@ -784,85 +685,86 @@ cat << 'EOF' > index.html
 </html>
 EOF
 
-# 2. Generate app.py (Streamlit Control Interface & Embedded HTML Renderer)
-cat << 'EOF' > app.py
-import streamlit as st
-import streamlit.components.v1 as components
+# 2. Generate app.py ( Control Interface & Embedded HTML Renderer)
+cat << 'EOF' >filter.py
 import os
+from PIL import Image
 
-st.set_page_config(page_title="FOTOPANEL.ART", layout="wide")
+def generate_halftone_svg(image_path, output_svg_path, grid_size=40, max_radius=4.0, min_radius=0.5):
+    """
+    Generates a halftone vector SVG (FotoPanel dot matrix) from an input image.
 
-html_file_path = os.path.join(os.path.dirname(__file__), "index.html")
-
-if os.path.exists(html_file_path):
-    with open(html_file_path, "r", encoding="utf-8") as f:
-        html_content = f.read()
+    :param image_path: Path to the source image file.
+    :param output_svg_path: Path where the generated SVG file will be saved.
+    :param grid_size: Number of points along the X and Y axes (grid resolution).
+    :param max_radius: Maximum radius of each circle (dark areas).
+    :param min_radius: Minimum radius of each circle (light areas / min perforation).
+    """
+    # Load input image and convert to grayscale
+    img = Image.open(image_path).convert('L')
     
-    # Render component with HTML content
-    components.html(html_content, height=850, scrolling=True)
+    # Calculate aspect ratio to preserve image proportions dynamically
+    orig_width, orig_height = img.size
+    aspect_ratio = orig_height / orig_width
+    
+    grid_width = grid_size
+    grid_height = int(grid_size * aspect_ratio)
+    
+    # Resize image to target grid dimensions using Lanczos resampling
+    img_resized = img.resize((grid_width, grid_height), Image.Resampling.LANCZOS)
+    
+    # Define cell size and overall SVG viewBox dimensions
+    cell_size = 10
+    view_width = grid_width * cell_size
+    view_height = grid_height * cell_size
+
+    # Build SVG header with clean background fill
+    svg_elements = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {view_width} {view_height}" width="{view_width}" height="{view_height}">',
+        '  <rect width="100%" height="100%" fill="#ffffff" />',
+        '  <g fill="#000000">'
+    ]
+
+    # Iterate over pixel grid to produce proportional vector circles
+    for y in range(grid_height):
+        for x in range(grid_width):
+            # Fetch pixel brightness level (0 = black, 255 = white)
+            pixel = img_resized.getpixel((x, y))
+            
+            # Invert brightness so darker pixels yield larger vector points
+            darkness = (255 - pixel) / 255.0
+            
+            # Map darkness ratio to corresponding circle radius
+            radius = min_radius + (darkness * (max_radius - min_radius))
+            
+            if radius > 0.1:
+                cx = (x * cell_size) + (cell_size / 2)
+                cy = (y * cell_size) + (cell_size / 2)
+                svg_elements.append(f'    <circle cx="{cx:.2f}" cy="{cy:.2f}" r="{radius:.2f}" />')
+
+    svg_elements.append('  </g>')
+    svg_elements.append('</svg>')
+
+    # Write output SVG string to disk
+    with open(output_svg_path, 'w', encoding='utf-8') as file:
+        file.write('\n'.join(svg_elements))
+
+
+# Define default input path with localized fallback check
+input_image = "img/photo.png" if os.path.exists("img/photo.png") else "input.jpg"
+
+if os.path.exists(input_image):
+    # Generate low resolution vector preview
+    generate_halftone_svg(input_image, "fotopanel_low_res.svg", grid_size=30, max_radius=4.5)
+    
+    # Generate high resolution vector output
+    generate_halftone_svg(input_image, "fotopanel_high_res.svg", grid_size=60, max_radius=2.2)
+    
+    print(f"Halftone SVGs generated successfully from '{input_image}'.")
 else:
-    st.error("index.html not found. Please execute ./set.sh first.")
+    print(f"Error: Target image file '{input_image}' was not found.")
 EOF
 
-# 3. Generate capture.js (Puppeteer Headless Automation Script)
-cat << 'EOF' > capture.js
-const puppeteer = require('puppeteer');
-const path = require('path');
-const fs = require('fs');
-
-(async () => {
-    // Ensure output directory exists
-    const outputDir = path.join(__dirname, 'output');
-    if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir);
-    }
-
-    // Launch headless Chromium browser
-    const browser = await puppeteer.launch({
-        headless: 'new',
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-
-    const page = await browser.newPage();
-    // High DPI 1:1 Viewport setting
-    await page.setViewport({ width: 1080, height: 1080, deviceScaleFactor: 2 });
-
-    const indexPath = `file://${path.join(__dirname, 'index.html')}`;
-    await page.goto(indexPath, { waitUntil: 'networkidle0' });
-
-    // Capture standard initial full-color frame
-    await page.screenshot({ path: path.join(outputDir, 'studio_40x40_color.png') });
-
-    // Click color mode toggle to render B&W frame
-    await page.click('#btn-color-toggle');
-    await page.screenshot({ path: path.join(outputDir, 'studio_40x40_bw.png') });
-
-    // Click variant scale toggle for next dimension frame
-    await page.click('#btn-change-scale');
-    await page.screenshot({ path: path.join(outputDir, 'studio_variant_next.png') });
-
-    await browser.close();
-    console.log('Studio Mode captures saved to /output.');
-})();
-EOF
-
-# 4. Create package.json if missing
-if [ ! -f package.json ]; then
-cat << 'EOF' > package.json
-{
-  "name": "studio-mode-automation",
-  "version": "1.0.0",
-  "description": "Headless Studio Mode Automation for FotoPanel",
-  "main": "capture.js",
-  "scripts": {
-    "capture": "node capture.js"
-  },
-  "dependencies": {
-    "puppeteer": "^21.0.0"
-  }
-}
-EOF
-fi
 
 # Make set.sh executable
 chmod +x set.sh
@@ -875,8 +777,4 @@ echo "1. Grant permissions and run set.sh locally:"
 echo "   chmod +x set.sh"
 echo "   ./set.sh"
 echo ""
-echo "2. Install Node.js dependencies (Puppeteer):"
-echo "   npm install"
-echo ""
-echo "3. Launch Streamlit interface to verify:"
-echo "   streamlit run app.py"
+echo "   python3 filter.py"

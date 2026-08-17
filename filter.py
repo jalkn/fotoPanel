@@ -65,11 +65,11 @@ def generate_halftone_svg(image_path, output_svg_path, grid_size=40, max_radius=
 input_image = "img/photo.png" if os.path.exists("img/photo.png") else "input.jpg"
 
 if os.path.exists(input_image):
-    # Generate low resolution vector preview
-    generate_halftone_svg(input_image, "fotopanel_low_res.svg", grid_size=30, max_radius=4.5)
+    # Generate low resolution vector preview with updated max radius (1.08)
+    generate_halftone_svg(input_image, "fotopanel_low_res.svg", grid_size=80, max_radius=1.08, min_radius=0.05)
     
-    # Generate high resolution vector output
-    generate_halftone_svg(input_image, "fotopanel_high_res.svg", grid_size=60, max_radius=2.2)
+    # Generate high resolution vector output with updated max radius (0.36)
+    generate_halftone_svg(input_image, "fotopanel_high_res.svg", grid_size=160, max_radius=0.36, min_radius=0.05)
     
     print(f"Halftone SVGs generated successfully from '{input_image}'.")
 else:

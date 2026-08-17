@@ -36,7 +36,7 @@
         }
 
         :root {
-            --halftone-size: 3.6px;
+            --halftone-size: 0.36px;
         }
 
         /* GLOBAL RESET & BASE STYLES */
@@ -556,7 +556,7 @@
             updateFotoUI();
             triggerHaptic([10, 10]);
         }
-
+        
         // Generate vector halftone SVG directly via client Canvas calculation
         function generateVectorSVG(imageSrc, gridCols, isInverted, callback) {
             const img = new Image();
@@ -577,8 +577,10 @@
                 const cellSize = 10;
                 const viewWidth = gridCols * cellSize;
                 const viewHeight = gridRows * cellSize;
-                const maxRadius = isCoarseHalftone ? 4.5 : 2.2;
-                const minRadius = 0.5;
+                
+                // Updated radius bounds to reflect scale adjustments (1.08 max for coarse, 0.36 max for high-res)
+                const maxRadius = isCoarseHalftone ? 1.08 : 0.36;
+                const minRadius = 0.05;
 
                 const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
                 const baseBg = isDark ? "#121212" : "#ffffff";
@@ -603,7 +605,7 @@
                         
                         const radius = minRadius + (factor * (maxRadius - minRadius));
 
-                        if (radius > 0.2) {
+                        if (radius > 0.02) {
                             const cx = (x * cellSize) + (cellSize / 2);
                             const cy = (y * cellSize) + (cellSize / 2);
                             svgString += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${radius.toFixed(2)}" />`;
@@ -617,7 +619,7 @@
             img.src = imageSrc;
         }
 
-        // Render current panel vector SVG within viewport
+        // Render current panel vector SVG within viewport with higher resolution grid columns
         function renderPanelImages(config) {
             const container = getCachedEl('fotopanel-pack-container');
             const target = getCachedEl('svg-output-target');
@@ -633,7 +635,8 @@
                 container.style.transform = `scale(${config.scale})`;
             }
 
-            const gridResolution = isCoarseHalftone ? 30 : 60;
+            // Enhanced resolution grid scaling (80 cols for coarse, 160 cols for high-res)
+            const gridResolution = isCoarseHalftone ? 80 : 160;
             generateVectorSVG(activeImageSrc, gridResolution, isImageInverted, (svgContent) => {
                 target.innerHTML = svgContent;
             });
