@@ -35,6 +35,47 @@
             --icon-hover: #666666;
         }
 
+        :root {
+            --halftone-size: 3.6px;
+        }
+
+        /* HALFTONE WRAPPER AND DOT MATRIX OVERLAY */
+        .halftone-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: block;
+        }
+
+        .halftone-filter {
+            filter: grayscale(100%) contrast(200%) brightness(105%);
+            transition: filter 0.3s ease;
+        }
+
+        .halftone-wrapper::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at center, rgba(0,0,0,0.85) 35%, transparent 36%);
+            background-size: var(--halftone-size) var(--halftone-size);
+            background-repeat: repeat;
+            pointer-events: none;
+            z-index: 15;
+            mix-blend-mode: multiply;
+            opacity: 0.7;
+        }
+
+        .halftone-coarse {
+            --halftone-size: 10.8px;
+        }
+
+        .halftone-filter.inverted-active {
+            filter: grayscale(100%) contrast(200%) brightness(105%) invert(1);
+        }
+
         /* GLOBAL RESET & BASE STYLES */
         *, ::before, ::after { 
             box-sizing: border-box; 
@@ -123,6 +164,7 @@
 
         button:hover { opacity: 0.8; }
         button:active { transform: scale(0.92); }
+        button.active-btn { opacity: 1; filter: drop-shadow(0 0 5px var(--jako-text)); }
 
         .btn-reset-text {
             width: auto;
@@ -171,7 +213,7 @@
             flex-shrink: 0;
         }
 
-        /* MAIN VISUALIZER CONTAINER: STRICT CENTERED SQUARE REGION */
+        /* MAIN VISUALIZER CONTAINER */
         .main-visualizer-container {
             height: 65dvh;
             max-height: 65dvh;
@@ -183,6 +225,7 @@
             position: relative;
             overflow: hidden;
             flex-shrink: 0;
+            background-color: transparent; 
         }
 
         .info-strip-bottom {
@@ -206,7 +249,7 @@
             border-bottom: 1px solid var(--jako-border);
             background: var(--jako-glass);
             backdrop-filter: blur(20px);
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .footer-container {
@@ -224,12 +267,11 @@
             justify-content: space-between !important; 
         }
 
-        /* SQUARE PACK CONTAINER (PERFECT 1:1 RATIO ALWAYS) */
+        /* PACK CONTAINER */
         #fotopanel-pack-container {
             position: relative;
             height: 100%;
             max-height: 55dvh;
-            aspect-ratio: 1 / 1;
             width: auto;
             flex-shrink: 0;
             margin: auto;
@@ -240,16 +282,39 @@
             justify-content: center;
         }
 
+        #fotopanel-pack-container.mode-single {
+            aspect-ratio: 1 / 1;
+        }
+
+        #fotopanel-pack-container.mode-grid {
+            aspect-ratio: 1 / 2;
+        }
+
         .pack-viewport {
             position: relative;
             width: 100%;
             height: 100%;
-            aspect-ratio: 1 / 1;
             overflow: hidden;
             border-radius: 4px;
         }
 
-        /* FRONT IMAGE STYLING (FIXED FIT, NO PANNING) */
+        /* GRID / MOSAIC VIEWPORT STYLES */
+        .mosaic-grid-container {
+            display: grid;
+            width: 100%;
+            height: 100%;
+            background-color: var(--jako-bg);
+            gap: 1px;
+        }
+
+        .mosaic-node-tile {
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        /* FRONT IMAGE STYLING */
         .user-surface-image {
             position: absolute;
             inset: 0;
@@ -258,7 +323,6 @@
             object-fit: cover;
             transform-origin: center center;
             will-change: transform;
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         #fotopanel-pack-container img.panel-back-view {
@@ -278,10 +342,6 @@
         .panel-back-view.active {
             opacity: 1;
             pointer-events: auto;
-        }
-
-        .grayscale-filter {
-            filter: grayscale(100%);
         }
 
         .info-strip, .footer-container {
@@ -364,21 +424,16 @@
 
         .footer-container:hover .footer-brand-text { opacity: 0.9; }
 
-        /* RESPONSIVE SCALING FOR SMALL SCREENS */
+        /* RESPONSIVE SCALING */
         @media (max-height: 667px) {
-            .footer-container {
-                padding: 0 0.5rem;
-            }
+            .footer-container { padding: 0 0.5rem; }
             .btn-reset-text { font-size: 10px; }
             .icon-stroke { width: 1.1rem; height: 1.1rem; }
             .info-strip { font-size: 7px; gap: 0.4rem; }
             .info-strip-content { gap: 0.4rem; }
             .info-item-title { font-size: 6px; }
             #fotopanel-pack-container { max-height: 48dvh; }
-            .controls-bar { 
-                gap: 0.3rem; 
-                margin-bottom: 0.4rem;
-            }
+            .controls-bar { gap: 0.5rem; margin-bottom: 0.4rem; }
             .btn-control-action { width: 2rem !important; }
         }
     </style>
@@ -389,7 +444,7 @@
     <div id="texture-overlay"></div>
     <div class="ambient-gradient"></div>
         
-<!-- TOP HEADER -->
+    <!-- TOP HEADER -->
     <header class="header-bar" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.2rem;">
         <button class="btn-reset-text" title="Inicio / Reiniciar" onclick="resetView()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
@@ -397,12 +452,12 @@
             </svg>
             <span>FOTOPANEL</span>
         </button>
-        <span id="top-strip-text" style="font-size: 7px; opacity: 0.5; letter-spacing: 0.25em; text-transform: uppercase;">SUEÑA, CREA, IMPRIME</span>
+        <span id="top-strip-text" style="font-size: 7px; opacity: 0.5; letter-spacing: 0.25em; text-transform: uppercase;">IMAGINA • ENFOCA • PROYECTA</span>
     </header>
 
-    <!-- MAIN VISUALIZER STAGE (FORCED SQUARE ASPECT RATIO) -->
+    <!-- MAIN VISUALIZER STAGE -->
     <main class="main-visualizer-container">
-        <div id="fotopanel-pack-container">
+        <div id="fotopanel-pack-container" class="mode-single">
             <div class="pack-viewport"></div>
         </div>
     </main>
@@ -410,22 +465,22 @@
     <!-- BOTTOM SPEC STRIP -->
     <div class="info-strip info-strip-bottom">
         <div class="info-strip-content">
-<div class="info-item-block">
-    <span id="fotopanel-finish" class="tele-value">ADH INKJET PRINT</span>
-    <span id="lbl-printing-media" class="info-item-title">IMPRESIÓN</span>
-</div>
-
-            <span class="info-separator">/</span>
-
             <div class="info-item-block">
-                <span id="fotopanel-media" class="tele-value">MDF 9/12MM</span>
-                <span id="lbl-mdf-support" class="info-item-title">SOPORTE</span>
+                <span id="fotopanel-finish" class="tele-value">GRABADO LASER</span>
+                <span id="lbl-printing-media" class="info-item-title">GRABADO LÁSER</span>
             </div>
 
             <span class="info-separator">/</span>
 
             <div class="info-item-block">
-                <span id="fotopanel-label" class="tele-value">20X20</span>
+                <span id="fotopanel-media" class="tele-value">ACM 3MM</span>
+                <span id="lbl-mdf-support" class="info-item-title">MATERIAL</span>
+            </div>
+
+            <span class="info-separator">/</span>
+
+            <div class="info-item-block">
+                <span id="fotopanel-label" class="tele-value">10X10 ACM 12MM</span>
                 <span class="info-item-title">CMS</span>
             </div>
             
@@ -451,49 +506,42 @@
             </svg>
         </button>
 
-        <!-- Change scale/size button -->
-        <button id="btn-change-scale" title="Cambiar Tamaño" onclick="rotateFotoVariant('next')" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
-                <rect x="5" y="5" width="14" height="14" />
-            </svg>
-        </button>
-
-        <!-- Toggle color / B&W mode button -->
-        <button id="btn-color-toggle" title="Modo Color / Blanco y Negro" onclick="toggleFotoColorMode()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" class="icon-stroke">
-                <defs>
-                    <linearGradient id="color-bw-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#ff6600" />
-                        <stop offset="33%" stop-color="#0000ff" />
-                        <stop offset="66%" stop-color="#ffffff" />
-                        <stop offset="100%" stop-color="#000000" />
-                    </linearGradient>
-                </defs>
-                <rect x="4" y="4" width="16" height="16" fill="url(#color-bw-grad)" stroke="none" />
-            </svg>
-        </button>
-
-        <!-- Crop / zoom toggle button -->
-        <button id="btn-crop-zoom" title="Ajustar Enfoque / Zoom" onclick="toggleCropZoom()" class="btn-control-action">
+        <!-- Toggle Image Color Inversion -->
+        <button id="btn-invert-color" title="Invertir Color de Imagen" onclick="toggleImageInvert()" class="btn-control-action">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                <path d="M6 2v14a2 2 0 002 2h14" />
-                <path d="M18 22V8a2 2 0 00-2-2H2" />
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 3v18a9 9 0 0 0 0-18z" fill="currentColor" />
             </svg>
         </button>
 
-        <!-- Order / info dispatch button -->
-        <button id="btn-activate-node" title="Ordenar por WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="icon-stroke">
-                <circle cx="12" cy="12" r="9" />
-                <line x1="12" y1="17" x2="12" y2="11" />
-                <line x1="12" y1="7" x2="12.01" y2="7" />
+        <!-- Toggle Halftone Dot Density (3.6px vs 10.8px) -->
+        <button id="btn-toggle-halftone-size" title="Cambiar Tamaño de Puntos Halftone (3.6px / 10.8px)" onclick="toggleHalftoneSize()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <circle cx="6" cy="6" r="1.5" fill="currentColor" />
+                <circle cx="12" cy="6" r="1.5" fill="currentColor" />
+                <circle cx="18" cy="6" r="1.5" fill="currentColor" />
+                <circle cx="6" cy="12" r="2" fill="currentColor" />
+                <circle cx="12" cy="12" r="2.5" fill="currentColor" />
+                <circle cx="18" cy="12" r="2" fill="currentColor" />
+                <circle cx="6" cy="18" r="1.5" fill="currentColor" />
+                <circle cx="12" cy="18" r="1.5" fill="currentColor" />
+                <circle cx="18" cy="18" r="1.5" fill="currentColor" />
+            </svg>
+        </button>
+
+        <!-- Toggle Mosaic / Package Mural Grid (Nodes) -->
+        <button id="btn-toggle-grid" title="Mural en Mosaico (Paquete)" onclick="toggleGridMode()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
             </svg>
         </button>
     </div>
 
     <!-- FOOTER -->
     <footer class="footer-container">
-
         <a href="https://github.com/jalkn" target="_blank" rel="noopener noreferrer" class="footer-brand-text" style="text-decoration: none; color: inherit;">
             <span>JAKO.DEV</span>
             <span class="footer-copy-symbol">©</span>
@@ -506,52 +554,29 @@
                 <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
             </svg>
         </button>
-
     </footer>
 
     <!-- Core Logic Engine -->
     <script>
-// Catalog product configuration data focused on compact local shipping sizes (10x10 & 13x13)
+        // Single variant catalog setup for ACM 10x10 Laser
         const ARTEPANEL_CATALOG = {
             'PULSOR': {
-                defaultVariant: 'PANEL 10X10 INKJET',
+                defaultVariant: 'STENCIL 10X10',
                 variants: {
-                    'PANEL 10X10 INKJET': { 
+                    'STENCIL 10X10': { 
                         label: '10X10', 
-                        spec_es: 'Impresión',
-                        media: 'MDF 12MM',
-                        finish: 'INKJET',
-                        price: '20MIL', 
-                        id: 'FP-10X10-INK',
-                        scale: 0.50
-                    },
-                    'PANEL 13X13 INKJET': { 
-                        label: '13X13', 
-                        spec_es: 'Impresión',
-                        media: 'MDF 9MM',
-                        finish: 'INKJET',
+                        spec_es: 'CORTE LASER SOLID',
+                        media: '200GRS',
+                        finish: 'PAPEL REC.',
                         price: '25MIL', 
-                        id: 'FP-13X13-INK',
-                        scale: 0.65
-                    },
-                    'PANEL 10X10 LASER': { 
-                        label: '10X10', 
-                        spec_es: 'Grabado',
-                        media: 'MDF 12MM',
-                        finish: 'LASER',
-                        price: '25MIL', 
-                        id: 'FP-10X10-LAS',
-                        scale: 0.50
-                    },
-
-                    'PANEL 13X13 LASER': { 
-                        label: '13X13', 
-                        spec_es: 'Grabado',
-                        media: 'MDF 9MM',
-                        finish: 'LASER',
-                        price: '30MIL', 
-                        id: 'FP-13X13-LAS',
-                        scale: 0.65
+                        scale: 0.50,
+                        nodes: {
+                            cols: 10,
+                            rows: 20,
+                            total: 200,
+                            muralLabel: '200X100', 
+                            totalPriceFormatted: '5MILLONES'
+                        }
                     }
                 }
             }
@@ -559,9 +584,10 @@
 
         // Application state initializations
         let currentFotoItem = 'PULSOR';
-        let currentFotoVariant = 'PANEL 10X10 INKJET';
-        let isGrayscale = false;
-        let isShowingBack = false;
+        let currentFotoVariant = 'STENCIL 10X10';
+        let isGridMode = false;
+        let isImageInverted = false;
+        let isCoarseHalftone = false;
 
         // Fixed static image paths
         const defaultStaticImageSrc = 'img/photo.png';
@@ -569,8 +595,9 @@
         const backImageSrc = 'img/back.png';
         const targetPhoneNumber = "573128707083";
 
-        // Zoom scale toggle state (1x normal, 1.25x zoom)
-        let isZoomed = false;
+        // Icon SVG Templates for grid toggle button
+        const SVG_GRID_FOUR = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>`;
+        const SVG_GRID_SINGLE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke"><rect x="4" y="4" width="16" height="16" /></svg>`;
 
         // DOM elements cache helper
         const cachedElements = {};
@@ -611,66 +638,90 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 activeImageSrc = e.target.result;
-                isShowingBack = false;
-                resetImageTransform();
                 updateFotoUI();
                 triggerHaptic([10, 20]);
             };
             reader.readAsDataURL(file);
         }
 
-        // Toggle Zoom mode in place
-        function toggleCropZoom() {
-            isZoomed = !isZoomed;
-            applyImageTransform();
-            triggerHaptic(10);
-        }
-
-        // Reset Zoom transform
-        function resetImageTransform() {
-            isZoomed = false;
-            applyImageTransform();
-        }
-
-        // Apply scale transform directly to the front face image
-        function applyImageTransform() {
-            const img = document.querySelector('.user-surface-image');
-            if (img) {
-                const scale = isZoomed ? 1.25 : 1.0;
-                img.style.transform = `scale(${scale})`;
+        // Toggle Grid Mode (Mosaico 200 Nodos)
+        function toggleGridMode() {
+            isGridMode = !isGridMode;
+            const btn = getCachedEl('btn-toggle-grid');
+            if (btn) {
+                if (isGridMode) {
+                    btn.classList.add('active-btn');
+                    btn.innerHTML = SVG_GRID_SINGLE;
+                    btn.title = "Ver Panel Individual";
+                } else {
+                    btn.classList.remove('active-btn');
+                    btn.innerHTML = SVG_GRID_FOUR;
+                    btn.title = "Mural en Mosaico (Paquete)";
+                }
             }
+            updateFotoUI();
+            triggerHaptic([15, 30]);
         }
 
-        // Cycle through sizes/variants
-        function rotateFotoVariant(direction = 'next') {
-            const variants = Object.keys(ARTEPANEL_CATALOG[currentFotoItem].variants);
-            let currentIndex = variants.indexOf(currentFotoVariant);
+        // Toggle Halftone Grid Size (3.6px vs 10.8px)
+        function toggleHalftoneSize() {
+            isCoarseHalftone = !isCoarseHalftone;
+            const btn = getCachedEl('btn-toggle-halftone-size');
             
-            currentIndex = direction === 'next' 
-                ? (currentIndex + 1) % variants.length 
-                : (currentIndex - 1 + variants.length) % variants.length;
+            if (btn) {
+                btn.classList.toggle('active-btn', isCoarseHalftone);
+            }
             
-            currentFotoVariant = variants[currentIndex];
-            isShowingBack = false;
-            updateFotoUI();
-            triggerHaptic(15);
+            const wrappers = document.querySelectorAll('.halftone-wrapper');
+            wrappers.forEach(w => {
+                w.classList.toggle('halftone-coarse', isCoarseHalftone);
+            });
+
+            triggerHaptic([10, 20]);
         }
 
-        // Toggle Color / Grayscale Mode
-        function toggleFotoColorMode() {
-            isShowingBack = false;
-            isGrayscale = !isGrayscale;
-            updateFotoUI();
-            triggerHaptic(10);
+        // Toggle Image Inversion
+        function toggleImageInvert() {
+            isImageInverted = !isImageInverted;
+            
+            const halftoneElements = document.querySelectorAll('.halftone-filter');
+            const btn = getCachedEl('btn-invert-color');
+
+            halftoneElements.forEach(el => {
+                if (isImageInverted) {
+                    el.classList.add('inverted-active');
+                } else {
+                    el.classList.remove('inverted-active');
+                }
+            });
+
+            if (btn) {
+                btn.classList.toggle('active-btn', isImageInverted);
+            }
+
+            triggerHaptic([10, 20]);
         }
 
         // Reset stage to default setup
         function resetView() {
-            currentFotoVariant = 'PANEL 10X10';
-            isGrayscale = false;
-            isShowingBack = false;
+            isGridMode = false;
+            isImageInverted = false;
+            isCoarseHalftone = false;
             activeImageSrc = defaultStaticImageSrc;
-            resetImageTransform();
+            
+            const btnGrid = getCachedEl('btn-toggle-grid');
+            if (btnGrid) {
+                btnGrid.classList.remove('active-btn');
+                btnGrid.innerHTML = SVG_GRID_FOUR;
+                btnGrid.title = "Mural en Mosaico (Paquete)";
+            }
+
+            const btnInvert = getCachedEl('btn-invert-color');
+            if (btnInvert) btnInvert.classList.remove('active-btn');
+
+            const btnHalftone = getCachedEl('btn-toggle-halftone-size');
+            if (btnHalftone) btnHalftone.classList.remove('active-btn');
+
             const input = getCachedEl('user-image-input');
             if (input) input.value = '';
             
@@ -678,12 +729,22 @@
             triggerHaptic([10, 10]);
         }
 
-        // Render current panel images within viewport and setup long-press listener
+        // Render current panel images within viewport
         function renderPanelImages(config) {
             const container = getCachedEl('fotopanel-pack-container');
+            const invertClass = isImageInverted ? ' inverted-active' : '';
+            const coarseClass = isCoarseHalftone ? ' halftone-coarse' : '';
             if (!container) return;
 
-            container.style.transform = `scale(${config.scale})`;
+            if (isGridMode) {
+                container.classList.remove('mode-single');
+                container.classList.add('mode-grid');
+                container.style.transform = `scale(0.85)`;
+            } else {
+                container.classList.remove('mode-grid');
+                container.classList.add('mode-single');
+                container.style.transform = `scale(${config.scale})`;
+            }
 
             let viewport = container.querySelector('.pack-viewport');
             if (!viewport) {
@@ -692,16 +753,33 @@
                 container.appendChild(viewport);
             }
 
-            const bwClass = isGrayscale ? 'grayscale-filter' : '';
-
-            viewport.innerHTML = `
-                <div style="position: absolute; inset: 0; background-color: #e5e5e5; z-index: 1;"></div>
-                <img src="${activeImageSrc}" alt="Panel Surface Front" class="user-surface-image img-glow-transition ${bwClass}" style="z-index: 10;" />
-                <img src="${backImageSrc}" alt="Panel Surface Back" class="img-glow-transition panel-back-view" style="z-index: 20; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;" />
-            `;
-
-            applyImageTransform();
-            attachLongPressListener(viewport);
+            if (isGridMode) {
+                const cols = config.nodes.cols;
+                const rows = config.nodes.rows;
+                
+                let mosaicHTML = `<div class="halftone-wrapper${coarseClass}"><div class="mosaic-grid-container halftone-filter${invertClass}" style="grid-template-columns: repeat(${cols}, 1fr); grid-template-rows: repeat(${rows}, 1fr);">`;
+                
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        const posX = cols > 1 ? (c / (cols - 1)) * 100 : 0;
+                        const posY = rows > 1 ? (r / (rows - 1)) * 100 : 0;
+                        
+                        mosaicHTML += `<div class="mosaic-node-tile" style="background-image: url('${activeImageSrc}'); background-size: ${cols * 100}% ${rows * 100}%; background-position: ${posX}% ${posY}%;"></div>`;
+                    }
+                }
+                mosaicHTML += `</div></div>`;
+                
+                viewport.innerHTML = mosaicHTML;
+            } else {
+                viewport.innerHTML = `
+                    <div style="position: absolute; inset: 0; background-color: #e5e5e5; z-index: 1;"></div>
+                    <div class="halftone-wrapper${coarseClass}" style="position: absolute; inset: 0; z-index: 10;">
+                        <img src="${activeImageSrc}" alt="Panel Surface Front" class="user-surface-image img-glow-transition halftone-filter${invertClass}" />
+                    </div>
+                    <img src="${backImageSrc}" alt="Panel Surface Back" class="img-glow-transition panel-back-view" style="z-index: 20; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;" />
+                `;
+                attachLongPressListener(viewport);
+            }
         }
 
         // Attach hold / long-press events for smooth fade-in preview of back.png
@@ -721,12 +799,10 @@
                 }
             };
 
-            // Touch events
             element.addEventListener('touchstart', (e) => { e.preventDefault(); showBack(); }, { passive: false });
             element.addEventListener('touchend', hideBack);
             element.addEventListener('touchcancel', hideBack);
 
-            // Mouse events
             element.addEventListener('mousedown', showBack);
             element.addEventListener('mouseup', hideBack);
             element.addEventListener('mouseleave', hideBack);
@@ -740,32 +816,25 @@
             const media = getCachedEl('fotopanel-media');
             const finish = getCachedEl('fotopanel-finish');
             const specEs = getCachedEl('lbl-printing-media');
-            
-            if (label) label.textContent = config.label;
-            if (price) price.textContent = config.price;
-            if (media) media.textContent = config.media;
-            if (finish) finish.textContent = config.finish;
-            if (specEs) specEs.textContent = config.spec_es;
+            const mdfSupportLbl = getCachedEl('lbl-mdf-support');
+
+            if (isGridMode) {
+                if (label) label.textContent = config.nodes.muralLabel;
+                if (mdfSupportLbl) mdfSupportLbl.textContent = `STENCILX${config.nodes.total}`;
+                if (price) price.textContent = config.nodes.totalPriceFormatted;
+                if (media) media.textContent = config.media;
+                if (finish) finish.textContent = config.finish;
+                if (specEs) specEs.textContent = config.spec_es;
+            } else {
+                if (label) label.textContent = config.label;
+                if (mdfSupportLbl) mdfSupportLbl.textContent = 'STENCIL';
+                if (price) price.textContent = config.price;
+                if (media) media.textContent = config.media;
+                if (finish) finish.textContent = config.finish;
+                if (specEs) specEs.textContent = config.spec_es;
+            }
 
             renderPanelImages(config);
-        }
-
-        // Open WhatsApp checkout order line formatted strictly for local Spanish audience
-        function acquireNodeCashflow() {
-            const variant = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
-            
-            const message = `¡Hola! Quiero hacer un pedido de un FotoPanel personalizado:\n\n` +
-                `• Tamaño: ${variant.label} cms\n` +
-                `• Estilo: ${isGrayscale ? 'Adhesivo Inkjet B/N' : 'Adhesivo Inkjet Color'}\n` +
-                `• Soporte: MDF ${variant.media} (A elegir 9mm o 12mm)\n` +
-                `• Precio: ${variant.price} COP\n\n` +
-                `¿Cuáles son los pasos para enviar la foto y acordar el pago/envío?`;
-
-            // Trigger haptic response pattern
-            triggerHaptic([15, 40, 15]);
-
-            // Open WhatsApp with encoded text string
-            window.open(`https://api.whatsapp.com/send?phone=${targetPhoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
         }
 
         // Initialize stage on DOM load
