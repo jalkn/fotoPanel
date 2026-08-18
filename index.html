@@ -20,6 +20,7 @@
             --gradient-mid: rgba(18, 18, 18, 0.85);
             --gradient-end: #121212;
             --icon-hover: #ffffff;
+            --toggle-handle-transform: translateX(0px);
         }
 
         :root[data-theme="light"] {
@@ -32,6 +33,7 @@
             --gradient-mid: rgba(248, 249, 250, 0.85);
             --gradient-end: #ffffff;
             --icon-hover: #666666;
+            --toggle-handle-transform: translateX(26px);
         }
 
         /* GLOBAL RESET & BASE STYLES */
@@ -120,22 +122,16 @@
             letter-spacing: 0.25em;
         }
 
-        .icon-tele, .icon-stroke {
+        .icon-stroke { 
             width: 1.2rem;
             height: 1.2rem;
-            transition: fill 0.3s ease, stroke 0.3s ease;
+            stroke: var(--jako-text);
+            transition: stroke 0.3s ease;
         }
 
-        .icon-tele {
-            fill: var(--jako-text);
-            pointer-events: none;
-        }
-
-        .icon-stroke { stroke: var(--jako-text); }
-        button:hover .icon-tele { fill: var(--icon-hover); }
         button:hover .icon-stroke { stroke: var(--icon-hover); }
 
-        /* RESTRUCTURED 6-TIER HEIGHT LAYOUT */
+        /* LAYOUT HEIGHT TIERS */
         .header-bar {
             height: 10dvh;
             max-height: 10dvh;
@@ -210,7 +206,7 @@
             border-top: 1px solid var(--jako-border);
         }
 
-        /* MAIN VISUALIZER CONTAINER */
+        /* MAIN VISUALIZER CONTAINER & INLINE OVERLAY BUTTONS */
         #fotopanel-pack-container {
             position: relative;
             width: 100%;
@@ -224,6 +220,20 @@
             transform-origin: center center;
         }
 
+        .btn-overlay-scale {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            z-index: 30;
+            width: 2.2rem;
+            height: 2.2rem;
+            background: var(--jako-glass);
+            border: 1px solid var(--jako-border);
+            border-radius: 4px;
+            backdrop-filter: blur(10px);
+            padding: 0.2rem;
+        }
+
         .pack-viewport {
             position: relative;
             width: 100%;
@@ -231,7 +241,7 @@
             overflow: hidden;
         }
 
-        /* FRONT IMAGE STYLING */
+        /* SURFACE IMAGES STYLING */
         .user-surface-image {
             position: absolute;
             inset: 0;
@@ -240,12 +250,7 @@
             object-fit: cover;
             transform-origin: center center;
             will-change: transform;
-            cursor: grab;
             transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .user-surface-image:active {
-            cursor: grabbing;
         }
 
         #fotopanel-pack-container img.panel-back-view {
@@ -326,6 +331,12 @@
             height: 100%;
         }
 
+        /* ACROMATIC SWITCH TOGGLE */
+        .toggle-handle {
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: var(--toggle-handle-transform);
+        }
+
         /* FOOTER BRANDING */
         .footer-brand-text {
             display: flex;
@@ -348,7 +359,7 @@
 
         .footer-container:hover .footer-brand-text { opacity: 0.9; }
 
-        /* RESPONSIVE SCALING & POSITION ADJUSTMENT FOR SMALL SCREENS */
+        /* RESPONSIVE MEDIA QUERIES */
         @media (max-height: 667px) {
             .btn-reset-text { font-size: 10px; }
             .icon-stroke { width: 1.1rem; height: 1.1rem; }
@@ -377,8 +388,7 @@
             </svg>
             <span>FOTOPANEL</span>
         </button>
-
-<div></div>
+        <div></div>
     </header>
 
     <div class="info-strip info-strip-top">
@@ -389,14 +399,18 @@
 
     <main class="main-visualizer-container">
         <div id="fotopanel-pack-container">
+            <button id="btn-change-scale" title="Change Scale / Size" onclick="rotateFotoVariant('next')" class="btn-overlay-scale">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                    <rect x="5" y="5" width="14" height="14" />
+                </svg>
+            </button>
+            
             <div class="pack-viewport"></div>
         </div>
     </main>
 
     <div class="info-strip info-strip-bottom">
         <div class="info-strip-content">
-
-
             <div class="info-item-block">
                 <span id="fotopanel-label" class="tele-value">40X40</span>
                 <span class="info-item-title">CMS</span>
@@ -408,8 +422,6 @@
                 <span id="fotopanel-finish" class="tele-value">ADH INKJET PRINT</span>
                 <span id="lbl-printing-media" class="info-item-title">SOPORTE MDF 9MM</span>
             </div>
-
-
 
             <span class="info-separator">/</span>
             
@@ -427,12 +439,6 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                 <path d="M4 8V4h16v4" />
                 <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
-            </svg>
-        </button>
-
-        <button id="btn-change-scale" title="Change Scale / Size" onclick="rotateFotoVariant('next')" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
-                <rect x="5" y="5" width="14" height="14" />
             </svg>
         </button>
 
@@ -457,10 +463,12 @@
             </svg>
         </button>
 
-        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        <button id="acromatic-toggle-trigger" title="Toggle Theme" onclick="toggleTheme()" class="btn-control-action" style="background: none; border: none; padding: 0;">
+            <svg style="width: 32px; height: auto; display: block;" viewBox="0 0 54 28">
+                <rect width="54" height="28" rx="14" fill="var(--jako-text)" opacity="0.4" />
+                <g class="toggle-handle">
+                    <circle cx="14" cy="14" r="10" fill="var(--jako-bg)" />
+                </g>
             </svg>
         </button>
 
@@ -472,7 +480,7 @@
         </button>
     </div>
 
-<footer class="footer-container">
+    <footer class="footer-container">
         <a href="https://jako.world" target="_blank" rel="noopener noreferrer" class="footer-brand-text" style="text-decoration: none; color: inherit;">
             <span>JAKO.DEV</span>
             <span class="footer-copy-symbol">©</span>
@@ -481,7 +489,7 @@
     </footer>
 
     <script>
-        // Product catalog specifications
+        // Product Catalog Specifications
         const ARTEPANEL_CATALOG = {
             'PULSOR': {
                 defaultVariant: 'PANEL 40X40',
@@ -514,23 +522,16 @@
             }
         };
 
-        // Application State Variables
+        // Global State
         let currentFotoItem = 'PULSOR';
         let currentFotoVariant = 'PANEL 40X40';
         let isGrayscale = false;
         let isShowingBack = false;
+        let isZoomed = false;
 
         let activeImageSrc = 'img/photo.png';
         const backImageSrc = 'img/30x30B.png';
         const targetPhoneNumber = "573128707083";
-
-        // Direct Image Transform State (1x default, 1.25x zoomed)
-        let isZoomed = false;
-        let imgPanX = 0;
-        let imgPanY = 0;
-        let isDragging = false;
-        let startX = 0;
-        let startY = 0;
 
         // DOM Cache Helper
         const cachedElements = {};
@@ -563,7 +564,7 @@
             if (input) input.click();
         }
 
-        // Handle Custom User Image Upload & Reset Transform
+        // Handle Custom User Image Upload
         function handleUserImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -572,71 +573,27 @@
             reader.onload = function(e) {
                 activeImageSrc = e.target.result;
                 isShowingBack = false;
-                resetImageTransform();
+                isZoomed = false;
                 updateFotoUI();
                 triggerHaptic([10, 20]);
             };
             reader.readAsDataURL(file);
         }
 
-        // Direct Toggle Crop & Zoom (Without Overlay Display Toolbar)
+        // Toggle Image Scale Zoom
         function toggleCropZoom() {
             isZoomed = !isZoomed;
-            if (!isZoomed) {
-                imgPanX = 0;
-                imgPanY = 0;
-            }
             applyImageTransform();
             triggerHaptic(10);
         }
 
-        // Reset Transform State
-        function resetImageTransform() {
-            isZoomed = false;
-            imgPanX = 0;
-            imgPanY = 0;
-            applyImageTransform();
-        }
-
-        // Apply Scale & Translate CSS Transforms to Front Image
+        // Apply Scale Transforms to Front Surface Image
         function applyImageTransform() {
             const img = document.querySelector('.user-surface-image');
             if (img) {
                 const scale = isZoomed ? 1.25 : 1.0;
-                img.style.transform = `scale(${scale}) translate(${imgPanX}px, ${imgPanY}px)`;
+                img.style.transform = `scale(${scale})`;
             }
-        }
-
-        // Setup Drag & Pan Gesture Event Handlers
-        function setupImagePanGestures() {
-            const container = getCachedEl('fotopanel-pack-container');
-            if (!container) return;
-
-            const onStart = (e) => {
-                if (isShowingBack) return;
-                isDragging = true;
-                const point = e.touches ? e.touches[0] : e;
-                startX = point.clientX - imgPanX;
-                startY = point.clientY - imgPanY;
-            };
-
-            const onMove = (e) => {
-                if (!isDragging) return;
-                const point = e.touches ? e.touches[0] : e;
-                imgPanX = point.clientX - startX;
-                imgPanY = point.clientY - startY;
-                applyImageTransform();
-            };
-
-            const onEnd = () => { isDragging = false; };
-
-            container.addEventListener('mousedown', onStart);
-            window.addEventListener('mousemove', onMove);
-            window.addEventListener('mouseup', onEnd);
-
-            container.addEventListener('touchstart', onStart, { passive: true });
-            window.addEventListener('touchmove', onMove, { passive: true });
-            window.addEventListener('touchend', onEnd);
         }
 
         // Cycle Panel Variants (Sizes) & Reset Back View
@@ -654,7 +611,7 @@
             triggerHaptic(15);
         }
 
-        // Toggle Single Button Color vs Grayscale Mode
+        // Toggle Color vs Grayscale Mode
         function toggleFotoColorMode() {
             isShowingBack = false;
             isGrayscale = !isGrayscale;
@@ -677,8 +634,8 @@
             currentFotoVariant = 'PANEL 40X40';
             isGrayscale = false;
             isShowingBack = false;
+            isZoomed = false;
             activeImageSrc = 'img/photo.png';
-            resetImageTransform();
             const input = getCachedEl('user-image-input');
             if (input) input.value = '';
             
@@ -746,7 +703,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
             updateFotoUI();
-            setupImagePanGestures();
         });
     </script>
 </body>
