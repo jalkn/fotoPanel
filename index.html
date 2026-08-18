@@ -138,13 +138,18 @@
         /* RESTRUCTURED 6-TIER HEIGHT LAYOUT */
         .header-bar {
             height: 10dvh;
+            max-height: 10dvh;
+            flex-shrink: 0;
             display: flex;
-            justify-content: center; 
+            justify-content: space-between;
             align-items: center;
             width: 100%;
+            padding: 0 1rem;
+            position: relative;
             z-index: 100;
             border-bottom: 1px solid var(--jako-border);
             background: var(--jako-glass);
+            backdrop-filter: blur(20px);
         }
 
         .info-strip-top {
@@ -175,7 +180,6 @@
             flex-shrink: 0;
         }
 
-        /* CONTROLS BAR HORIZONTAL SCROLL CONTAINERS */
         .controls-bar {
             height: 10dvh;
             max-height: 10dvh;
@@ -183,36 +187,15 @@
             position: relative;
             z-index: 100;
             display: flex;
+            justify-content: center;
             align-items: center;
             width: 100%;
+            padding: 0 0.5rem;
             border-top: 1px solid var(--jako-border);
             border-bottom: 1px solid var(--jako-border);
             background: var(--jako-glass);
             backdrop-filter: blur(20px);
-            overflow: hidden;
-        }
-
-        .controls-scroll-wrapper {
-            display: flex;
-            align-items: center;
             gap: 1rem;
-            width: 100%;
-            height: 100%;
-            padding: 0 1rem;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* IE and Edge */
-        }
-
-        .controls-scroll-wrapper::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
-        }
-
-        .btn-control-action {
-            flex: 0 0 calc((100% - 2rem) / 3);
-            height: 100%;
-            scroll-snap-align: center;
         }
 
         .footer-container {
@@ -338,6 +321,11 @@
             transition: color 0.5s ease, text-shadow 0.5s ease;
         }
 
+        .btn-control-action {
+            width: 3.8rem !important;
+            height: 100%;
+        }
+
         /* FOOTER BRANDING */
         .footer-brand-text {
             display: flex;
@@ -368,6 +356,11 @@
             .info-strip-content { gap: 0.4rem; }
             .info-item-title { font-size: 6px; }
             #fotopanel-pack-container { max-height: 48dvh; }
+            .controls-bar { 
+                gap: 0.3rem; 
+                margin-bottom: 0.4rem;
+            }
+            .btn-control-action { width: 2rem !important; }
         }
     </style>
 </head>
@@ -376,15 +369,23 @@
     <div id="page-bg-overlay"></div>
     <div class="ambient-gradient"></div>
         
-    <header class="header-bar" style="display: flex; flex-direction: column; gap: 0.2rem;">
-        <button class="btn-reset-text" title="Reset View" onclick="resetView()">
+    <header class="header-bar">
+        <div></div>
+        <button class="btn-reset-text" title="Home / Reset" onclick="resetView()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
                 <rect x="4" y="4" width="16" height="16" />
             </svg>
             <span>FOTOPANEL</span>
         </button>
-        <span style="font-size: 7px; opacity: 0.5; letter-spacing: 0.25em;">IMAGINA • ENFOCA • PROYECTA</span>
+
+<div></div>
     </header>
+
+    <div class="info-strip info-strip-top">
+        <div class="info-strip-content">
+            <span id="top-strip-text" class="info-separator">IMAGINA • ENFOCA • PROYECTA</span>
+        </div>
+    </div>
 
     <main class="main-visualizer-container">
         <div id="fotopanel-pack-container">
@@ -394,6 +395,7 @@
 
     <div class="info-strip info-strip-bottom">
         <div class="info-strip-content">
+
 
             <div class="info-item-block">
                 <span id="fotopanel-label" class="tele-value">40X40</span>
@@ -407,6 +409,8 @@
                 <span id="lbl-printing-media" class="info-item-title">SOPORTE MDF 9MM</span>
             </div>
 
+
+
             <span class="info-separator">/</span>
             
             <div class="info-item-block">
@@ -419,63 +423,61 @@
     <div class="controls-bar">
         <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
 
-        <div class="controls-scroll-wrapper">
-            <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-control-action">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                    <path d="M4 8V4h16v4" />
-                    <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
-                </svg>
-            </button>
+        <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <path d="M4 8V4h16v4" />
+                <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
+            </svg>
+        </button>
 
-            <button id="btn-change-scale" title="Change Scale / Size" onclick="rotateFotoVariant('next')" class="btn-control-action">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
-                    <rect x="5" y="5" width="14" height="14" />
-                </svg>
-            </button>
+        <button id="btn-change-scale" title="Change Scale / Size" onclick="rotateFotoVariant('next')" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                <rect x="5" y="5" width="14" height="14" />
+            </svg>
+        </button>
 
-            <button id="btn-color-toggle" title="Toggle Color / B&W Mode" onclick="toggleFotoColorMode()" class="btn-control-action">
-                <svg viewBox="0 0 24 24" class="icon-stroke">
-                    <defs>
-                        <linearGradient id="color-bw-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#ff6600" />
-                            <stop offset="33%" stop-color="#0000ff" />
-                            <stop offset="66%" stop-color="#ffffff" />
-                            <stop offset="100%" stop-color="#000000" />
-                        </linearGradient>
-                    </defs>
-                    <rect x="4" y="4" width="16" height="16" fill="url(#color-bw-grad)" stroke="none" />
-                </svg>
-            </button>
+        <button id="btn-color-toggle" title="Toggle Color / B&W Mode" onclick="toggleFotoColorMode()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" class="icon-stroke">
+                <defs>
+                    <linearGradient id="color-bw-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ff6600" />
+                        <stop offset="33%" stop-color="#0000ff" />
+                        <stop offset="66%" stop-color="#ffffff" />
+                        <stop offset="100%" stop-color="#000000" />
+                    </linearGradient>
+                </defs>
+                <rect x="4" y="4" width="16" height="16" fill="url(#color-bw-grad)" stroke="none" />
+            </svg>
+        </button>
 
-            <button id="btn-crop-zoom" title="Toggle Scale Zoom" onclick="toggleCropZoom()" class="btn-control-action">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                    <path d="M6 2v14a2 2 0 002 2h14" />
-                    <path d="M18 22V8a2 2 0 00-2-2H2" />
-                </svg>
-            </button>
+        <button id="btn-crop-zoom" title="Toggle Scale Zoom" onclick="toggleCropZoom()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <path d="M6 2v14a2 2 0 002 2h14" />
+                <path d="M18 22V8a2 2 0 00-2-2H2" />
+            </svg>
+        </button>
 
-            <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
-                    <circle cx="12" cy="12" r="5" />
-                    <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-                </svg>
-            </button>
+        <button id="btn-theme-toggle" title="Toggle Theme (Light/Dark)" onclick="toggleTheme()" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+        </button>
 
-            <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action" style="padding: 0.5rem;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                    <path d="M4 16v4h16v-4" />
-                    <path d="M12 7v10m0 0l-4-4m4 4l4-4" />
-                </svg>
-            </button>
-        </div>
+        <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-control-action" style="padding: 0.5rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                <path d="M4 16v4h16v-4" />
+                <path d="M12 7v10m0 0l-4-4m4 4l4-4" />
+            </svg>
+        </button>
     </div>
 
-    <footer class="footer-container">
-        <span class="footer-brand-text">
+<footer class="footer-container">
+        <a href="https://jako.world" target="_blank" rel="noopener noreferrer" class="footer-brand-text" style="text-decoration: none; color: inherit;">
             <span>JAKO.DEV</span>
             <span class="footer-copy-symbol">©</span>
             <span>2026</span>
-        </span>
+        </a>
     </footer>
 
     <script>
@@ -486,6 +488,7 @@
                 variants: {
                     'PANEL 20X20': { 
                         label: '20X20', 
+                        media: 'MDF 12MM',
                         finish: 'ADH INKJET PRINT',
                         price: '20MIL', 
                         id: 'FP-20X20',
@@ -493,6 +496,7 @@
                     },
                     'PANEL 30X30': { 
                         label: '30X30', 
+                        media: 'MDF 9MM',
                         finish: 'ADH INKJET PRINT',
                         price: '30MIL', 
                         id: 'FP-30X30',
@@ -500,6 +504,7 @@
                     },
                     'PANEL 40X40': { 
                         label: '40X40', 
+                        media: '9MM',
                         finish: 'ADH INKJET PRINT',
                         price: '40MIL', 
                         id: 'FP-40X40',
@@ -612,7 +617,7 @@
                 isDragging = true;
                 const point = e.touches ? e.touches[0] : e;
                 startX = point.clientX - imgPanX;
-                startY = point.clientY - startY;
+                startY = point.clientY - imgPanY;
             };
 
             const onMove = (e) => {
@@ -712,9 +717,11 @@
             const config = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
             const label = getCachedEl('fotopanel-label');
             const price = getCachedEl('fotopanel-price');
+            const media = getCachedEl('fotopanel-media');
             
             if (label) label.textContent = config.label;
             if (price) price.textContent = config.price;
+            if (media) media.textContent = config.media;
 
             renderPanelImages(config);
         }
@@ -727,7 +734,7 @@
             const message = `¡Hola! Quiero hacer un pedido de un FotoPanel personalizado \n\n` +
                 `• Tamaño: ${variant.label} cms\n` +
                 `• Medio: ${styleText}\n` +
-                `• Soporte: MDF\n` +
+                `• Soporte: MDF ${variant.media}\n` +
                 `• Precio: ${variant.price} COP\n\n` +
                 `¿Cuáles son los pasos para enviar la foto y acordar el pago?`;
 
