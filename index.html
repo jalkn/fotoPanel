@@ -155,8 +155,8 @@
         }
 
         .main-visualizer-container {
-            height: 60dvh;
-            max-height: 60dvh;
+            height: 65dvh;
+            max-height: 65dvh;
             width: 100%;
             max-width: 800px;
             display: flex;
@@ -167,17 +167,6 @@
             position: relative;
             overflow: hidden;
             margin: 0 auto;
-            flex-shrink: 0;
-        }
-
-        .action-buttons-strip {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            width: 100%;
-            padding: 0.4rem 0;
-            z-index: 30;
             flex-shrink: 0;
         }
 
@@ -217,12 +206,12 @@
             border-top: 1px solid var(--jako-border);
         }
 
-        /* MAIN VISUALIZER CONTAINER */
+        /* MAIN VISUALIZER CONTAINER & INLINE OVERLAY BUTTONS */
         #fotopanel-pack-container {
             position: relative;
             width: 100%;
             max-width: 380px;
-            max-height: 50dvh;
+            max-height: 55dvh;
             aspect-ratio: 1 / 1;
             flex-shrink: 0;
             margin: auto;
@@ -231,12 +220,33 @@
             transform-origin: center center;
         }
 
-        /* ACTION BUTTON BASE STYLING */
-        .btn-action-inline {
+        /* SHARED OVERLAY BUTTON BASE STYLING */
+        .btn-overlay-action {
+            position: absolute;
+            z-index: 30;
+            width: 2.2rem;
+            height: 2.2rem;
             background: var(--jako-glass);
             border: 1px solid var(--jako-border);
             border-radius: 4px;
             backdrop-filter: blur(10px);
+            padding: 0.2rem;
+        }
+
+        /* SPECIFIC OVERLAY POSITIONS */
+        .btn-overlay-top-left {
+            top: 8px;
+            left: 8px;
+        }
+
+        .btn-overlay-bottom-left {
+            bottom: 8px;
+            left: 8px;
+        }
+
+        .btn-overlay-bottom-right {
+            bottom: 8px;
+            right: 8px;
         }
 
         .pack-viewport {
@@ -371,7 +381,7 @@
             .info-strip { font-size: 7px; gap: 0.4rem; }
             .info-strip-content { gap: 0.4rem; }
             .info-item-title { font-size: 6px; }
-            #fotopanel-pack-container { max-height: 42dvh; }
+            #fotopanel-pack-container { max-height: 48dvh; }
             .controls-bar { 
                 gap: 0.5rem; 
                 margin-bottom: 0.4rem;
@@ -403,31 +413,31 @@
     </div>
 
     <main class="main-visualizer-container">
+        <!-- Added onclick listener to toggle back view when clicking over the container -->
         <div id="fotopanel-pack-container" onclick="handleContainerClick(event)">
+            <!-- Upload custom photo button with dynamic scale counter and 'TU FOTO' label -->
+            <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-overlay-action btn-overlay-bottom-left" style="width: auto; height: 2.2rem; padding: 0 0.6rem; gap: 0.4rem; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; letter-spacing: 0.05em; transform-origin: bottom left;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke" style="width: 1rem; height: 1rem;">
+                    <path d="M4 8V4h16v4" />
+                    <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
+                </svg>
+                <span style="font-size: 9px; opacity: 0.9;">TU FOTO</span>
+            </button>
+
+            <!-- Order via WhatsApp button with dynamic scale counter -->
+            <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-overlay-action btn-overlay-bottom-right" style="width: auto; height: 2.2rem; padding: 0 0.6rem; gap: 0.4rem; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; letter-spacing: 0.05em; transform-origin: bottom right;">
+                <span class="info-item-title" style="opacity: 0.7; font-size: 9px;">COP$</span>
+                <span id="fotopanel-price" class="tele-value" style="font-size: 11px;">40MIL</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke" style="width: 1rem; height: 1rem; margin-left: 0.2rem;">
+                    <path d="M6 9V4h12v5" />
+                    <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
+                    <path d="M6 14h12v6H6z" />
+                </svg>
+            </button>
+            
             <div class="pack-viewport"></div>
         </div>
     </main>
-
-    <!-- Centralized action buttons positioned directly above bottom info strip -->
-    <div class="action-buttons-strip">
-        <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-action-inline" style="width: auto; height: 2.2rem; padding: 0 0.6rem; gap: 0.4rem; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; letter-spacing: 0.05em;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke" style="width: 1rem; height: 1rem;">
-                <path d="M4 8V4h16v4" />
-                <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
-            </svg>
-            <span style="font-size: 9px; opacity: 0.9;">TU FOTO</span>
-        </button>
-
-        <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-action-inline" style="width: auto; height: 2.2rem; padding: 0 0.6rem; gap: 0.4rem; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; letter-spacing: 0.05em;">
-            <span class="info-item-title" style="opacity: 0.7; font-size: 9px;">COP$</span>
-            <span id="fotopanel-price" class="tele-value" style="font-size: 11px;">40MIL</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke" style="width: 1rem; height: 1rem; margin-left: 0.2rem;">
-                <path d="M6 9V4h12v5" />
-                <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
-                <path d="M6 14h12v6H6z" />
-            </svg>
-        </button>
-    </div>
 
     <div class="info-strip info-strip-bottom">
         <div class="info-strip-content" style="flex-direction: column; gap: 0.2rem; text-align: center;">
@@ -529,6 +539,7 @@
         let isZoomed = false;
 
         let activeImageSrc = 'img/photo.png';
+        // Updated back image source to 'img/back.png'
         const backImageSrc = 'img/back.png';
         const targetPhoneNumber = "573128707083";
 
@@ -628,8 +639,9 @@
             triggerHaptic(20);
         }
 
-        // Handle clicks on panel container
+        // Handle clicks on panel container without triggering when action overlay buttons are clicked
         function handleContainerClick(event) {
+            if (event.target.closest('.btn-overlay-action')) return;
             toggleBackView();
         }
 
