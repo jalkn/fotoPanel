@@ -286,17 +286,12 @@ cat << 'EOF' > index.html
         </button>
 
         <button id="btn-toggle-halftone-size" title="Toggle Grid Density" onclick="toggleHalftoneSize()" class="btn-control-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                <circle cx="6" cy="6" r="1.5" fill="currentColor" />
-                <circle cx="12" cy="6" r="1.5" fill="currentColor" />
-                <circle cx="18" cy="6" r="1.5" fill="currentColor" />
-                <circle cx="6" cy="12" r="2" fill="currentColor" />
-                <circle cx="12" cy="12" r="2.5" fill="currentColor" />
-                <circle cx="18" cy="12" r="2" fill="currentColor" />
-                <circle cx="6" cy="18" r="1.5" fill="currentColor" />
-                <circle cx="12" cy="18" r="1.5" fill="currentColor" />
-                <circle cx="18" cy="18" r="1.5" fill="currentColor" />
-            </svg>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+    <!-- Marco Exterior -->
+    <rect x="3" y="3" width="18" height="18" rx="1" />
+    <!-- Retícula Completa 3x3 -->
+    <path d="M9 3v18M15 3v18M3 9h18M3 15h18" />
+</svg>
         </button>
     </div>
 
