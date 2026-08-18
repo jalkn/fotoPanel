@@ -154,25 +154,6 @@
             flex-shrink: 0;
         }
 
-        /* UPLOAD BUTTON WRAPPER & LABEL */
-        .upload-btn-wrapper {
-            position: absolute;
-            top: -2rem; /* Offsets the button above the container edge */
-            left: 0;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            z-index: 30;
-        }
-
-        .upload-btn-label {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            color: var(--jako-text);
-            white-space: nowrap;
-        }
-
         .main-visualizer-container {
             height: 65dvh;
             max-height: 65dvh;
@@ -433,26 +414,13 @@
 
     <main class="main-visualizer-container">
         <div id="fotopanel-pack-container">
-            
-            <!-- Upload trigger wrapper positioned above the top edge -->
-            <div class="upload-btn-wrapper">
-                <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-overlay-action">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                        <path d="M4 8V4h16v4" />
-                        <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
-                    </svg>
-                </button>
-                <span class="upload-btn-label">TU FOTO</span>
-            </div>
-
-            <!-- Bottom Left: Scale / Variant Rotation -->
-            <button id="btn-change-scale" title="Change Scale / Size" onclick="rotateFotoVariant('next')" class="btn-overlay-action btn-overlay-bottom-left">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
-                    <rect x="5" y="5" width="14" height="14" />
+            <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-overlay-action btn-overlay-bottom-left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                    <path d="M4 8V4h16v4" />
+                    <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
                 </svg>
             </button>
 
-            <!-- Bottom Right: WhatsApp Order Trigger -->
             <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-overlay-action btn-overlay-bottom-right">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
                     <path d="M4 16v4h16v-4" />
@@ -487,8 +455,14 @@
         </div>
     </div>
 
-    <div class="controls-bar">
+<div class="controls-bar">
         <input type="file" id="user-image-input" accept="image/*" style="display: none;" onchange="handleUserImageUpload(event)">
+
+        <button id="btn-change-scale" title="Change Scale / Size" onclick="rotateFotoVariant('next')" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                <rect x="5" y="5" width="14" height="14" />
+            </svg>
+        </button>
 
         <button id="btn-color-toggle" title="Toggle Color / B&W Mode" onclick="toggleFotoColorMode()" class="btn-control-action">
             <svg viewBox="0 0 24 24" class="icon-stroke">
