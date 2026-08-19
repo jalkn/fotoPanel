@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* ==========================================================================
+/* ==========================================================================
            1. CSS VARIABLES & THEME CONFIGURATION
            Dark and Light Mode Palette mappings using CSS Custom Properties
            ========================================================================== */
@@ -188,6 +188,38 @@
         .btn-control-action {
             width: 3.5rem;
             height: 100%;
+        }
+
+/* --------------------------------------------------------------------------
+           BLOCK 4 DRAGGABLE OVERLAY STYLES
+           -------------------------------------------------------------------------- */
+        .block-4-draggable {
+            height: 6dvh !important;
+            max-height: 6dvh !important;
+            background-color: var(--jako-bg) !important;
+            position: absolute;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 150;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            width: 90%;
+            max-width: 420px;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        .block-4-draggable:active {
+            cursor: grabbing;
+        }
+
+        /* Action Buttons with Left & Right Borders */
+        .bordered-action-btn {
+            border-left: 1px solid var(--jako-border) !important;
+            border-right: 1px solid var(--jako-border) !important;
+            padding: 0 0.8rem;
         }
 
 
@@ -383,42 +415,43 @@
     </div>
 
 
-    <!-- ========================================================================
+<!-- ========================================================================
          BLOCK 3: MAIN VISUALIZER (Uses Style 3 - Main Style)
          ======================================================================== -->
     <main class="main-style-visualizer">
+        <!-- ========================================================================
+             BLOCK 4: BUTTONS ACTIONS (Draggable Floating Overlay)
+             ======================================================================== -->
+        <div id="draggable-block-4" class="header-style-bar block-4-draggable">
+            <div class="info-strip-content">
+                <span style="font-size: 9px; opacity: 0.9;">TU FOTO</span>
+                <!-- Upload Custom Photo Button -->
+                <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-action-item bordered-action-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
+                        <path d="M4 8V4h16v4" />
+                        <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
+                    </svg>
+                </button>
+
+                <!-- Order via WhatsApp Button -->
+                <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-action-item bordered-action-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke" style="margin-left: 0.2rem;">
+                        <path d="M6 9V4h12v5" />
+                        <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
+                        <path d="M6 14h12v6H6z" />
+                    </svg>
+                </button>
+                <span id="fotopanel-price" class="tele-value" style="font-size: 9px; opacity: 0.9;"></span>
+            </div>
+        </div>
+
         <div id="fotopanel-pack-container" onclick="handleContainerClick(event)">
             <div class="pack-viewport"></div>
         </div>
     </main>
 
 
-    <!-- ========================================================================
-         BLOCK 4: BUTTONS ACTIONS (Uses Style 1 - Header/Control Bar Style)
-         ======================================================================== -->
-    <div class="header-style-bar">
-        <div class="info-strip-content">
-            <!-- Upload Custom Photo Button -->
-            <button id="btn-upload-image" title="Upload Custom Photo" onclick="triggerImageUpload()" class="btn-action-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke">
-                    <path d="M4 8V4h16v4" />
-                    <path d="M12 17V7m0 0l-4 4m4-4l4 4" />
-                </svg>
-                <span style="font-size: 9px; opacity: 0.9;">TU FOTO</span>
-            </button>
 
-            <!-- Order via WhatsApp Button -->
-            <button id="btn-activate-node" title="Order via WhatsApp" onclick="acquireNodeCashflow()" class="btn-action-item">
-                <span style="opacity: 0.7; font-size: 9px;">COP$</span>
-                <span id="fotopanel-price" class="tele-value" style="font-size: 11px;">40MIL</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-stroke" style="margin-left: 0.2rem;">
-                    <path d="M6 9V4h12v5" />
-                    <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
-                    <path d="M6 14h12v6H6z" />
-                </svg>
-            </button>
-        </div>
-    </div>
 
 
     <!-- ========================================================================
@@ -485,6 +518,7 @@
          ======================================================================== -->
     <script>
         // Catalog Specifications Data Structure
+ // Catalog Specifications Data Structure
         const ARTEPANEL_CATALOG = {
             'PULSOR': {
                 defaultVariant: 'PANEL 40X40',
@@ -493,7 +527,7 @@
                         label: '20X20 CMS', 
                         media: 'SOPORTE MDF 12MM LAMINADO',
                         finish: 'INKJET COLOR ADHESIVO',
-                        price: '20MIL', 
+                        price: 'COP$20MIL', 
                         id: 'FP-20X20',
                         scale: 0.50
                     },
@@ -501,7 +535,7 @@
                         label: '30X30 CMS', 
                         media: 'SOPORTE MDF 9MM LAMINADO',
                         finish: 'INKJET COLOR ADHESIVO',
-                        price: '30MIL', 
+                        price: 'COP$30MIL', 
                         id: 'FP-30X30',
                         scale: 0.75
                     },
@@ -509,7 +543,7 @@
                         label: '40X40 CMS', 
                         media: 'SOPORTE MDF 9MM LAMINADO',
                         finish: 'INKJET COLOR ADHESIVO',
-                        price: '40MIL', 
+                        price: 'COP$40MIL', 
                         id: 'FP-40X40',
                         scale: 1.00
                     }
@@ -683,6 +717,77 @@
 
             renderPanelImages(config);
         }
+
+// ==========================================================================
+        // BLOCK 4 DRAG CONTROLLER (BOUNDED WITHIN MAIN CONTAINER)
+        // ==========================================================================
+        function initDraggableBlock4() {
+            const dragItem = getCachedEl('draggable-block-4');
+            const container = document.querySelector('.main-style-visualizer');
+
+            if (!dragItem || !container) return;
+
+            let active = false;
+            let currentX = 0;
+            let currentY = 0;
+            let initialX = 0;
+            let initialY = 0;
+            let xOffset = 0;
+            let yOffset = 0;
+
+            dragItem.addEventListener('touchstart', dragStart, { passive: false });
+            document.addEventListener('touchend', dragEnd, { passive: false });
+            document.addEventListener('touchmove', drag, { passive: false });
+
+            dragItem.addEventListener('mousedown', dragStart);
+            document.addEventListener('mouseup', dragEnd);
+            document.addEventListener('mousemove', drag);
+
+            function dragStart(e) {
+                if (e.target.closest('button')) return;
+
+                if (e.type === 'touchstart') {
+                    initialX = e.touches[0].clientX - xOffset;
+                    initialY = e.touches[0].clientY - yOffset;
+                } else {
+                    initialX = e.clientX - xOffset;
+                    initialY = e.clientY - yOffset;
+                }
+
+                active = true;
+            }
+
+            function dragEnd() {
+                initialX = currentX;
+                initialY = currentY;
+                active = false;
+            }
+
+            function drag(e) {
+                if (!active) return;
+
+                e.preventDefault();
+
+                if (e.type === 'touchmove') {
+                    currentX = e.touches[0].clientX - initialX;
+                    currentY = e.touches[0].clientY - initialY;
+                } else {
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                }
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                setTranslate(currentX, currentY, dragItem);
+            }
+
+            function setTranslate(xPos, yPos, el) {
+                el.style.transform = `translate(calc(-50% + ${xPos}px), ${yPos}px)`;
+            }
+        }
+
+
 
         // Dispatch WhatsApp Checkout Flow
         function acquireNodeCashflow() {
