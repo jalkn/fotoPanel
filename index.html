@@ -444,7 +444,6 @@
             <span id="fotopanel-finish" class="tele-value">ADH INKJET PRINT</span>
             <div style="font-size: 8px; opacity: 0.4; letter-spacing: 0.15em;">
                 <span id="lbl-printing-media" class="tele-value" style="font-size: inherit;">SOPORTE MDF 9MM</span><span>
-                <span id="fotopanel-label" class="tele-value" style="font-size: inherit;">40X40 CMS</span>
             </div>
         </div>
     </div>
@@ -498,30 +497,30 @@
     </footer>
 
     <script>
-        // Product Catalog Specifications
+    // Product Catalog Specifications
         const ARTEPANEL_CATALOG = {
             'PULSOR': {
                 defaultVariant: 'PANEL 40X40',
                 variants: {
                     'PANEL 20X20': { 
                         label: '20X20 CMS', 
-                        media: 'CON SOPORTE MDF 12MM',
-                        finish: 'IMPRESIÓN INKJET EN ADHESIVO LAMINADO',
+                        media: 'SOPORTE MDF 12MM LAMINADO',
+                        finish: 'INKJET COLOR ADHESIVO',
                         price: '20MIL', 
                         id: 'FP-20X20',
                         scale: 0.50
                     },
                     'PANEL 30X30': { 
                         label: '30X30 CMS', 
-                        media: 'CON SOPORTE MDF 9MM',
-                        finish: 'ADH INKJET COLOR',
+                        media: 'SOPORTE MDF 9MM LAMINADO',
+                        finish: 'INKJET COLOR ADHESIVO',
                         price: '30MIL', 
                         id: 'FP-30X30',
                         scale: 0.75
                     },
                     'PANEL 40X40': { 
-                        label: '', 
-                        media: 'LAMINADO MATE SOBRE MDF 9MM',
+                        label: '40X40 CMS', 
+                        media: 'SOPORTE MDF 9MM LAMINADO',
                         finish: 'INKJET COLOR ADHESIVO',
                         price: '40MIL', 
                         id: 'FP-40X40',
@@ -688,12 +687,10 @@
         // Synchronize UI Elements with Catalog State
         function updateFotoUI() {
             const config = ARTEPANEL_CATALOG[currentFotoItem].variants[currentFotoVariant];
-            const label = getCachedEl('fotopanel-label');
             const price = getCachedEl('fotopanel-price');
             const media = getCachedEl('lbl-printing-media');
             const finish = getCachedEl('fotopanel-finish');
             
-            if (label) label.textContent = config.label;
             if (price) price.textContent = config.price;
             if (media) media.textContent = `${config.media} `;
             if (finish) finish.textContent = config.finish;
