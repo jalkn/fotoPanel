@@ -1,12 +1,15 @@
 {
-  "name": "studio-mode-automation",
-  "version": "1.0.0",
-  "description": "Headless Studio Mode Automation for FotoPanel",
-  "main": "capture.js",
+  "name": "fotopanel",
+  "type": "module",
+  "version": "8.0.0",
   "scripts": {
-    "capture": "node capture.js"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
   "dependencies": {
-    "puppeteer": "^21.0.0"
+    "astro": "^4.0.0"
   }
 }

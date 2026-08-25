@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <link class="icon" type="image/png" href="../img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FOTOPANEL.ART - VISION & ROADMAP</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../src/styles/global.css">
+</head>
+<body>
+
+    <div id="page-bg-overlay"></div>
+    <div class="ambient-gradient"></div>
+
+    <!-- BLOCK 1: HEADER -->
+    <header class="header-style-bar">
+        <div></div>
+        <button class="btn-reset-text" title="Home / Reset" onclick="window.location.href='../index.html'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5.5" class="icon-stroke">
+                <rect x="4" y="4" width="16" height="16" />
+            </svg>
+            <span>FOTOPANEL</span>
+        </button>
+        <div></div>
+    </header>
+
+    <!-- BLOCK 2: STATIC BAR FOR HEADER SUBTITLE -->
+    <div class="block-4-static">
+        <span>FOTOPANEL.ART :: ROADMAP & INTERIOR DESIGN VISION</span>
+    </div>
+
+    <!-- MAIN SCROLLABLE VISION CHECKLIST CONTENT -->
+    <main class="vision-scroll-viewport">
+
+        <!-- CHECKLIST 1: IMMEDIATE EXECUTION PLAN (WEBAPP LAUNCH SPRINT) -->
+        <section class="vision-card">
+            <h2>1. PLAN DE EJECUCIÓN INMEDIATO (SPRINT DE LANZAMIENTO WEBAPP)</h2>
+            <div class="checklist-group">
+                <strong style="font-size: 10px; opacity: 0.8; margin-top: 0.4rem; color: var(--jako-led);">DÍA 1: INTEGRACIÓN DE EXPORTACIÓN PNG Y REFACTORIZACIÓN UI</strong>
+                <label class="checklist-item"><input type="checkbox"> Horas 1 - 3 (Lógica de Exportación): Integrar la librería html2canvas en el index.html. Crear la función exportPanelPreview() para capturar el contenedor #fotopanel-pack-container a resolución 1080x1080px.</label>
+                <label class="checklist-item"><input type="checkbox"> Horas 4 - 5 (Branding e Overlay): Agregar una marca de agua sutil en la esquina inferior del PNG generado (FotoPanel.art • Muestra Digital) junto con un código QR o enlace directo.</label>
+                <label class="checklist-item"><input type="checkbox" checked> Horas 6 - 8 (Ajuste de UI/UX): Limpieza de la barra de acciones, remoción de dependencias directas de WhatsApp / NodeCashflow y optimización de interacción táctil en móviles.</label>
+
+                <strong style="font-size: 10px; opacity: 0.8; margin-top: 0.8rem; color: var(--jako-led);">DÍA 2: CONVERSIÓN A PWA Y PERSISTENCIA DE DATOS</strong>
+                <label class="checklist-item"><input type="checkbox"> Horas 1 - 3 (Estructura PWA): Crear los archivos manifest.json y sw.js (Service Worker) para almacenamiento en caché offline, iconos de app para Android/iOS y pantalla de carga (splash screen).</label>
+                <label class="checklist-item"><input type="checkbox" checked> Horas 4 - 6 (Persistencia Local): Configurar localStorage para guardar las preferencias del usuario (tema visual, foto cargada recientemente, tamaño seleccionado).</label>
+                <label class="checklist-item"><input type="checkbox"> Horas 7 - 8 (Optimización de Carga): Comprimir activos gráficos (photo.png, back.png, favicon.png) y validar tiempos de respuesta.</label>
+
+                <strong style="font-size: 10px; opacity: 0.8; margin-top: 0.8rem; color: var(--jako-led);">DÍA 3: DESPLIEGUE, DOMINIO Y PRUEBAS DE LANZAMIENTO</strong>
+                <label class="checklist-item"><input type="checkbox"> Horas 1 - 3 (Infraestructura): Conectar el repositorio Git con Vercel o Netlify para despliegue continuo (CI/CD).</label>
+                <label class="checklist-item"><input type="checkbox"> Horas 4 - 5 (Configuración de Red): Configurar los registros DNS para fotopanel.art (Registros A y CNAME) y habilitar certificado SSL (HTTPS automático).</label>
+                <label class="checklist-item"><input type="checkbox"> Horas 6 - 8 (QA Móvil & Pruebas en Campo): Probar el flujo completo en múltiples dispositivos móviles, verificar la descarga de PNG y ajustar estilos en pantallas pequeñas.</label>
+            </div>
+        </section>
+
+        <!-- CHECKLIST 2: SCHEDULE AND TECHNOLOGICAL EVOLUTION PHASES -->
+        <section class="vision-card">
+            <h2>2. CRONOGRAMA DE DESARROLLO Y HOJA DE RUTA</h2>
+            <div class="checklist-group">
+                <strong style="font-size: 10px; opacity: 0.8; margin-top: 0.4rem; color: var(--jako-led);">FASE 1: WEBAPP & PWA (LANZAMIENTO INMEDIATO)</strong>
+                <label class="checklist-item"><input type="checkbox"> Web App Manifest & Service Worker: Agregar un archivo manifest.json y registrar un Service Worker en el index.html actual. Esto habilita el comportamiento PWA (Add to Home Screen) sin rehacer el código Vanilla JS, permitiendo que la webapp funcione offline y se sienta como una aplicación instalada en iOS/Android hoy mismo.</label>
+
+                <strong style="font-size: 10px; opacity: 0.8; margin-top: 0.8rem; color: var(--jako-led);">FASE 2: MIGRACIÓN PROGRESIVA A ASTRO / FRAMEWORK (MES 1)</strong>
+                <label class="checklist-item"><input type="checkbox"> De Vanilla JS a Astro Components: La estructura basada en bloques (header-style-bar, main-style-visualizer) se presta para una separación limpia en componentes de Astro (Header.astro, Visualizer.astro, Controls.astro).</label>
+                <label class="checklist-item"><input type="checkbox"> Estado Reactivo Delgado: Reemplazar el objeto global ARTEPANEL_CATALOG y las variables de estado sueltas (isGrayscale, isZoomed) por Nanostores (o señales en Preact/Svelte). Esto mantiene la app ultraligera (&lt;50 KB) y facilita sincronizar el estado entre la vista previa 2D y el futuro módulo AR.</label>
+
+                <strong style="font-size: 10px; opacity: 0.8; margin-top: 0.8rem; color: var(--jako-led);">EVOLUCIÓN FUTURA</strong>
+                <label class="checklist-item"><input type="checkbox" checked> Refactorizar estructura en src/styles/global.css y src/scripts/fotopanel.js</label>
+                <label class="checklist-item"><input type="checkbox"> Implementar simulación de acrílico grabado con luz de galería en Light Mode</label>
+                <label class="checklist-item"><input type="checkbox"> Configurar loop gif/slider de 5 imágenes en el visualizer principal</label>
+                <label class="checklist-item"><input type="checkbox"> Desarrollar e integrar módulo de reemplazo de background por foto propia</label>
+                <label class="checklist-item"><input type="checkbox"> Integrar vista previa en modo AR (Realidad Aumentada)</label>
+            </div>
+        </section>
+
+        <!-- CHECKLIST 3: BRAND UI MANUAL -->
+        <section class="vision-card">
+            <h2>3. MANUAL UI Y GUÍA DE DISEÑO</h2>
+            <div class="checklist-group">
+                <label class="checklist-item"><input type="checkbox" checked> Paleta Acromática: Dark Theme (#0a0a0a) / Light Theme (#f4f5f7)</label>
+                <label class="checklist-item"><input type="checkbox" checked> Tipografía Técnica Principal: 'Orbitron', monospace, sans-serif</label>
+                <label class="checklist-item"><input type="checkbox" checked> Estructura Móvil de 6 Bloques con alineación vertical viewport (100dvh)</label>
+                <label class="checklist-item"><input type="checkbox"> Efecto Acrílico Ruteado: Bordes LED en Dark Mode / Sombras cenitales en Light Mode</label>
+                <label class="checklist-item"><input type="checkbox"> Interacción Háptica para respuesta táctil en botones y switches</label>
+            </div>
+        </section>
+
+        <!-- CHECKLIST 4: COST ANALYSIS -->
+        <section class="vision-card">
+            <h2>4. ANÁLISIS DE COSTOS Y MÁRGENES</h2>
+            <div class="checklist-group">
+                <label class="checklist-item"><input type="checkbox" checked> Panel 20x20: Venta $20,000 COP | Insumos ~$6,500 COP (Margen 67.5%)</label>
+                <label class="checklist-item"><input type="checkbox" checked> Panel 30x30: Venta $30,000 COP | Insumos ~$10,000 COP (Margen 66.6%)</label>
+                <label class="checklist-item"><input type="checkbox" checked> Panel 40x40: Venta $40,000 COP | Insumos ~$14,500 COP (Margen 63.7%)</label>
+                <label class="checklist-item"><input type="checkbox"> Optimización de empaque minimalista y kit de montaje adosado</label>
+            </div>
+        </section>
+
+        <!-- CHECKLIST 5: ENGINEERING -->
+        <section class="vision-card">
+            <h2>5. INGENIERÍA Y AUTOMATIZACIÓN</h2>
+            <div class="checklist-group">
+                <label class="checklist-item"><input type="checkbox"> Capturador Client-Side: Ocultar Bloques 1 y 6 para exportar render limpio</label>
+                <label class="checklist-item"><input type="checkbox"> Script de Automatización Python en backend (FastAPI / Cron Job)</label>
+                <label class="checklist-item"><input type="checkbox"> Pipeline de Renderizado 300 DPI con sangrías para impresión Inkjet</label>
+                <label class="checklist-item"><input type="checkbox"> Integración del bot para sustitución progresiva del canal de WhatsApp</label>
+            </div>
+        </section>
+
+        <!-- CHECKLIST 6: ARCHITECTURE -->
+        <section class="vision-card">
+            <h2>6. ARQUITECTURA DEL ECOSISTEMA</h2>
+            <div class="checklist-group">
+                <label class="checklist-item"><input type="checkbox" checked> Frontend Decoupled con Vanilla JS/CSS (Evolución hacia Astro)</label>
+                <label class="checklist-item"><input type="checkbox"> Engine Micro-Backend Python para procesamiento de imagen y colas</label>
+                <label class="checklist-item"><input type="checkbox" checked> Script orquestador único set.sh para gestión integral del repositorio</label>
+                <label class="checklist-item"><input type="checkbox"> Módulo Bloque 7 (Panel Administrativo) para control en taller</label>
+            </div>
+        </section>
+
+        <!-- CHECKLIST 7: MARKETING -->
+        <section class="vision-card">
+            <h2>7. ESTRATEGIA DE MERCADEO</h2>
+            <div class="checklist-group">
+                <label class="checklist-item"><input type="checkbox"> Posicionamiento de la marca hacia FOTOPANEL Studio / ARpanel</label>
+                <label class="checklist-item"><input type="checkbox"> Muestra dinámica en galería virtual interactiva con refresco diario</label>
+                <label class="checklist-item"><input type="checkbox"> Estrategia de prototipado y visualización para diseñadores de interiores</label>
+                <label class="checklist-item"><input type="checkbox"> Campañas locales enfocadas en módulos coleccionables e interconectables</label>
+            </div>
+        </section>
+    </main>
+
+    <!-- BLOCK 5: STATIC FOOTER BAR -->
+    <div class="block-4-static">
+        <span>STATUS: SYSTEM ONLINE :: BUILD V1.0</span>
+    </div>
+
+    <!-- BLOCK 6: MAIN ACTION CONTROLS (FOOTER) -->
+    <div class="header-style-bar">
+        <button id="btn-back-home" title="Return to Visualizer" onclick="window.location.href='../index.html'" class="btn-control-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-stroke">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+        </button>
+
+        <button id="acromatic-toggle-trigger" title="Toggle Light/Dark Theme" onclick="toggleTheme()" class="btn-control-action">
+            <div class="glass-aperture-dial">
+                <div class="aperture-ticks"></div>
+                <div class="aperture-core"></div>
+            </div>
+        </button>
+    </div>
+
+    <script src="../src/scripts/fotopanel.js"></script>
+</body>
+</html>
